@@ -139,7 +139,7 @@ export default async function DashboardPage() {
                 <div>
                   <div style={{ fontSize: '0.875rem', color: '#64748b', marginBottom: '0.25rem' }}>Baseline WPM</div>
                   <div style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#0f172a' }}>
-                    {dna?.baseline_wpm || '--'}
+                    {dna?.baseline_wpm ?? dna?.avg_wpm ?? '--'}
                   </div>
                 </div>
                 

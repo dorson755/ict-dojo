@@ -23,12 +23,14 @@ export async function submitDiagnostic(results: TypingSessionResult[]) {
   const avgWpm = validResults.reduce((sum, r) => sum + r.wpm, 0) / validResults.length;
   const avgAccuracy = validResults.reduce((sum, r) => sum + r.accuracy, 0) / validResults.length;
 
-  // Set Typing DNA
+  // Set Typing DNA — write to both the new baseline_wpm column and avg_wpm
   await (supabase.from('typing_dna') as any).upsert({
     student_id: user.id,
     baseline_wpm: Math.round(avgWpm),
+    avg_wpm: Math.round(avgWpm),
     avg_accuracy: Math.round(avgAccuracy),
-    last_assessed_at: new Date().toISOString()
+    last_assessed_at: new Date().toISOString(),
+    sessions_analyzed: validResults.length,
   }, { onConflict: 'student_id' });
 
   // Initialize Mastery based on baseline WPM

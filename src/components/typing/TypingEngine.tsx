@@ -24,137 +24,137 @@ export default function TypingEngine({
   // --------------------------------------------------------
   const [typedChars, setTypedChars] = useState<string[]>([]);
   const [keystrokes, setKeystrokes] = useState<KeystrokeEvent[]>([]);
-  const [startedAt, setStartedAt] = useState<number | null>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // --------------------------------------------------------
-  // Derived Metrics (Live)
-  // --------------------------------------------------------
-  const currentIndex = typedChars.length;
-  
-  // Calculate live WPM
   const [liveWpm, setLiveWpm] = useState(0);
   const [liveAccuracy, setLiveAccuracy] = useState(100);
 
+  // Use refs for values needed synchronously inside handleKeyDown
+  const startedAtRef = useRef<number | null>(null);
+  const typedCharsRef = useRef<string[]>([]);
+  const keystrokesRef = useRef<KeystrokeEvent[]>([]);
+  const isFinishedRef = useRef(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Keep refs in sync with state
+  useEffect(() => { typedCharsRef.current = typedChars; }, [typedChars]);
+  useEffect(() => { keystrokesRef.current = keystrokes; }, [keystrokes]);
+
+  // --------------------------------------------------------
+  // Live WPM / Accuracy ticker
+  // --------------------------------------------------------
   useEffect(() => {
-    if (!startedAt || isFinished) return;
+    if (!startedAtRef.current || isFinished) return;
 
     const interval = setInterval(() => {
       const now = Date.now();
-      const durationMs = now - startedAt;
+      const durationMs = now - startedAtRef.current!;
       const durationMins = durationMs / 1000 / 60;
-      
-      // Calculate how many were correct so far
+      const chars = typedCharsRef.current;
+
       let correctCount = 0;
-      typedChars.forEach((char, i) => {
+      chars.forEach((char, i) => {
         if (char === passage[i]) correctCount++;
       });
 
       const words = correctCount / 5;
       const wpm = durationMins > 0 ? Math.max(0, Math.round(words / durationMins)) : 0;
-      
-      const accuracy = typedChars.length > 0 
-        ? Math.round((correctCount / typedChars.length) * 100) 
+      const accuracy = chars.length > 0
+        ? Math.round((correctCount / chars.length) * 100)
         : 100;
 
       setLiveWpm(wpm);
       setLiveAccuracy(accuracy);
-    }, 1000); // update every second
+    }, 1000);
 
     return () => clearInterval(interval);
-  }, [startedAt, typedChars, passage, isFinished]);
+  }, [isFinished, passage]);
 
   // --------------------------------------------------------
   // Input Handling
   // --------------------------------------------------------
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (isFinished) return;
-    
-    // Ignore meta keys, shift, caps lock, etc.
-    if (e.key === 'Shift' || e.key === 'Control' || e.key === 'Alt' || e.key === 'Meta' || e.key === 'CapsLock' || e.key === 'Tab') {
-      return;
-    }
+    if (isFinishedRef.current) return;
+
+    // Ignore modifier keys
+    if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
 
     const now = Date.now();
 
-    // Start timer on first keystroke
-    if (!startedAt && e.key !== 'Backspace') {
-      setStartedAt(now);
+    // Start timer on first non-backspace keystroke — use ref so it's immediate
+    if (!startedAtRef.current && e.key !== 'Backspace') {
+      startedAtRef.current = now;
     }
 
     if (e.key === 'Backspace') {
       e.preventDefault();
-      if (currentIndex > 0) {
-        setTypedChars(prev => prev.slice(0, -1));
-        // We log backspaces in the keystroke event log too for analysis
-        setKeystrokes(prev => [
-          ...prev,
+      const current = typedCharsRef.current;
+      if (current.length > 0) {
+        const next = current.slice(0, -1);
+        typedCharsRef.current = next;
+        setTypedChars(next);
+
+        const newKs: KeystrokeEvent[] = [
+          ...keystrokesRef.current,
           {
-            position: currentIndex,
-            expected: 'Backspace', // special marker
+            position: current.length - 1,
+            expected: 'Backspace',
             actual: 'Backspace',
             correct: false,
             timestamp_ms: now,
-          }
-        ]);
+          },
+        ];
+        keystrokesRef.current = newKs;
+        setKeystrokes(newKs);
       }
       return;
     }
 
-    // Stop accepting input if we've reached the end
-    if (currentIndex >= passage.length) {
-        return;
-    }
-    
-    // It's a standard character
+    const currentIndex = typedCharsRef.current.length;
+    if (currentIndex >= passage.length) return;
+
     e.preventDefault();
     const expected = passage[currentIndex];
     const actual = e.key;
     const isCorrect = expected === actual;
 
-    setTypedChars(prev => [...prev, actual]);
-    
-    const newKeystrokes = [
-      ...keystrokes,
-      {
-        position: currentIndex,
-        expected,
-        actual,
-        correct: isCorrect,
-        timestamp_ms: now,
-      }
-    ];
-    setKeystrokes(newKeystrokes);
+    const nextChars = [...typedCharsRef.current, actual];
+    typedCharsRef.current = nextChars;
+    setTypedChars(nextChars);
 
-    // Check if finished
+    const newKs: KeystrokeEvent[] = [
+      ...keystrokesRef.current,
+      { position: currentIndex, expected, actual, correct: isCorrect, timestamp_ms: now },
+    ];
+    keystrokesRef.current = newKs;
+    setKeystrokes(newKs);
+
+    // Check completion — use ref values so everything is synchronous
     if (currentIndex + 1 === passage.length) {
+      isFinishedRef.current = true;
       setIsFinished(true);
-      if (startedAt) {
-          onComplete({
-            studentId,
-            exerciseId,
-            passage,
-            keystrokes: newKeystrokes,
-            startedAt,
-            completedAt: now,
-            skillIds,
-          });
-      }
+
+      // startedAtRef is guaranteed to be set because we set it above on first keystroke
+      onComplete({
+        studentId,
+        exerciseId,
+        passage,
+        keystrokes: newKs,
+        startedAt: startedAtRef.current!,
+        completedAt: now,
+        skillIds,
+      });
     }
-  }, [currentIndex, isFinished, passage, keystrokes, startedAt, studentId, exerciseId, skillIds, onComplete]);
+  }, [passage, studentId, exerciseId, skillIds, onComplete]);
 
   // --------------------------------------------------------
   // Render Helpers
   // --------------------------------------------------------
   const getCharClassName = (index: number) => {
-    if (index === currentIndex && isFocused) return styles.cursor;
+    if (index === typedChars.length && isFocused) return styles.cursor;
     if (index >= typedChars.length) return styles.char;
-    
-    const isCorrect = typedChars[index] === passage[index];
-    return isCorrect ? styles.correct : styles.incorrect;
+    return typedChars[index] === passage[index] ? styles.correct : styles.incorrect;
   };
 
   return (
@@ -172,13 +172,13 @@ export default function TypingEngine({
         <div className={styles.statGroup}>
           <span className={styles.statLabel}>Progress</span>
           <span className={styles.statValue}>
-            {Math.round((currentIndex / passage.length) * 100)}%
+            {Math.round((typedChars.length / passage.length) * 100)}%
           </span>
         </div>
       </div>
 
       {/* Interactive Typing Area */}
-      <div 
+      <div
         ref={containerRef}
         className={styles.passageContainer}
         tabIndex={0}
@@ -193,13 +193,10 @@ export default function TypingEngine({
         )}
 
         {passage.split('').map((char, index) => {
-          // If it's a space and incorrect, we need to show something (like a red underscore)
-          // otherwise an incorrect space is invisible
           let displayChar = char;
           if (index < typedChars.length && typedChars[index] !== char && char === ' ') {
-            displayChar = '_'; 
+            displayChar = '_';
           }
-          
           return (
             <span key={index} className={getCharClassName(index)}>
               {displayChar}
