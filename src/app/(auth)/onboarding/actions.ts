@@ -25,7 +25,7 @@ export async function completeOnboarding(formData: FormData) {
     .eq('id', user.id);
 
   if (error) {
-    return { error: 'Failed to save profile information. Please try again.' };
+    return { error: `Failed to save profile information: ${error.message} (${error.code})` };
   }
 
   // Also initialize their domain progression for Typing
