@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { login, loginWithGoogle } from '../actions';
 import styles from '../auth.module.css';
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get('error');
   
@@ -87,5 +87,13 @@ export default function LoginPage() {
         Don't have an account? <Link href="/signup" className={styles.link}>Sign Up</Link>
       </div>
     </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
