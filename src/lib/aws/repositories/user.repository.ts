@@ -14,6 +14,7 @@ export interface TypingDNA {
   avg_accuracy?: number;
   last_assessed_at?: string;
   sessions_analyzed?: number;
+  weak_keys?: Record<string, number>;
 }
 
 export class UserRepository {
@@ -72,6 +73,7 @@ export class UserRepository {
       avg_accuracy: response.Item.avg_accuracy,
       last_assessed_at: response.Item.last_assessed_at,
       sessions_analyzed: response.Item.sessions_analyzed,
+      weak_keys: response.Item.weak_keys || {},
     };
   }
 
@@ -104,6 +106,10 @@ export class UserRepository {
     if (dna.sessions_analyzed !== undefined) {
       updateExp += ', sessions_analyzed = :sa';
       expVals[':sa'] = dna.sessions_analyzed;
+    }
+    if (dna.weak_keys !== undefined) {
+      updateExp += ', weak_keys = :wk';
+      expVals[':wk'] = dna.weak_keys;
     }
 
     const command = new UpdateCommand({

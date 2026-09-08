@@ -51,4 +51,20 @@ export class ExerciseRepository {
 
     await dynamoClient.send(command);
   }
+
+  static async getRecentSessions(userId: string, limit: number = 10): Promise<any[]> {
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
+      ExpressionAttributeValues: {
+        ':pk': `USER#${userId}`,
+        ':sk': 'SESSION#',
+      },
+      ScanIndexForward: false, // Sort descending (latest first)
+      Limit: limit,
+    });
+
+    const response = await dynamoClient.send(command);
+    return response.Items || [];
+  }
 }

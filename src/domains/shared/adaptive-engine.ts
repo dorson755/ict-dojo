@@ -14,8 +14,24 @@ export class AdaptiveEngine {
    * Evaluates the learner's state and returns a recommendation for the next skill to practice.
    */
   public getNextRecommendation(input: RecommendationInput): Omit<Recommendation, 'id' | 'created_at'> | null {
-    const { studentId, domainId, masteryMap, skills, dependencies, recentAttempts } = input;
+    const { studentId, domainId, masteryMap, skills, dependencies, weakKeys } = input;
     
+    // Check for significant weaknesses first
+    if (weakKeys && Object.keys(weakKeys).length > 0) {
+      // Find the worst key to mention in the reason
+      const worstKey = Object.entries(weakKeys).sort((a, b) => b[1] - a[1])[0][0];
+      
+      return {
+        student_id: studentId,
+        domain_id: domainId,
+        recommended_skill_id: null, // Doesn't map to a static skill
+        recommended_exercise_id: 'ADAPTIVE_WEAKNESS_DRILL', 
+        reason: `Based on your recent sessions, you need practice with the letter '${worstKey}'.`,
+        priority: 100, // Highest priority
+        is_acted_on: false,
+      };
+    }
+
     // 1. Initialize the SkillGraph
     const graph = new SkillGraph(skills, dependencies);
 

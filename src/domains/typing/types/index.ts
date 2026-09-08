@@ -116,6 +116,7 @@ export interface TypingSessionResult {
   isValid: boolean;
   /** Reason if invalid */
   invalidReason?: string;
+  keystrokes: KeystrokeEvent[];
 }
 
 // ------------------------------------------------------------

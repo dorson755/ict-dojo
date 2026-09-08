@@ -4,6 +4,7 @@ import { getUserSession } from '@/lib/aws/auth-utils';
 import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
+import { AdaptiveGenerator } from '@/domains/typing/generators/AdaptiveGenerator';
 
 export default async function PracticePage() {
   const user = await getUserSession();
@@ -25,7 +26,29 @@ export default async function PracticePage() {
   // 2. Fetch an exercise
   let exercise = null;
   
-  if (targetSkillId) {
+  if (activeRec?.recommended_exercise_id === 'ADAPTIVE_WEAKNESS_DRILL') {
+    // Generate an adaptive drill based on user's weak keys
+    const dna = await UserRepository.getTypingDNA(user.id);
+    const weakKeys = dna?.weak_keys || {};
+    const passage = AdaptiveGenerator.generatePassage(weakKeys, 20);
+    
+    exercise = {
+      id: 'adaptive-drill-1',
+      domain_id: '1',
+      skill_ids: [], // No specific static skill, this is general weakness training
+      title: 'Adaptive Weakness Drill',
+      difficulty: 1,
+      difficulty_metadata: {},
+      content: {
+        passage,
+        hint: 'This drill was custom-generated to target characters you recently struggled with.'
+      },
+      is_ai_generated: true,
+      grade_level_min: 1,
+      grade_level_max: 12,
+      created_at: new Date().toISOString()
+    };
+  } else if (targetSkillId) {
     // In DynamoDB, we fetch exercises for a domain and filter by skill.
     // For now, fetch by domain '1' (Typing) and filter in memory.
     const domainExercises = await ExerciseRepository.getExercisesByDomain('1');

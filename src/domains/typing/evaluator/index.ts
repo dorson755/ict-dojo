@@ -142,7 +142,8 @@ export class TypingEvaluator
       hesitationEvents,
       compositeScore: Number(compositeScore.toFixed(2)),
       isValid,
-      invalidReason
+      invalidReason,
+      keystrokes: input.keystrokes
     };
   }
 }

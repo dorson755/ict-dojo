@@ -5,6 +5,7 @@ import { getUserSession } from '@/lib/aws/auth-utils';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
 import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
+import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 
 export default async function DashboardPage() {
   const user = await getUserSession();
@@ -28,6 +29,9 @@ export default async function DashboardPage() {
 
   // Fetch top mastered skills
   const masteredSkills = await MasteryRepository.getTopMasteredSkills(user.id, 5);
+
+  // Fetch recent sessions
+  const recentSessions = await ExerciseRepository.getRecentSessions(user.id, 5);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
@@ -106,7 +110,7 @@ export default async function DashboardPage() {
           </div>
 
           {/* Sidebar Area */}
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
               <h3 style={{ fontSize: '1rem', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
                 Typing DNA
@@ -130,6 +134,60 @@ export default async function DashboardPage() {
                 )}
               </div>
             </div>
+
+            <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
+                Weaknesses
+              </h3>
+              
+              {dna?.weak_keys && Object.keys(dna.weak_keys).length > 0 ? (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                  {Object.entries(dna.weak_keys)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5)
+                    .map(([key, score]) => (
+                      <div key={key} style={{ 
+                        padding: '0.5rem 1rem', 
+                        backgroundColor: '#fee2e2', 
+                        color: '#991b1b', 
+                        borderRadius: '6px',
+                        fontWeight: 'bold',
+                        fontSize: '1.25rem',
+                        border: '1px solid #fecaca'
+                      }}>
+                        {key === ' ' ? 'SPACE' : key.toUpperCase()}
+                      </div>
+                  ))}
+                </div>
+              ) : (
+                <p style={{ color: '#64748b', fontSize: '0.875rem' }}>No weaknesses detected yet. Keep practicing!</p>
+              )}
+            </div>
+
+            <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 'bold', color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
+                Recent Sessions
+              </h3>
+              
+              {recentSessions.length > 0 ? (
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {recentSessions.map((session, i) => (
+                    <li key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 0', borderBottom: i !== recentSessions.length - 1 ? '1px solid #e2e8f0' : 'none' }}>
+                      <span style={{ color: '#475569', fontSize: '0.875rem' }}>
+                        {new Date(session.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                      </span>
+                      <div style={{ display: 'flex', gap: '1rem', fontWeight: 600 }}>
+                        <span style={{ color: '#2563eb' }}>{session.wpm}WPM</span>
+                        <span style={{ color: '#16a34a' }}>{session.accuracy}%</span>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p style={{ color: '#64748b', fontSize: '0.875rem' }}>No recent sessions.</p>
+              )}
+            </div>
+
           </div>
 
         </div>

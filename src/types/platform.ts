@@ -250,6 +250,7 @@ export interface RecommendationInput {
   skills: Skill[];
   dependencies: SkillDependency[];
   recentAttempts: ExerciseAttempt[];
+  weakKeys?: Record<string, number>;
 }
 
 // ------------------------------------------------------------
