@@ -5,6 +5,8 @@ export interface StudentProfile {
   id: string;
   grade_level?: number;
   display_name?: string;
+  xp_total?: number;
+  platform_level?: number;
 }
 
 export interface TypingDNA {
@@ -34,6 +36,8 @@ export class UserRepository {
       id: userId,
       grade_level: response.Item.grade_level,
       display_name: response.Item.display_name,
+      xp_total: response.Item.xp_total,
+      platform_level: response.Item.platform_level,
     };
   }
 

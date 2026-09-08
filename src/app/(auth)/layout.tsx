@@ -6,7 +6,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className={styles.authContainer}>
       <div className={styles.authCard}>
         <div className={styles.authHeader}>
-          <h1 className={styles.authTitle}>ICT Dojo</h1>
+          <div className={styles.brandRow}>
+            <span className={styles.brandMark}>ICT</span>
+            <span className={styles.brandName}>Dojo</span>
+          </div>
           <p className={styles.authSubtitle}>Adaptive Learning Platform</p>
         </div>
         {children}

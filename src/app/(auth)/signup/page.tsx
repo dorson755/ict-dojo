@@ -31,52 +31,50 @@ export default function SignupPage() {
 
   return (
     <>
-      <h2 className={styles.authTitle} style={{ fontSize: '1.25rem', textAlign: 'center' }}>
-        Create Your Account
-      </h2>
-      
+      <h2 className={styles.authFormTitle}>Create your account</h2>
+
       {error && <div className={styles.errorMessage}>{error}</div>}
 
       <form action={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="displayName" className={styles.label}>Display Name</label>
+        <div className="form-group">
+          <label htmlFor="displayName" className="label">Display name</label>
           <input
             id="displayName"
             name="displayName"
             type="text"
             required
-            className={styles.input}
-            placeholder="e.g. John Doe"
+            className="input"
+            placeholder="e.g. Alex Chen"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="email" className={styles.label}>Email Address</label>
+        <div className="form-group">
+          <label htmlFor="email" className="label">Email</label>
           <input
             id="email"
             name="email"
             type="email"
             required
-            className={styles.input}
+            className="input"
             placeholder="student@example.com"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="password" className={styles.label}>Password (min. 6 chars)</label>
+        <div className="form-group">
+          <label htmlFor="password" className="label">Password (min. 6 characters)</label>
           <input
             id="password"
             name="password"
             type="password"
             required
             minLength={6}
-            className={styles.input}
+            className="input"
             placeholder="••••••••"
           />
         </div>
 
-        <button type="submit" className={styles.button} disabled={isLoading}>
-          {isLoading ? 'Creating account...' : 'Sign Up'}
+        <button type="submit" className={styles.authButton} disabled={isLoading}>
+          {isLoading ? 'Creating account...' : 'Sign up'}
         </button>
       </form>
 
@@ -93,7 +91,7 @@ export default function SignupPage() {
       </button>
 
       <div className={styles.footerText}>
-        Already have an account? <Link href="/login" className={styles.link}>Log In</Link>
+        Already have an account? <Link href="/login" className={styles.link}>Log in</Link>
       </div>
     </>
   );

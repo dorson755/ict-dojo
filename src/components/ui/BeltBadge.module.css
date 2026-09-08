@@ -1,0 +1,45 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.strip {
+  display: inline-block;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+}
+
+.label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.sm .strip {
+  width: 18px;
+  height: 8px;
+}
+
+.sm .label {
+  font-size: var(--text-xs);
+}
+
+.md .strip {
+  width: 28px;
+  height: 12px;
+}
+
+.md .label {
+  font-size: var(--text-sm);
+}
+
+.lg .strip {
+  width: 44px;
+  height: 18px;
+  border-radius: 3px;
+}
+
+.lg .label {
+  font-size: var(--text-lg);
+}

@@ -9,7 +9,7 @@ import styles from '../auth.module.css';
 function LoginForm() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get('error');
-  
+
   const [error, setError] = useState<string | null>(errorParam);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,39 +35,37 @@ function LoginForm() {
 
   return (
     <>
-      <h2 className={styles.authTitle} style={{ fontSize: '1.25rem', textAlign: 'center' }}>
-        Log In to Your Dojo
-      </h2>
-      
+      <h2 className={styles.authFormTitle}>Log in to your dojo</h2>
+
       {error && <div className={styles.errorMessage}>{error}</div>}
 
       <form action={handleSubmit}>
-        <div className={styles.formGroup}>
-          <label htmlFor="email" className={styles.label}>Email Address</label>
+        <div className="form-group">
+          <label htmlFor="email" className="label">Email</label>
           <input
             id="email"
             name="email"
             type="email"
             required
-            className={styles.input}
+            className="input"
             placeholder="student@example.com"
           />
         </div>
 
-        <div className={styles.formGroup}>
-          <label htmlFor="password" className={styles.label}>Password</label>
+        <div className="form-group">
+          <label htmlFor="password" className="label">Password</label>
           <input
             id="password"
             name="password"
             type="password"
             required
-            className={styles.input}
+            className="input"
             placeholder="••••••••"
           />
         </div>
 
-        <button type="submit" className={styles.button} disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Log In'}
+        <button type="submit" className={styles.authButton} disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Log in'}
         </button>
       </form>
 
@@ -84,7 +82,7 @@ function LoginForm() {
       </button>
 
       <div className={styles.footerText}>
-        Don't have an account? <Link href="/signup" className={styles.link}>Sign Up</Link>
+        Don&apos;t have an account? <Link href="/signup" className={styles.link}>Sign up</Link>
       </div>
     </>
   );
