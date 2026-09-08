@@ -1,56 +1,33 @@
-import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { logout } from '../(auth)/actions';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
+import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
+import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getUserSession();
 
   if (!user) {
     redirect('/login');
   }
 
   // Fetch Profile
-  const { data: profile } = await (supabase.from('student_profiles') as any)
-    .select('*')
-    .eq('id', user.id)
-    .single();
+  const profile = await UserRepository.getProfile(user.id);
 
   if (!profile || !profile.grade_level) {
     redirect('/onboarding');
   }
 
   // Fetch DNA
-  const { data: dna } = await (supabase.from('typing_dna') as any)
-    .select('*')
-    .eq('student_id', user.id)
-    .single();
+  const dna = await UserRepository.getTypingDNA(user.id);
 
   // Fetch active recommendation
-  const { data: recs } = await (supabase.from('recommendations') as any)
-    .select(`
-      id,
-      reason,
-      skills ( name )
-    `)
-    .eq('student_id', user.id)
-    .eq('is_acted_on', false)
-    .order('priority', { ascending: false })
-    .limit(1);
-
-  const activeRec = recs && recs.length > 0 ? recs[0] : null;
+  const activeRec = await RecommendationRepository.getActiveRecommendation(user.id);
 
   // Fetch top mastered skills
-  const { data: masteredSkills } = await (supabase.from('skill_mastery') as any)
-    .select(`
-      mastery_score,
-      mastery_level,
-      skills ( name )
-    `)
-    .eq('student_id', user.id)
-    .order('mastery_score', { ascending: false })
-    .limit(5);
+  const masteredSkills = await MasteryRepository.getTopMasteredSkills(user.id, 5);
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc' }}>
@@ -78,7 +55,7 @@ export default async function DashboardPage() {
               
               {activeRec ? (
                 <div style={{ backgroundColor: '#eff6ff', padding: '1.5rem', borderRadius: '8px', border: '1px solid #bfdbfe' }}>
-                  <h3 style={{ color: '#1e40af', fontWeight: 'bold', marginBottom: '0.5rem' }}>Target: {activeRec.skills?.name}</h3>
+                  <h3 style={{ color: '#1e40af', fontWeight: 'bold', marginBottom: '0.5rem' }}>Target: {activeRec.skills?.name || 'Assigned Skill'}</h3>
                   <p style={{ color: '#1e3a8a', marginBottom: '1.5rem' }}>{activeRec.reason}</p>
                   
                   <Link href="/practice" style={{ display: 'inline-block', backgroundColor: '#2563eb', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '6px', fontWeight: 600, textDecoration: 'none' }}>
@@ -102,7 +79,7 @@ export default async function DashboardPage() {
                 <ul style={{ listStyle: 'none', padding: 0 }}>
                   {masteredSkills.map((sm: any, i: number) => (
                     <li key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 0', borderBottom: i !== masteredSkills.length - 1 ? '1px solid #e2e8f0' : 'none' }}>
-                      <span style={{ fontWeight: 500 }}>{sm.skills?.name}</span>
+                      <span style={{ fontWeight: 500 }}>{sm.skills?.name || 'Skill'}</span>
                       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <span style={{ 
                           fontSize: '0.75rem', 

@@ -1,20 +1,17 @@
-import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import DiagnosticClient from './DiagnosticClient';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 
 export default async function DiagnosticPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getUserSession();
 
   if (!user) {
     redirect('/login');
   }
 
   // Ensure they don't already have DNA established
-  const { data: dna } = await (supabase.from('typing_dna') as any)
-    .select('id')
-    .eq('student_id', user.id)
-    .single();
+  const dna = await UserRepository.getTypingDNA(user.id);
 
   if (dna) {
     // Already took the diagnostic or established a baseline

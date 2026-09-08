@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import TypingEngine from '@/components/typing/TypingEngine';
-import { submitTypingSession } from './actions';
+import { submitPracticeSession } from './actions';
 import { TypingSessionInput, TypingSessionResult } from '@/domains/typing/types';
+import { TypingEvaluator } from '@/domains/typing/evaluator';
 import Link from 'next/link';
 
 interface PracticeClientProps {
@@ -21,12 +22,15 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
     setIsSubmitting(true);
     setError(null);
     try {
-      const response = await submitTypingSession(sessionData);
+      const evaluator = new TypingEvaluator();
+      const resultData = evaluator.evaluate(sessionData);
+
+      const response = await submitPracticeSession(resultData, exercise.skill_ids || [], exercise.id);
       if (response.success && response.result) {
         setResult(response.result as TypingSessionResult);
         setNextRec(response.nextRecommendation);
       } else {
-        setError(response.reason || 'Failed to submit session.');
+        setError('Failed to submit session.');
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred.');

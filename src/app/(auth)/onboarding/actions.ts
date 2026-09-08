@@ -1,47 +1,31 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 
-export async function completeOnboarding(formData: FormData) {
-  const gradeLevelStr = formData.get('gradeLevel') as string;
-  const gradeLevel = parseInt(gradeLevelStr, 10);
+export async function submitOnboarding(formData: FormData) {
+  const user = await getUserSession();
+  
+  if (!user) {
+    return { error: 'Not authenticated' };
+  }
+
+  const rawGradeLevel = formData.get('gradeLevel') as string;
+  const gradeLevel = parseInt(rawGradeLevel, 10);
 
   if (isNaN(gradeLevel) || gradeLevel < 1 || gradeLevel > 12) {
-    return { error: 'Invalid grade level selected.' };
+    return { error: 'Invalid grade level' };
   }
 
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return { error: 'Not authenticated.' };
+  try {
+    await UserRepository.updateProfile(user.id, gradeLevel);
+    
+    // We can also initialize some default typing domains here using DynamoDB if we wanted
+    // For now we assume diagnostic initializes the DNA
+    
+    return { success: true };
+  } catch (error: any) {
+    console.error('Onboarding update error:', error);
+    return { error: `Failed to save profile information: ${error.message}` };
   }
-
-  // Update the student_profiles table (cast any to avoid TS never errors with hand-rolled DB types)
-  const { error } = await (supabase.from('student_profiles') as any)
-    .update({ grade_level: gradeLevel })
-    .eq('id', user.id);
-
-  if (error) {
-    return { error: `Failed to save profile information: ${error.message} (${error.code})` };
-  }
-
-  // Also initialize their domain progression for Typing
-  const { data: typingDomain } = await (supabase.from('learning_domains') as any)
-    .select('*')
-    .eq('slug', 'typing')
-    .single();
-
-  if (typingDomain) {
-    await (supabase.from('domain_progression') as any).upsert({
-      student_id: user.id,
-      domain_id: typingDomain.id,
-      status: 'active',
-    }, { onConflict: 'student_id, domain_id' });
-  }
-
-  revalidatePath('/', 'layout');
-  redirect('/diagnostic');
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { completeOnboarding } from './actions';
+import { submitOnboarding } from './actions';
 import styles from '../auth.module.css';
 
 export default function OnboardingPage() {
@@ -19,7 +19,7 @@ export default function OnboardingPage() {
     setError(null);
     formData.append('gradeLevel', selectedGrade.toString());
     
-    const result = await completeOnboarding(formData);
+    const result = await submitOnboarding(formData);
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);

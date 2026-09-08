@@ -1,132 +1,107 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
-import { TypingEvaluator } from '@/domains/typing/evaluator';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
+import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
+import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
+import { TypingSessionResult } from '@/domains/typing/types';
 import { MasteryService } from '@/domains/shared/mastery-service';
 import { AdaptiveEngine } from '@/domains/shared/adaptive-engine';
-import { TypingSessionInput } from '@/domains/typing/types';
-import { revalidatePath } from 'next/cache';
-import { Skill, SkillDependency, SkillMastery } from '@/types/platform';
+import { SkillGraph } from '@/domains/shared/skill-graph';
 
-/**
- * Evaluates a completed typing session, updates the database (DNA, mastery, history),
- * and generates the next recommendation.
- */
-export async function submitTypingSession(input: TypingSessionInput) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+export async function submitPracticeSession(
+  result: TypingSessionResult,
+  skillIds: string[],
+  activeRecId?: string
+) {
+  const user = await getUserSession();
+  if (!user) throw new Error('Not authenticated');
 
-  if (!user || user.id !== input.studentId) {
-    throw new Error('Unauthorized');
+  // Log session
+  await ExerciseRepository.logSession(user.id, result);
+
+  // Mark recommendation as acted on if passed in
+  if (activeRecId) {
+    await RecommendationRepository.markAsActedOn(user.id, activeRecId);
   }
 
-  // 1. Evaluate the session
-  const evaluator = new TypingEvaluator();
-  const result = evaluator.evaluate(input);
-
-  if (!result.isValid) {
-    return { success: false, reason: result.invalidReason, result };
-  }
-
-  // 2. Insert Typing Session
-  const { data: sessionRecord, error: sessionErr } = await (supabase.from('typing_sessions') as any)
-    .insert({
-      student_id: user.id,
-      exercise_id: input.exerciseId,
-      wpm: result.wpm,
-      accuracy: result.accuracy,
-      chars_attempted: result.charsAttempted,
-      chars_correct: result.charsCorrect,
-      backspaces: result.backspaces,
-      duration_ms: result.durationMs,
-      error_locations: result.errorLocations,
-      hesitation_events: result.hesitationEvents,
-      composite_score: result.compositeScore
-    })
-    .select('id')
-    .single();
-
-  if (sessionErr) throw sessionErr;
-
-  // 3. Update Typing DNA (simplified for MVP: just update aggregates)
-  // In a full version, we'd merge keyPairErrors.
-  await (supabase.from('typing_dna') as any).upsert({
-    student_id: user.id,
-    baseline_wpm: result.wpm, // Ideally an average over time
-    last_assessed_at: new Date().toISOString()
-  }, { onConflict: 'student_id' });
-
-  // 4. Update Mastery for all target skills of this exercise
-  const masteryService = new MasteryService();
+  // Evaluate Mastery updates
+  // In a real app we'd fetch the skill graph from DynamoDB. For now we use standard IDs.
+  const HOME_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000001';
   
-  // Fetch current mastery
-  const { data: currentMasteryData } = await (supabase.from('skill_mastery') as any)
-    .select('*')
-    .eq('student_id', user.id)
-    .in('skill_id', input.skillIds);
+  const masteryService = new MasteryService();
 
-  const currentMasteryMap = new Map<string, SkillMastery>((currentMasteryData || []).map((m: any) => [m.skill_id, m as SkillMastery]));
-
-  for (const skillId of input.skillIds) {
-    const current = currentMasteryMap.get(skillId) as SkillMastery | undefined;
+  for (const skillId of skillIds) {
+    const currentMastery = await MasteryRepository.getMastery(user.id, skillId);
     
-    // Process the new attempt
-    const masteryUpdate = masteryService.processAttempt(
-      current,
+    // Evaluate
+    const sessionScore = (result.accuracy * 0.7) + (Math.min(result.wpm / 40, 1) * 30);
+    const { newScore, newLevel } = masteryService.processAttempt(
+      currentMastery ? { ...currentMastery, student_id: user.id } as any : undefined,
       user.id,
       skillId,
-      result.compositeScore // Using composite score as the performance metric
+      sessionScore
     );
 
-    // Upsert into skill_mastery
-    await (supabase.from('skill_mastery') as any).upsert({
-      student_id: user.id,
+    // Save history
+    await MasteryRepository.logMasteryHistory(user.id, {
       skill_id: skillId,
-      domain_id: 'a1b2c3d4-0001-0001-0001-000000000001', // Typing domain UUID (from seed)
-      mastery_score: masteryUpdate.newScore,
-      mastery_level: masteryUpdate.newLevel,
-      practice_count: (current?.practice_count || 0) + 1,
-      last_practiced_at: new Date().toISOString()
-    }, { onConflict: 'student_id, skill_id' });
-
-    // Insert into mastery_history
-    await (supabase.from('mastery_history') as any).insert({
-      student_id: user.id,
-      skill_id: skillId,
-      previous_score: current?.mastery_score || 0,
-      new_score: masteryUpdate.newScore,
-      assessment_source_id: sessionRecord.id,
+      previous_score: currentMastery?.mastery_score || 0,
+      new_score: newScore,
       source_type: 'practice'
     });
-  }
 
-  // 5. Run AdaptiveEngine to get next recommendation
-  // We need to fetch all skills, dependencies, and all student mastery for the domain
-  const { data: allSkills } = await (supabase.from('skills') as any).select('*').eq('domain_id', 'a1b2c3d4-0001-0001-0001-000000000001');
-  const { data: allDeps } = await (supabase.from('skill_dependencies') as any).select('*');
-  const { data: allMastery } = await (supabase.from('skill_mastery') as any).select('*').eq('student_id', user.id);
-
-  const fullMasteryMap = new Map<string, SkillMastery>((allMastery || []).map((m: any) => [m.skill_id, m as SkillMastery]));
-
-  const engine = new AdaptiveEngine();
-  const nextRec = engine.getNextRecommendation({
-    studentId: user.id,
-    domainId: 'a1b2c3d4-0001-0001-0001-000000000001',
-    masteryMap: fullMasteryMap,
-    skills: (allSkills || []) as Skill[],
-    dependencies: (allDeps || []) as SkillDependency[],
-    recentAttempts: [] // Omitting for MVP
-  });
-
-  if (nextRec) {
-    await (supabase.from('recommendations') as any).insert({
-      ...nextRec,
-      priority: nextRec.priority,
+    // Upsert
+    await MasteryRepository.upsertMastery(user.id, {
+      student_id: user.id,
+      skill_id: skillId,
+      mastery_score: newScore,
+      mastery_level: newLevel,
+      practice_count: (currentMastery?.practice_count || 0) + 1,
+      last_practiced_at: new Date().toISOString(),
+      skills: { name: 'Home Row' } // Denormalized
     });
   }
 
-  revalidatePath('/practice');
-  revalidatePath('/dashboard');
+  // Generate new recommendation
+  const allMasteries = await MasteryRepository.getTopMasteredSkills(user.id, 100);
+  const masteryMap = new Map(allMasteries.map(m => [m.skill_id, m.mastery_level as any]));
 
-  return { success: true, result, nextRecommendation: nextRec };
+  const adaptiveEngine = new AdaptiveEngine();
+  const nextTarget = adaptiveEngine.getNextRecommendation({
+    studentId: user.id,
+    domainId: '1',
+    masteryMap: masteryMap,
+    skills: [{
+      id: HOME_ROW_SKILL_ID,
+      domain_id: '1',
+      parent_skill_id: null,
+      slug: 'home-row',
+      name: 'Home Row',
+      description: null,
+      grade_level_min: null,
+      grade_level_max: null,
+      difficulty_baseline: 1,
+      is_active: true,
+      metadata: {},
+      created_at: new Date().toISOString()
+    }],
+    dependencies: [],
+    recentAttempts: []
+  });
+
+  if (nextTarget) {
+    await RecommendationRepository.createRecommendation(user.id, {
+      domain_id: '1',
+      recommended_skill_id: nextTarget.recommended_skill_id,
+      reason: nextTarget.reason,
+      priority: nextTarget.priority
+    });
+  }
+
+  return {
+    success: true,
+    result,
+    nextRecommendation: nextTarget
+  };
 }

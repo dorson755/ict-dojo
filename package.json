@@ -11,6 +11,7 @@
     "format": "prettier --write src/",
     "type-check": "tsc --noEmit",
     "test": "jest",
+    "seed": "ts-node scripts/seed-dynamo.ts",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -20,9 +21,11 @@
     ]
   },
   "dependencies": {
-    "@supabase/ssr": "^0.12.5",
-    "@supabase/supabase-js": "^2.114.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1127.0",
+    "@aws-sdk/client-dynamodb": "^3.1127.0",
+    "@aws-sdk/lib-dynamodb": "^3.1127.0",
     "groq-sdk": "^1.6.0",
+    "jose": "^6.2.12",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8"

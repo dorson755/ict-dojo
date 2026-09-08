@@ -1,10 +1,12 @@
-import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import PracticeClient from './PracticeClient';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
+import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 
 export default async function PracticePage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const user = await getUserSession();
 
   if (!user) {
     redirect('/login');
@@ -12,52 +14,35 @@ export default async function PracticePage() {
 
   // 1. Check for active recommendation
   let targetSkillId = null;
-  const { data: recommendations } = await (supabase.from('recommendations') as any)
-    .select('*')
-    .eq('student_id', user.id)
-    .eq('is_acted_on', false)
-    .order('priority', { ascending: false })
-    .limit(1);
+  const activeRec = await RecommendationRepository.getActiveRecommendation(user.id);
 
-  if (recommendations && recommendations.length > 0) {
-    targetSkillId = recommendations[0].recommended_skill_id;
-    // Mark as acted on
-    await (supabase.from('recommendations') as any)
-      .update({ is_acted_on: true })
-      .eq('id', recommendations[0].id);
+  if (activeRec) {
+    targetSkillId = activeRec.recommended_skill_id;
+    // Note: We don't mark as acted on here anymore, we do it in actions.ts after they submit the session.
+    // That way if they refresh or leave, they don't lose the recommendation.
   }
 
   // 2. Fetch an exercise
   let exercise = null;
   
   if (targetSkillId) {
-    // Try to find an exercise that targets this skill
-    const { data: exercises } = await (supabase.from('exercises') as any)
-      .select('*')
-      .contains('skill_ids', [targetSkillId])
-      .limit(1);
-      
-    if (exercises && exercises.length > 0) {
-      exercise = exercises[0];
-    }
+    // In DynamoDB, we fetch exercises for a domain and filter by skill.
+    // For now, fetch by domain '1' (Typing) and filter in memory.
+    const domainExercises = await ExerciseRepository.getExercisesByDomain('1');
+    exercise = domainExercises.find(e => (e.skill_ids || []).includes(targetSkillId));
   }
 
   if (!exercise) {
-    // Fallback: just grab any exercise suitable for their grade (assume grade 3 if unknown for now)
-    const { data: profile } = await (supabase.from('student_profiles') as any)
-      .select('grade_level')
-      .eq('id', user.id)
-      .single();
-      
+    // Fallback: just grab any exercise suitable for their grade
+    const profile = await UserRepository.getProfile(user.id);
     const grade = profile?.grade_level || 3;
 
-    const { data: fallbackExercises } = await (supabase.from('exercises') as any)
-      .select('*')
-      .lte('grade_level_min', grade)
-      .gte('grade_level_max', grade)
-      .limit(1);
+    const domainExercises = await ExerciseRepository.getExercisesByDomain('1');
+    const fallbackExercises = domainExercises.filter(e => 
+      (e.grade_level_min || 1) <= grade && (e.grade_level_max || 12) >= grade
+    );
       
-    if (fallbackExercises && fallbackExercises.length > 0) {
+    if (fallbackExercises.length > 0) {
       exercise = fallbackExercises[0];
     }
   }
