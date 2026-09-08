@@ -8,12 +8,13 @@ import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { TypingSessionResult } from '@/domains/typing/types';
 import { MasteryService } from '@/domains/shared/mastery-service';
 import { AdaptiveEngine } from '@/domains/shared/adaptive-engine';
-import { SkillGraph } from '@/domains/shared/skill-graph';
+import { GamificationService } from '@/domains/shared/gamification-service';
 
 export async function submitPracticeSession(
   result: TypingSessionResult,
   skillIds: string[],
-  activeRecId?: string
+  exerciseId?: string,
+  difficulty: number = 1
 ) {
   const user = await getUserSession();
   if (!user) throw new Error('Not authenticated');
@@ -74,10 +75,8 @@ export async function submitPracticeSession(
     sessions_analyzed: (currentDNA?.sessions_analyzed || 0) + 1
   });
 
-  // Mark recommendation as acted on if passed in
-  if (activeRecId) {
-    await RecommendationRepository.markAsActedOn(user.id, activeRecId);
-  }
+  // Note: The recommendation is superseded by the new one created below,
+  // so we don't need to mark the old one as acted on.
 
   // Evaluate Mastery updates
   // In a real app we'd fetch the skill graph from DynamoDB. For now we use standard IDs.
@@ -154,9 +153,32 @@ export async function submitPracticeSession(
     });
   }
 
+  // ── Gamification: award XP, update level, update streak ──
+  const gamification = new GamificationService();
+  const profile = await UserRepository.getProfile(user.id);
+  const currentXp = profile?.xp_total ?? 0;
+  const currentLevel = profile?.platform_level ?? 1;
+  const currentStreak = profile?.streak_count ?? 0;
+  const lastPracticeDate = profile?.last_practice_date ?? null;
+
+  const xpAward = gamification.calculateSessionXp(result, difficulty);
+  const levelUpdate = gamification.calculateLevelUpdate(currentXp, currentLevel, xpAward.xpGained);
+  const streakUpdate = gamification.calculateStreakUpdate(lastPracticeDate, currentStreak);
+
+  await UserRepository.awardXp(user.id, xpAward.xpGained, levelUpdate.newLevel);
+  await UserRepository.updateStreak(user.id, streakUpdate.streak, new Date().toISOString().split('T')[0]);
+
   return {
     success: true,
     result,
-    nextRecommendation: nextTarget
+    nextRecommendation: nextTarget,
+    gamification: {
+      xpGained: xpAward.xpGained,
+      newTotalXp: levelUpdate.newTotalXp,
+      newLevel: levelUpdate.newLevel,
+      leveledUp: levelUpdate.leveledUp,
+      levelsGained: levelUpdate.levelsGained,
+      streak: streakUpdate.streak,
+    },
   };
 }

@@ -193,6 +193,12 @@
   margin-bottom: var(--space-4);
 }
 
+.streakRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
 .bigStat {
   font-family: var(--font-display);
   font-size: var(--text-3xl);

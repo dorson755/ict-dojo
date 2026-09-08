@@ -22,6 +22,13 @@ export interface PracticeExercise {
   created_at: string;
 }
 
+interface GamificationResult {
+  xpGained: number;
+  newLevel: number;
+  leveledUp: boolean;
+  streak: number;
+}
+
 interface PracticeClientProps {
   studentId: string;
   exercise: PracticeExercise;
@@ -31,6 +38,7 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<TypingSessionResult | null>(null);
   const [nextRec, setNextRec] = useState<{ reason?: string } | null>(null);
+  const [gamification, setGamification] = useState<GamificationResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleComplete = async (sessionData: TypingSessionInput) => {
@@ -40,10 +48,23 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
       const evaluator = new TypingEvaluator();
       const resultData = evaluator.evaluate(sessionData);
 
-      const response = await submitPracticeSession(resultData, exercise.skill_ids || [], exercise.id);
+      const response = await submitPracticeSession(
+        resultData,
+        exercise.skill_ids || [],
+        exercise.id,
+        exercise.difficulty
+      );
       if (response.success && response.result) {
         setResult(response.result as TypingSessionResult);
         setNextRec(response.nextRecommendation as { reason?: string } | null);
+        if (response.gamification) {
+          setGamification({
+            xpGained: response.gamification.xpGained,
+            newLevel: response.gamification.newLevel,
+            leveledUp: response.gamification.leveledUp,
+            streak: response.gamification.streak,
+          });
+        }
       } else {
         setError('Failed to submit session.');
       }
@@ -85,6 +106,24 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
             <div className={`${styles.resultStatValue} ${styles.resultScore}`}>{result.compositeScore}</div>
           </div>
         </div>
+
+        {gamification && (
+          <div className={styles.xpBar}>
+            <div className={styles.xpGained}>
+              +{gamification.xpGained} XP
+            </div>
+            {gamification.leveledUp && (
+              <div className={styles.levelUp}>
+                Level {gamification.newLevel} reached
+              </div>
+            )}
+            {gamification.streak > 1 && (
+              <div className={styles.streakInfo}>
+                {gamification.streak} day streak
+              </div>
+            )}
+          </div>
+        )}
 
         {nextRec && (
           <div className={styles.nextRec}>

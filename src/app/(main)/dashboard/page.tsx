@@ -36,6 +36,7 @@ export default async function DashboardPage() {
   const level = profile.platform_level || 1;
   const xp = profile.xp_total || 0;
   const belt = getBeltFromLevel(level);
+  const streak = profile.streak_count || 0;
   const xpInLevel = xp % 1000;
   const xpPercent = Math.round((xpInLevel / 1000) * 100);
 
@@ -114,13 +115,20 @@ export default async function DashboardPage() {
 
         {/* Sidebar */}
         <aside className={styles.sidebar}>
-          {/* Typing DNA */}
+          {/* Streak + Typing DNA */}
           <div className={styles.sideCard}>
-            <h3 className={styles.sideCardTitle}>Typing DNA</h3>
-            <div className={styles.bigStat}>
-              {dna?.baseline_wpm ?? dna?.avg_wpm ?? '--'}
+            <div className={styles.streakRow}>
+              <div>
+                <div className={styles.bigStat}>{streak}</div>
+                <p className={styles.statSub}>Day streak</p>
+              </div>
+              <div>
+                <div className={styles.bigStat}>
+                  {dna?.baseline_wpm ?? dna?.avg_wpm ?? '--'}
+                </div>
+                <p className={styles.statSub}>Baseline WPM</p>
+              </div>
             </div>
-            <p className={styles.statSub}>Baseline WPM</p>
             {dna?.last_assessed_at && (
               <p className={styles.statSubGap}>
                 Last assessed {new Date(dna.last_assessed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}

@@ -7,6 +7,8 @@ export interface StudentProfile {
   display_name?: string;
   xp_total?: number;
   platform_level?: number;
+  streak_count?: number;
+  last_practice_date?: string;
 }
 
 export interface TypingDNA {
@@ -36,8 +38,10 @@ export class UserRepository {
       id: userId,
       grade_level: response.Item.grade_level,
       display_name: response.Item.display_name,
-      xp_total: response.Item.xp_total,
-      platform_level: response.Item.platform_level,
+      xp_total: response.Item.xp_total ?? 0,
+      platform_level: response.Item.platform_level ?? 1,
+      streak_count: response.Item.streak_count ?? 0,
+      last_practice_date: response.Item.last_practice_date,
     };
   }
 
@@ -51,6 +55,59 @@ export class UserRepository {
       UpdateExpression: 'SET grade_level = :g, updated_at = :u',
       ExpressionAttributeValues: {
         ':g': gradeLevel,
+        ':u': new Date().toISOString(),
+      },
+    });
+
+    await dynamoClient.send(command);
+  }
+
+  /**
+   * Award XP and update platform level atomically.
+   * Uses ADD for xp_total (atomic increment) and SET for platform_level.
+   */
+  static async awardXp(
+    userId: string,
+    xpGained: number,
+    newLevel: number
+  ): Promise<void> {
+    const command = new UpdateCommand({
+      TableName: TABLE_NAME,
+      Key: {
+        PK: `USER#${userId}`,
+        SK: 'PROFILE',
+      },
+      UpdateExpression:
+        'ADD xp_total :xp SET platform_level = :lvl, updated_at = :u',
+      ExpressionAttributeValues: {
+        ':xp': xpGained,
+        ':lvl': newLevel,
+        ':u': new Date().toISOString(),
+      },
+    });
+
+    await dynamoClient.send(command);
+  }
+
+  /**
+   * Update the user's daily practice streak.
+   */
+  static async updateStreak(
+    userId: string,
+    streak: number,
+    practiceDate: string
+  ): Promise<void> {
+    const command = new UpdateCommand({
+      TableName: TABLE_NAME,
+      Key: {
+        PK: `USER#${userId}`,
+        SK: 'PROFILE',
+      },
+      UpdateExpression:
+        'SET streak_count = :s, last_practice_date = :d, updated_at = :u',
+      ExpressionAttributeValues: {
+        ':s': streak,
+        ':d': practiceDate,
         ':u': new Date().toISOString(),
       },
     });

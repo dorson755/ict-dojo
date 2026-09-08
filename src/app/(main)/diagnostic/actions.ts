@@ -4,6 +4,7 @@ import { getUserSession } from '@/lib/aws/auth-utils';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { TypingSessionResult } from '@/domains/typing/types';
+import { GamificationService } from '@/domains/shared/gamification-service';
 
 function calculateMasteryFromDiagnostic(wpm: number, accuracy: number, skills: any[]) {
   return skills.map(s => ({
@@ -63,6 +64,18 @@ export async function submitDiagnostic(results: TypingSessionResult[]) {
     });
   }
 
-  // Optional: Save the raw sessions in history
-  // ... (Skipping for brevity, diagnostic sessions are mainly for baselining)
+  // ── Award XP for completing the diagnostic ──
+  const gamification = new GamificationService();
+  const profile = await UserRepository.getProfile(user.id);
+  const currentXp = profile?.xp_total ?? 0;
+  const currentLevel = profile?.platform_level ?? 1;
+  const currentStreak = profile?.streak_count ?? 0;
+  const lastPracticeDate = profile?.last_practice_date ?? null;
+
+  const xpGained = gamification.calculateDiagnosticXp(validResults.length);
+  const levelUpdate = gamification.calculateLevelUpdate(currentXp, currentLevel, xpGained);
+  const streakUpdate = gamification.calculateStreakUpdate(lastPracticeDate, currentStreak);
+
+  await UserRepository.awardXp(user.id, xpGained, levelUpdate.newLevel);
+  await UserRepository.updateStreak(user.id, streakUpdate.streak, new Date().toISOString().split('T')[0]);
 }
