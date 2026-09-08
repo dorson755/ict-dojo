@@ -30,7 +30,7 @@ export default async function PracticePage() {
     // Generate an adaptive drill based on user's weak keys
     const dna = await UserRepository.getTypingDNA(user.id);
     const weakKeys = dna?.weak_keys || {};
-    const passage = AdaptiveGenerator.generatePassage(weakKeys, 20);
+    const passage = await AdaptiveGenerator.generatePassage(weakKeys, 20);
     
     exercise = {
       id: 'adaptive-drill-1',

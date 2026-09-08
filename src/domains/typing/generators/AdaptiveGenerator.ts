@@ -13,13 +13,15 @@ const DICTIONARY = [
   "array", "number", "boolean", "return", "import", "export", "default", "const", "let", "var"
 ];
 
+import { ContentGenerator } from '@/lib/groq/content-generator';
+
 export class AdaptiveGenerator {
   /**
    * Generates a passage tailored to a user's weak keys.
    * @param weakKeys A record of characters the user struggles with, mapped to their error score.
    * @param length The target number of words for the passage (default 20).
    */
-  static generatePassage(weakKeys: Record<string, number>, length: number = 20): string {
+  static async generatePassage(weakKeys: Record<string, number>, length: number = 20): Promise<string> {
     const keys = Object.keys(weakKeys);
     
     // If no specific weaknesses, generate a random passage
@@ -34,24 +36,40 @@ export class AdaptiveGenerator {
 
     const topWeaknesses = sortedWeaknesses.slice(0, 5); // Focus on top 5 weak keys
 
-    const selectedWords: string[] = [];
+    try {
+      // 1. Try to generate a beautiful, coherent passage using Groq API
+      const aiPassage = await ContentGenerator.generatePassage({
+        gradeLevel: 6, // Default for now
+        targetSkills: ['Adaptive Weakness Training'],
+        requiredCharacters: topWeaknesses,
+        lengthMin: length * 5, // Approx characters (5 chars per word)
+        lengthMax: length * 7,
+        vocabularyLevel: 'intermediate'
+      });
+      return aiPassage;
+    } catch (err) {
+      // 2. Fallback to dictionary stitching if API fails or rate limits
+      console.warn('Groq API generation failed, falling back to local dictionary:', err);
+      
+      const selectedWords: string[] = [];
 
-    // Prioritize words that contain the weak keys
-    const targetedWords = DICTIONARY.filter(word => {
-      const lowerWord = word.toLowerCase();
-      return topWeaknesses.some(char => lowerWord.includes(char));
-    });
+      // Prioritize words that contain the weak keys
+      const targetedWords = DICTIONARY.filter(word => {
+        const lowerWord = word.toLowerCase();
+        return topWeaknesses.some(char => lowerWord.includes(char));
+      });
 
-    // If we can't find enough targeted words, fallback to the full dictionary
-    const pool = targetedWords.length > 5 ? targetedWords : DICTIONARY;
+      // If we can't find enough targeted words, fallback to the full dictionary
+      const pool = targetedWords.length > 5 ? targetedWords : DICTIONARY;
 
-    for (let i = 0; i < length; i++) {
-      // Pick randomly from the pool, but favor targeted words heavily
-      const randomIndex = Math.floor(Math.random() * pool.length);
-      selectedWords.push(pool[randomIndex]);
+      for (let i = 0; i < length; i++) {
+        // Pick randomly from the pool, but favor targeted words heavily
+        const randomIndex = Math.floor(Math.random() * pool.length);
+        selectedWords.push(pool[randomIndex]);
+      }
+
+      return selectedWords.join(' ');
     }
-
-    return selectedWords.join(' ');
   }
 
   static generateRandomPassage(length: number = 20): string {
