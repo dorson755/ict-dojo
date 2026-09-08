@@ -7,6 +7,8 @@ import { cognitoClient, COGNITO_CLIENT_ID } from '@/lib/aws/cognito';
 import {
   InitiateAuthCommand,
   SignUpCommand,
+  ConfirmSignUpCommand,
+  ResendConfirmationCodeCommand,
   AuthFlowType,
 } from '@aws-sdk/client-cognito-identity-provider';
 
@@ -93,13 +95,45 @@ export async function signup(formData: FormData) {
     });
 
     await cognitoClient.send(command);
+
+    // Cognito requires email verification before login.
+    // Return a flag so the client can show the verification code input.
+    return { needsVerification: true, email };
   } catch (error: unknown) {
     console.error('Signup error:', error);
     return { error: error instanceof Error ? error.message : 'Failed to sign up' };
   }
+}
 
-  // Call login OUTSIDE the try/catch so redirect() works correctly
-  return await login(formData);
+export async function confirmSignUp(email: string, code: string) {
+  try {
+    const command = new ConfirmSignUpCommand({
+      ClientId: COGNITO_CLIENT_ID,
+      Username: email,
+      ConfirmationCode: code,
+    });
+
+    await cognitoClient.send(command);
+    return { success: true };
+  } catch (error: unknown) {
+    console.error('Confirm signup error:', error);
+    return { error: error instanceof Error ? error.message : 'Failed to confirm account' };
+  }
+}
+
+export async function resendConfirmationCode(email: string) {
+  try {
+    const command = new ResendConfirmationCodeCommand({
+      ClientId: COGNITO_CLIENT_ID,
+      Username: email,
+    });
+
+    await cognitoClient.send(command);
+    return { success: true };
+  } catch (error: unknown) {
+    console.error('Resend code error:', error);
+    return { error: error instanceof Error ? error.message : 'Failed to resend code' };
+  }
 }
 
 export async function loginWithGoogle() {

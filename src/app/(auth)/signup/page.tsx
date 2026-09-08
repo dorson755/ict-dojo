@@ -2,21 +2,64 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { signup, loginWithGoogle } from '../actions';
+import { signup, confirmSignUp, resendConfirmationCode, loginWithGoogle } from '../actions';
 import styles from '../auth.module.css';
 
 export default function SignupPage() {
+  const [step, setStep] = useState<'form' | 'verify' | 'done'>('form');
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [info, setInfo] = useState<string | null>(null);
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
     setError(null);
+    const emailValue = formData.get('email') as string;
+    setEmail(emailValue);
+
     const result = await signup(formData);
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
+    } else if (result?.needsVerification) {
+      setStep('verify');
+      setInfo(`We sent a verification code to ${emailValue}. Check your inbox and enter it below.`);
+      setIsLoading(false);
     }
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!code.trim()) {
+      setError('Please enter the verification code.');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    const result = await confirmSignUp(email, code.trim());
+    if (result?.error) {
+      setError(result.error);
+      setIsLoading(false);
+    } else if (result?.success) {
+      setStep('done');
+      setIsLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setIsLoading(true);
+    setError(null);
+    const result = await resendConfirmationCode(email);
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      setInfo('A new code has been sent to your email.');
+    }
+    setIsLoading(false);
   };
 
   const handleGoogleLogin = async () => {
@@ -29,6 +72,62 @@ export default function SignupPage() {
     }
   };
 
+  // ── Verification step ──
+  if (step === 'verify') {
+    return (
+      <>
+        <h2 className={styles.authFormTitle}>Verify your email</h2>
+
+        {info && <div className={styles.infoMessage}>{info}</div>}
+        {error && <div className={styles.errorMessage}>{error}</div>}
+
+        <form onSubmit={handleVerify}>
+          <div className="form-group">
+            <label htmlFor="code" className="label">Verification code</label>
+            <input
+              id="code"
+              type="text"
+              required
+              className="input"
+              placeholder="Enter the code from your email"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              autoComplete="one-time-code"
+            />
+          </div>
+
+          <button type="submit" className={styles.authButton} disabled={isLoading}>
+            {isLoading ? 'Verifying...' : 'Verify email'}
+          </button>
+        </form>
+
+        <button
+          onClick={handleResend}
+          className={styles.resendBtn}
+          disabled={isLoading}
+        >
+          Resend code
+        </button>
+      </>
+    );
+  }
+
+  // ── Done step ──
+  if (step === 'done') {
+    return (
+      <>
+        <h2 className={styles.authFormTitle}>Email confirmed</h2>
+        <p className={styles.authDesc}>
+          Your account is verified. You can now log in to your dojo.
+        </p>
+        <Link href="/login" className={styles.authButton} style={{ display: 'block', textAlign: 'center' }}>
+          Log in
+        </Link>
+      </>
+    );
+  }
+
+  // ── Signup form step ──
   return (
     <>
       <h2 className={styles.authFormTitle}>Create your account</h2>

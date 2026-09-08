@@ -3,7 +3,7 @@
 import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { login, loginWithGoogle } from '../actions';
+import { login, loginWithGoogle, confirmSignUp, resendConfirmationCode } from '../actions';
 import styles from '../auth.module.css';
 
 function LoginForm() {
@@ -12,15 +12,62 @@ function LoginForm() {
 
   const [error, setError] = useState<string | null>(errorParam);
   const [isLoading, setIsLoading] = useState(false);
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [info, setInfo] = useState<string | null>(null);
 
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
     setError(null);
+    const emailValue = formData.get('email') as string;
+    setEmail(emailValue);
+
     const result = await login(formData);
+    if (result?.error) {
+      // Detect "user not confirmed" and switch to verification mode
+      if (result.error.toLowerCase().includes('not confirmed')) {
+        setNeedsVerification(true);
+        setInfo(`Check your email for a verification code sent to ${emailValue}.`);
+      } else {
+        setError(result.error);
+      }
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!code.trim()) {
+      setError('Please enter the verification code.');
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    const result = await confirmSignUp(email, code.trim());
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
+    } else if (result?.success) {
+      setNeedsVerification(false);
+      setError(null);
+      setInfo('Email confirmed. Please log in with your password.');
+      setIsLoading(false);
     }
+  };
+
+  const handleResend = async () => {
+    setIsLoading(true);
+    setError(null);
+    const result = await resendConfirmationCode(email);
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      setInfo('A new code has been sent to your email.');
+    }
+    setIsLoading(false);
   };
 
   const handleGoogleLogin = async () => {
@@ -33,6 +80,95 @@ function LoginForm() {
     }
   };
 
+  // ── Verification step (triggered when login says "not confirmed") ──
+  if (needsVerification) {
+    return (
+      <>
+        <h2 className={styles.authFormTitle}>Verify your email</h2>
+
+        {info && <div className={styles.infoMessage}>{info}</div>}
+        {error && <div className={styles.errorMessage}>{error}</div>}
+
+        <form onSubmit={handleVerify}>
+          <div className="form-group">
+            <label htmlFor="code" className="label">Verification code</label>
+            <input
+              id="code"
+              type="text"
+              required
+              className="input"
+              placeholder="Enter the code from your email"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              autoComplete="one-time-code"
+            />
+          </div>
+
+          <button type="submit" className={styles.authButton} disabled={isLoading}>
+            {isLoading ? 'Verifying...' : 'Verify email'}
+          </button>
+        </form>
+
+        <button
+          onClick={handleResend}
+          className={styles.resendBtn}
+          disabled={isLoading}
+        >
+          Resend code
+        </button>
+
+        <div className={styles.footerText}>
+          <button
+            onClick={() => { setNeedsVerification(false); setInfo(null); setError(null); }}
+            className={styles.resendBtn}
+            style={{ marginTop: 'var(--space-2)' }}
+          >
+            Back to login
+          </button>
+        </div>
+      </>
+    );
+  }
+
+  // ── Confirmed, need to re-login ──
+  if (info && !needsVerification && info.includes('confirmed')) {
+    return (
+      <>
+        <h2 className={styles.authFormTitle}>Email confirmed</h2>
+        <p className={styles.authDesc}>{info}</p>
+        <form action={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email" className="label">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              className="input"
+              defaultValue={email}
+              placeholder="student@example.com"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password" className="label">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              className="input"
+              placeholder="••••••••"
+            />
+          </div>
+          <button type="submit" className={styles.authButton} disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Log in'}
+          </button>
+        </form>
+      </>
+    );
+  }
+
+  // ── Default login form ──
   return (
     <>
       <h2 className={styles.authFormTitle}>Log in to your dojo</h2>
