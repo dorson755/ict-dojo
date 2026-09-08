@@ -14,6 +14,8 @@ export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
+  let authResult: { AccessToken?: string; IdToken?: string; RefreshToken?: string } | null = null;
+
   try {
     const command = new InitiateAuthCommand({
       AuthFlow: AuthFlowType.USER_PASSWORD_AUTH,
@@ -27,44 +29,50 @@ export async function login(formData: FormData) {
     const response = await cognitoClient.send(command);
 
     if (response.AuthenticationResult) {
-      const { AccessToken, IdToken, RefreshToken } = response.AuthenticationResult;
-      
-      const cookieStore = await cookies();
-      
-      if (AccessToken) {
-        cookieStore.set('accessToken', AccessToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 3600, // 1 hour
-        });
-      }
-      
-      if (IdToken) {
-        cookieStore.set('idToken', IdToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 3600, // 1 hour
-        });
-      }
-      
-      if (RefreshToken) {
-        cookieStore.set('refreshToken', RefreshToken, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 30 * 24 * 3600, // 30 days
-        });
-      }
-
-      revalidatePath('/', 'layout');
-      redirect('/dashboard');
+      authResult = response.AuthenticationResult;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Login error:', error);
-    return { error: error.message || 'Failed to login' };
+    return { error: error instanceof Error ? error.message : 'Failed to login' };
   }
+
+  // redirect() must be called OUTSIDE the try/catch block
+  if (authResult) {
+    const { AccessToken, IdToken, RefreshToken } = authResult;
+    const cookieStore = await cookies();
+
+    if (AccessToken) {
+      cookieStore.set('accessToken', AccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 3600,
+      });
+    }
+
+    if (IdToken) {
+      cookieStore.set('idToken', IdToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 3600,
+      });
+    }
+
+    if (RefreshToken) {
+      cookieStore.set('refreshToken', RefreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 30 * 24 * 3600,
+      });
+    }
+
+    revalidatePath('/', 'layout');
+    redirect('/dashboard');
+  }
+
+  return { error: 'Authentication failed — no tokens returned' };
 }
 
 export async function signup(formData: FormData) {
@@ -80,22 +88,18 @@ export async function signup(formData: FormData) {
       UserAttributes: [
         { Name: 'email', Value: email },
         { Name: 'name', Value: displayName },
-        { Name: 'custom:role', Value: 'student' } // Assuming custom attribute 'custom:role'
+        { Name: 'custom:role', Value: 'student' },
       ],
     });
 
     await cognitoClient.send(command);
-
-    // Cognito usually requires email confirmation.
-    // For this prototype, we'll auto-confirm or assume they can log in immediately 
-    // if the User Pool is configured to not require confirmation.
-    // Let's attempt to log them in directly.
-    return await login(formData);
-    
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Signup error:', error);
-    return { error: error.message || 'Failed to sign up' };
+    return { error: error instanceof Error ? error.message : 'Failed to sign up' };
   }
+
+  // Call login OUTSIDE the try/catch so redirect() works correctly
+  return await login(formData);
 }
 
 export async function loginWithGoogle() {
