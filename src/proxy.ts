@@ -3,16 +3,16 @@ import type { NextRequest } from 'next/server';
 import { jwtVerify, createRemoteJWKSet } from 'jose';
 
 // Configuration for Cognito User Pool
-const COGNITO_REGION = process.env.AWS_REGION || 'us-east-1';
+const COGNITO_REGION = process.env.APP_REGION || process.env.AWS_REGION || 'us-east-2';
 const COGNITO_USER_POOL_ID = process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID;
 
 // Public paths that do not require authentication
-const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/'];
+const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/'];
 
 // Create JWKS store outside of middleware function so it's cached across requests
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip auth check for public paths and static files
