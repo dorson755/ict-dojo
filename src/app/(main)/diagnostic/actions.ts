@@ -1,8 +1,8 @@
 'use server';
 
-import { getUserSession } from '@/lib/aws/auth-utils';
-import { UserRepository } from '@/lib/aws/repositories/user.repository';
-import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
+import { getUserSession } from '@/lib/firebase/auth-utils';
+import { UserRepository } from '@/lib/firebase/repositories/user.repository';
+import { MasteryRepository } from '@/lib/firebase/repositories/mastery.repository';
 import { TypingSessionResult } from '@/domains/typing/types';
 import { GamificationService } from '@/domains/shared/gamification-service';
 

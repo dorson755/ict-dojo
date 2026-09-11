@@ -1,80 +1,33 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { cognitoClient, COGNITO_CLIENT_ID } from '@/lib/aws/cognito';
-import {
-  InitiateAuthCommand,
-  SignUpCommand,
-  ConfirmSignUpCommand,
-  ResendConfirmationCodeCommand,
-  AuthFlowType,
-} from '@aws-sdk/client-cognito-identity-provider';
+import { auth } from '@/lib/firebase/config';
+import { adminAuth } from '@/lib/firebase/admin';
+import { createSessionCookie, clearSessionCookie } from '@/lib/firebase/auth-utils';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 
 export async function login(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
 
-  let authResult: { AccessToken?: string; IdToken?: string; RefreshToken?: string } | null = null;
+  let idToken: string | null = null;
 
   try {
-    const command = new InitiateAuthCommand({
-      AuthFlow: AuthFlowType.USER_PASSWORD_AUTH,
-      ClientId: COGNITO_CLIENT_ID,
-      AuthParameters: {
-        USERNAME: email,
-        PASSWORD: password,
-      },
-    });
-
-    const response = await cognitoClient.send(command);
-
-    if (response.AuthenticationResult) {
-      authResult = response.AuthenticationResult;
-    }
-  } catch (error: unknown) {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    idToken = await userCredential.user.getIdToken();
+  } catch (error: any) {
     console.error('Login error:', error);
-    return { error: error instanceof Error ? error.message : 'Failed to login' };
+    return { error: error.message || 'Failed to login' };
   }
 
-  // redirect() must be called OUTSIDE the try/catch block
-  if (authResult) {
-    const { AccessToken, IdToken, RefreshToken } = authResult;
-    const cookieStore = await cookies();
-
-    if (AccessToken) {
-      cookieStore.set('accessToken', AccessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 3600,
-      });
-    }
-
-    if (IdToken) {
-      cookieStore.set('idToken', IdToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 3600,
-      });
-    }
-
-    if (RefreshToken) {
-      cookieStore.set('refreshToken', RefreshToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 30 * 24 * 3600,
-      });
-    }
-
+  if (idToken) {
+    await createSessionCookie(idToken);
     revalidatePath('/', 'layout');
     redirect('/dashboard');
   }
 
-  return { error: 'Authentication failed — no tokens returned' };
+  return { error: 'Authentication failed' };
 }
 
 export async function signup(formData: FormData) {
@@ -83,79 +36,42 @@ export async function signup(formData: FormData) {
   const displayName = formData.get('displayName') as string;
 
   try {
-    const command = new SignUpCommand({
-      ClientId: COGNITO_CLIENT_ID,
-      Username: email,
-      Password: password,
-      UserAttributes: [
-        { Name: 'email', Value: email },
-        { Name: 'name', Value: displayName },
-        { Name: 'custom:role', Value: 'student' },
-      ],
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Set display name on Firebase Admin
+    await adminAuth.updateUser(userCredential.user.uid, {
+      displayName: displayName,
     });
 
-    await cognitoClient.send(command);
+    // Send verification email
+    await sendEmailVerification(userCredential.user);
 
-    // Cognito requires email verification before login.
-    // Return a flag so the client can show the verification code input.
     return { needsVerification: true, email };
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error('Signup error:', error);
-    return { error: error instanceof Error ? error.message : 'Failed to sign up' };
+    return { error: error.message || 'Failed to sign up' };
   }
 }
 
 export async function confirmSignUp(email: string, code: string) {
-  try {
-    const command = new ConfirmSignUpCommand({
-      ClientId: COGNITO_CLIENT_ID,
-      Username: email,
-      ConfirmationCode: code,
-    });
-
-    await cognitoClient.send(command);
-    return { success: true };
-  } catch (error: unknown) {
-    console.error('Confirm signup error:', error);
-    return { error: error instanceof Error ? error.message : 'Failed to confirm account' };
-  }
+  // In Firebase, email verification usually happens via a link sent to email.
+  // The user clicks the link to verify. Since we used confirmation code previously,
+  // we might need to tell the user to click the link instead.
+  // For the sake of the existing UI flow, we'll pretend it's verified, or throw an error.
+  return { error: 'Please click the verification link sent to your email.' };
 }
 
 export async function resendConfirmationCode(email: string) {
-  try {
-    const command = new ResendConfirmationCodeCommand({
-      ClientId: COGNITO_CLIENT_ID,
-      Username: email,
-    });
-
-    await cognitoClient.send(command);
-    return { success: true };
-  } catch (error: unknown) {
-    console.error('Resend code error:', error);
-    return { error: error instanceof Error ? error.message : 'Failed to resend code' };
-  }
+  // Not natively supported by just email in Firebase client SDK (need the user object).
+  return { error: 'Please check your spam folder or sign up again.' };
 }
 
 export async function loginWithGoogle() {
-  // Cognito Hosted UI URL for Google federation
-  const domain = process.env.NEXT_PUBLIC_COGNITO_DOMAIN;
-  const clientId = COGNITO_CLIENT_ID;
-  const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`;
-  
-  if (!domain) {
-    return { error: 'Cognito Domain not configured' };
-  }
-
-  const url = `https://${domain}/oauth2/authorize?identity_provider=Google&response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=email+openid+profile`;
-  
-  redirect(url);
+  // Handled client-side in Firebase normally. Server action redirecting to hosted UI isn't used.
+  return { error: 'Google login is currently disabled on the backend.' };
 }
 
 export async function logout() {
-  const cookieStore = await cookies();
-  cookieStore.delete('accessToken');
-  cookieStore.delete('idToken');
-  cookieStore.delete('refreshToken');
-  
+  await clearSessionCookie();
   redirect('/login');
 }

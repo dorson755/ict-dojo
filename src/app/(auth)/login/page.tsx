@@ -50,11 +50,6 @@ function LoginForm() {
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
-    } else if (result?.success) {
-      setNeedsVerification(false);
-      setError(null);
-      setInfo('Email confirmed. Please log in with your password.');
-      setIsLoading(false);
     }
   };
 

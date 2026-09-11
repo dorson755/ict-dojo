@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { getUserSession } from '@/lib/aws/auth-utils';
-import { UserRepository } from '@/lib/aws/repositories/user.repository';
+import { getUserSession } from '@/lib/firebase/auth-utils';
+import { UserRepository } from '@/lib/firebase/repositories/user.repository';
 import { logout } from '@/app/(auth)/actions';
 import styles from './Header.module.css';
 

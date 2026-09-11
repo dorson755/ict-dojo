@@ -1,10 +1,10 @@
 'use server';
 
-import { getUserSession } from '@/lib/aws/auth-utils';
-import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
-import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
-import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
-import { UserRepository } from '@/lib/aws/repositories/user.repository';
+import { getUserSession } from '@/lib/firebase/auth-utils';
+import { MasteryRepository } from '@/lib/firebase/repositories/mastery.repository';
+import { RecommendationRepository } from '@/lib/firebase/repositories/recommendation.repository';
+import { ExerciseRepository } from '@/lib/firebase/repositories/exercise.repository';
+import { UserRepository } from '@/lib/firebase/repositories/user.repository';
 import { TypingSessionResult } from '@/domains/typing/types';
 import { MasteryService } from '@/domains/shared/mastery-service';
 import { AdaptiveEngine } from '@/domains/shared/adaptive-engine';
@@ -145,12 +145,13 @@ export async function submitPracticeSession(
   });
 
   if (nextTarget) {
-    await RecommendationRepository.createRecommendation(user.id, {
-      domain_id: '1',
-      recommended_skill_id: nextTarget.recommended_skill_id,
-      reason: nextTarget.reason,
-      priority: nextTarget.priority
-    });
+    await RecommendationRepository.addRecommendations(user.id, [{
+      student_id: user.id,
+      skill_id: nextTarget.recommended_skill_id || '',
+      reason: nextTarget.reason || '',
+      priority: nextTarget.priority || 0,
+      status: 'ACTIVE',
+    }]);
   }
 
   // ── Gamification: award XP, update level, update streak ──

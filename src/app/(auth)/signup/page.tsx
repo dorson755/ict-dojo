@@ -44,9 +44,6 @@ export default function SignupPage() {
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
-    } else if (result?.success) {
-      setStep('done');
-      setIsLoading(false);
     }
   };
 

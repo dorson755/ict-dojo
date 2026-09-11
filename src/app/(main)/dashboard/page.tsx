@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { getUserSession } from '@/lib/aws/auth-utils';
-import { UserRepository } from '@/lib/aws/repositories/user.repository';
-import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
-import { MasteryRepository, type SkillMastery } from '@/lib/aws/repositories/mastery.repository';
-import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
+import { getUserSession } from '@/lib/firebase/auth-utils';
+import { UserRepository } from '@/lib/firebase/repositories/user.repository';
+import { RecommendationRepository } from '@/lib/firebase/repositories/recommendation.repository';
+import { MasteryRepository, type SkillMastery } from '@/lib/firebase/repositories/mastery.repository';
+import { ExerciseRepository } from '@/lib/firebase/repositories/exercise.repository';
 import BeltBadge, { getBeltFromLevel } from '@/components/ui/BeltBadge';
 import SkillBar from '@/components/ui/SkillBar';
 import styles from './dashboard.module.css';
