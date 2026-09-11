@@ -10,7 +10,7 @@ export async function proxy(request: NextRequest) {
   // Skip auth check for public paths, API routes, and static files
   if (
     PUBLIC_PATHS.includes(pathname) ||
-    pathname.startsWith('/api/') ||
+    pathname.startsWith('/api/auth/') ||
     pathname.startsWith('/_next') ||
     pathname.includes('.')
   ) {
