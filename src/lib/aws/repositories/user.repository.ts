@@ -46,16 +46,24 @@ export class UserRepository {
   }
 
   static async updateProfile(userId: string, gradeLevel: number): Promise<void> {
-    const command = new UpdateCommand({
+    // Fetch existing item first so we don't overwrite XP, level, streak, etc.
+    const existing = await dynamoClient.send(
+      new GetCommand({ TableName: TABLE_NAME, Key: { PK: `USER#${userId}`, SK: 'PROFILE' } })
+    );
+    const prev = existing.Item || {};
+
+    const command = new PutCommand({
       TableName: TABLE_NAME,
-      Key: {
+      Item: {
+        ...prev,
         PK: `USER#${userId}`,
         SK: 'PROFILE',
-      },
-      UpdateExpression: 'SET grade_level = :g, updated_at = :u',
-      ExpressionAttributeValues: {
-        ':g': gradeLevel,
-        ':u': new Date().toISOString(),
+        grade_level: gradeLevel,
+        xp_total: prev.xp_total ?? 0,
+        platform_level: prev.platform_level ?? 1,
+        streak_count: prev.streak_count ?? 0,
+        updated_at: new Date().toISOString(),
+        created_at: prev.created_at ?? new Date().toISOString(),
       },
     });
 
