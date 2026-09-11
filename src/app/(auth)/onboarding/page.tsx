@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { submitOnboarding } from './actions';
 import styles from '../auth.module.css';
 
 export default function OnboardingPage() {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
@@ -23,6 +25,8 @@ export default function OnboardingPage() {
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
+    } else {
+      router.push('/dashboard');
     }
   };
 
