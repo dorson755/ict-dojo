@@ -28,10 +28,12 @@ export default async function DashboardPage() {
     redirect('/onboarding');
   }
 
-  const dna = await UserRepository.getTypingDNA(user.id);
-  const activeRec = await RecommendationRepository.getActiveRecommendation(user.id);
-  const masteredSkills = await MasteryRepository.getTopMasteredSkills(user.id, 5);
-  const recentSessions = await ExerciseRepository.getRecentSessions(user.id, 5);
+  const [dna, activeRec, masteredSkills, recentSessions] = await Promise.all([
+    UserRepository.getTypingDNA(user.id).catch(() => null),
+    RecommendationRepository.getActiveRecommendation(user.id).catch(() => null),
+    MasteryRepository.getTopMasteredSkills(user.id, 5).catch(() => []),
+    ExerciseRepository.getRecentSessions(user.id, 5).catch(() => []),
+  ]);
 
   const level = profile.platform_level || 1;
   const xp = profile.xp_total || 0;
