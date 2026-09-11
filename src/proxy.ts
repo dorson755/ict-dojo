@@ -7,9 +7,10 @@ const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/']
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip auth check for public paths and static files
+  // Skip auth check for public paths, API routes, and static files
   if (
     PUBLIC_PATHS.includes(pathname) ||
+    pathname.startsWith('/api/') ||
     pathname.startsWith('/_next') ||
     pathname.includes('.')
   ) {
