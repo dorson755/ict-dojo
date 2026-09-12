@@ -6,6 +6,7 @@ frontend:
         - npm ci --cache .npm --prefer-offline
     build:
       commands:
+        - env | grep -E "RUNTIME_AWS|NEXT_PUBLIC|APP_REGION|GROQ" >> .env.production
         - npm run type-check
         - npm run build
   artifacts:
