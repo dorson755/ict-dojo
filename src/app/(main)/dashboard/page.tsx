@@ -73,7 +73,7 @@ export default async function DashboardPage() {
           <Suspense fallback={<div className={styles.aiGreeting}><p className={styles.greetingText}>Loading Sensei's greeting...</p></div>}>
             <AIGreeting 
               name={profile.display_name || 'Student'} 
-              weakKeys={dna?.weak_keys ? Object.keys(dna.weak_keys).sort((a,b) => dna.weak_keys[b] - dna.weak_keys[a]).slice(0, 3) : []}
+              weakKeys={dna?.weak_keys ? Object.keys(dna.weak_keys).sort((a,b) => (dna.weak_keys as Record<string, number>)[b] - (dna.weak_keys as Record<string, number>)[a]).slice(0, 3) : []}
               streak={profile.streak_count || 0}
             />
           </Suspense>
