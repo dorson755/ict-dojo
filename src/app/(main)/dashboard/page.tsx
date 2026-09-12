@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getUserSession } from '@/lib/aws/auth-utils';
@@ -7,6 +8,7 @@ import { MasteryRepository, type SkillMastery } from '@/lib/aws/repositories/mas
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import BeltBadge, { getBeltFromLevel } from '@/components/ui/BeltBadge';
 import SkillBar from '@/components/ui/SkillBar';
+import AIGreeting from './AIGreeting';
 import styles from './dashboard.module.css';
 
 interface SessionRecord {
@@ -68,6 +70,13 @@ export default async function DashboardPage() {
         <hr className={styles.heroDivider} />
 
         <div className={styles.heroSection}>
+          <Suspense fallback={<div className={styles.aiGreeting}><p className={styles.greetingText}>Loading Sensei's greeting...</p></div>}>
+            <AIGreeting 
+              name={profile.display_name || 'Student'} 
+              weakKeys={dna?.weak_keys ? Object.keys(dna.weak_keys).sort((a,b) => dna.weak_keys[b] - dna.weak_keys[a]).slice(0, 3) : []}
+              streak={profile.streak_count || 0}
+            />
+          </Suspense>
           <p className={styles.heroSectionLabel}>Next challenge</p>
           {activeRec ? (
             <div className={styles.nextChallenge}>

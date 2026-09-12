@@ -142,6 +142,20 @@
   margin-bottom: var(--space-4);
 }
 
+.aiGreeting {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--surface-2);
+  border-left: 4px solid var(--gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.greetingText {
+  font-size: var(--text-base);
+  color: var(--ink-2);
+  font-style: italic;
+}
+
 /* Skill Mastery */
 .section {
   margin-top: var(--space-8);
