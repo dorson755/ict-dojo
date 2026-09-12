@@ -1,13 +1,24 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 
-// Amplify blocks env vars prefixed with AWS_, so we use APP_REGION there.
-// For local dev, AWS_REGION (set by the SDK automatically) is the fallback.
+// Amplify blocks env vars prefixed with AWS_, so we use APP_REGION / RUNTIME_AWS_* there.
+// For local dev, the default credential chain (shared credentials file) is the fallback.
 const region = process.env.APP_REGION || process.env.AWS_REGION || 'us-east-2';
+
+// If explicit runtime credentials are injected (Amplify hosting), use them.
+// Otherwise fall back to the default SDK credential chain (local dev / EC2 / Lambda roles).
+const credentials =
+  process.env.RUNTIME_AWS_ACCESS_KEY_ID && process.env.RUNTIME_AWS_SECRET_ACCESS_KEY
+    ? {
+        accessKeyId: process.env.RUNTIME_AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.RUNTIME_AWS_SECRET_ACCESS_KEY,
+      }
+    : undefined;
 
 // Create a raw DynamoDB client
 const client = new DynamoDBClient({
   region,
+  ...(credentials ? { credentials } : {}),
 });
 
 const marshallOptions = {
