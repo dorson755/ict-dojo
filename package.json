@@ -11,7 +11,7 @@
     "format": "prettier --write src/",
     "type-check": "tsc --noEmit",
     "test": "jest",
-    "seed": "ts-node scripts/seed-firestore.ts",
+    "seed": "ts-node scripts/seed-dynamo.ts",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -21,10 +21,11 @@
     ]
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
-    "firebase": "^12.19.0",
-    "firebase-admin": "^14.4.0",
+    "@aws-sdk/client-cognito-identity-provider": "^3.1127.0",
+    "@aws-sdk/client-dynamodb": "^3.1127.0",
+    "@aws-sdk/lib-dynamodb": "^3.1127.0",
     "groq-sdk": "^1.6.0",
+    "jose": "^6.2.12",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8"

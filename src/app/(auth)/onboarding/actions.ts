@@ -1,7 +1,7 @@
 'use server';
 
-import { getUserSession } from '@/lib/firebase/auth-utils';
-import { UserRepository } from '@/lib/firebase/repositories/user.repository';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 
 export async function submitOnboarding(formData: FormData) {
   const user = await getUserSession();

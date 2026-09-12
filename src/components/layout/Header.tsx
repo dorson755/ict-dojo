@@ -1,7 +1,7 @@
 import Link from 'next/link';
-import { getUserSession } from '@/lib/firebase/auth-utils';
-import { UserRepository } from '@/lib/firebase/repositories/user.repository';
-import LogoutButton from './LogoutButton';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
+import { logout } from '@/app/(auth)/actions';
 import styles from './Header.module.css';
 
 export default async function Header() {
@@ -22,10 +22,16 @@ export default async function Header() {
       </Link>
 
       <nav className={styles.nav}>
-        <Link href="/dashboard" className={styles.navLink}>
+        <Link
+          href="/dashboard"
+          className={styles.navLink}
+        >
           Dashboard
         </Link>
-        <Link href="/practice" className={styles.navLink}>
+        <Link
+          href="/practice"
+          className={styles.navLink}
+        >
           Practice
         </Link>
       </nav>
@@ -34,7 +40,11 @@ export default async function Header() {
         {gradeLevel && (
           <span className={styles.gradeTag}>Grade {gradeLevel}</span>
         )}
-        <LogoutButton />
+        <form action={logout}>
+          <button type="submit" className={styles.logoutBtn}>
+            Log out
+          </button>
+        </form>
       </div>
     </header>
   );

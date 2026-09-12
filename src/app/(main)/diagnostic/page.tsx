@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import DiagnosticClient from './DiagnosticClient';
-import { getUserSession } from '@/lib/firebase/auth-utils';
-import { UserRepository } from '@/lib/firebase/repositories/user.repository';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import styles from '../practice/practice.module.css';
 
 export default async function DiagnosticPage() {

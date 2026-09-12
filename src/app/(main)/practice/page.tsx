@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 import PracticeClient, { type PracticeExercise } from './PracticeClient';
-import { getUserSession } from '@/lib/firebase/auth-utils';
-import { RecommendationRepository } from '@/lib/firebase/repositories/recommendation.repository';
-import { ExerciseRepository } from '@/lib/firebase/repositories/exercise.repository';
-import { UserRepository } from '@/lib/firebase/repositories/user.repository';
+import { getUserSession } from '@/lib/aws/auth-utils';
+import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
+import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { AdaptiveGenerator } from '@/domains/typing/generators/AdaptiveGenerator';
 import styles from './practice.module.css';
 
@@ -18,12 +18,12 @@ export default async function PracticePage() {
   const activeRec = await RecommendationRepository.getActiveRecommendation(user.id);
 
   if (activeRec) {
-    targetSkillId = activeRec.skill_id;
+    targetSkillId = activeRec.recommended_skill_id;
   }
 
   let exercise: PracticeExercise | null = null;
 
-  if ((activeRec as any)?.recommended_exercise_id === 'ADAPTIVE_WEAKNESS_DRILL') {
+  if (activeRec?.recommended_exercise_id === 'ADAPTIVE_WEAKNESS_DRILL') {
     const dna = await UserRepository.getTypingDNA(user.id);
     const weakKeys = dna?.weak_keys || {};
     const passage = await AdaptiveGenerator.generatePassage(weakKeys, 20);
