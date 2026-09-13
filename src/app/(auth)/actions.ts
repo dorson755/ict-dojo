@@ -9,6 +9,7 @@ import {
   SignUpCommand,
   ConfirmSignUpCommand,
   ConfirmForgotPasswordCommand,
+  ForgotPasswordCommand,
   ResendConfirmationCodeCommand,
   AuthFlowType,
 } from '@aws-sdk/client-cognito-identity-provider';
@@ -149,6 +150,19 @@ export async function confirmPasswordReset(email: string, code: string, password
   } catch (error: unknown) {
     console.error('Password reset confirmation error:', error);
     return { error: error instanceof Error ? error.message : 'Failed to reset password' };
+  }
+}
+
+export async function requestPasswordReset(email: string) {
+  try {
+    await cognitoClient.send(new ForgotPasswordCommand({
+      ClientId: COGNITO_CLIENT_ID,
+      Username: email,
+    }));
+    return { success: true };
+  } catch (error: unknown) {
+    console.error('Password reset request error:', error);
+    return { error: error instanceof Error ? error.message : 'Failed to send reset code' };
   }
 }
 
