@@ -1,5 +1,5 @@
 import { dynamoClient, TABLE_NAME } from '../dynamodb';
-import { GetCommand, UpdateCommand, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, QueryCommand } from '@aws-sdk/lib-dynamodb';
 
 export interface SkillMastery {
   student_id: string;
@@ -48,6 +48,20 @@ export class MasteryRepository {
     return items.sort((a, b) => b.mastery_score - a.mastery_score).slice(0, limit);
   }
 
+  static async getAllMastery(userId: string): Promise<SkillMastery[]> {
+    const command = new QueryCommand({
+      TableName: TABLE_NAME,
+      KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
+      ExpressionAttributeValues: {
+        ':pk': `USER#${userId}`,
+        ':sk': 'MASTERY#',
+      },
+    });
+
+    const response = await dynamoClient.send(command);
+    return (response.Items || []) as SkillMastery[];
+  }
+
   static async upsertMastery(userId: string, mastery: SkillMastery): Promise<void> {
     const command = new PutCommand({
       TableName: TABLE_NAME,
@@ -62,7 +76,7 @@ export class MasteryRepository {
     await dynamoClient.send(command);
   }
 
-  static async logMasteryHistory(userId: string, history: any): Promise<void> {
+  static async logMasteryHistory(userId: string, history: Record<string, unknown>): Promise<void> {
     const timestamp = new Date().toISOString();
     const command = new PutCommand({
       TableName: TABLE_NAME,

@@ -185,6 +185,106 @@
   gap: var(--space-4);
 }
 
+.pathHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.pathSubtitle {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.pathLegend {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.pathMap {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: var(--space-3);
+}
+
+.pathNode {
+  position: relative;
+  min-height: 132px;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.pathNodeTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.pathIndex,
+.pathStatus {
+  color: var(--ink-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.pathIcon {
+  color: var(--accent);
+  font-size: var(--text-lg);
+}
+
+.pathName {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  line-height: 1.2;
+}
+
+.pathStatus {
+  margin-top: var(--space-2);
+}
+
+.pathNodeMastered {
+  border-color: var(--success);
+  background: var(--success-light);
+}
+
+.pathNodeMastered .pathIcon,
+.pathNodeTraining .pathIcon {
+  color: var(--success);
+}
+
+.pathNodeTraining {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-tint);
+}
+
+.pathNodeReady {
+  border-color: var(--gold);
+}
+
+.pathNodeLocked {
+  opacity: 0.58;
+  background: var(--surface-2);
+}
+
+.pathNodeLocked .pathIcon {
+  color: var(--ink-3);
+}
+
+.pathConnector {
+  position: absolute;
+  top: 50%;
+  right: calc(var(--space-3) * -1);
+  width: var(--space-3);
+  border-top: 1px dashed var(--border-strong);
+}
+
 .emptyState {
   font-size: var(--text-sm);
   color: var(--ink-3);
@@ -320,6 +420,14 @@
   .grid {
     grid-template-columns: 1fr;
   }
+
+  .pathMap {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+
+  .pathConnector {
+    display: none;
+  }
 }
 
 @media (max-width: 500px) {
@@ -335,5 +443,14 @@
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-4);
+  }
+
+  .pathHeading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pathMap {
+    grid-template-columns: 1fr;
   }
 }

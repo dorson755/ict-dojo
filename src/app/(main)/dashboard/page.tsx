@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getUserSession } from '@/lib/aws/auth-utils';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.repository';
-import { MasteryRepository, type SkillMastery } from '@/lib/aws/repositories/mastery.repository';
+import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { ProgressRepository } from '@/lib/aws/repositories/progress.repository';
 import BeltBadge, { getBeltFromLevel } from '@/components/ui/BeltBadge';
@@ -12,6 +12,9 @@ import SkillTrackCard from '@/components/ui/SkillTrackCard';
 import AIGreeting from './AIGreeting';
 import styles from './dashboard.module.css';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
+import { TYPING_DEPENDENCIES } from '@/domains/typing/catalog';
+import { SkillGraph } from '@/domains/shared/skill-graph';
+import type { MasteryLevel, SkillMastery as PlatformSkillMastery } from '@/types/platform';
 
 interface SessionRecord {
   created_at?: string;
@@ -32,10 +35,10 @@ export default async function DashboardPage() {
     redirect('/onboarding');
   }
 
-  const [dna, activeRec, masteredSkills, recentSessions, dailyQuest, records] = await Promise.all([
+  const [dna, activeRec, allMasteries, recentSessions, dailyQuest, records] = await Promise.all([
     UserRepository.getTypingDNA(user.id).catch(() => null),
     RecommendationRepository.getActiveRecommendation(user.id).catch(() => null),
-    MasteryRepository.getTopMasteredSkills(user.id, 5).catch(() => []),
+    MasteryRepository.getAllMastery(user.id).catch(() => []),
     ExerciseRepository.getRecentSessions(user.id, 5).catch(() => []),
     ProgressRepository.getTodaysQuest(user.id).catch(() => null),
     ProgressRepository.getPersonalRecords(user.id).catch(() => []),
@@ -47,6 +50,20 @@ export default async function DashboardPage() {
   const streak = profile.streak_count || 0;
   const xpInLevel = xp % 1000;
   const xpPercent = Math.round((xpInLevel / 1000) * 100);
+  const masteryMap = new Map<string, PlatformSkillMastery>(allMasteries.map((mastery) => [
+    mastery.skill_id,
+    {
+      id: mastery.skill_id,
+      student_id: mastery.student_id,
+      skill_id: mastery.skill_id,
+      mastery_score: mastery.mastery_score,
+      mastery_level: mastery.mastery_level as MasteryLevel,
+      practice_count: mastery.practice_count,
+      last_practiced_at: mastery.last_practiced_at ?? null,
+      updated_at: '',
+    },
+  ]));
+  const skillGraph = new SkillGraph(TYPING_SKILLS, TYPING_DEPENDENCIES);
 
   return (
     <div className={styles.page}>
@@ -111,7 +128,7 @@ export default async function DashboardPage() {
             <h2 className={styles.sectionTitle}>Skill tracks</h2>
             <div className={styles.skillGrid}>
               {TYPING_SKILLS.map((skill) => {
-                const mastery = masteredSkills.find((m: SkillMastery) => m.skill_id === skill.id);
+                const mastery = masteryMap.get(skill.id);
                 const metadata = skill.metadata as { icon?: string };
                 return (
                   <SkillTrackCard
@@ -124,6 +141,38 @@ export default async function DashboardPage() {
                     level={mastery?.mastery_level ?? 'not_started'}
                     practiceCount={mastery?.practice_count ?? 0}
                   />
+                );
+              })}
+            </div>
+          </div>
+
+          <div className={styles.section}>
+            <div className={styles.pathHeading}>
+              <div>
+                <h2 className={styles.sectionTitle}>Your skill path</h2>
+                <p className={styles.pathSubtitle}>Master each gate to unlock the next challenge.</p>
+              </div>
+              <span className={styles.pathLegend}>10 skills · Typing</span>
+            </div>
+            <div className={styles.pathMap}>
+              {TYPING_SKILLS.map((skill, index) => {
+                const mastery = masteryMap.get(skill.id);
+                const isMastered = mastery?.mastery_level === 'mastered';
+                const isUnlocked = skillGraph.arePrerequisitesMet(skill.id, masteryMap);
+                const status = isMastered ? 'mastered' : !isUnlocked ? 'locked' : mastery?.practice_count ? 'training' : 'ready';
+                const metadata = skill.metadata as { icon?: string };
+                return (
+                  <div key={skill.id} className={`${styles.pathNode} ${styles[`pathNode${status[0].toUpperCase()}${status.slice(1)}`]}`}>
+                    <div className={styles.pathNodeTop}>
+                      <span className={styles.pathIndex}>{String(index + 1).padStart(2, '0')}</span>
+                      <span className={styles.pathIcon}>{status === 'locked' ? '·' : metadata.icon ?? '⌨'}</span>
+                    </div>
+                    <h3 className={styles.pathName}>{skill.name}</h3>
+                    <p className={styles.pathStatus}>
+                      {status === 'mastered' ? 'Mastered' : status === 'training' ? `${mastery?.mastery_score ?? 0}% mastery` : status === 'ready' ? 'Ready to train' : 'Locked'}
+                    </p>
+                    {index < TYPING_SKILLS.length - 1 && <span className={styles.pathConnector} />}
+                  </div>
                 );
               })}
             </div>
