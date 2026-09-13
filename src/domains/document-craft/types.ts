@@ -1,5 +1,6 @@
 export type DocumentMark = 'bold' | 'italic' | 'underline' | 'subscript' | 'superscript';
 export type DocumentAlignment = 'left' | 'center' | 'right' | 'justify';
+export type DocumentList = 'ordered' | 'unordered';
 
 export interface DocumentTask {
   id: string;
@@ -8,6 +9,8 @@ export interface DocumentTask {
   targetText: string;
   requiredMarks?: DocumentMark[];
   requiredAlignment?: DocumentAlignment;
+  requiredBlock?: 'h1' | 'h2' | 'p';
+  requiredList?: DocumentList;
 }
 
 export interface DocumentEvaluation {

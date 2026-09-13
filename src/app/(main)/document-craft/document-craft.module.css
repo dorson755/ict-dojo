@@ -20,6 +20,7 @@
 .toolbar { align-items: center; border-bottom: 1px solid var(--border); display: flex; gap: var(--space-1); padding: var(--space-3); }
 .toolButton { background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm); color: var(--ink-2); min-height: 32px; min-width: 32px; }
 .toolButton:hover, .toolButton:focus-visible { background: var(--accent-tint); border-color: var(--accent-light); color: var(--accent); }
+.formatSelect { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--ink-2); font-size: var(--text-xs); min-height: 32px; padding: 0 var(--space-2); }
 .bold { font-weight: 800; }
 .divider { background: var(--border); height: 24px; margin: 0 var(--space-2); width: 1px; }
 .paper { font-family: Georgia, 'Times New Roman', serif; font-size: 1.1rem; line-height: 1.8; min-height: 520px; outline: 0; padding: var(--space-12) clamp(var(--space-6), 8vw, var(--space-16)); }

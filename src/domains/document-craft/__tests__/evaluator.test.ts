@@ -2,26 +2,27 @@ import { evaluateDocument } from '../evaluator';
 import type { DocumentTask } from '../types';
 
 const task: DocumentTask = {
-  id: 'bold-underline',
+  id: 'structured-outline',
   title: 'Emphasize',
   instructions: 'Format the target.',
-  targetText: 'ICT Dojo',
-  requiredMarks: ['bold', 'underline'],
+  targetText: 'My ICT Study Plan',
+  requiredBlock: 'h1',
+  requiredList: 'unordered',
 };
 
 describe('Document Craft evaluator', () => {
   it('passes when required marks wrap the target text', () => {
-    const result = evaluateDocument('<p><strong><u>ICT Dojo</u></strong> builds skills.</p>', task);
+    const result = evaluateDocument('<h1>My ICT Study Plan</h1><ul><li>Keyboard</li></ul>', task);
     expect(result.passed).toBe(true);
     expect(result.missingChecks).toHaveLength(0);
   });
 
   it('reports each missing formatting requirement', () => {
-    const result = evaluateDocument('<p>ICT Dojo builds skills.</p>', task);
+    const result = evaluateDocument('<p>My ICT Study Plan</p><p>Keyboard</p>', task);
     expect(result.passed).toBe(false);
     expect(result.missingChecks).toEqual([
-      'Apply bold to “ICT Dojo”.',
-      'Apply underline to “ICT Dojo”.',
+      'Format “My ICT Study Plan” as H1.',
+      'Create a unordered list.',
     ]);
   });
 });

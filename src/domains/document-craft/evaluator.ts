@@ -29,5 +29,17 @@ export function evaluateDocument(html: string, task: DocumentTask): DocumentEval
     else missingChecks.push(`Set the target paragraph to ${task.requiredAlignment} alignment.`);
   }
 
+  if (task.requiredBlock) {
+    const blockFound = new RegExp(`<${task.requiredBlock}[^>]*>[\\s\\S]*?${task.targetText}[\\s\\S]*?</${task.requiredBlock}>`, 'i').test(normalized);
+    if (blockFound) completedChecks.push(`${task.requiredBlock} style applied`);
+    else missingChecks.push(`Format “${task.targetText}” as ${task.requiredBlock.toUpperCase()}.`);
+  }
+
+  if (task.requiredList) {
+    const tag = task.requiredList === 'ordered' ? 'ol' : 'ul';
+    if (new RegExp(`<${tag}[^>]*>[\\s\\S]*?</${tag}>`, 'i').test(normalized)) completedChecks.push(`${task.requiredList} list created`);
+    else missingChecks.push(`Create a ${task.requiredList} list.`);
+  }
+
   return { passed: missingChecks.length === 0, completedChecks, missingChecks };
 }
