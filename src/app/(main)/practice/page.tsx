@@ -21,7 +21,7 @@ export default async function PracticePage() {
   const dna = await UserRepository.getTypingDNA(user.id);
   
   const grade = profile?.grade_level || 6;
-  const name = profile?.display_name || 'Student';
+  const name = profile?.display_name || user.name || 'Learner';
   const xp = profile?.xp_total || 0;
   const weakKeys = dna?.weak_keys || {};
   const hasWeakKeys = Object.keys(weakKeys).length > 0;
