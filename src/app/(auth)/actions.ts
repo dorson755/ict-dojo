@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { decodeJwt } from 'jose';
 import { cognitoClient, COGNITO_CLIENT_ID } from '@/lib/aws/cognito';
 import {
   InitiateAuthCommand,
@@ -73,7 +74,9 @@ export async function login(formData: FormData) {
     }
 
     revalidatePath('/', 'layout');
-    redirect('/dashboard');
+    const claims = IdToken ? decodeJwt(IdToken) : {};
+    const role = typeof claims['custom:role'] === 'string' ? claims['custom:role'] : 'student';
+    redirect(role === 'teacher' ? '/teacher' : role === 'parent' ? '/parent' : '/dashboard');
   }
 
   return { error: 'Authentication failed — no tokens returned' };

@@ -15,7 +15,7 @@ export default async function PracticePage() {
     redirect('/login');
   }
 
-  let targetSkillId = null;
+  let targetSkillId: string | null = null;
   const activeRec = await RecommendationRepository.getActiveRecommendation(user.id);
   const profile = await UserRepository.getProfile(user.id);
   const dna = await UserRepository.getTypingDNA(user.id);
@@ -27,7 +27,9 @@ export default async function PracticePage() {
   const hasWeakKeys = Object.keys(weakKeys).length > 0;
 
   if (activeRec) {
-    targetSkillId = activeRec.recommended_skill_id;
+    targetSkillId = typeof activeRec.recommended_skill_id === 'string'
+      ? activeRec.recommended_skill_id
+      : null;
   }
 
   let exercise: PracticeExercise | null = null;

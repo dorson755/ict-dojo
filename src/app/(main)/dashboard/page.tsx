@@ -65,6 +65,10 @@ export default async function DashboardPage() {
     },
   ]));
   const skillGraph = new SkillGraph(TYPING_SKILLS, TYPING_DEPENDENCIES);
+  const activeSkillName = activeRec?.skills && typeof activeRec.skills === 'object' && 'name' in activeRec.skills
+    ? String(activeRec.skills.name)
+    : 'Targeted practice';
+  const activeReason = activeRec?.reason ? String(activeRec.reason) : 'Your next recommended challenge.';
   const focusKeys = Object.entries(dna?.weak_keys ?? {})
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
@@ -109,9 +113,9 @@ export default async function DashboardPage() {
           {activeRec ? (
             <div className={styles.nextChallenge}>
               <h3 className={styles.nextChallengeTitle}>
-                {activeRec.skills?.name || 'Targeted practice'}
+                {activeSkillName}
               </h3>
-              <p className={styles.nextChallengeReason}>{activeRec.reason}</p>
+              <p className={styles.nextChallengeReason}>{activeReason}</p>
               <Link href="/practice" className="btn btn-primary btn-lg">
                 Start practice
               </Link>

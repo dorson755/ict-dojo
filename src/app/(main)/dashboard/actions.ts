@@ -20,7 +20,7 @@ export async function trainSkill(skillId: string): Promise<void> {
     recommended_skill_id: skillId,
     recommended_exercise_id: skillId,
     reason: `You selected this track manually: ${skillName}.`,
-    priority: 10,
+    priority: 100,
     skills: { name: skillName },
   });
 

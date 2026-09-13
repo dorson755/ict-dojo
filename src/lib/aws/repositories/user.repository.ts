@@ -34,7 +34,7 @@ export class UserRepository {
       .map((item) => ({
         id: String(item.PK || '').replace(/^USER#/, ''),
         grade_level: item.grade_level,
-        display_name: item.display_name,
+        display_name: item.display_name ?? item.name,
         xp_total: item.xp_total ?? 0,
         platform_level: item.platform_level ?? 1,
         streak_count: item.streak_count ?? 0,

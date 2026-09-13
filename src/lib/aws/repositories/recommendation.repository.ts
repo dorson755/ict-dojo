@@ -1,8 +1,15 @@
 import { dynamoClient, TABLE_NAME } from '../dynamodb';
 import { QueryCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
+interface StoredRecommendation {
+  created_at?: string;
+  priority?: number;
+  is_acted_on?: boolean;
+  [key: string]: unknown;
+}
+
 export class RecommendationRepository {
-  static async getActiveRecommendation(userId: string): Promise<any | null> {
+  static async getActiveRecommendation(userId: string): Promise<StoredRecommendation | null> {
     // In DynamoDB, we can query by PK = USER#userId and SK begins_with REC#
     // To only get active ones, we fetch all and filter in memory since is_acted_on isn't part of the key.
     
@@ -16,14 +23,18 @@ export class RecommendationRepository {
     });
 
     const response = await dynamoClient.send(command);
-    const items = response.Items || [];
+    const items = (response.Items || []) as StoredRecommendation[];
     
     const activeRecs = items.filter(item => !item.is_acted_on);
     
     if (activeRecs.length === 0) return null;
     
     // Sort by priority descending
-    activeRecs.sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    activeRecs.sort((a, b) => {
+      const priorityDelta = (b.priority || 0) - (a.priority || 0);
+      if (priorityDelta !== 0) return priorityDelta;
+      return String(b.created_at || '').localeCompare(String(a.created_at || ''));
+    });
     
     return activeRecs[0];
   }
@@ -45,7 +56,7 @@ export class RecommendationRepository {
     await dynamoClient.send(command);
   }
 
-  static async createRecommendation(userId: string, recommendation: any): Promise<void> {
+  static async createRecommendation(userId: string, recommendation: Record<string, unknown>): Promise<void> {
     const timestamp = new Date().toISOString();
     const command = new PutCommand({
       TableName: TABLE_NAME,

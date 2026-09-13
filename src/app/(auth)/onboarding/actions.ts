@@ -18,14 +18,14 @@ export async function submitOnboarding(formData: FormData) {
   }
 
   try {
-    await UserRepository.updateProfile(user.id, gradeLevel);
+    await UserRepository.updateProfile(user.id, gradeLevel, user.name);
     
     // We can also initialize some default typing domains here using DynamoDB if we wanted
     // For now we assume diagnostic initializes the DNA
     
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Onboarding update error:', error);
-    return { error: `Failed to save profile information: ${error.message}` };
+    return { error: `Failed to save profile information: ${error instanceof Error ? error.message : 'Unknown error'}` };
   }
 }
