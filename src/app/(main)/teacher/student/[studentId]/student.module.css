@@ -8,6 +8,7 @@
 .kpis div, .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-6); }
 .kpis span { color: var(--ink-3); display: block; font-size: var(--text-xs); }
 .kpis strong { display: block; font-family: var(--font-display); font-size: var(--text-2xl); margin-top: var(--space-2); }
+.kpis small { color: var(--ink-3); display: block; font-size: 10px; margin-top: var(--space-1); }
 .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-6); }
 .caption { margin-bottom: var(--space-5); }
 .legend { display: flex; gap: var(--space-4); color: var(--ink-2); font-size: var(--text-xs); margin-bottom: var(--space-3); }

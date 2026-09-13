@@ -29,13 +29,14 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
   const averageMastery = mastery.length ? Math.round(mastery.reduce((sum, item) => sum + item.mastery_score, 0) / mastery.length) : 0;
   const mastered = mastery.filter((item) => item.mastery_level === 'mastered').length;
   const weak = mastery.filter((item) => item.mastery_level === 'weak').length;
+  const assessedSkills = mastery.filter((item) => item.practice_count > 0).length;
 
   return (
     <div className={styles.page}>
       <Link href="/teacher" className={styles.back}>← Back to mentor view</Link>
       <header className={styles.header}><div className={styles.avatar}>{(student.display_name || 'L').slice(0, 1).toUpperCase()}</div><div><h1 className={styles.title}>{student.display_name || 'Learner'}</h1><p className={styles.subtitle}>Grade {student.grade_level || '—'} · Level {student.platform_level || 1} · {student.streak_count || 0}-day streak</p></div></header>
       <section className={styles.kpis}>
-        <div><span>Mastery</span><strong>{averageMastery}%</strong></div><div><span>Sessions</span><strong>{recent.length}</strong></div><div><span>Avg WPM</span><strong>{averageWpm || '—'}</strong></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong></div>
+        <div><span>Assessed mastery</span><strong>{assessedSkills ? `${averageMastery}%` : '—'}</strong><small>{assessedSkills} of {TYPING_SKILLS.length} skills assessed</small></div><div><span>Sessions</span><strong>{recent.length}</strong></div><div><span>Avg WPM</span><strong>{averageWpm || '—'}</strong></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong></div>
       </section>
       <div className={styles.grid}>
         <section className={styles.card}>
