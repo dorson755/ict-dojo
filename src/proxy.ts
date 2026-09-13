@@ -5,6 +5,7 @@ import { jwtVerify, createRemoteJWKSet } from 'jose';
 // Configuration for Cognito User Pool
 const COGNITO_REGION = process.env.APP_REGION || process.env.AWS_REGION || 'us-east-2';
 const COGNITO_USER_POOL_ID = process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID;
+const COGNITO_CLIENT_ID = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID;
 
 // Public paths that do not require authentication
 const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/'];
@@ -36,6 +37,9 @@ export async function proxy(request: NextRequest) {
     if (!COGNITO_USER_POOL_ID) {
       throw new Error('NEXT_PUBLIC_COGNITO_USER_POOL_ID is not set');
     }
+    if (!COGNITO_CLIENT_ID) {
+      throw new Error('NEXT_PUBLIC_COGNITO_CLIENT_ID is not set');
+    }
 
     if (!jwks) {
       const jwksUrl = new URL(`https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}/.well-known/jwks.json`);
@@ -43,10 +47,13 @@ export async function proxy(request: NextRequest) {
     }
 
     // Verify token using JWKS
-    await jwtVerify(accessToken, jwks, {
+    const { payload } = await jwtVerify(accessToken, jwks, {
       issuer: `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}`,
-      // Optionally verify client_id claim matches COGNITO_CLIENT_ID
     });
+
+    if (payload.client_id !== COGNITO_CLIENT_ID) {
+      throw new Error('JWT client does not match this application');
+    }
 
     return NextResponse.next();
   } catch (error) {
