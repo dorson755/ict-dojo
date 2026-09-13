@@ -163,7 +163,7 @@ export default function TypingEngine({
   return (
     <div className={styles.container}>
       {/* Stats Bar */}
-      <div className={styles.statsBar}>
+      <div className={styles.statsBar} aria-live="polite" aria-atomic="true">
         <div className={styles.statGroup}>
           <span className={styles.statLabel}>Mode</span>
           <span className={styles.statValue}>{mode}</span>
@@ -189,14 +189,22 @@ export default function TypingEngine({
         ref={containerRef}
         className={styles.passageContainer}
         tabIndex={0}
+        role="textbox"
+        aria-label={`${mode} typing practice passage`}
+        aria-multiline="true"
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
       >
         {!isFocused && !isFinished && (
-          <div className={styles.blurOverlay} onClick={() => containerRef.current?.focus()}>
-            <div className={styles.clickToStart}>Click to Start Typing</div>
-          </div>
+          <button
+            type="button"
+            className={styles.blurOverlay}
+            onClick={() => containerRef.current?.focus()}
+            aria-label="Start typing practice"
+          >
+            <span className={styles.clickToStart}>Click to Start Typing</span>
+          </button>
         )}
 
         {passage.split('').map((char, index) => {

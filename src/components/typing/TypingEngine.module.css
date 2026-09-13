@@ -77,6 +77,10 @@
   z-index: 10;
   border-radius: var(--radius-lg);
   cursor: pointer;
+  border: 0;
+  padding: 0;
+  width: 100%;
+  font: inherit;
 }
 
 .clickToStart {
@@ -144,5 +148,16 @@
 
   .statsBar {
     gap: var(--space-8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .passageContainer,
+  .clickToStart {
+    transition: none;
+  }
+
+  .cursor::after {
+    animation: none;
   }
 }
