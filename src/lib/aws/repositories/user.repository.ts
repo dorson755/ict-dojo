@@ -1,5 +1,5 @@
 import { dynamoClient, TABLE_NAME } from '../dynamodb';
-import { GetCommand, PutCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, UpdateCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
 export interface StudentProfile {
   id: string;
@@ -22,6 +22,26 @@ export interface TypingDNA {
 }
 
 export class UserRepository {
+  static async getStudentProfiles(excludeUserId?: string): Promise<StudentProfile[]> {
+    const response = await dynamoClient.send(new ScanCommand({
+      TableName: TABLE_NAME,
+      FilterExpression: 'SK = :profile',
+      ExpressionAttributeValues: { ':profile': 'PROFILE' },
+    }));
+
+    return (response.Items || [])
+      .map((item) => ({
+        id: String(item.PK || '').replace(/^USER#/, ''),
+        grade_level: item.grade_level,
+        display_name: item.display_name,
+        xp_total: item.xp_total ?? 0,
+        platform_level: item.platform_level ?? 1,
+        streak_count: item.streak_count ?? 0,
+        last_practice_date: item.last_practice_date,
+      }))
+      .filter((profile) => profile.id && profile.id !== excludeUserId && profile.id !== 'undefined');
+  }
+
   static async getProfile(userId: string): Promise<StudentProfile | null> {
     const command = new GetCommand({
       TableName: TABLE_NAME,
@@ -152,7 +172,7 @@ export class UserRepository {
     // Since diagnostic initializes it, we'll use UpdateCommand.
     
     let updateExp = 'SET updated_at = :u';
-    const expVals: Record<string, any> = {
+    const expVals: Record<string, unknown> = {
       ':u': new Date().toISOString(),
     };
 
