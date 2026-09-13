@@ -40,13 +40,13 @@ export default function ResetPasswordPage() {
   if (done) return <><h2 className={styles.authFormTitle}>Password reset</h2><p className={styles.authDesc}>Your password has been updated.</p><Link className={styles.authButton} href="/login">Log in</Link></>;
 
   return <>
-    <h2 className={styles.authFormTitle}>Reset password</h2>
+    <h2 className={styles.authFormTitle}>{codeSent ? 'Enter your forgot-password code' : 'Forgot password'}</h2>
     {info && <div className={styles.infoMessage}>{info}</div>}
     {error && <div className={styles.errorMessage}>{error}</div>}
     {!codeSent ? (
       <form onSubmit={sendCode}>
         <div className="form-group"><label className="label" htmlFor="email">Email</label><input className="input" id="email" type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></div>
-        <button className={styles.authButton} disabled={loading}>{loading ? 'Sending...' : 'Send reset code'}</button>
+        <button className={styles.authButton} disabled={loading}>{loading ? 'Sending...' : 'Send forgot-password code'}</button>
       </form>
     ) : (
       <form onSubmit={submit}>
