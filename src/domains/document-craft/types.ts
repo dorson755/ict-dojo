@@ -13,6 +13,10 @@ export interface DocumentTask {
   requiredList?: DocumentList;
   requiredTable?: boolean;
   requiredPageBreak?: boolean;
+  requiredFootnote?: boolean;
+  requiredCitation?: boolean;
+  requiredColumns?: number;
+  requiredTrackedChange?: boolean;
 }
 
 export interface DocumentEvaluation {

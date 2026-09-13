@@ -51,5 +51,25 @@ export function evaluateDocument(html: string, task: DocumentTask): DocumentEval
     else missingChecks.push('Insert a page break before the next section.');
   }
 
+  if (task.requiredFootnote) {
+    if (/<(sup|aside)[^>]*(data-footnote|footnote)[^>]*>/i.test(normalized)) completedChecks.push('footnote inserted');
+    else missingChecks.push('Insert a footnote for the supporting detail.');
+  }
+
+  if (task.requiredCitation) {
+    if (/<[^>]*(data-citation|citation)[^>]*>/i.test(normalized)) completedChecks.push('citation inserted');
+    else missingChecks.push('Insert a citation for the source.');
+  }
+
+  if (task.requiredColumns) {
+    if (new RegExp(`column-count\\s*:\\s*${task.requiredColumns}`, 'i').test(normalized)) completedChecks.push(`${task.requiredColumns}-column layout applied`);
+    else missingChecks.push(`Apply a ${task.requiredColumns}-column layout.`);
+  }
+
+  if (task.requiredTrackedChange) {
+    if (/data-change=["'](inserted|deleted)["']/i.test(normalized)) completedChecks.push('tracked change recorded');
+    else missingChecks.push('Turn on tracking and record a change.');
+  }
+
   return { passed: missingChecks.length === 0, completedChecks, missingChecks };
 }
