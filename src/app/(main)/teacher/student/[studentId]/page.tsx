@@ -38,8 +38,32 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
         <div><span>Mastery</span><strong>{averageMastery}%</strong></div><div><span>Sessions</span><strong>{recent.length}</strong></div><div><span>Avg WPM</span><strong>{averageWpm || '—'}</strong></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong></div>
       </section>
       <div className={styles.grid}>
-        <section className={styles.card}><h2>Practice trend</h2><p className={styles.caption}>Most recent sessions, oldest to newest.</p><div className={styles.chart}>{recent.length ? recent.map((session, index) => <div className={styles.barGroup} key={`${session.created_at}-${index}`}><div className={styles.bar} style={{ height: `${Math.max(8, (Number(session.wpm || 0) / maxWpm) * 100)}%` }} title={`${session.wpm || 0} WPM`} /><span>{index + 1}</span></div>) : <p className={styles.empty}>No sessions yet.</p>}</div></section>
-        <section className={styles.card}><h2>Mastery snapshot</h2><p className={styles.caption}>{mastered} mastered · {weak} need reinforcement</p><div className={styles.masteryList}>{TYPING_SKILLS.map((skill) => { const item = mastery.find((entry) => entry.skill_id === skill.id); return <div className={styles.masteryRow} key={skill.id}><span>{skill.name}</span><strong>{Math.round(item?.mastery_score || 0)}%</strong><div className={styles.track}><i style={{ width: `${item?.mastery_score || 0}%` }} /></div></div>; })}</div></section>
+        <section className={styles.card}>
+          <h2>Practice trend</h2>
+          <p className={styles.caption}>WPM and accuracy across the last {recent.length} sessions.</p>
+          <div className={styles.legend}><span><i className={styles.legendWpm} /> WPM</span><span><i className={styles.legendAccuracy} /> Accuracy</span></div>
+          <div className={styles.chartScale}><span>100</span><span>50</span><span>0</span></div>
+          <div className={styles.chart}>
+            {recent.length ? recent.map((session, index) => {
+              const wpm = Number(session.wpm || 0);
+              const accuracy = Number(session.accuracy || 0);
+              const date = session.created_at ? new Date(String(session.created_at)) : null;
+              return <div className={styles.barGroup} key={`${session.created_at}-${index}`} title={`${date?.toLocaleDateString() || 'Session'}: ${wpm} WPM, ${accuracy}% accuracy`}>
+                <div className={styles.barPair}><div className={`${styles.bar} ${styles.barWpm}`} style={{ height: `${Math.max(6, (wpm / maxWpm) * 100)}%` }} /><div className={`${styles.bar} ${styles.barAccuracy}`} style={{ height: `${Math.max(6, accuracy)}%` }} /></div>
+                <span>{date ? `${date.getMonth() + 1}/${date.getDate()}` : index + 1}</span>
+              </div>;
+            }) : <p className={styles.empty}>No sessions yet.</p>}
+          </div>
+        </section>
+        <section className={styles.card}>
+          <h2>Mastery snapshot</h2>
+          <p className={styles.caption}>{mastered} mastered · {weak} need reinforcement · scores update after each session</p>
+          <div className={styles.masteryList}>{TYPING_SKILLS.map((skill) => {
+            const item = mastery.find((entry) => entry.skill_id === skill.id);
+            const score = Math.round(item?.mastery_score || 0);
+            return <div className={styles.masteryRow} key={skill.id}><span>{skill.name}<small>{item ? `${item.practice_count} session${item.practice_count === 1 ? '' : 's'} · ${item.mastery_level}` : 'Not started'}</small></span><strong>{item ? `${score}%` : '—'}</strong><div className={styles.track}><i style={{ width: `${score}%` }} /></div></div>;
+          })}</div>
+        </section>
       </div>
     </div>
   );

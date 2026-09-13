@@ -10,12 +10,22 @@
 .kpis strong { display: block; font-family: var(--font-display); font-size: var(--text-2xl); margin-top: var(--space-2); }
 .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-6); }
 .caption { margin-bottom: var(--space-5); }
+.legend { display: flex; gap: var(--space-4); color: var(--ink-2); font-size: var(--text-xs); margin-bottom: var(--space-3); }
+.legend span { align-items: center; display: inline-flex; gap: var(--space-1); }
+.legend i { border-radius: var(--radius-full); display: inline-block; height: 8px; width: 8px; }
+.legendWpm { background: var(--accent); }
+.legendAccuracy { background: var(--success); }
+.chartScale { color: var(--ink-3); display: flex; font-family: var(--font-mono); font-size: 10px; justify-content: space-between; margin-bottom: calc(var(--space-1) * -1); }
 .chart { align-items: end; border-bottom: 1px solid var(--border-strong); display: flex; gap: var(--space-3); height: 230px; padding: var(--space-4) 0 0; }
 .barGroup { align-items: center; display: flex; flex: 1; flex-direction: column; height: 100%; justify-content: end; gap: var(--space-2); }
-.bar { background: linear-gradient(180deg, var(--accent), var(--accent-light)); border-radius: var(--radius-sm) var(--radius-sm) 0 0; min-height: 8px; width: 100%; }
+.barPair { align-items: end; display: flex; gap: 2px; height: 100%; justify-content: center; width: 100%; }
+.bar { border-radius: var(--radius-sm) var(--radius-sm) 0 0; min-height: 6px; width: 45%; }
+.barWpm { background: linear-gradient(180deg, var(--accent), var(--accent-light)); }
+.barAccuracy { background: linear-gradient(180deg, var(--success), var(--success-light)); }
 .barGroup span { color: var(--ink-3); font-family: var(--font-mono); font-size: 10px; }
 .masteryList { display: flex; flex-direction: column; gap: var(--space-4); }
 .masteryRow { display: grid; grid-template-columns: 1fr 40px; gap: var(--space-2); font-size: var(--text-xs); }
+.masteryRow small { color: var(--ink-3); display: block; font-size: 10px; margin-top: 2px; }
 .masteryRow strong { font-family: var(--font-mono); text-align: right; }
 .track { background: var(--surface-3); border-radius: var(--radius-full); grid-column: 1 / -1; height: 7px; overflow: hidden; }
 .track i { background: var(--success); display: block; height: 100%; }
