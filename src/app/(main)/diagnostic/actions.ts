@@ -3,18 +3,17 @@
 import { getUserSession } from '@/lib/aws/auth-utils';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
-import { TypingSessionResult } from '@/domains/typing/types';
+import { DiagnosticStageAttempt, TypingSessionResult } from '@/domains/typing/types';
 import { GamificationService } from '@/domains/shared/gamification-service';
+import { MasteryService } from '@/domains/shared/mastery-service';
+import { SkillRepository } from '@/lib/aws/repositories/skill.repository';
+import type { MasteryLevel } from '@/types/platform';
 
-function calculateMasteryFromDiagnostic(wpm: number, accuracy: number, skills: any[]) {
-  return skills.map(s => ({
-    skillId: s.id,
-    score: (accuracy * 0.5) + (Math.min(wpm / 40, 1) * 50),
-    level: wpm > 30 ? 'mastered' : wpm > 15 ? 'practicing' : 'novice'
-  }));
+function diagnosticScore(result: TypingSessionResult): number {
+  return Math.min(100, (result.accuracy * 0.75) + (Math.min(result.wpm / 40, 1) * 25));
 }
 
-export async function submitDiagnostic(results: TypingSessionResult[]) {
+export async function submitDiagnostic(results: DiagnosticStageAttempt[]) {
   const user = await getUserSession();
 
   if (!user) {
@@ -22,7 +21,9 @@ export async function submitDiagnostic(results: TypingSessionResult[]) {
   }
 
   // Aggregate results
-  const validResults = results.filter(r => r.wpm > 0);
+  const validResults = results
+    .map((attempt) => attempt.sessionResult)
+    .filter((result) => result.isValid);
   if (validResults.length === 0) return;
 
   const avgWpm = validResults.reduce((sum, r) => sum + r.wpm, 0) / validResults.length;
@@ -37,30 +38,29 @@ export async function submitDiagnostic(results: TypingSessionResult[]) {
     sessions_analyzed: validResults.length,
   });
 
-  // Initialize Mastery based on baseline WPM
-  // Using some standard skill IDs that we will seed later
-  const HOME_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000001';
-  const TOP_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000002';
-  
-  const simulatedSkills = [
-    { id: HOME_ROW_SKILL_ID, difficulty_baseline: 1 },
-    { id: TOP_ROW_SKILL_ID, difficulty_baseline: 2 },
-  ];
-  
-  const initialMasteryUpdates = calculateMasteryFromDiagnostic(
-    Math.round(avgWpm),
-    Math.round(avgAccuracy),
-    simulatedSkills
-  );
+  const skills = await SkillRepository.getSkillsByDomain('1');
+  const skillById = new Map(skills.map((skill) => [skill.id, skill]));
+  const measurements = new Map<string, number[]>();
+  for (const attempt of results) {
+    if (!attempt.sessionResult.isValid) continue;
+    for (const skillId of attempt.skillIds) {
+      const scores = measurements.get(skillId) ?? [];
+      scores.push(diagnosticScore(attempt.sessionResult));
+      measurements.set(skillId, scores);
+    }
+  }
 
-  for (const mastery of initialMasteryUpdates) {
+  const masteryService = new MasteryService();
+  for (const [skillId, scores] of measurements) {
+    const score = scores.reduce((total, value) => total + value, 0) / scores.length;
+    const level: MasteryLevel = masteryService.getMasteryLevelFromScore(score);
     await MasteryRepository.upsertMastery(user.id, {
       student_id: user.id,
-      skill_id: mastery.skillId,
-      mastery_score: mastery.score,
-      mastery_level: mastery.level,
+      skill_id: skillId,
+      mastery_score: Number(score.toFixed(2)),
+      mastery_level: level,
       practice_count: 0,
-      skills: { name: mastery.skillId === HOME_ROW_SKILL_ID ? 'Home Row' : 'Top Row' }, // Denormalized name
+      skills: { name: skillById.get(skillId)?.name ?? 'Typing skill' },
     });
   }
 

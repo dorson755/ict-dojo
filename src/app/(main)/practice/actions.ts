@@ -9,6 +9,31 @@ import { TypingSessionResult } from '@/domains/typing/types';
 import { MasteryService } from '@/domains/shared/mastery-service';
 import { AdaptiveEngine } from '@/domains/shared/adaptive-engine';
 import { GamificationService } from '@/domains/shared/gamification-service';
+import { SkillRepository } from '@/lib/aws/repositories/skill.repository';
+import type { MasteryLevel, SkillMastery } from '@/types/platform';
+import { ProgressRepository } from '@/lib/aws/repositories/progress.repository';
+
+function toMasterySnapshot(
+  mastery: {
+    student_id: string;
+    skill_id: string;
+    mastery_score: number;
+    mastery_level: string;
+    practice_count: number;
+    last_practiced_at?: string;
+  }
+): SkillMastery {
+  return {
+    id: mastery.skill_id,
+    student_id: mastery.student_id,
+    skill_id: mastery.skill_id,
+    mastery_score: mastery.mastery_score,
+    mastery_level: mastery.mastery_level as MasteryLevel,
+    practice_count: mastery.practice_count,
+    last_practiced_at: mastery.last_practiced_at ?? null,
+    updated_at: '',
+  };
+}
 
 export async function submitPracticeSession(
   result: TypingSessionResult,
@@ -78,19 +103,16 @@ export async function submitPracticeSession(
   // Note: The recommendation is superseded by the new one created below,
   // so we don't need to mark the old one as acted on.
 
-  // Evaluate Mastery updates
-  // In a real app we'd fetch the skill graph from DynamoDB. For now we use standard IDs.
-  const HOME_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000001';
-  
+  // Evaluate mastery for the skills targeted by this exercise.
+  const skills = await SkillRepository.getSkillsByDomain('1');
+  const skillById = new Map(skills.map((skill) => [skill.id, skill]));
   const masteryService = new MasteryService();
 
   for (const skillId of skillIds) {
     const currentMastery = await MasteryRepository.getMastery(user.id, skillId);
-    
-    // Evaluate
     const sessionScore = (result.accuracy * 0.7) + (Math.min(result.wpm / 40, 1) * 30);
     const { newScore, newLevel } = masteryService.processAttempt(
-      currentMastery ? { ...currentMastery, student_id: user.id } as any : undefined,
+      currentMastery ? toMasterySnapshot(currentMastery) : undefined,
       user.id,
       skillId,
       sessionScore
@@ -112,34 +134,24 @@ export async function submitPracticeSession(
       mastery_level: newLevel,
       practice_count: (currentMastery?.practice_count || 0) + 1,
       last_practiced_at: new Date().toISOString(),
-      skills: { name: 'Home Row' } // Denormalized
+      skills: { name: skillById.get(skillId)?.name ?? 'Typing skill' },
     });
   }
 
-  // Generate new recommendation
+  // Generate the next recommendation from the complete prerequisite graph.
   const allMasteries = await MasteryRepository.getTopMasteredSkills(user.id, 100);
-  const masteryMap = new Map(allMasteries.map(m => [m.skill_id, m.mastery_level as any]));
+  const masteryMap = new Map(
+    allMasteries.map((mastery) => [mastery.skill_id, toMasterySnapshot(mastery)])
+  );
+  const dependencies = await SkillRepository.getDependenciesByDomain('1');
 
   const adaptiveEngine = new AdaptiveEngine();
   const nextTarget = adaptiveEngine.getNextRecommendation({
     studentId: user.id,
     domainId: '1',
-    masteryMap: masteryMap,
-    skills: [{
-      id: HOME_ROW_SKILL_ID,
-      domain_id: '1',
-      parent_skill_id: null,
-      slug: 'home-row',
-      name: 'Home Row',
-      description: null,
-      grade_level_min: null,
-      grade_level_max: null,
-      difficulty_baseline: 1,
-      is_active: true,
-      metadata: {},
-      created_at: new Date().toISOString()
-    }],
-    dependencies: [],
+    masteryMap,
+    skills,
+    dependencies,
     recentAttempts: [],
     weakKeys: finalWeakKeys
   });
@@ -167,6 +179,11 @@ export async function submitPracticeSession(
 
   await UserRepository.awardXp(user.id, xpAward.xpGained, levelUpdate.newLevel);
   await UserRepository.updateStreak(user.id, streakUpdate.streak, new Date().toISOString().split('T')[0]);
+  const [newWpmRecord, newAccuracyRecord, quest] = await Promise.all([
+    ProgressRepository.updatePersonalRecord(user.id, 'best_wpm', result.wpm),
+    ProgressRepository.updatePersonalRecord(user.id, 'best_accuracy', result.accuracy),
+    ProgressRepository.updateDailyAccuracyQuest(user.id, result.accuracy),
+  ]);
 
   return {
     success: true,
@@ -179,6 +196,9 @@ export async function submitPracticeSession(
       leveledUp: levelUpdate.leveledUp,
       levelsGained: levelUpdate.levelsGained,
       streak: streakUpdate.streak,
+      newWpmRecord,
+      newAccuracyRecord,
+      quest,
     },
   };
 }

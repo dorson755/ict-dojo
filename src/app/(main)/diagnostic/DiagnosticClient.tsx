@@ -2,11 +2,16 @@
 
 import React, { useState } from 'react';
 import TypingEngine from '@/components/typing/TypingEngine';
-import { TypingSessionInput, TypingSessionResult } from '@/domains/typing/types';
+import {
+  DiagnosticStage,
+  DiagnosticStageAttempt,
+  TypingSessionInput,
+} from '@/domains/typing/types';
 import { TypingEvaluator } from '@/domains/typing/evaluator';
 import { submitDiagnostic } from './actions';
 import { useRouter } from 'next/navigation';
 import styles from '../practice/practice.module.css';
+import { TYPING_SKILL_IDS } from '@/domains/typing/catalog';
 
 interface DiagnosticClientProps {
   studentId: string;
@@ -14,25 +19,45 @@ interface DiagnosticClientProps {
 
 const STAGES = [
   {
-    title: 'Home Row',
-    passage: 'asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;',
-    hint: 'Keep your fingers on the home row.',
+    id: 'keyboard_familiarity' as DiagnosticStage,
+    title: 'Keyboard familiarity',
+    passage: 'a s d f j k l ; q w e r u i o p',
+    hint: 'Find each key calmly. There is no need to rush.',
+    skillIds: [TYPING_SKILL_IDS.keyboardFamiliarity],
   },
   {
-    title: 'Common Words',
-    passage: 'the quick brown fox jumps over the lazy dog.',
-    hint: 'Type at a comfortable, steady pace.',
+    id: 'letter_combinations' as DiagnosticStage,
+    title: 'Letter combinations',
+    passage: 'asdf jkl; qwer uiop zxcv bnm,',
+    hint: 'Reach for each row, then return to home row.',
+    skillIds: [TYPING_SKILL_IDS.homeRow, TYPING_SKILL_IDS.topRow, TYPING_SKILL_IDS.bottomRow],
   },
   {
-    title: 'Full Sentence',
-    passage: 'Typing is a skill that requires practice and patience to master.',
-    hint: "Don't worry about mistakes, just keep going.",
+    id: 'words' as DiagnosticStage,
+    title: 'Common words',
+    passage: 'the quick brown fox jumps over the lazy dog',
+    hint: 'Find a comfortable, steady pace.',
+    skillIds: [TYPING_SKILL_IDS.commonWords],
+  },
+  {
+    id: 'sentences' as DiagnosticStage,
+    title: 'Sentences',
+    passage: 'Typing is a skill that improves with patient daily practice.',
+    hint: 'Stay smooth through spaces and punctuation.',
+    skillIds: [TYPING_SKILL_IDS.sentenceFluency, TYPING_SKILL_IDS.capitalization, TYPING_SKILL_IDS.punctuation],
+  },
+  {
+    id: 'passage' as DiagnosticStage,
+    title: 'Short passage',
+    passage: 'On Friday, Maya finished 3 tasks: type notes, check data, and share her work.',
+    hint: 'Use the same calm rhythm from the earlier stages.',
+    skillIds: [TYPING_SKILL_IDS.sentenceFluency, TYPING_SKILL_IDS.numbers],
   },
 ];
 
 export default function DiagnosticClient({ studentId }: DiagnosticClientProps) {
   const [currentStage, setCurrentStage] = useState(0);
-  const [results, setResults] = useState<TypingSessionResult[]>([]);
+  const [results, setResults] = useState<DiagnosticStageAttempt[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
@@ -40,7 +65,11 @@ export default function DiagnosticClient({ studentId }: DiagnosticClientProps) {
     const evaluator = new TypingEvaluator();
     const result = evaluator.evaluate(sessionData);
 
-    const newResults = [...results, result];
+    const newResults = [...results, {
+      stage: STAGES[currentStage].id,
+      sessionResult: result,
+      skillIds: STAGES[currentStage].skillIds,
+    }];
     setResults(newResults);
 
     if (currentStage < STAGES.length - 1) {
@@ -83,7 +112,7 @@ export default function DiagnosticClient({ studentId }: DiagnosticClientProps) {
         passage={stage.passage}
         studentId={studentId}
         exerciseId={`diag-stage-${currentStage}`}
-        skillIds={[]}
+        skillIds={stage.skillIds}
         onComplete={handleComplete}
       />
 

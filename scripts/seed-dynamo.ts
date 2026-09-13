@@ -1,217 +1,184 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  TYPING_DEPENDENCIES,
+  TYPING_DOMAIN_ID,
+  TYPING_SKILLS,
+  TYPING_SKILL_IDS,
+} from '../src/domains/typing/catalog';
 
-const region = process.env.AWS_REGION || 'us-east-1';
+const region = process.env.APP_REGION || process.env.AWS_REGION || 'us-east-2';
 const client = new DynamoDBClient({ region });
 const dynamoClient = DynamoDBDocumentClient.from(client);
-const TABLE_NAME = process.env.DYNAMODB_TABLE_NAME || 'ict-dojo-main';
+const tableName = process.env.DYNAMODB_TABLE_NAME || 'ict-dojo-main';
+const createdAt = new Date().toISOString();
 
-const HOME_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000001';
-const TOP_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000002';
-const BOTTOM_ROW_SKILL_ID = '00000000-0000-0000-0000-000000000003';
-const NUMBERS_SKILL_ID = '00000000-0000-0000-0000-000000000004';
-const SHIFT_SKILL_ID = '00000000-0000-0000-0000-000000000005';
-const DOMAIN_ID = '1';
-
-async function seed() {
-  console.log('Seeding DynamoDB...');
-
-  // 1. Seed Domain
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `DOMAIN#${DOMAIN_ID}`,
-      SK: 'META',
-      name: 'Touch Typing',
-      slug: 'touch-typing',
-      is_active: true,
-    }
-  }));
-
-  // 2. Seed Skills
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${HOME_ROW_SKILL_ID}`,
-      SK: 'META',
-      name: 'Home Row',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 1,
-    }
-  }));
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${TOP_ROW_SKILL_ID}`,
-      SK: 'META',
-      name: 'Top Row',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 2,
-    }
-  }));
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${BOTTOM_ROW_SKILL_ID}`,
-      SK: 'META',
-      name: 'Bottom Row',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 2,
-    }
-  }));
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${NUMBERS_SKILL_ID}`,
-      SK: 'META',
-      name: 'Numbers & Symbols',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 3,
-    }
-  }));
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${SHIFT_SKILL_ID}`,
-      SK: 'META',
-      name: 'Shift Key Mastery',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 3,
-    }
-  }));
-
-  const CODING_SYNTAX_SKILL_ID = '00000000-0000-0000-0000-000000000006';
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${CODING_SYNTAX_SKILL_ID}`,
-      SK: 'META',
-      name: 'Coding Syntax',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 4,
-    }
-  }));
-
-  const NUMPAD_SKILL_ID = '00000000-0000-0000-0000-000000000007';
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${NUMPAD_SKILL_ID}`,
-      SK: 'META',
-      name: '10-Key Numpad',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 3,
-    }
-  }));
-
-  const PUNCTUATION_SKILL_ID = '00000000-0000-0000-0000-000000000008';
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: {
-      PK: `SKILL#${PUNCTUATION_SKILL_ID}`,
-      SK: 'META',
-      name: 'Advanced Punctuation',
-      domain_id: DOMAIN_ID,
-      difficulty_baseline: 4,
-    }
-  }));
-
-  // 3. Seed Exercises
-  const exercise1 = {
-    PK: `DOMAIN#${DOMAIN_ID}`,
-    SK: `EXERCISE#100`,
-    title: 'Home Row Basics',
-    skill_ids: [HOME_ROW_SKILL_ID],
+const exercises = [
+  {
+    id: 'typing-keyboard-map',
+    skillId: TYPING_SKILL_IDS.keyboardFamiliarity,
+    title: 'Find the keys',
+    passage: 'a s d f j k l ; q w e r u i o p',
+    hint: 'Find each key before you press it. Accuracy comes first.',
     difficulty: 1,
-    grade_level_min: 1,
-    grade_level_max: 12,
-    content: {
-      passage: 'asdf jkl; asdf jkl; asdf jkl;'
-    }
-  };
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: exercise1
-  }));
-
-  const exercise2 = {
-    PK: `DOMAIN#${DOMAIN_ID}`,
-    SK: `EXERCISE#101`,
-    title: 'Top Row Introduction',
-    skill_ids: [TOP_ROW_SKILL_ID],
+    grades: [1, 2],
+  },
+  {
+    id: 'typing-home-row-basics',
+    skillId: TYPING_SKILL_IDS.homeRow,
+    title: 'Home row basics',
+    passage: 'asdf jkl; asdf jkl; sad dad ask falls',
+    hint: 'Return your fingers to the home row after every reach.',
+    difficulty: 1,
+    grades: [1, 12],
+  },
+  {
+    id: 'typing-top-row-intro',
+    skillId: TYPING_SKILL_IDS.topRow,
+    title: 'Top row introduction',
+    passage: 'qwer uiop type wire quiet power',
+    hint: 'Reach up, then return home. Keep your wrists relaxed.',
     difficulty: 2,
-    grade_level_min: 1,
-    grade_level_max: 12,
-    content: {
-      passage: 'qwer uiop qwer uiop qwer uiop'
-    }
-  };
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: exercise2
-  }));
-
-  const exercise3 = {
-    PK: `DOMAIN#${DOMAIN_ID}`,
-    SK: `EXERCISE#102`,
-    title: 'Bottom Row Basics',
-    skill_ids: [BOTTOM_ROW_SKILL_ID],
+    grades: [1, 12],
+  },
+  {
+    id: 'typing-bottom-row-intro',
+    skillId: TYPING_SKILL_IDS.bottomRow,
+    title: 'Bottom row introduction',
+    passage: 'zxcv bnm, zoom can mix bacon',
+    hint: 'Reach down without moving your whole hand.',
     difficulty: 2,
-    grade_level_min: 1,
-    grade_level_max: 12,
-    content: {
-      passage: 'zxcv bnm, zxcv bnm, zxcv bnm,'
-    }
-  };
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: exercise3
-  }));
-
-  const exercise4 = {
-    PK: `DOMAIN#${DOMAIN_ID}`,
-    SK: `EXERCISE#103`,
-    title: 'Number Row',
-    skill_ids: [NUMBERS_SKILL_ID],
+    grades: [1, 12],
+  },
+  {
+    id: 'typing-common-words',
+    skillId: TYPING_SKILL_IDS.commonWords,
+    title: 'Everyday words',
+    passage: 'the and that with have from they will make time',
+    hint: 'Aim for an even pace. Do not race the clock.',
+    difficulty: 2,
+    grades: [1, 12],
+  },
+  {
+    id: 'typing-sentence-fluency',
+    skillId: TYPING_SKILL_IDS.sentenceFluency,
+    title: 'Smooth sentences',
+    passage: 'Small steps each day build strong typing habits.',
+    hint: 'Keep your eyes on the text and find a steady rhythm.',
     difficulty: 3,
-    grade_level_min: 1,
-    grade_level_max: 12,
-    content: {
-      passage: '12345 67890 12345 67890'
-    }
-  };
-
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: exercise4
-  }));
-
-  const exercise5 = {
-    PK: `DOMAIN#${DOMAIN_ID}`,
-    SK: `EXERCISE#104`,
-    title: 'Shift Key Practice',
-    skill_ids: [SHIFT_SKILL_ID],
+    grades: [2, 12],
+  },
+  {
+    id: 'typing-capitalization',
+    skillId: TYPING_SKILL_IDS.capitalization,
+    title: 'Capital letters',
+    passage: 'Maya And Jordan Practice Typing Every Day.',
+    hint: 'Use the opposite-hand Shift key whenever you can.',
     difficulty: 3,
-    grade_level_min: 1,
-    grade_level_max: 12,
-    content: {
-      passage: 'The Quick Brown Fox Jumps Over The Lazy Dog'
-    }
-  };
+    grades: [3, 12],
+  },
+  {
+    id: 'typing-punctuation',
+    skillId: TYPING_SKILL_IDS.punctuation,
+    title: 'Punctuation control',
+    passage: '“Ready, set, type!” said Maya. Then she smiled.',
+    hint: 'Pause only long enough to find each punctuation mark.',
+    difficulty: 4,
+    grades: [3, 12],
+  },
+  {
+    id: 'typing-numbers',
+    skillId: TYPING_SKILL_IDS.numbers,
+    title: 'Numbers and symbols',
+    passage: 'Room 24 has 18 laptops, 6 tablets, and 3 printers.',
+    hint: 'Reach for numbers deliberately, then return to home row.',
+    difficulty: 4,
+    grades: [4, 12],
+  },
+  {
+    id: 'typing-coding-syntax',
+    skillId: TYPING_SKILL_IDS.codingSyntax,
+    title: 'Code characters',
+    passage: 'const total = items.length; if (total > 0) { return total; }',
+    hint: 'Every character matters in code, especially brackets and symbols.',
+    difficulty: 5,
+    grades: [6, 12],
+  },
+];
 
-  await dynamoClient.send(new PutCommand({
-    TableName: TABLE_NAME,
-    Item: exercise5
-  }));
-
-  console.log('Done seeding.');
+async function put(item: Record<string, unknown>) {
+  await dynamoClient.send(new PutCommand({ TableName: tableName, Item: item }));
 }
 
-seed().catch(console.error);
+async function seed() {
+  console.log(`Seeding ${tableName} in ${region}...`);
+
+  await put({
+    PK: `DOMAIN#${TYPING_DOMAIN_ID}`,
+    SK: 'META',
+    GSI1PK: `DOMAIN#${TYPING_DOMAIN_ID}`,
+    GSI1SK: 'META',
+    id: TYPING_DOMAIN_ID,
+    name: 'Touch Typing',
+    slug: 'touch-typing',
+    description: 'Build accurate, confident touch typing habits.',
+    is_active: true,
+    sort_order: 1,
+    created_at: createdAt,
+  });
+
+  for (const skill of TYPING_SKILLS) {
+    await put({
+      PK: `SKILL#${skill.id}`,
+      SK: 'META',
+      GSI1PK: `DOMAIN#${TYPING_DOMAIN_ID}`,
+      GSI1SK: `SKILL#${String(skill.difficulty_baseline).padStart(2, '0')}#${skill.id}`,
+      ...skill,
+      created_at: createdAt,
+    });
+  }
+
+  for (const dependency of TYPING_DEPENDENCIES) {
+    await put({
+      PK: `DOMAIN#${TYPING_DOMAIN_ID}`,
+      SK: `DEPENDENCY#${dependency.from_skill_id}#${dependency.to_skill_id}`,
+      ...dependency,
+      created_at: createdAt,
+    });
+  }
+
+  for (const exercise of exercises) {
+    const [gradeMin, gradeMax] = exercise.grades;
+    await put({
+      PK: `DOMAIN#${TYPING_DOMAIN_ID}`,
+      SK: `EXERCISE#${exercise.id}`,
+      GSI1PK: `DOMAIN#${TYPING_DOMAIN_ID}`,
+      GSI1SK: `EXERCISE#${String(exercise.difficulty).padStart(2, '0')}#${exercise.id}`,
+      id: exercise.id,
+      domain_id: TYPING_DOMAIN_ID,
+      skill_ids: [exercise.skillId],
+      title: exercise.title,
+      difficulty: exercise.difficulty,
+      difficulty_metadata: {
+        passage_length: exercise.passage.length,
+        has_punctuation: /[.,!?;:'"]/u.test(exercise.passage),
+        has_capitalization: /[A-Z]/u.test(exercise.passage),
+        has_numbers: /\d/u.test(exercise.passage),
+        has_symbols: /[{}()[\]<>+=]/u.test(exercise.passage),
+        vocabulary_level: exercise.difficulty < 3 ? 'basic' : 'intermediate',
+      },
+      content: { passage: exercise.passage, hint: exercise.hint },
+      is_ai_generated: false,
+      grade_level_min: gradeMin,
+      grade_level_max: gradeMax,
+      created_at: createdAt,
+    });
+  }
+
+  console.log(`Seeded ${TYPING_SKILLS.length} skills, ${TYPING_DEPENDENCIES.length} dependencies, and ${exercises.length} exercises.`);
+}
+
+seed().catch((error: unknown) => {
+  console.error(error);
+  process.exitCode = 1;
+});

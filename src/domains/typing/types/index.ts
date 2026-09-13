@@ -147,6 +147,12 @@ export interface DiagnosticStageResult {
   skillsAssessed: string[];
 }
 
+export interface DiagnosticStageAttempt {
+  stage: DiagnosticStage;
+  sessionResult: TypingSessionResult;
+  skillIds: string[];
+}
+
 export interface DiagnosticAssessmentResult {
   assessmentAttemptId: string;
   studentId: string;

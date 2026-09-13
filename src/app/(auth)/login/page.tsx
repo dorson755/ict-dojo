@@ -103,6 +103,9 @@ function LoginForm() {
               autoComplete="one-time-code"
             />
           </div>
+          <div className={styles.footerText}>
+            <Link href="/reset-password" className={styles.link}>Reset password</Link>
+          </div>
 
           <button type="submit" className={styles.authButton} disabled={isLoading}>
             {isLoading ? 'Verifying...' : 'Verify email'}
@@ -204,6 +207,10 @@ function LoginForm() {
           {isLoading ? 'Logging in...' : 'Log in'}
         </button>
       </form>
+
+      <div className={styles.footerText}>
+        <Link href="/reset-password" className={styles.link}>Reset password</Link>
+      </div>
 
       <div className={styles.divider}>or</div>
 
