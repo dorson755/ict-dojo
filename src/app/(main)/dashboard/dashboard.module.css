@@ -313,6 +313,38 @@
   margin-bottom: var(--space-4);
 }
 
+.dnaSummary {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+
+.dnaRows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dnaRows div {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.dnaRows span {
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+}
+
+.dnaRows strong {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-align: right;
+}
+
 .streakRow {
   display: flex;
   justify-content: space-between;

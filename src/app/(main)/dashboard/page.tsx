@@ -65,6 +65,12 @@ export default async function DashboardPage() {
     },
   ]));
   const skillGraph = new SkillGraph(TYPING_SKILLS, TYPING_DEPENDENCIES);
+  const focusKeys = Object.entries(dna?.weak_keys ?? {})
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([key]) => key === ' ' ? 'space' : key.toUpperCase());
+  const dnaAccuracy = Math.round(dna?.avg_accuracy ?? 0);
+  const dnaConsistency = Math.min(100, ((dna?.sessions_analyzed ?? 0) * 5) + (streak * 5));
 
   return (
     <div className={styles.page}>
@@ -201,6 +207,18 @@ export default async function DashboardPage() {
                 Last assessed {new Date(dna.last_assessed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
             )}
+          </div>
+
+          <div className={styles.sideCard}>
+            <h3 className={styles.sideCardTitle}>Your learning DNA</h3>
+            <p className={styles.dnaSummary}>
+              {dnaAccuracy >= 95 ? 'You are building precise, controlled technique.' : dnaAccuracy >= 85 ? 'Your accuracy is developing steadily.' : 'Your Sensei is prioritizing control before speed.'}
+            </p>
+            <div className={styles.dnaRows}>
+              <div><span>Accuracy pattern</span><strong>{dna?.avg_accuracy ? `${dnaAccuracy}%` : 'Building'}</strong></div>
+              <div><span>Current focus</span><strong>{focusKeys.length ? focusKeys.join(' · ') : 'Discovering'}</strong></div>
+              <div><span>Consistency</span><strong>{dna?.sessions_analyzed ? `${dnaConsistency}%` : 'New'}</strong></div>
+            </div>
           </div>
 
           <div className={styles.sideCard}>

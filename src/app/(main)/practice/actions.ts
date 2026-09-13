@@ -99,10 +99,16 @@ export async function submitPracticeSession(
     .slice(0, 10);
     
   const finalWeakKeys = Object.fromEntries(sortedWeakKeys);
+  const sessionsAnalyzed = (currentDNA?.sessions_analyzed || 0) + 1;
+  const averageWpm = ((currentDNA?.avg_wpm || 0) * (sessionsAnalyzed - 1) + result.wpm) / sessionsAnalyzed;
+  const averageAccuracy = ((currentDNA?.avg_accuracy || 0) * (sessionsAnalyzed - 1) + result.accuracy) / sessionsAnalyzed;
 
   await UserRepository.upsertTypingDNA(user.id, {
     weak_keys: finalWeakKeys,
-    sessions_analyzed: (currentDNA?.sessions_analyzed || 0) + 1
+    sessions_analyzed: sessionsAnalyzed,
+    avg_wpm: Number(averageWpm.toFixed(2)),
+    avg_accuracy: Number(averageAccuracy.toFixed(2)),
+    last_assessed_at: new Date().toISOString(),
   });
 
   // Note: The recommendation is superseded by the new one created below,
