@@ -41,5 +41,15 @@ export function evaluateDocument(html: string, task: DocumentTask): DocumentEval
     else missingChecks.push(`Create a ${task.requiredList} list.`);
   }
 
+  if (task.requiredTable) {
+    if (/<table[\s\S]*<\/table>/i.test(normalized)) completedChecks.push('table inserted');
+    else missingChecks.push('Insert a table for the document data.');
+  }
+
+  if (task.requiredPageBreak) {
+    if (/<hr[^>]*(data-page-break|page-break)[^>]*>/i.test(normalized) || /page-break-after\s*:\s*always/i.test(normalized)) completedChecks.push('page break inserted');
+    else missingChecks.push('Insert a page break before the next section.');
+  }
+
   return { passed: missingChecks.length === 0, completedChecks, missingChecks };
 }

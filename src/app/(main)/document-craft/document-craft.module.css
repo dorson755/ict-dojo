@@ -26,4 +26,8 @@
 .paper { font-family: Georgia, 'Times New Roman', serif; font-size: 1.1rem; line-height: 1.8; min-height: 520px; outline: 0; padding: var(--space-12) clamp(var(--space-6), 8vw, var(--space-16)); }
 .paper h1 { font-family: Georgia, 'Times New Roman', serif; font-size: 2rem; margin-bottom: var(--space-6); }
 .paper p { margin-bottom: var(--space-4); }
+.paper table { border-collapse: collapse; margin: var(--space-6) 0; width: 100%; }
+.paper th, .paper td { border: 1px solid var(--border-strong); padding: var(--space-2) var(--space-3); text-align: left; }
+.paper th { background: var(--surface-2); font-family: var(--font-body); font-size: var(--text-sm); }
+.paper [data-page-break] { border: 0; border-top: 2px dashed var(--accent-light); margin: var(--space-10) 0; page-break-after: always; }
 @media (max-width: 760px) { .page { padding: var(--space-6) var(--space-4); } .header { align-items: start; flex-direction: column; } .workspace { grid-template-columns: 1fr; } .paper { min-height: 420px; padding: var(--space-8) var(--space-5); } }

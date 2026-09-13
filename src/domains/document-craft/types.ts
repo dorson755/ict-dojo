@@ -11,6 +11,8 @@ export interface DocumentTask {
   requiredAlignment?: DocumentAlignment;
   requiredBlock?: 'h1' | 'h2' | 'p';
   requiredList?: DocumentList;
+  requiredTable?: boolean;
+  requiredPageBreak?: boolean;
 }
 
 export interface DocumentEvaluation {

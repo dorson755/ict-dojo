@@ -6,15 +6,17 @@ import type { DocumentMark, DocumentTask } from '@/domains/document-craft/types'
 import styles from './document-craft.module.css';
 
 const task: DocumentTask = {
-  id: 'structured-study-plan',
-  title: 'Build a clean study outline',
-  instructions: 'Format the title as Heading 1, then select the three study topics and turn them into a bulleted list.',
+  id: 'professional-weekly-plan',
+  title: 'Build a professional weekly plan',
+  instructions: 'Format the title as Heading 1, turn the topics into a bulleted list, insert a schedule table, and add a page break for the notes section.',
   targetText: 'My ICT Study Plan',
   requiredBlock: 'h1',
   requiredList: 'unordered',
+  requiredTable: true,
+  requiredPageBreak: true,
 };
 
-const initialDocument = '<p>My ICT Study Plan</p><p>Keyboard fundamentals</p><p>Document formatting</p><p>Python practice</p>';
+const initialDocument = '<p>My ICT Study Plan</p><p>Keyboard fundamentals</p><p>Document formatting</p><p>Python practice</p><p>Notes and reflections</p>';
 
 export default function DocumentCraftClient() {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -43,14 +45,14 @@ export default function DocumentCraftClient() {
     <main className={styles.page}>
       <header className={styles.header}>
         <div><p className={styles.kicker}>Document craft / fundamentals</p><h1 className={styles.title}>Format with intention.</h1><p className={styles.subtitle}>Practice the document skills that make your work clear, polished, and professional.</p></div>
-        <span className={styles.level}>Mission 02</span>
+        <span className={styles.level}>Mission 03</span>
       </header>
       <div className={styles.workspace}>
         <aside className={styles.brief}>
           <p className={styles.briefLabel}>Current task</p>
           <h2>{task.title}</h2>
           <p>{task.instructions}</p>
-          <div className={styles.rubric}><span>Required</span><strong>Heading 1 + bulleted list</strong><small>Target: “{task.targetText}”</small></div>
+          <div className={styles.rubric}><span>Required</span><strong>Heading + list + table + page break</strong><small>Build a professional document structure.</small></div>
           <button className={styles.checkButton} onClick={evaluate}>Check document</button>
           {result && <div className={result.passed ? styles.success : styles.feedback}>{result.passed ? 'Task complete. Your formatting matches the rubric.' : result.missingChecks.join(' ')}</div>}
         </aside>
@@ -66,6 +68,8 @@ export default function DocumentCraftClient() {
             <button className={styles.toolButton} onMouseDown={(event) => event.preventDefault()} onClick={() => apply('outdent')} aria-label="Decrease indent">←</button>
             <button className={styles.toolButton} onMouseDown={(event) => event.preventDefault()} onClick={() => apply('indent')} aria-label="Increase indent">→</button>
             <span className={styles.divider} />
+            <button className={styles.toolButton} onMouseDown={(event) => event.preventDefault()} onClick={() => apply('insertHTML', '<table><tbody><tr><th>Day</th><th>Focus</th></tr><tr><td>Monday</td><td>Typing</td></tr><tr><td>Wednesday</td><td>Documents</td></tr></tbody></table>')} aria-label="Insert schedule table">▦</button>
+            <button className={styles.toolButton} onMouseDown={(event) => event.preventDefault()} onClick={() => apply('insertHTML', '<hr data-page-break="true" />')} aria-label="Insert page break">↧</button>
             {(['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'] as const).map((command) => <button key={command} className={styles.toolButton} onMouseDown={(event) => event.preventDefault()} onClick={() => apply(command)} aria-label={command}>{command === 'justifyLeft' ? '≡' : command === 'justifyCenter' ? '☷' : command === 'justifyRight' ? '≣' : '▤'}</button>)}
           </div>
           <div className={styles.paper} ref={editorRef} contentEditable suppressContentEditableWarning dangerouslySetInnerHTML={{ __html: initialDocument }} role="textbox" aria-label="Editable document" />
