@@ -8,7 +8,7 @@ const COGNITO_USER_POOL_ID = process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID;
 const COGNITO_CLIENT_ID = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID;
 
 // Public paths that do not require authentication
-const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/'];
+const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/reset-password', '/'];
 
 // Create JWKS store outside of middleware function so it's cached across requests
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
