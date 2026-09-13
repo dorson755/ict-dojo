@@ -6,6 +6,7 @@ import type { DocumentMark, DocumentTask } from '@/domains/document-craft/types'
 import Link from 'next/link';
 import { DOCUMENT_PROJECTS } from '@/domains/document-craft/projects';
 import styles from './document-craft.module.css';
+import { saveDocumentProject } from './actions';
 
 const fallbackTask: DocumentTask = {
   id: 'advanced-report',
@@ -29,7 +30,7 @@ export default function DocumentCraftClient({ projectId }: { projectId?: string 
   const task = project?.task ?? fallbackTask;
   const initialDocument = project?.initialDocument ?? fallbackDocument;
   const editorRef = useRef<HTMLDivElement>(null);
-  const [result, setResult] = useState<{ passed: boolean; missingChecks: string[] } | null>(null);
+  const [result, setResult] = useState<{ passed: boolean; missingChecks: string[]; saved?: boolean } | null>(null);
 
   function apply(command: string, value?: string) {
     editorRef.current?.focus();
@@ -40,6 +41,21 @@ export default function DocumentCraftClient({ projectId }: { projectId?: string 
     if (!editorRef.current) return;
     const evaluation = evaluateDocument(editorRef.current.innerHTML, task);
     setResult(evaluation);
+    if (evaluation.passed && editorRef.current) {
+      void saveDocumentProject(project?.id ?? task.id, editorRef.current.innerHTML, true, evaluation.completedChecks)
+        .then(() => setResult({ ...evaluation, saved: true }));
+    }
+  }
+
+  function downloadDocument() {
+    if (!editorRef.current) return;
+    const blob = new Blob([`<!doctype html><html><body>${editorRef.current.innerHTML}</body></html>`], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${project?.id ?? 'document-craft'}.html`;
+    anchor.click();
+    URL.revokeObjectURL(url);
   }
 
   const buttons: { label: string; command: string; mark?: DocumentMark }[] = [
@@ -63,7 +79,9 @@ export default function DocumentCraftClient({ projectId }: { projectId?: string 
           <p>{task.instructions}</p>
           <div className={styles.rubric}><span>Required</span><strong>Footnote + citation + columns + tracked change</strong><small>Practice advanced document-production controls.</small></div>
           <button className={styles.checkButton} onClick={evaluate}>Check document</button>
-          {result && <div className={result.passed ? styles.success : styles.feedback}>{result.passed ? 'Task complete. Your formatting matches the rubric.' : result.missingChecks.join(' ')}</div>}
+          {result && <div className={result.passed ? styles.success : styles.feedback}>{result.passed ? `Task complete. Your formatting matches the rubric.${result.saved ? ' Saved to your portfolio.' : ''}` : result.missingChecks.join(' ')}</div>}
+          <button className={styles.downloadButton} onClick={downloadDocument}>Download document</button>
+          <Link className={styles.portfolioLink} href="/document-craft/portfolio">View portfolio</Link>
         </aside>
         <section className={styles.editorShell} aria-label="Document editor">
           <div className={styles.toolbar} role="toolbar" aria-label="Formatting toolbar">
