@@ -8,6 +8,7 @@ import { MasteryRepository, type SkillMastery } from '@/lib/aws/repositories/mas
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import BeltBadge, { getBeltFromLevel } from '@/components/ui/BeltBadge';
 import SkillBar from '@/components/ui/SkillBar';
+import SkillTrackCard from '@/components/ui/SkillTrackCard';
 import AIGreeting from './AIGreeting';
 import styles from './dashboard.module.css';
 
@@ -16,6 +17,57 @@ interface SessionRecord {
   wpm?: number;
   accuracy?: number;
 }
+
+const ALL_SKILLS = [
+  {
+    id: '00000000-0000-0000-0000-000000000001',
+    name: 'Home Row',
+    description: 'Master the foundational keys: A S D F J K L ;',
+    icon: '⌨️',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000002',
+    name: 'Top Row',
+    description: 'Build speed on Q W E R T Y U I O P',
+    icon: '🔝',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000003',
+    name: 'Bottom Row',
+    description: 'Nail Z X C V B N M with precision',
+    icon: '⬇️',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000004',
+    name: 'Numbers & Symbols',
+    description: 'Hit the number row and common symbols accurately',
+    icon: '🔢',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000005',
+    name: 'Shift Key Mastery',
+    description: 'Capitalize with both shift keys, build the habit',
+    icon: '⬆️',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000006',
+    name: 'Coding Syntax',
+    description: 'Brackets, braces, operators — train like a developer',
+    icon: '💻',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000007',
+    name: '10-Key Numpad',
+    description: 'Rapid numeric data entry with the number pad',
+    icon: '🔟',
+  },
+  {
+    id: '00000000-0000-0000-0000-000000000008',
+    name: 'Advanced Punctuation',
+    description: 'Semicolons, colons, em-dashes, and quoted dialogue',
+    icon: '✍️',
+  },
+];
 
 export default async function DashboardPage() {
   const user = await getUserSession();
@@ -102,24 +154,25 @@ export default async function DashboardPage() {
       <div className={styles.grid}>
         {/* Main column */}
         <div>
-          {/* Skill Mastery */}
+          {/* Skill Tracks Catalog */}
           <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Skill mastery</h2>
-            <div className={styles.skillList}>
-              {masteredSkills && masteredSkills.length > 0 ? (
-                masteredSkills.map((sm: SkillMastery, i: number) => (
-                  <SkillBar
-                    key={i}
-                    name={sm.skills?.name || 'Skill'}
-                    score={sm.mastery_score}
-                    level={sm.mastery_level}
+            <h2 className={styles.sectionTitle}>Skill tracks</h2>
+            <div className={styles.skillGrid}>
+              {ALL_SKILLS.map((skill) => {
+                const mastery = masteredSkills.find((m: SkillMastery) => m.skill_id === skill.id);
+                return (
+                  <SkillTrackCard
+                    key={skill.id}
+                    skillId={skill.id}
+                    name={skill.name}
+                    description={skill.description}
+                    icon={skill.icon}
+                    score={mastery?.mastery_score ?? 0}
+                    level={mastery?.mastery_level ?? 'not_started'}
+                    practiceCount={mastery?.practice_count ?? 0}
                   />
-                ))
-              ) : (
-                <p className={styles.emptyState}>
-                  No skills tracked yet. Complete a practice session to see your mastery here.
-                </p>
-              )}
+                );
+              })}
             </div>
           </div>
         </div>

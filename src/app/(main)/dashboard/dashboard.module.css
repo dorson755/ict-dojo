@@ -179,6 +179,12 @@
   gap: var(--space-5);
 }
 
+.skillGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-4);
+}
+
 .emptyState {
   font-size: var(--text-sm);
   color: var(--ink-3);
