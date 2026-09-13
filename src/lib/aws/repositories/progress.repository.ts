@@ -18,6 +18,10 @@ export interface DailyQuest {
   date: string;
 }
 
+export interface WeeklyQuest extends DailyQuest {
+  week: string;
+}
+
 export class ProgressRepository {
   static async updatePersonalRecord(
     userId: string,
@@ -72,5 +76,42 @@ export class ProgressRepository {
       Key: { PK: `USER#${userId}`, SK: `QUEST#daily-accuracy#${date}` },
     }));
     return (response.Item as DailyQuest | undefined) ?? null;
+  }
+
+  static async updateWeeklyConsistencyQuest(userId: string): Promise<WeeklyQuest> {
+    const week = this.currentWeek();
+    const key = { PK: `USER#${userId}`, SK: `QUEST#weekly-consistency#${week}` };
+    const existing = await dynamoClient.send(new GetCommand({ TableName: TABLE_NAME, Key: key }));
+    const quest = existing.Item as WeeklyQuest | undefined;
+    const progress = Math.min(5, (quest?.progress ?? 0) + 1);
+    const nextQuest: WeeklyQuest = {
+      id: 'weekly-consistency',
+      title: 'Consistent practice',
+      description: 'Complete 5 practice sessions this week.',
+      target: 5,
+      progress,
+      completed: progress >= 5,
+      reward_xp: 250,
+      date: week,
+      week,
+    };
+    await dynamoClient.send(new PutCommand({ TableName: TABLE_NAME, Item: { ...key, ...nextQuest } }));
+    return nextQuest;
+  }
+
+  static async getCurrentWeeklyQuest(userId: string): Promise<WeeklyQuest | null> {
+    const week = this.currentWeek();
+    const response = await dynamoClient.send(new GetCommand({
+      TableName: TABLE_NAME,
+      Key: { PK: `USER#${userId}`, SK: `QUEST#weekly-consistency#${week}` },
+    }));
+    return (response.Item as WeeklyQuest | undefined) ?? null;
+  }
+
+  private static currentWeek(): string {
+    const date = new Date();
+    const day = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() - day + 1);
+    return date.toISOString().slice(0, 10);
   }
 }

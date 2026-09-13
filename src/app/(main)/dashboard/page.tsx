@@ -35,12 +35,13 @@ export default async function DashboardPage() {
     redirect('/onboarding');
   }
 
-  const [dna, activeRec, allMasteries, recentSessions, dailyQuest, records] = await Promise.all([
+  const [dna, activeRec, allMasteries, recentSessions, dailyQuest, weeklyQuest, records] = await Promise.all([
     UserRepository.getTypingDNA(user.id).catch(() => null),
     RecommendationRepository.getActiveRecommendation(user.id).catch(() => null),
     MasteryRepository.getAllMastery(user.id).catch(() => []),
     ExerciseRepository.getRecentSessions(user.id, 5).catch(() => []),
     ProgressRepository.getTodaysQuest(user.id).catch(() => null),
+    ProgressRepository.getCurrentWeeklyQuest(user.id).catch(() => null),
     ProgressRepository.getPersonalRecords(user.id).catch(() => []),
   ]);
 
@@ -200,6 +201,29 @@ export default async function DashboardPage() {
                 Last assessed {new Date(dna.last_assessed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
             )}
+          </div>
+
+          <div className={styles.sideCard}>
+            <h3 className={styles.sideCardTitle}>Weekly quest</h3>
+            {weeklyQuest ? (
+              <>
+                <p className={styles.questTitle}>{weeklyQuest.title}</p>
+                <p className={styles.questDescription}>{weeklyQuest.description}</p>
+                <div className={styles.questProgress}><span style={{ width: `${(weeklyQuest.progress / weeklyQuest.target) * 100}%` }} /></div>
+                <p className={styles.statSub}>{weeklyQuest.completed ? 'Complete' : `${weeklyQuest.progress} of ${weeklyQuest.target}`} · {weeklyQuest.reward_xp} XP</p>
+              </>
+            ) : <p className={styles.emptyState}>Complete a session to start this week&apos;s goal.</p>}
+          </div>
+
+          <div className={styles.sideCard}>
+            <h3 className={styles.sideCardTitle}>Earned badges</h3>
+            <div className={styles.badges}>
+              {level >= 2 && <span className={styles.badge}>First milestone</span>}
+              {(dna?.avg_accuracy ?? 0) >= 95 && <span className={styles.badge}>Precision adept</span>}
+              {streak >= 7 && <span className={styles.badge}>Seven-day discipline</span>}
+              {allMasteries.filter((mastery) => mastery.mastery_level === 'mastered').length >= 3 && <span className={styles.badge}>Skill builder</span>}
+              {level < 2 && (dna?.avg_accuracy ?? 0) < 95 && streak < 7 && <p className={styles.emptyState}>Your next badge is earned through steady practice.</p>}
+            </div>
           </div>
 
           {/* Weaknesses */}

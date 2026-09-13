@@ -196,10 +196,11 @@ export async function submitPracticeSession(
 
   await UserRepository.awardXp(user.id, xpAward.xpGained, levelUpdate.newLevel);
   await UserRepository.updateStreak(user.id, streakUpdate.streak, new Date().toISOString().split('T')[0]);
-  const [newWpmRecord, newAccuracyRecord, quest] = await Promise.all([
+  const [newWpmRecord, newAccuracyRecord, quest, weeklyQuest] = await Promise.all([
     ProgressRepository.updatePersonalRecord(user.id, 'best_wpm', result.wpm),
     ProgressRepository.updatePersonalRecord(user.id, 'best_accuracy', result.accuracy),
     ProgressRepository.updateDailyAccuracyQuest(user.id, result.accuracy),
+    ProgressRepository.updateWeeklyConsistencyQuest(user.id),
   ]);
 
   return {
@@ -216,6 +217,7 @@ export async function submitPracticeSession(
       newWpmRecord,
       newAccuracyRecord,
       quest,
+      weeklyQuest,
     },
   };
 }
