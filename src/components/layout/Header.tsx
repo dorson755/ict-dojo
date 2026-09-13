@@ -34,6 +34,11 @@ export default async function Header() {
         >
           Practice
         </Link>
+        {user.role === 'student' && (
+          <Link href="/profile" className={styles.navLink}>
+            Profile
+          </Link>
+        )}
         {(profile?.platform_level ?? 1) >= 5 && (
           <Link
             href="/programming"

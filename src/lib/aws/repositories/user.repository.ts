@@ -68,7 +68,7 @@ export class UserRepository {
     };
   }
 
-  static async updateProfile(userId: string, gradeLevel: number): Promise<void> {
+  static async updateProfile(userId: string, gradeLevel: number, displayName?: string): Promise<void> {
     // Fetch existing item first so we don't overwrite XP, level, streak, etc.
     const existing = await dynamoClient.send(
       new GetCommand({ TableName: TABLE_NAME, Key: { PK: `USER#${userId}`, SK: 'PROFILE' } })
@@ -82,6 +82,7 @@ export class UserRepository {
         PK: `USER#${userId}`,
         SK: 'PROFILE',
         grade_level: gradeLevel,
+        ...(displayName !== undefined ? { display_name: displayName } : {}),
         xp_total: prev.xp_total ?? 0,
         platform_level: prev.platform_level ?? 1,
         streak_count: prev.streak_count ?? 0,
