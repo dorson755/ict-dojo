@@ -29,6 +29,11 @@ export default async function Header() {
             Profile
           </Link>
         )}
+        {user.role === 'student' && (
+          <Link href="/document-craft" className={styles.navLink}>
+            Documents
+          </Link>
+        )}
         {(profile?.platform_level ?? 1) >= 5 && (
           <Link
             href="/programming"
