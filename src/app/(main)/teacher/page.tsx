@@ -43,7 +43,8 @@ export default async function TeacherDashboardPage() {
         {students.length === 0 ? <p className={styles.emptyText}>Learners will appear here as they complete onboarding.</p> : (
           <div className={styles.learnerList}>
             {students.sort((a, b) => Number(b.needsAttention) - Number(a.needsAttention) || b.averageMastery - a.averageMastery).map((student) => (
-              <div className={styles.learnerRow} key={student.id}>
+              <Link className={styles.learnerLink} href={`/teacher/student/${student.id}`} key={student.id}>
+              <div className={styles.learnerRow}>
                 <div className={styles.learnerIdentity}><span className={styles.avatar}>{(student.display_name || 'S').slice(0, 1).toUpperCase()}</span><div><strong>{student.display_name || 'Unnamed learner'}</strong><span className={styles.learnerMeta}>Level {student.platform_level} · Grade {student.grade_level || '—'}</span></div></div>
                 <div className={styles.learnerMetric}><strong>{student.averageMastery}%</strong><span>mastery</span></div>
                 <div className={styles.learnerMetric}><strong>{student.sessionsThisWeek}</strong><span>sessions · {student.minutesThisWeek}m</span></div>
@@ -51,6 +52,7 @@ export default async function TeacherDashboardPage() {
                 <div className={styles.learnerMetric}><strong>{student.weakSkills}</strong><span>weak skills</span></div>
                 <span className={student.needsAttention ? styles.attentionBadge : styles.healthyBadge}>{student.needsAttention ? 'Review' : 'On track'}</span>
               </div>
+              </Link>
             ))}
           </div>
         )}
