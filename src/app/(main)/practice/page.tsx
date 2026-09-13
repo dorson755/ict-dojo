@@ -5,6 +5,7 @@ import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { AdaptiveGenerator } from '@/domains/typing/generators/AdaptiveGenerator';
+import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import styles from './practice.module.css';
 
 export default async function PracticePage() {
@@ -58,7 +59,7 @@ export default async function PracticePage() {
   } else if (targetSkillId === CODING_SYNTAX_SKILL_ID) {
     const passage = await AdaptiveGenerator.generateCodingDrill(weakKeys, grade, 25);
     exercise = {
-      id: `coding-drill-${Date.now()}`,
+      id: 'coding-drill-adaptive',
       domain_id: '1',
       skill_ids: [CODING_SYNTAX_SKILL_ID],
       title: 'Coding Syntax Drill',
@@ -76,7 +77,7 @@ export default async function PracticePage() {
   } else if (targetSkillId === NUMPAD_SKILL_ID) {
     const passage = await AdaptiveGenerator.generateNumpadDrill(25);
     exercise = {
-      id: `numpad-drill-${Date.now()}`,
+      id: 'numpad-drill-adaptive',
       domain_id: '1',
       skill_ids: [NUMPAD_SKILL_ID],
       title: '10-Key Speed Drill',
@@ -94,7 +95,7 @@ export default async function PracticePage() {
   } else if (targetSkillId === PUNCTUATION_SKILL_ID) {
     const passage = await AdaptiveGenerator.generatePunctuationDrill(name, grade, 20);
     exercise = {
-      id: `punctuation-drill-${Date.now()}`,
+      id: 'punctuation-drill-adaptive',
       domain_id: '1',
       skill_ids: [PUNCTUATION_SKILL_ID],
       title: 'Advanced Punctuation Drill',
@@ -114,7 +115,7 @@ export default async function PracticePage() {
     const passage = await AdaptiveGenerator.generatePassage(weakKeys, name, grade, 20);
 
     exercise = {
-      id: `adaptive-drill-${Date.now()}`,
+      id: 'adaptive-drill',
       domain_id: '1',
       skill_ids: [],
       title: 'Adaptive Weakness Drill',
@@ -156,6 +157,15 @@ export default async function PracticePage() {
       </div>
     );
   }
+
+  const targetSkill = TYPING_SKILLS.find((skill) => exercise.skill_ids.includes(skill.id));
+  const mode = targetSkill
+    ? (targetSkill.metadata as { practiceMode?: string }).practiceMode
+    : 'accuracy';
+  exercise.difficulty_metadata = {
+    ...exercise.difficulty_metadata,
+    practice_mode: mode,
+  };
 
   return (
     <div className={styles.page}>

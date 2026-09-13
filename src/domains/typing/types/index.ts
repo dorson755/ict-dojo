@@ -15,6 +15,8 @@ export interface TypingExerciseContent {
   target_skill_slugs?: string[];
 }
 
+export type TypingMode = 'accuracy' | 'speed' | 'rhythm' | 'technique';
+
 // ------------------------------------------------------------
 // Difficulty metadata shape (exercises.difficulty_metadata JSONB)
 // ------------------------------------------------------------
@@ -91,6 +93,7 @@ export interface TypingSessionInput {
   startedAt: number; // Unix ms
   completedAt: number; // Unix ms
   skillIds: string[];
+  mode?: TypingMode;
 }
 
 // ------------------------------------------------------------
@@ -112,6 +115,8 @@ export interface TypingSessionResult {
   hesitationEvents: HesitationEvent[];
   /** Composite score for mastery calculation: 0–100 */
   compositeScore: number;
+  mode?: TypingMode;
+  modeScore?: number;
   /** Whether the session constitutes a valid measurement */
   isValid: boolean;
   /** Reason if invalid */

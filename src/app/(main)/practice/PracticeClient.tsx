@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import TypingEngine from '@/components/typing/TypingEngine';
 import { submitPracticeSession } from './actions';
-import { TypingSessionInput, TypingSessionResult } from '@/domains/typing/types';
+import { TypingMode, TypingSessionInput, TypingSessionResult } from '@/domains/typing/types';
 import { TypingEvaluator } from '@/domains/typing/evaluator';
 import Link from 'next/link';
 import styles from './practice.module.css';
@@ -35,6 +35,7 @@ interface PracticeClientProps {
 }
 
 export default function PracticeClient({ studentId, exercise }: PracticeClientProps) {
+  const mode = (exercise.difficulty_metadata.practice_mode as TypingMode | undefined) ?? 'accuracy';
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [result, setResult] = useState<TypingSessionResult | null>(null);
   const [nextRec, setNextRec] = useState<{ reason?: string } | null>(null);
@@ -46,7 +47,7 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
     setError(null);
     try {
       const evaluator = new TypingEvaluator();
-      const resultData = evaluator.evaluate(sessionData);
+      const resultData = evaluator.evaluate({ ...sessionData, mode });
 
       const response = await submitPracticeSession(
         resultData,
@@ -160,6 +161,7 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
         studentId={studentId}
         exerciseId={exercise.id}
         skillIds={exercise.skill_ids}
+        mode={mode}
         onComplete={handleComplete}
       />
 

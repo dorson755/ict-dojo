@@ -5,6 +5,7 @@ import {
   ErrorLocation,
   KeyPairError,
   HesitationEvent,
+  TypingMode,
 } from '../types';
 
 /**
@@ -35,6 +36,7 @@ export class TypingEvaluator
 
   public evaluate(input: TypingSessionInput): TypingSessionResult {
     const { passage, keystrokes, startedAt, completedAt } = input;
+    const mode: TypingMode = input.mode ?? 'accuracy';
 
     // 1. Base Metrics
     const durationMs = completedAt - startedAt;
@@ -122,10 +124,21 @@ export class TypingEvaluator
       else if (durationMs >= 1000 * 60 * 30) invalidReason = 'Session too long (over 30 mins).';
     }
 
-    // 5. Composite Score (0-100)
-    // A blend of accuracy and speed progress. (Basic implementation for MVP)
-    // Real implementation would compare against grade-level baseline
-    const compositeScore = Math.max(0, Math.min(100, (accuracy * 0.7) + (Math.min(wpm, 100) * 0.3)));
+    const modeScore = mode === 'speed'
+      ? Math.min(100, (wpm / 60) * 100)
+      : mode === 'rhythm'
+        ? Math.max(0, 100 - (hesitationEvents.length * 8))
+        : mode === 'technique'
+          ? Math.max(0, 100 - (backspaces * 4))
+          : accuracy;
+
+    const compositeScore = mode === 'speed'
+      ? (accuracy * 0.45) + (modeScore * 0.55)
+      : mode === 'rhythm'
+        ? (accuracy * 0.55) + (modeScore * 0.45)
+        : mode === 'technique'
+          ? (accuracy * 0.65) + (modeScore * 0.35)
+          : (accuracy * 0.85) + (Math.min(wpm, 100) * 0.15);
 
     return {
       wpm,
@@ -141,6 +154,8 @@ export class TypingEvaluator
       keyPairErrors,
       hesitationEvents,
       compositeScore: Number(compositeScore.toFixed(2)),
+      mode,
+      modeScore: Number(modeScore.toFixed(2)),
       isValid,
       invalidReason,
       keystrokes: input.keystrokes

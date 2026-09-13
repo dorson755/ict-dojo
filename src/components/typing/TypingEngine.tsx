@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './TypingEngine.module.css';
-import { KeystrokeEvent, TypingSessionInput } from '@/domains/typing/types';
+import { KeystrokeEvent, TypingSessionInput, TypingMode } from '@/domains/typing/types';
 
 interface TypingEngineProps {
   passage: string;
@@ -10,6 +10,7 @@ interface TypingEngineProps {
   exerciseId: string;
   skillIds: string[];
   onComplete: (data: TypingSessionInput) => void;
+  mode?: TypingMode;
 }
 
 export default function TypingEngine({
@@ -18,6 +19,7 @@ export default function TypingEngine({
   exerciseId,
   skillIds,
   onComplete,
+  mode = 'accuracy',
 }: TypingEngineProps) {
   // --------------------------------------------------------
   // State
@@ -144,9 +146,10 @@ export default function TypingEngine({
         startedAt: startedAtRef.current!,
         completedAt: now,
         skillIds,
+          mode,
       });
     }
-  }, [passage, studentId, exerciseId, skillIds, onComplete]);
+  }, [passage, studentId, exerciseId, skillIds, onComplete, mode]);
 
   // --------------------------------------------------------
   // Render Helpers
@@ -161,6 +164,10 @@ export default function TypingEngine({
     <div className={styles.container}>
       {/* Stats Bar */}
       <div className={styles.statsBar}>
+        <div className={styles.statGroup}>
+          <span className={styles.statLabel}>Mode</span>
+          <span className={styles.statValue}>{mode}</span>
+        </div>
         <div className={styles.statGroup}>
           <span className={styles.statLabel}>WPM</span>
           <span className={styles.statValue}>{liveWpm}</span>
