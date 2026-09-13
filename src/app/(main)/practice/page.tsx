@@ -32,6 +32,11 @@ export default async function PracticePage() {
   let exercise: PracticeExercise | null = null;
   const isBeltTest = (xp % 1000) > 900;
 
+  // Skill IDs that map to specialized AI generators
+  const CODING_SYNTAX_SKILL_ID = '00000000-0000-0000-0000-000000000006';
+  const NUMPAD_SKILL_ID = '00000000-0000-0000-0000-000000000007';
+  const PUNCTUATION_SKILL_ID = '00000000-0000-0000-0000-000000000008';
+
   if (isBeltTest && hasWeakKeys) {
     const passage = await AdaptiveGenerator.generateBeltTest(weakKeys, name, grade, 50);
     exercise = {
@@ -50,9 +55,62 @@ export default async function PracticePage() {
       grade_level_max: 12,
       created_at: new Date().toISOString(),
     };
+  } else if (targetSkillId === CODING_SYNTAX_SKILL_ID) {
+    const passage = await AdaptiveGenerator.generateCodingDrill(weakKeys, grade, 25);
+    exercise = {
+      id: `coding-drill-${Date.now()}`,
+      domain_id: '1',
+      skill_ids: [CODING_SYNTAX_SKILL_ID],
+      title: 'Coding Syntax Drill',
+      difficulty: 4,
+      difficulty_metadata: {},
+      content: {
+        passage,
+        hint: 'Type this code snippet exactly — every bracket, semicolon, and symbol counts!',
+      },
+      is_ai_generated: true,
+      grade_level_min: 1,
+      grade_level_max: 12,
+      created_at: new Date().toISOString(),
+    };
+  } else if (targetSkillId === NUMPAD_SKILL_ID) {
+    const passage = await AdaptiveGenerator.generateNumpadDrill(25);
+    exercise = {
+      id: `numpad-drill-${Date.now()}`,
+      domain_id: '1',
+      skill_ids: [NUMPAD_SKILL_ID],
+      title: '10-Key Speed Drill',
+      difficulty: 3,
+      difficulty_metadata: {},
+      content: {
+        passage,
+        hint: 'Focus on the number row. Accuracy over speed — build the muscle memory first.',
+      },
+      is_ai_generated: true,
+      grade_level_min: 1,
+      grade_level_max: 12,
+      created_at: new Date().toISOString(),
+    };
+  } else if (targetSkillId === PUNCTUATION_SKILL_ID) {
+    const passage = await AdaptiveGenerator.generatePunctuationDrill(name, grade, 20);
+    exercise = {
+      id: `punctuation-drill-${Date.now()}`,
+      domain_id: '1',
+      skill_ids: [PUNCTUATION_SKILL_ID],
+      title: 'Advanced Punctuation Drill',
+      difficulty: 4,
+      difficulty_metadata: {},
+      content: {
+        passage,
+        hint: 'Pay close attention to semicolons, colons, hyphens, and quoted speech.',
+      },
+      is_ai_generated: true,
+      grade_level_min: 1,
+      grade_level_max: 12,
+      created_at: new Date().toISOString(),
+    };
   } else if (activeRec?.recommended_exercise_id === 'ADAPTIVE_WEAKNESS_DRILL' || hasWeakKeys) {
-    // If they have weak keys, we generate an adaptive drill either if explicitly recommended,
-    // or as the default fallback instead of a boring static exercise.
+    // If they have weak keys, generate an adaptive drill as the default instead of a static exercise.
     const passage = await AdaptiveGenerator.generatePassage(weakKeys, name, grade, 20);
 
     exercise = {

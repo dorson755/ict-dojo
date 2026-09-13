@@ -9,19 +9,28 @@ export interface PassageGenerationInput {
   lengthMax: number;
   theme?: string;
   vocabularyLevel: 'basic' | 'intermediate' | 'advanced' | 'technical';
-  format?: 'story' | 'paragraph' | 'belt-test';
+  format?: 'story' | 'paragraph' | 'belt-test' | 'code-snippet' | 'data-entry';
 }
 
 export class ContentGenerator {
   public static async generatePassage(input: PassageGenerationInput): Promise<string> {
     const groq = getGroqClient();
 
-    const nameContext = input.studentName ? `The student's name is ${input.studentName}. Incorporate their name as the main character.` : '';
-    const formatContext = input.format === 'belt-test'
-      ? `This is a highly intense 'Belt Test' to evaluate their mastery. Make it sound epic, challenging, and slightly dramatic.`
-      : input.format === 'story'
-        ? `Write an engaging, short narrative story.`
-        : `Write an educational paragraph.`;
+    let formatContext = '';
+    let nameContext = '';
+
+    if (input.format === 'code-snippet') {
+      formatContext = `Write a short, realistic code snippet in JavaScript or Python. Do NOT use markdown blocks, just the raw code. It should look like a real function or object definition.`;
+    } else if (input.format === 'data-entry') {
+      formatContext = `Write a block of raw data (like a spreadsheet row, IP addresses, or financial ledger entry) focused heavily on numbers and symbols. Do NOT use markdown.`;
+    } else {
+      nameContext = input.studentName ? `The student's name is ${input.studentName}. Incorporate their name as the main character.` : '';
+      formatContext = input.format === 'belt-test'
+        ? `This is a highly intense 'Belt Test' to evaluate their mastery. Make it sound epic, challenging, and slightly dramatic.`
+        : input.format === 'story'
+          ? `Write an engaging, short narrative story.`
+          : `Write an educational paragraph.`;
+    }
 
     const prompt = `
 You are an expert educational content creator for a typing application.

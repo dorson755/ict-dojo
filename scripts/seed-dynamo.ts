@@ -84,6 +84,42 @@ async function seed() {
     }
   }));
 
+  const CODING_SYNTAX_SKILL_ID = '00000000-0000-0000-0000-000000000006';
+  await dynamoClient.send(new PutCommand({
+    TableName: TABLE_NAME,
+    Item: {
+      PK: `SKILL#${CODING_SYNTAX_SKILL_ID}`,
+      SK: 'META',
+      name: 'Coding Syntax',
+      domain_id: DOMAIN_ID,
+      difficulty_baseline: 4,
+    }
+  }));
+
+  const NUMPAD_SKILL_ID = '00000000-0000-0000-0000-000000000007';
+  await dynamoClient.send(new PutCommand({
+    TableName: TABLE_NAME,
+    Item: {
+      PK: `SKILL#${NUMPAD_SKILL_ID}`,
+      SK: 'META',
+      name: '10-Key Numpad',
+      domain_id: DOMAIN_ID,
+      difficulty_baseline: 3,
+    }
+  }));
+
+  const PUNCTUATION_SKILL_ID = '00000000-0000-0000-0000-000000000008';
+  await dynamoClient.send(new PutCommand({
+    TableName: TABLE_NAME,
+    Item: {
+      PK: `SKILL#${PUNCTUATION_SKILL_ID}`,
+      SK: 'META',
+      name: 'Advanced Punctuation',
+      domain_id: DOMAIN_ID,
+      difficulty_baseline: 4,
+    }
+  }));
+
   // 3. Seed Exercises
   const exercise1 = {
     PK: `DOMAIN#${DOMAIN_ID}`,
