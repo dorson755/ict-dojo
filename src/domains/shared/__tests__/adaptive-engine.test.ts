@@ -1,5 +1,5 @@
 import { AdaptiveEngine } from '../adaptive-engine';
-import { RecommendationInput, Skill, SkillDependency, SkillMastery } from '@/types/platform';
+import { ExerciseAttempt, RecommendationInput, Skill, SkillDependency, SkillMastery } from '@/types/platform';
 
 describe('AdaptiveEngine', () => {
   const domainId = 'domain-1';
@@ -95,5 +95,35 @@ describe('AdaptiveEngine', () => {
 
     const recommendation = engine.getNextRecommendation(input);
     expect(recommendation).toBeNull();
+  });
+
+  it('decays stale mastery for retrieval practice', () => {
+    const now = new Date('2026-01-29T00:00:00.000Z');
+    const score = engine.applyForgetting(100, '2026-01-01T00:00:00.000Z', now);
+
+    expect(score).toBe(25);
+  });
+
+  it('raises priority when recent attempts are weak', () => {
+    const input: RecommendationInput = {
+      studentId: 'student-1',
+      domainId,
+      masteryMap: new Map([
+        ['skill-A', {
+          mastery_level: 'strong',
+          mastery_score: 80,
+          last_practiced_at: new Date().toISOString(),
+        } as SkillMastery],
+      ]),
+      skills: mockSkills,
+      dependencies: mockDependencies,
+      recentAttempts: [
+        { skill_ids: ['skill-A'], score: 20 } as ExerciseAttempt,
+      ],
+    };
+
+    const recommendation = engine.getNextRecommendation(input);
+    expect(recommendation?.recommended_skill_id).toBe('skill-A');
+    expect(recommendation?.priority).toBe(54);
   });
 });

@@ -45,7 +45,12 @@ export async function submitPracticeSession(
   if (!user) throw new Error('Not authenticated');
 
   // Log session
-  await ExerciseRepository.logSession(user.id, result);
+  await ExerciseRepository.logSession(user.id, {
+    ...result,
+    exercise_id: exerciseId,
+    skill_ids: skillIds,
+    score: result.compositeScore,
+  });
 
   // Analyze keystrokes for weaknesses
   const sessionWeaknesses: Record<string, number> = {};
@@ -144,6 +149,18 @@ export async function submitPracticeSession(
     allMasteries.map((mastery) => [mastery.skill_id, toMasterySnapshot(mastery)])
   );
   const dependencies = await SkillRepository.getDependenciesByDomain('1');
+  const recentSessions = await ExerciseRepository.getRecentSessions(user.id, 10);
+  const recentAttempts = recentSessions.map((session) => ({
+    id: String(session.SK ?? session.id ?? ''),
+    student_id: user.id,
+    exercise_id: String(session.exercise_id ?? ''),
+    skill_ids: Array.isArray(session.skill_ids) ? session.skill_ids : [],
+    started_at: String(session.created_at ?? ''),
+    completed_at: String(session.created_at ?? ''),
+    completion_status: 'completed' as const,
+    score: typeof session.score === 'number' ? session.score : null,
+    raw_performance: session,
+  }));
 
   const adaptiveEngine = new AdaptiveEngine();
   const nextTarget = adaptiveEngine.getNextRecommendation({
@@ -152,7 +169,7 @@ export async function submitPracticeSession(
     masteryMap,
     skills,
     dependencies,
-    recentAttempts: [],
+    recentAttempts,
     weakKeys: finalWeakKeys
   });
 
