@@ -9,6 +9,7 @@ export interface StudentProfile {
   platform_level?: number;
   streak_count?: number;
   last_practice_date?: string;
+  linked_student_ids?: string[];
 }
 
 export interface TypingDNA {
@@ -38,6 +39,7 @@ export class UserRepository {
         platform_level: item.platform_level ?? 1,
         streak_count: item.streak_count ?? 0,
         last_practice_date: item.last_practice_date,
+        linked_student_ids: item.linked_student_ids ?? [],
       }))
       .filter((profile) => profile.id && profile.id !== excludeUserId && profile.id !== 'undefined');
   }
@@ -62,6 +64,7 @@ export class UserRepository {
       platform_level: response.Item.platform_level ?? 1,
       streak_count: response.Item.streak_count ?? 0,
       last_practice_date: response.Item.last_practice_date,
+      linked_student_ids: response.Item.linked_student_ids ?? [],
     };
   }
 

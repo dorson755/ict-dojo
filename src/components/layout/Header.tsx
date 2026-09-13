@@ -50,6 +50,11 @@ export default async function Header() {
             Teacher
           </Link>
         )}
+        {user.role === 'parent' && (
+          <Link href="/parent" className={styles.navLink}>
+            Family
+          </Link>
+        )}
       </nav>
 
       <div className={styles.userInfo}>
