@@ -193,6 +193,5 @@ export async function logout() {
   cookieStore.delete('accessToken');
   cookieStore.delete('idToken');
   cookieStore.delete('refreshToken');
-  
-  redirect('/login');
+  return { success: true };
 }
