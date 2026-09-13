@@ -16,24 +16,14 @@ export default async function Header() {
 
   return (
     <header className={styles.header}>
-      <Link href="/dashboard" className={styles.brand}>
+      <Link href={user.role === 'teacher' ? '/teacher' : user.role === 'parent' ? '/parent' : '/dashboard'} className={styles.brand}>
         <span className={styles.brandMark}>ICT</span>
         Dojo
       </Link>
 
       <nav className={styles.nav}>
-        <Link
-          href="/dashboard"
-          className={styles.navLink}
-        >
-          Dashboard
-        </Link>
-        <Link
-          href="/practice"
-          className={styles.navLink}
-        >
-          Practice
-        </Link>
+        {user.role === 'student' && <Link href="/dashboard" className={styles.navLink}>Dashboard</Link>}
+        {user.role === 'student' && <Link href="/practice" className={styles.navLink}>Practice</Link>}
         {user.role === 'student' && (
           <Link href="/profile" className={styles.navLink}>
             Profile

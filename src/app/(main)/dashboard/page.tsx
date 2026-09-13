@@ -28,6 +28,8 @@ export default async function DashboardPage() {
   if (!user) {
     redirect('/login');
   }
+  if (user.role === 'teacher') redirect('/teacher');
+  if (user.role === 'parent') redirect('/parent');
 
   const profile = await UserRepository.getProfile(user.id);
 

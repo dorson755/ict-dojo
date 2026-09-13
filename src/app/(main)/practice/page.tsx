@@ -14,6 +14,8 @@ export default async function PracticePage() {
   if (!user) {
     redirect('/login');
   }
+  if (user.role === 'teacher') redirect('/teacher');
+  if (user.role === 'parent') redirect('/parent');
 
   let targetSkillId: string | null = null;
   const activeRec = await RecommendationRepository.getActiveRecommendation(user.id);

@@ -6,6 +6,7 @@ import { UserRepository } from '@/lib/aws/repositories/user.repository';
 export default async function ProgrammingPage() {
   const user = await getUserSession();
   if (!user) redirect('/login');
+  if (user.role !== 'student') redirect(user.role === 'teacher' ? '/teacher' : '/parent');
   const profile = await UserRepository.getProfile(user.id);
   if ((profile?.platform_level ?? 1) < 5) redirect('/dashboard');
   return (
