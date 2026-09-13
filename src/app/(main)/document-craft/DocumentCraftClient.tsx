@@ -3,9 +3,11 @@
 import { useRef, useState } from 'react';
 import { evaluateDocument } from '@/domains/document-craft/evaluator';
 import type { DocumentMark, DocumentTask } from '@/domains/document-craft/types';
+import Link from 'next/link';
+import { DOCUMENT_PROJECTS } from '@/domains/document-craft/projects';
 import styles from './document-craft.module.css';
 
-const task: DocumentTask = {
+const fallbackTask: DocumentTask = {
   id: 'advanced-report',
   title: 'Add professional document detail',
   instructions: 'Insert a footnote, add a citation, switch the document to two columns, and record one tracked change.',
@@ -20,9 +22,12 @@ const task: DocumentTask = {
   requiredTrackedChange: true,
 };
 
-const initialDocument = '<p>My ICT Study Plan</p><p>Keyboard fundamentals</p><p>Document formatting</p><p>Python practice</p><p>Notes and reflections</p>';
+const fallbackDocument = '<p>My ICT Study Plan</p><p>Keyboard fundamentals</p><p>Document formatting</p><p>Python practice</p><p>Notes and reflections</p>';
 
-export default function DocumentCraftClient() {
+export default function DocumentCraftClient({ projectId }: { projectId?: string }) {
+  const project = DOCUMENT_PROJECTS.find((item) => item.id === projectId);
+  const task = project?.task ?? fallbackTask;
+  const initialDocument = project?.initialDocument ?? fallbackDocument;
   const editorRef = useRef<HTMLDivElement>(null);
   const [result, setResult] = useState<{ passed: boolean; missingChecks: string[] } | null>(null);
 
@@ -49,7 +54,7 @@ export default function DocumentCraftClient() {
     <main className={styles.page}>
       <header className={styles.header}>
         <div><p className={styles.kicker}>Document craft / fundamentals</p><h1 className={styles.title}>Format with intention.</h1><p className={styles.subtitle}>Practice the document skills that make your work clear, polished, and professional.</p></div>
-        <span className={styles.level}>Mission 04</span>
+        <Link className={styles.level} href="/document-craft/projects">Projects</Link>
       </header>
       <div className={styles.workspace}>
         <aside className={styles.brief}>
