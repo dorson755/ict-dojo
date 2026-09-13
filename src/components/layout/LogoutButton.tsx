@@ -1,16 +1,19 @@
 'use client';
 
 import { useTransition } from 'react';
+import { useRouter } from 'next/navigation';
 import { logout } from '@/app/(auth)/actions';
 import styles from './Header.module.css';
 
 export default function LogoutButton() {
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   function handleLogout() {
     startTransition(async () => {
       await logout();
-      window.location.assign('/login');
+      router.replace('/login');
+      router.refresh();
     });
   }
 
