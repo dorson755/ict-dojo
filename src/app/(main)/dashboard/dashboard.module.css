@@ -1,6 +1,6 @@
 .page {
-  padding: var(--space-8) var(--space-6);
-  max-width: 960px;
+  padding: var(--space-10) var(--space-6);
+  max-width: 1120px;
   margin: 0 auto;
 }
 
@@ -13,10 +13,24 @@
 
 /* Hero */
 .hero {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-8);
+  background: radial-gradient(circle at 90% 0%, rgba(128, 104, 255, 0.22), transparent 36%), linear-gradient(135deg, #17142d 0%, #2a2055 55%, #3b2b76 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 20px 48px rgba(42, 32, 85, 0.2);
+  color: white;
+  overflow: hidden;
+  padding: var(--space-10);
+  position: relative;
+}
+
+.hero::after {
+  background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  content: '';
+  inset: 0;
+  mask-image: linear-gradient(135deg, black, transparent 65%);
+  pointer-events: none;
+  position: absolute;
 }
 
 .heroTop {
@@ -24,6 +38,8 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: var(--space-6);
+  position: relative;
+  z-index: 1;
 }
 
 .heroIdentity {
@@ -36,7 +52,8 @@
   width: 56px;
   height: 56px;
   border-radius: var(--radius-full);
-  background: var(--ink);
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: #fff;
   display: flex;
   align-items: center;
@@ -60,13 +77,13 @@
 }
 
 .heroLevelLabel {
+  color: rgba(255, 255, 255, 0.65);
   font-size: var(--text-xs);
-  color: var(--ink-3);
 }
 
 .xpBar {
   height: 8px;
-  background: var(--surface-3);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-full);
   overflow: hidden;
   margin-bottom: var(--space-2);
@@ -88,71 +105,99 @@
   display: flex;
   justify-content: space-between;
   font-size: var(--text-xs);
-  color: var(--ink-3);
+  color: rgba(255, 255, 255, 0.65);
   font-family: var(--font-mono);
 }
 
 .heroDivider {
   height: 1px;
-  background: var(--border);
+  background: rgba(255, 255, 255, 0.14);
   margin: var(--space-6) 0;
 }
 
 .heroSection {
   margin-bottom: var(--space-2);
+  position: relative;
+  z-index: 1;
+}
+
+.heroIntro {
+  margin-bottom: var(--space-6);
+}
+
+.heroKicker {
+  color: #c8bdff;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-3);
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  color: white;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: -0.05em;
+  max-width: 720px;
 }
 
 .heroSectionLabel {
-  font-size: var(--text-sm);
-  color: var(--ink-2);
+  color: rgba(255, 255, 255, 0.65);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
   margin-bottom: var(--space-3);
+  text-transform: uppercase;
 }
 
 .nextChallenge {
-  background: var(--accent-tint);
-  border: 1px solid var(--accent-light);
-  border-radius: var(--radius-md);
-  padding: var(--space-5);
+  align-items: end;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: var(--space-6);
 }
 
 .nextChallengeTitle {
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 700;
-  color: var(--accent);
+  color: white;
   margin-bottom: var(--space-2);
 }
 
 .nextChallengeReason {
   font-size: var(--text-sm);
-  color: var(--ink-2);
+  color: rgba(255, 255, 255, 0.72);
   margin-bottom: var(--space-4);
   line-height: 1.5;
 }
 
 .allCaughtUp {
-  background: var(--surface-2);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   padding: var(--space-5);
 }
 
 .allCaughtUp p {
   font-size: var(--text-sm);
-  color: var(--ink-2);
+  color: rgba(255, 255, 255, 0.72);
   margin-bottom: var(--space-4);
 }
 
 .aiGreeting {
   margin-bottom: var(--space-4);
   padding: var(--space-4);
-  background: var(--surface-2);
-  border-left: 4px solid var(--gold);
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--gold);
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
 
 .greetingText {
   font-size: var(--text-base);
-  color: var(--ink-2);
+  color: rgba(255, 255, 255, 0.82);
   font-style: italic;
 }
 
@@ -183,6 +228,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: var(--space-4);
+}
+
+.skillGrid > *:first-child {
+  grid-column: span 2;
 }
 
 .pathHeading {
@@ -262,6 +311,17 @@
 .pathNodeTraining {
   border-color: var(--accent);
   box-shadow: 0 0 0 2px var(--accent-tint);
+}
+
+.nextChallenge,
+.skillGrid > *,
+.pathNode {
+  animation: riseIn 500ms ease both;
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .pathNodeReady {
@@ -487,6 +547,12 @@
     padding: var(--space-6);
   }
 
+  .nextChallenge {
+    align-items: start;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
   .heroTop {
     flex-direction: column;
     align-items: flex-start;
@@ -500,5 +566,17 @@
 
   .pathMap {
     grid-template-columns: 1fr;
+  }
+
+  .skillGrid > *:first-child {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nextChallenge,
+  .skillGrid > *,
+  .pathNode {
+    animation: none;
   }
 }

@@ -104,6 +104,10 @@ export default async function DashboardPage() {
         <hr className={styles.heroDivider} />
 
         <div className={styles.heroSection}>
+          <div className={styles.heroIntro}>
+            <p className={styles.heroKicker}>Training hall / today</p>
+            <h1 className={styles.heroTitle}>Good to see you, {profile.display_name || user.name || 'Learner'}.</h1>
+          </div>
           <Suspense fallback={<div className={styles.aiGreeting}><p className={styles.greetingText}>Loading Sensei&apos;s greeting...</p></div>}>
             <AIGreeting 
               name={profile.display_name || user.name || 'Learner'} 
@@ -111,7 +115,7 @@ export default async function DashboardPage() {
               streak={profile.streak_count || 0}
             />
           </Suspense>
-          <p className={styles.heroSectionLabel}>Next challenge</p>
+          <p className={styles.heroSectionLabel}>Your next move</p>
           {activeRec ? (
             <div className={styles.nextChallenge}>
               <h3 className={styles.nextChallengeTitle}>
