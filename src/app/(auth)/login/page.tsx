@@ -209,7 +209,7 @@ function LoginForm() {
       </form>
 
       <div className={styles.footerText}>
-        <Link href="/reset-password" className={styles.link}>Reset password</Link>
+        <Link href="/reset-password" className={styles.authButton}>Reset password</Link>
       </div>
 
       <div className={styles.divider}>or</div>
