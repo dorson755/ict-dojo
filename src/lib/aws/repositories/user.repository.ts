@@ -23,6 +23,23 @@ export interface TypingDNA {
 }
 
 export class UserRepository {
+  static async ensureProfile(userId: string, displayName: string): Promise<void> {
+    const key = { PK: `USER#${userId}`, SK: 'PROFILE' };
+    const existing = await dynamoClient.send(new GetCommand({ TableName: TABLE_NAME, Key: key }));
+    if (existing.Item) return;
+
+    await dynamoClient.send(new PutCommand({
+      TableName: TABLE_NAME,
+      Item: {
+        ...key,
+        display_name: displayName,
+        role: 'student',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+    }));
+  }
+
   static async getStudentProfiles(excludeUserId?: string): Promise<StudentProfile[]> {
     const response = await dynamoClient.send(new ScanCommand({
       TableName: TABLE_NAME,

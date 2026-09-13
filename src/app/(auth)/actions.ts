@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { decodeJwt } from 'jose';
+import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { cognitoClient, COGNITO_CLIENT_ID } from '@/lib/aws/cognito';
 import {
   InitiateAuthCommand,
@@ -99,7 +100,10 @@ export async function signup(formData: FormData) {
       ],
     });
 
-    await cognitoClient.send(command);
+    const response = await cognitoClient.send(command);
+    if (response.UserSub) {
+      await UserRepository.ensureProfile(response.UserSub, displayName);
+    }
 
     // Cognito requires email verification before login.
     // Return a flag so the client can show the verification code input.
