@@ -4,11 +4,13 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { getRandomPassage, type SurvivalPassage } from '@/domains/typing/survival-passages';
 import { saveSurvivalScore, getSurvivalLeaderboard } from './actions';
+import type { SurvivalMode } from '@/lib/aws/repositories/survival.repository';
 import styles from './survival.module.css';
 
 const THRESHOLD_OPTIONS = [15, 20, 25, 30, 35, 40];
 const THRESHOLD_INCREMENT_INTERVAL_MS = 30_000;
 const THRESHOLD_INCREMENT_WPM = 5;
+const THRESHOLD_CAP_WPM = 100;
 const BELOW_THRESHOLD_TOLERANCE_MS = 3_000;
 
 interface LeaderboardEntry {
@@ -20,10 +22,15 @@ interface LeaderboardEntry {
 
 interface SurvivalClientProps {
   initialLeaderboard?: LeaderboardEntry[];
+  initialExtremeLeaderboard?: LeaderboardEntry[];
 }
 
-export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClientProps) {
+export default function SurvivalClient({
+  initialLeaderboard = [],
+  initialExtremeLeaderboard = [],
+}: SurvivalClientProps) {
   const [status, setStatus] = useState<'idle' | 'running' | 'ended'>('idle');
+  const [mode, setMode] = useState<SurvivalMode>('normal');
   const [startingWpm, setStartingWpm] = useState(15);
   const [currentThreshold, setCurrentThreshold] = useState(15);
   const [passage, setPassage] = useState<SurvivalPassage>(getRandomPassage());
@@ -33,22 +40,29 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
   const [wordsTyped, setWordsTyped] = useState(0);
   const [belowSince, setBelowSince] = useState<number | null>(null);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(initialLeaderboard);
+  const [extremeLeaderboard, setExtremeLeaderboard] = useState<LeaderboardEntry[]>(initialExtremeLeaderboard);
   const [saved, setSaved] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const startTimeRef = useRef<number>(0);
   const lastIncrementRef = useRef<number>(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  async function loadLeaderboard(wpm: number) {
-    const result = await getSurvivalLeaderboard(wpm);
+  async function loadLeaderboard(selectedMode: SurvivalMode, wpm: number) {
+    const result = await getSurvivalLeaderboard(selectedMode, wpm);
     if ('scores' in result && result.scores) {
-      setLeaderboard(result.scores);
+      if (selectedMode === 'extreme') setExtremeLeaderboard(result.scores);
+      else setLeaderboard(result.scores);
     }
   }
 
   function selectThreshold(wpm: number) {
     setStartingWpm(wpm);
-    void loadLeaderboard(wpm);
+    void loadLeaderboard(mode, wpm);
+  }
+
+  function selectMode(selectedMode: SurvivalMode) {
+    setMode(selectedMode);
+    void loadLeaderboard(selectedMode, startingWpm);
   }
 
   const endGame = useCallback(() => {
@@ -82,13 +96,14 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
     const elapsedMinutes = secondsSurvived / 60;
     const finalWpm = elapsedMinutes > 0 ? Math.round(wordsTyped / elapsedMinutes) : 0;
     await saveSurvivalScore({
+      mode,
       starting_wpm: startingWpm,
       final_wpm: finalWpm,
       words_typed: wordsTyped,
       seconds_survived: secondsSurvived,
     });
     setSaved(true);
-    void loadLeaderboard(startingWpm);
+    void loadLeaderboard(mode, startingWpm);
   }
 
   useEffect(() => {
@@ -100,9 +115,13 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
       const elapsedSeconds = Math.floor(elapsedMs / 1000);
       setSecondsSurvived(elapsedSeconds);
 
-      // Increment threshold every 30 seconds
-      if (now - lastIncrementRef.current >= THRESHOLD_INCREMENT_INTERVAL_MS) {
-        setCurrentThreshold((prev) => prev + THRESHOLD_INCREMENT_WPM);
+      // Extreme mode: increment threshold every 30 seconds, capped at 100 WPM
+      if (
+        mode === 'extreme' &&
+        now - lastIncrementRef.current >= THRESHOLD_INCREMENT_INTERVAL_MS &&
+        currentThreshold < THRESHOLD_CAP_WPM
+      ) {
+        setCurrentThreshold((prev) => Math.min(THRESHOLD_CAP_WPM, prev + THRESHOLD_INCREMENT_WPM));
         lastIncrementRef.current = now;
       }
 
@@ -123,7 +142,7 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
         timerRef.current = null;
       }
     };
-  }, [status, currentWpm, currentThreshold, belowSince, endGame]);
+  }, [status, mode, currentWpm, currentThreshold, belowSince, endGame]);
 
   function handleInput(event: React.ChangeEvent<HTMLTextAreaElement>) {
     if (status !== 'running') return;
@@ -178,6 +197,12 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
     );
   }
 
+  const activeLeaderboard = mode === 'extreme' ? extremeLeaderboard : leaderboard;
+  const rulesText =
+    mode === 'extreme'
+      ? `The required speed starts at your chosen WPM, increases by 5 every 30 seconds, and caps at ${THRESHOLD_CAP_WPM} WPM. Drop below the threshold for 3 seconds and the run ends.`
+      : 'The required speed stays at your chosen WPM. Drop below the threshold for 3 seconds and the run ends.';
+
   return (
     <main className={styles.page}>
       <header className={styles.header}>
@@ -191,7 +216,21 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
 
       {status === 'idle' && (
         <section className={styles.setup}>
-          <h2>Choose your starting speed</h2>
+          <h2>Choose your mode and speed</h2>
+          <div className={styles.modes}>
+            <button
+              className={`${styles.modeButton} ${mode === 'normal' ? styles.active : ''}`}
+              onClick={() => selectMode('normal')}
+            >
+              Normal
+            </button>
+            <button
+              className={`${styles.modeButton} ${mode === 'extreme' ? styles.active : ''}`}
+              onClick={() => selectMode('extreme')}
+            >
+              Extreme
+            </button>
+          </div>
           <div className={styles.thresholds}>
             {THRESHOLD_OPTIONS.map((wpm) => (
               <button
@@ -203,19 +242,16 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
               </button>
             ))}
           </div>
-          <p className={styles.rules}>
-            The required speed starts at your chosen WPM and increases by 5 every 30 seconds. Drop below the
-            threshold for 3 seconds and the run ends.
-          </p>
+          <p className={styles.rules}>{rulesText}</p>
           <button className={styles.startButton} onClick={startGame}>
-            Start survival
+            Start {mode} survival
           </button>
 
           <div className={styles.leaderboard}>
-            <h3>Leaderboard — {startingWpm} WPM start</h3>
-            {leaderboard.length ? (
+            <h3>{mode === 'extreme' ? 'Extreme' : 'Normal'} leaderboard — {startingWpm} WPM start</h3>
+            {activeLeaderboard.length ? (
               <ol>
-                {leaderboard.map((entry, index) => (
+                {activeLeaderboard.map((entry, index) => (
                   <li key={index}>
                     <span>{entry.user_name}</span>
                     <span>{entry.seconds_survived}s · {entry.words_typed} words · {entry.final_wpm} WPM</span>
@@ -233,6 +269,10 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
         <section className={styles.game}>
           <div className={styles.hud}>
             <div>
+              <span className={styles.hudLabel}>Mode</span>
+              <span className={styles.hudValue}>{mode}</span>
+            </div>
+            <div>
               <span className={styles.hudLabel}>Current WPM</span>
               <span className={styles.hudValue}>{currentWpm}</span>
             </div>
@@ -243,10 +283,6 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
             <div>
               <span className={styles.hudLabel}>Time</span>
               <span className={styles.hudValue}>{secondsSurvived}s</span>
-            </div>
-            <div>
-              <span className={styles.hudLabel}>Words</span>
-              <span className={styles.hudValue}>{wordsTyped}</span>
             </div>
           </div>
 
@@ -276,7 +312,7 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
             <h2>Run ended</h2>
             <p>
               You survived <strong>{secondsSurvived} seconds</strong> and typed{' '}
-              <strong>{wordsTyped} words</strong>.
+              <strong>{wordsTyped} words</strong> in {mode} mode.
             </p>
             <button className={styles.saveButton} onClick={persistScore} disabled={saved}>
               {saved ? 'Saved' : 'Save score'}
@@ -285,7 +321,7 @@ export default function SurvivalClient({ initialLeaderboard = [] }: SurvivalClie
               Try again
             </button>
             <button className={styles.menuButton} onClick={() => setStatus('idle')}>
-              Change threshold
+              Change mode / threshold
             </button>
           </div>
         </div>

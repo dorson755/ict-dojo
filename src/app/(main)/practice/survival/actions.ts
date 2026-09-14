@@ -2,7 +2,7 @@
 
 import { getUserSession } from '@/lib/aws/auth-utils';
 import { SurvivalRepository } from '@/lib/aws/repositories/survival.repository';
-import type { SurvivalScore } from '@/lib/aws/repositories/survival.repository';
+import type { SurvivalMode, SurvivalScore } from '@/lib/aws/repositories/survival.repository';
 
 export async function saveSurvivalScore(
   score: Omit<SurvivalScore, 'created_at' | 'user_id' | 'user_name'>,
@@ -23,14 +23,14 @@ export async function saveSurvivalScore(
     SurvivalRepository.upsertLeaderboardEntry(fullScore),
   ]);
 
-  await SurvivalRepository.pruneLeaderboard(score.starting_wpm, 10);
+  await SurvivalRepository.pruneLeaderboard(score.mode, score.starting_wpm, 10);
 
   return { success: true };
 }
 
-export async function getSurvivalLeaderboard(startingWpm: number) {
+export async function getSurvivalLeaderboard(mode: SurvivalMode, startingWpm: number) {
   const user = await getUserSession();
   if (!user) return { error: 'Not authenticated' };
-  const scores = await SurvivalRepository.getLeaderboard(startingWpm, 10);
+  const scores = await SurvivalRepository.getLeaderboard(mode, startingWpm, 10);
   return { scores };
 }

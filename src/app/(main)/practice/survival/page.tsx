@@ -9,7 +9,15 @@ export default async function SurvivalPage() {
   if (user.role === 'teacher') redirect('/teacher');
   if (user.role === 'parent') redirect('/parent');
 
-  const initialLeaderboard = await SurvivalRepository.getLeaderboard(15, 10);
+  const [normalLeaderboard, extremeLeaderboard] = await Promise.all([
+    SurvivalRepository.getLeaderboard('normal', 15, 10),
+    SurvivalRepository.getLeaderboard('extreme', 15, 10),
+  ]);
 
-  return <SurvivalClient initialLeaderboard={initialLeaderboard} />;
+  return (
+    <SurvivalClient
+      initialLeaderboard={normalLeaderboard}
+      initialExtremeLeaderboard={extremeLeaderboard}
+    />
+  );
 }

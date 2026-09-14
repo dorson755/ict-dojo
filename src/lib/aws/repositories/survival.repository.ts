@@ -1,9 +1,12 @@
 import { PutCommand, QueryCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 import { dynamoClient, TABLE_NAME } from '../dynamodb';
 
+export type SurvivalMode = 'normal' | 'extreme';
+
 export interface SurvivalScore {
   user_id: string;
   user_name: string;
+  mode: SurvivalMode;
   starting_wpm: number;
   final_wpm: number;
   words_typed: number;
@@ -19,7 +22,7 @@ export class SurvivalRepository {
         TableName: TABLE_NAME,
         Item: {
           PK: `USER#${score.user_id}`,
-          SK: `SURVIVAL#${score.starting_wpm}#${createdAt}`,
+          SK: `SURVIVAL#${score.mode}#${score.starting_wpm}#${createdAt}`,
           ...score,
           created_at: createdAt,
         },
@@ -27,14 +30,14 @@ export class SurvivalRepository {
     );
   }
 
-  static async getLeaderboard(startingWpm: number, limit = 10): Promise<SurvivalScore[]> {
+  static async getLeaderboard(mode: SurvivalMode, startingWpm: number, limit = 10): Promise<SurvivalScore[]> {
     const response = await dynamoClient.send(
       new QueryCommand({
         TableName: TABLE_NAME,
         IndexName: 'GSI1',
         KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
         ExpressionAttributeValues: {
-          ':pk': `SURVIVAL_LEADERBOARD#${startingWpm}`,
+          ':pk': `SURVIVAL_LEADERBOARD#${mode}#${startingWpm}`,
           ':sk': 'SCORE#',
         },
         ScanIndexForward: false,
@@ -49,12 +52,13 @@ export class SurvivalRepository {
       new PutCommand({
         TableName: TABLE_NAME,
         Item: {
-          PK: `SURVIVAL_LEADERBOARD#${score.starting_wpm}`,
+          PK: `SURVIVAL_LEADERBOARD#${score.mode}#${score.starting_wpm}`,
           SK: `USER#${score.user_id}`,
-          GSI1PK: `SURVIVAL_LEADERBOARD#${score.starting_wpm}`,
+          GSI1PK: `SURVIVAL_LEADERBOARD#${score.mode}#${score.starting_wpm}`,
           GSI1SK: `SCORE#${score.seconds_survived.toString().padStart(8, '0')}#${score.created_at}`,
           user_id: score.user_id,
           user_name: score.user_name,
+          mode: score.mode,
           starting_wpm: score.starting_wpm,
           final_wpm: score.final_wpm,
           words_typed: score.words_typed,
@@ -65,15 +69,15 @@ export class SurvivalRepository {
     );
   }
 
-  static async pruneLeaderboard(startingWpm: number, keep = 10) {
-    const entries = await this.getLeaderboard(startingWpm, 1000);
+  static async pruneLeaderboard(mode: SurvivalMode, startingWpm: number, keep = 10) {
+    const entries = await this.getLeaderboard(mode, startingWpm, 1000);
     const toRemove = entries.slice(keep);
     for (const entry of toRemove) {
       await dynamoClient.send(
         new DeleteCommand({
           TableName: TABLE_NAME,
           Key: {
-            PK: `SURVIVAL_LEADERBOARD#${startingWpm}`,
+            PK: `SURVIVAL_LEADERBOARD#${mode}#${startingWpm}`,
             SK: `USER#${entry.user_id}`,
           },
         }),
