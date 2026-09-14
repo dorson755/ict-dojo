@@ -3,9 +3,18 @@
 .kicker { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
 .title { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.06em; margin: var(--space-2) 0; }
 .subtitle { color: var(--ink-2); max-width: 560px; }
+.howItWorks { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-top: var(--space-8); padding: var(--space-6); }
+.howItWorks h2 { font-size: var(--text-lg); margin: 0 0 var(--space-4); }
+.steps { color: var(--ink-2); display: flex; flex-direction: column; gap: var(--space-3); line-height: 1.6; list-style-position: inside; padding-left: 0; }
+.steps strong { color: var(--ink-1); }
 .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); margin-top: var(--space-10); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; min-height: 250px; padding: var(--space-6); }
 .index { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-xs); }
 .card h2 { font-family: var(--font-display); font-size: var(--text-xl); margin: var(--space-8) 0 var(--space-2); }
-.card p { color: var(--ink-2); font-size: var(--text-sm); line-height: 1.6; margin-bottom: auto; padding-bottom: var(--space-6); }
+.card p { color: var(--ink-2); font-size: var(--text-sm); line-height: 1.6; margin-bottom: 0; padding-bottom: var(--space-4); }
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
+.tag { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-full); color: var(--ink-2); font-size: var(--text-xs); padding: var(--space-1) var(--space-3); }
+.checklist { border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--ink-2); font-size: var(--text-sm); margin-bottom: var(--space-5); }
+.checklist summary { cursor: pointer; font-weight: 600; padding: var(--space-3) var(--space-4); }
+.checklist ul { border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: var(--space-2); list-style: disc; margin: 0; padding: var(--space-4) var(--space-4) var(--space-4) var(--space-7); }
 @media (max-width: 650px) { .page { padding: var(--space-6) var(--space-4); } .grid { grid-template-columns: 1fr; } }
