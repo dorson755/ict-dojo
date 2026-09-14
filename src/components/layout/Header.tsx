@@ -30,7 +30,7 @@ export default async function Header() {
           </Link>
         )}
         {user.role === 'student' && (
-          <Link href="/document-craft" className={styles.navLink}>
+          <Link href="/document-craft/projects" className={styles.navLink}>
             Documents
           </Link>
         )}
