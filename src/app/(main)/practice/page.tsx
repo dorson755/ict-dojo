@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import PracticeClient, { type PracticeExercise } from './PracticeClient';
 import { getUserSession } from '@/lib/aws/auth-utils';
@@ -174,8 +175,11 @@ export default async function PracticePage() {
   return (
     <div className={styles.page}>
       <div className={styles.pageHeader}>
-        <h1 className={styles.pageTitle}>Practice dojo</h1>
-        <p className={styles.pageSubtitle}>Skill focus: {exercise.title}</p>
+        <div>
+          <h1 className={styles.pageTitle}>Practice dojo</h1>
+          <p className={styles.pageSubtitle}>Skill focus: {exercise.title}</p>
+        </div>
+        <Link className={styles.modeLink} href="/practice/survival">Survival mode →</Link>
       </div>
 
       <PracticeClient studentId={user.id} exercise={exercise} />

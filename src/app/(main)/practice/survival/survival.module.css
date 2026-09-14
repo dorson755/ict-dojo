@@ -1,0 +1,44 @@
+.page { max-width: 900px; margin: 0 auto; padding: var(--space-10) var(--space-6); }
+.header { align-items: end; display: flex; justify-content: space-between; margin-bottom: var(--space-8); }
+.kicker { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
+.title { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.06em; margin: var(--space-2) 0; }
+.subtitle { color: var(--ink-2); max-width: 560px; }
+.back { color: var(--accent); font-size: var(--text-sm); }
+.setup { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); }
+.setup h2 { font-size: var(--text-xl); margin-bottom: var(--space-5); }
+.thresholds { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-6); }
+.thresholdButton { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--ink-2); font-weight: 600; padding: var(--space-4) var(--space-6); }
+.thresholdButton:hover, .thresholdButton:focus-visible { border-color: var(--accent); color: var(--accent); }
+.active { background: var(--accent); border-color: var(--accent); color: white; }
+.rules { color: var(--ink-2); margin-bottom: var(--space-6); max-width: 560px; }
+.startButton { background: var(--accent); border: 0; border-radius: var(--radius-md); color: white; font-size: var(--text-lg); font-weight: 700; padding: var(--space-4) var(--space-8); }
+.leaderboard { border-top: 1px solid var(--border); margin-top: var(--space-8); padding-top: var(--space-6); }
+.leaderboard h3 { font-size: var(--text-lg); margin-bottom: var(--space-4); }
+.leaderboard ol { display: flex; flex-direction: column; gap: var(--space-2); list-style: none; padding: 0; }
+.leaderboard li { align-items: center; background: var(--surface-2); border-radius: var(--radius-md); display: flex; justify-content: space-between; padding: var(--space-3) var(--space-4); }
+.leaderboard li span:last-child { color: var(--ink-2); font-size: var(--text-sm); }
+.empty { color: var(--ink-2); }
+.game { display: flex; flex-direction: column; gap: var(--space-6); }
+.hud { display: grid; gap: var(--space-4); grid-template-columns: repeat(4, 1fr); }
+.hud > div { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); display: flex; flex-direction: column; padding: var(--space-4); }
+.hudLabel { color: var(--ink-2); font-size: var(--text-xs); }
+.hudValue { font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 700; }
+.passageCard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); }
+.passageTitle { color: var(--ink-2); font-size: var(--text-sm); margin-bottom: var(--space-4); }
+.passageTitle span { color: var(--ink-3); }
+.passage { font-family: var(--font-mono); font-size: var(--text-lg); line-height: 1.8; }
+.correct { color: var(--success); }
+.incorrect { background: var(--danger-light); color: var(--danger); }
+.pending { color: var(--ink-3); }
+.input { border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--text-lg); line-height: 1.6; padding: var(--space-4); resize: none; width: 100%; }
+.input:focus { border-color: var(--accent); outline: 0; }
+.overlay { align-items: center; background: rgba(0, 0, 0, .4); display: flex; inset: 0; justify-content: center; position: fixed; z-index: 50; }
+.modal { background: var(--surface); border-radius: var(--radius-lg); max-width: 420px; padding: var(--space-8); text-align: center; width: 90%; }
+.modal h2 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+.modal p { color: var(--ink-2); margin-bottom: var(--space-6); }
+.saveButton, .restartButton, .menuButton { border: 0; border-radius: var(--radius-md); display: block; font-weight: 700; margin-bottom: var(--space-3); padding: var(--space-3); width: 100%; }
+.saveButton { background: var(--success); color: white; }
+.saveButton:disabled { opacity: .6; }
+.restartButton { background: var(--accent); color: white; }
+.menuButton { background: var(--surface-2); border: 1px solid var(--border); color: var(--ink-2); }
+@media (max-width: 640px) { .page { padding: var(--space-6) var(--space-4); } .header { align-items: start; flex-direction: column; gap: var(--space-4); } .hud { grid-template-columns: repeat(2, 1fr); } }

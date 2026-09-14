@@ -5,6 +5,9 @@
 }
 
 .pageHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: var(--space-8);
 }
 
@@ -20,6 +23,8 @@
   font-size: var(--text-sm);
   color: var(--ink-2);
 }
+
+.modeLink { color: var(--accent); font-size: var(--text-sm); font-weight: 600; }
 
 /* Loading overlay */
 .loading {
