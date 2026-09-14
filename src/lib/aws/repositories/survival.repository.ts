@@ -9,6 +9,7 @@ export interface SurvivalScore {
   mode: SurvivalMode;
   starting_wpm: number;
   final_wpm: number;
+  accuracy: number;
   words_typed: number;
   seconds_survived: number;
   created_at: string;

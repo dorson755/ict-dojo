@@ -2,6 +2,7 @@
 
 import { getUserSession } from '@/lib/aws/auth-utils';
 import { SurvivalRepository } from '@/lib/aws/repositories/survival.repository';
+import { ProgressRepository } from '@/lib/aws/repositories/progress.repository';
 import type { SurvivalMode, SurvivalScore } from '@/lib/aws/repositories/survival.repository';
 
 export async function saveSurvivalScore(
@@ -21,6 +22,8 @@ export async function saveSurvivalScore(
   await Promise.all([
     SurvivalRepository.saveScore(fullScore),
     SurvivalRepository.upsertLeaderboardEntry(fullScore),
+    ProgressRepository.updatePersonalRecord(user.id, 'best_wpm', score.final_wpm),
+    ProgressRepository.updatePersonalRecord(user.id, 'best_accuracy', score.accuracy),
   ]);
 
   await SurvivalRepository.pruneLeaderboard(score.mode, score.starting_wpm, 10);

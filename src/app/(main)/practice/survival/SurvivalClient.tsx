@@ -46,6 +46,8 @@ export default function SurvivalClient({
   const startTimeRef = useRef<number>(0);
   const lastIncrementRef = useRef<number>(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const totalAttemptedRef = useRef(0);
+  const totalCorrectRef = useRef(0);
 
   async function loadLeaderboard(selectedMode: SurvivalMode, wpm: number) {
     const result = await getSurvivalLeaderboard(selectedMode, wpm);
@@ -86,6 +88,8 @@ export default function SurvivalClient({
     setWordsTyped(0);
     setBelowSince(null);
     setSaved(false);
+    totalAttemptedRef.current = 0;
+    totalCorrectRef.current = 0;
     startTimeRef.current = Date.now();
     lastIncrementRef.current = Date.now();
     inputRef.current?.focus();
@@ -95,12 +99,16 @@ export default function SurvivalClient({
     if (saved) return;
     const elapsedMinutes = secondsSurvived / 60;
     const finalWpm = elapsedMinutes > 0 ? Math.round(wordsTyped / elapsedMinutes) : 0;
+    const accuracy = totalAttemptedRef.current > 0
+      ? Math.round((totalCorrectRef.current / totalAttemptedRef.current) * 100)
+      : 100;
     await saveSurvivalScore({
       mode,
       starting_wpm: startingWpm,
       final_wpm: finalWpm,
       words_typed: wordsTyped,
       seconds_survived: secondsSurvived,
+      accuracy,
     });
     setSaved(true);
     void loadLeaderboard(mode, startingWpm);
@@ -153,6 +161,16 @@ export default function SurvivalClient({
     // Only allow progress up to the current passage length
     if (value.length > fullText.length) return;
 
+    // Accumulate attempted and correct characters for end-of-run accuracy
+    const previousLength = typed.length;
+    const newLength = value.length;
+    if (newLength > previousLength) {
+      for (let i = previousLength; i < newLength; i++) {
+        totalAttemptedRef.current += 1;
+        if (value[i] === fullText[i]) totalCorrectRef.current += 1;
+      }
+    }
+
     setTyped(value);
 
     // Update word count when a space or the end of passage is reached correctly
@@ -162,7 +180,7 @@ export default function SurvivalClient({
       setWordsTyped((prev) => prev + (currentWords - previousWords));
     }
 
-    // Calculate WPM based on correct characters
+    // Calculate WPM based on correct characters in the current passage
     const correctChars = value.split('').filter((char, index) => char === fullText[index]).length;
     const elapsedMinutes = (Date.now() - startTimeRef.current) / 60_000;
     const wpm = elapsedMinutes > 0 ? Math.round((correctChars / 5) / elapsedMinutes) : 0;
