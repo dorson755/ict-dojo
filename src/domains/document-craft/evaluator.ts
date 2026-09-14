@@ -12,40 +12,23 @@ function normalizeWhitespace(value: string): string {
   return value.replace(/\s+/g, ' ').trim();
 }
 
-function extractText(html: string): string {
-  return normalizeWhitespace(html.replace(/<[^>]+>/g, ' '));
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
 function hasMark(html: string, target: string, mark: DocumentMark): boolean {
   const normalizedTarget = normalizeWhitespace(target);
-  return markTags[mark].some((tag) => new RegExp(`<${tag}[^>]*>[\\s\\S]*?${normalizedTarget}[\\s\\S]*?</${tag}>`, 'i').test(html));
-}
-
-function hasAnyMark(html: string, mark: DocumentMark): boolean {
-  return markTags[mark].some((tag) => new RegExp(`<${tag}[^>]*>[\\s\\S]*?\\S[\\s\\S]*?</${tag}>`, 'i').test(html));
-}
-
-function hasBlock(html: string, tag: string, target: string): boolean {
-  const normalizedTarget = normalizeWhitespace(target);
-  return new RegExp(`<${tag}[^>]*>[\\s\\S]*?${normalizedTarget}[\\s\\S]*?</${tag}>`, 'i').test(html);
-}
-
-function hasAnyBlock(html: string, tag: string): boolean {
-  return new RegExp(`<${tag}[^>]*>[\\s\\S]*?\\S[\\s\\S]*?</${tag}>`, 'i').test(html);
+  return markTags[mark].some((tag) => new RegExp(`<${tag}[^>]*>[\\s\\S]*?${escapeRegExp(normalizedTarget)}[\\s\\S]*?</${tag}>`, 'i').test(html));
 }
 
 export function evaluateDocument(html: string, task: DocumentTask): DocumentEvaluation {
   const completedChecks: string[] = [];
   const missingChecks: string[] = [];
   const normalized = normalizeWhitespace(html);
-  const plainText = extractText(normalized);
 
   for (const mark of task.requiredMarks ?? []) {
-    if (hasMark(normalized, task.targetText, mark) || hasAnyMark(normalized, mark)) {
-      completedChecks.push(`${mark} applied`);
-    } else {
-      missingChecks.push(`Apply ${mark} to “${task.targetText}”.`);
-    }
+    if (hasMark(normalized, task.targetText, mark)) completedChecks.push(`${mark} applied`);
+    else missingChecks.push(`Apply ${mark} to “${task.targetText}”.`);
   }
 
   if (task.requiredAlignment) {
@@ -56,14 +39,10 @@ export function evaluateDocument(html: string, task: DocumentTask): DocumentEval
   }
 
   if (task.requiredBlock) {
-    const exactBlock = hasBlock(normalized, task.requiredBlock, task.targetText);
-    const anyBlock = hasAnyBlock(normalized, task.requiredBlock);
-    const targetStillPresent = plainText.includes(normalizeWhitespace(task.targetText));
-    if (exactBlock || (anyBlock && !targetStillPresent)) {
-      completedChecks.push(`${task.requiredBlock} style applied`);
-    } else {
-      missingChecks.push(`Format “${task.targetText}” as ${task.requiredBlock.toUpperCase()}.`);
-    }
+    const normalizedTarget = normalizeWhitespace(task.targetText);
+    const blockFound = new RegExp(`<${task.requiredBlock}[^>]*>[\\s\\S]*?${escapeRegExp(normalizedTarget)}[\\s\\S]*?</${task.requiredBlock}>`, 'i').test(normalized);
+    if (blockFound) completedChecks.push(`${task.requiredBlock} style applied`);
+    else missingChecks.push(`Format “${task.targetText}” as ${task.requiredBlock.toUpperCase()}.`);
   }
 
   if (task.requiredList) {

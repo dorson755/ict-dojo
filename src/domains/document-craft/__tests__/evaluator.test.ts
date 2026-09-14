@@ -23,22 +23,22 @@ describe('Document Craft evaluator', () => {
     expect(result.missingChecks).toHaveLength(0);
   });
 
-  it('passes when the heading text is rewritten but still uses the required block', () => {
-    const result = evaluateDocument('<h1>My Custom Title</h1><ul><li>Keyboard</li></ul><table><tr><td>Plan</td></tr></table><hr data-page-break="true"><sup data-footnote="true">[1]</sup><span data-citation="true">[Source]</span><div style="column-count: 2"><mark data-change="inserted">new</mark></div>', task);
-    expect(result.passed).toBe(true);
-    expect(result.completedChecks).toContain('h1 style applied');
-  });
-
   it('passes when extra whitespace is added around the target text', () => {
     const result = evaluateDocument('<h1>My   ICT   Study   Plan</h1><ul><li>Keyboard</li></ul><table><tr><td>Plan</td></tr></table><hr data-page-break="true"><sup data-footnote="true">[1]</sup><span data-citation="true">[Source]</span><div style="column-count: 2"><mark data-change="inserted">new</mark></div>', task);
     expect(result.passed).toBe(true);
   });
 
-  it('passes when a required mark is applied to any text, not only the target', () => {
+  it('fails when the heading text is rewritten', () => {
+    const result = evaluateDocument('<h1>My Custom Title</h1><ul><li>Keyboard</li></ul><table><tr><td>Plan</td></tr></table><hr data-page-break="true"><sup data-footnote="true">[1]</sup><span data-citation="true">[Source]</span><div style="column-count: 2"><mark data-change="inserted">new</mark></div>', task);
+    expect(result.passed).toBe(false);
+    expect(result.missingChecks).toContain('Format “My ICT Study Plan” as H1.');
+  });
+
+  it('fails when a required mark is applied to different text', () => {
     const markTask: DocumentTask = { ...task, requiredMarks: ['bold'] };
     const result = evaluateDocument('<h1>My ICT Study Plan</h1><p><strong>Any text works</strong></p><ul><li>Keyboard</li></ul><table><tr><td>Plan</td></tr></table><hr data-page-break="true"><sup data-footnote="true">[1]</sup><span data-citation="true">[Source]</span><div style="column-count: 2"><mark data-change="inserted">new</mark></div>', markTask);
-    expect(result.passed).toBe(true);
-    expect(result.completedChecks).toContain('bold applied');
+    expect(result.passed).toBe(false);
+    expect(result.missingChecks).toContain('Apply bold to “My ICT Study Plan”.');
   });
 
   it('reports each missing formatting requirement', () => {
