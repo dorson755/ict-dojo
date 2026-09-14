@@ -4,8 +4,13 @@
 .title { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.06em; margin: var(--space-2) 0; }
 .subtitle { color: var(--ink-2); max-width: 560px; }
 .back { background: transparent; border: 0; color: var(--accent); cursor: pointer; font-size: var(--text-sm); }
+.filters { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6); }
+.filterButton { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-full); color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; padding: var(--space-2) var(--space-4); }
+.filterButton:hover, .filterButton:focus-visible { border-color: var(--accent); color: var(--accent); }
+.filters .active { background: var(--accent); border-color: var(--accent); color: white; }
 .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: var(--space-5); }
+.type { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .05em; margin-bottom: var(--space-1); text-transform: uppercase; }
 .pattern { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 700; }
 .examples { color: var(--ink-2); flex: 1; font-size: var(--text-sm); line-height: 1.5; margin: var(--space-3) 0 var(--space-5); }
 .startButton { background: var(--accent); border: 0; border-radius: var(--radius-md); color: white; font-weight: 700; padding: var(--space-3); width: 100%; }
