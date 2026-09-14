@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { TYPING_CHUNKS, generateChunkDrill, type TypingChunk, type ChunkType } from '@/domains/typing/chunks';
+import { TYPING_CHUNKS, generateChunkDrill, generateMixedChunkDrill, type TypingChunk, type ChunkType } from '@/domains/typing/chunks';
 import { TYPING_SKILL_IDS } from '@/domains/typing/catalog';
 import TypingEngine from '@/components/typing/TypingEngine';
 import { TypingSessionInput } from '@/domains/typing/types';
@@ -21,6 +21,7 @@ interface ChunksClientProps {
 
 export default function ChunksClient({ studentId }: ChunksClientProps) {
   const [activeChunk, setActiveChunk] = useState<TypingChunk | null>(null);
+  const [mixedPassage, setMixedPassage] = useState<string | null>(null);
   const [filter, setFilter] = useState<ChunkType | 'all'>('all');
   const [result, setResult] = useState<{ wpm: number; accuracy: number } | null>(null);
 
@@ -30,11 +31,63 @@ export default function ChunksClient({ studentId }: ChunksClientProps) {
   }, [filter]);
 
   async function handleComplete(sessionData: TypingSessionInput) {
-    if (!activeChunk) return;
-    const response = await submitChunkPractice(activeChunk.id, sessionData);
+    const chunkId = mixedPassage ? 'mixed' : activeChunk?.id;
+    if (!chunkId) return;
+    const response = await submitChunkPractice(chunkId, sessionData);
     if (response.success && response.result) {
       setResult({ wpm: response.result.wpm, accuracy: response.result.accuracy });
     }
+  }
+
+  function exitDrill() {
+    setActiveChunk(null);
+    setMixedPassage(null);
+    setResult(null);
+  }
+
+  function startMixedDrill() {
+    setActiveChunk(null);
+    setResult(null);
+    setMixedPassage(generateMixedChunkDrill());
+  }
+
+  if (mixedPassage) {
+    return (
+      <main className={styles.page}>
+        <header className={styles.header}>
+          <div>
+            <p className={styles.kicker}>Chunk dojo / mixed</p>
+            <h1 className={styles.title}>Mixed chunk drill.</h1>
+            <p className={styles.subtitle}>Random chunks, switching every word. Feel each pattern as one motion.</p>
+          </div>
+          <button className={styles.back} onClick={exitDrill}>
+            ← Pick another drill
+          </button>
+        </header>
+
+        {result ? (
+          <section className={styles.result}>
+            <h2>Mixed drill complete</h2>
+            <div className={styles.stats}>
+              <div><span>WPM</span><strong>{result.wpm}</strong></div>
+              <div><span>Accuracy</span><strong>{result.accuracy}%</strong></div>
+            </div>
+            <button className={styles.restartButton} onClick={() => { setResult(null); setMixedPassage(generateMixedChunkDrill()); }}>
+              New mixed drill
+            </button>
+          </section>
+        ) : (
+          <TypingEngine
+            passage={mixedPassage}
+            studentId={studentId}
+            exerciseId="chunk-mixed"
+            skillIds={[TYPING_SKILL_IDS.chunks]}
+            onComplete={handleComplete}
+            mode="technique"
+          />
+        )}
+      </main>
+    );
   }
 
   if (activeChunk) {
@@ -46,7 +99,7 @@ export default function ChunksClient({ studentId }: ChunksClientProps) {
             <h1 className={styles.title}>Drill the {activeChunk.label} chunk.</h1>
             <p className={styles.subtitle}>Type the words. Focus on the chunk feeling like one motion.</p>
           </div>
-          <button className={styles.back} onClick={() => { setActiveChunk(null); setResult(null); }}>
+          <button className={styles.back} onClick={exitDrill}>
             ← Pick another chunk
           </button>
         </header>
@@ -98,6 +151,17 @@ export default function ChunksClient({ studentId }: ChunksClientProps) {
           </button>
         ))}
       </div>
+
+      <section className={styles.mixedCard}>
+        <div>
+          <span className={styles.type}>Random mix</span>
+          <span className={styles.pattern}>Mixed chunks</span>
+          <p className={styles.examples}>Five random chunks in one drill — suffixes, prefixes, and blends switching every word.</p>
+        </div>
+        <button className={styles.mixedButton} onClick={startMixedDrill}>
+          Start mixed drill →
+        </button>
+      </section>
 
       <section className={styles.grid}>
         {filteredChunks.map((chunk) => (

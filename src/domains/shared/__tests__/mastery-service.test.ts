@@ -41,6 +41,25 @@ describe('MasteryService', () => {
       expect(result.newLevel).toBe('strong');
     });
 
+    it('never marks a skill mastered from a single perfect session', () => {
+      const result = service.processAttempt(undefined, 'student-1', 'skill-1', 100);
+      expect(result.newScore).toBe(85);
+      expect(result.newLevel).toBe('strong');
+    });
+
+    it('reaches mastered after a second consistent perfect session', () => {
+      const first = service.processAttempt(undefined, 'student-1', 'skill-1', 100);
+      const currentMastery = {
+        mastery_score: first.newScore,
+        practice_count: 1,
+      } as SkillMastery;
+
+      // practiceCount = 1 -> alpha = 0.35: (0.35 * 100) + (0.65 * 85) = 90.25
+      const second = service.processAttempt(currentMastery, 'student-1', 'skill-1', 100);
+      expect(second.newScore).toBe(90.25);
+      expect(second.newLevel).toBe('mastered');
+    });
+
     it('uses EMA to blend old and new scores', () => {
       const currentMastery = {
         mastery_score: 80,

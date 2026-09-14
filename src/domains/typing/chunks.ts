@@ -82,17 +82,45 @@ export function getChunkById(id: string): TypingChunk | undefined {
   return TYPING_CHUNKS.find((chunk) => chunk.id === id);
 }
 
+const DRILL_FILLERS = ['the', 'and', 'a', 'to', 'of'];
+
 export function generateChunkDrill(chunk: TypingChunk, wordCount = 30): string {
   const words: string[] = [];
   for (let i = 0; i < wordCount; i++) {
     words.push(chunk.examples[i % chunk.examples.length]);
   }
   // Add some filler words to force chunk recognition in context
-  const fillers = ['the', 'and', 'a', 'to', 'of'];
   const mixed: string[] = [];
   words.forEach((word, index) => {
     mixed.push(word);
-    if (index % 4 === 3) mixed.push(fillers[index % fillers.length]);
+    if (index % 4 === 3) mixed.push(DRILL_FILLERS[index % DRILL_FILLERS.length]);
+  });
+  return mixed.join(' ');
+}
+
+/**
+ * Builds a drill that cycles through several random chunks so students
+ * practice switching between patterns instead of one fixed motion.
+ */
+export function generateMixedChunkDrill(wordCount = 30, chunkCount = 5): string {
+  const shuffled = [...TYPING_CHUNKS];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  const picked = shuffled.slice(0, Math.min(chunkCount, shuffled.length));
+
+  const words: string[] = [];
+  for (let i = 0; i < wordCount; i++) {
+    const chunk = picked[i % picked.length];
+    const example = chunk.examples[Math.floor(Math.random() * chunk.examples.length)];
+    words.push(example);
+  }
+
+  const mixed: string[] = [];
+  words.forEach((word, index) => {
+    mixed.push(word);
+    if (index % 4 === 3) mixed.push(DRILL_FILLERS[index % DRILL_FILLERS.length]);
   });
   return mixed.join(' ');
 }

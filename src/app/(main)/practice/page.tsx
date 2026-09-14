@@ -115,8 +115,13 @@ export default async function PracticePage() {
       grade_level_max: 12,
       created_at: new Date().toISOString(),
     };
+  } else if (targetSkillId) {
+    // Honor the active recommendation first (manual "Train now" or the adaptive engine's
+    // next skill) so the session credits the skill the student is training.
+    const domainExercises = await ExerciseRepository.getExercisesByDomain('1');
+    exercise = (domainExercises as PracticeExercise[]).find((e) => (e.skill_ids || []).includes(targetSkillId)) ?? null;
   } else if (activeRec?.recommended_exercise_id === 'ADAPTIVE_WEAKNESS_DRILL' || hasWeakKeys) {
-    // If they have weak keys, generate an adaptive drill as the default instead of a static exercise.
+    // If they have weak keys (and no matching skill exercise), generate an adaptive drill.
     const passage = await AdaptiveGenerator.generatePassage(weakKeys, name, grade, 20);
 
     exercise = {
@@ -135,9 +140,6 @@ export default async function PracticePage() {
       grade_level_max: 12,
       created_at: new Date().toISOString(),
     };
-  } else if (targetSkillId) {
-    const domainExercises = await ExerciseRepository.getExercisesByDomain('1');
-    exercise = (domainExercises as PracticeExercise[]).find((e) => (e.skill_ids || []).includes(targetSkillId)) ?? null;
   }
 
   // Final fallback to static if all else fails

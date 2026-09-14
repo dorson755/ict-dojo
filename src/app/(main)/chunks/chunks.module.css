@@ -9,6 +9,11 @@
 .filterButton:hover, .filterButton:focus-visible { border-color: var(--accent); color: var(--accent); }
 .filters .active { background: var(--accent); border-color: var(--accent); color: white; }
 .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.mixedCard { align-items: center; background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius-lg); display: flex; gap: var(--space-6); justify-content: space-between; margin-bottom: var(--space-6); padding: var(--space-5); }
+.mixedCard .pattern { display: block; }
+.mixedCard .examples { margin: var(--space-2) 0 0; max-width: 480px; }
+.mixedButton { background: var(--accent); border: 0; border-radius: var(--radius-md); color: white; font-weight: 700; padding: var(--space-3) var(--space-5); white-space: nowrap; }
+@media (max-width: 640px) { .mixedCard { align-items: start; flex-direction: column; } .mixedButton { width: 100%; } }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: var(--space-5); }
 .type { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .05em; margin-bottom: var(--space-1); text-transform: uppercase; }
 .pattern { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 700; }

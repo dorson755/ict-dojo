@@ -5,6 +5,13 @@ import { MasteryLevel, MasteryUpdateInput, SkillMastery } from '@/types/platform
  */
 export class MasteryService {
   /**
+   * A single session can never mark a skill "mastered" — the first attempt is
+   * capped at the top of the "strong" band so mastery requires sustained
+   * performance across sessions.
+   */
+  private static readonly FIRST_ATTEMPT_SCORE_CAP = 85;
+
+  /**
    * Determine the categorical MasteryLevel based on the numerical score (0-100).
    */
   public getMasteryLevelFromScore(score: number): MasteryLevel {
@@ -26,7 +33,7 @@ export class MasteryService {
     practiceCount: number
   ): number {
     if (practiceCount === 0) {
-      return sessionScore;
+      return Math.min(sessionScore, MasteryService.FIRST_ATTEMPT_SCORE_CAP);
     }
 
     // Alpha determines how much weight is given to the newest score.
