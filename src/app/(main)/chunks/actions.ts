@@ -106,6 +106,8 @@ export async function submitChunkPractice(chunkId: string, sessionData: TypingSe
     ProgressRepository.updateWeeklyConsistencyQuest(user.id),
   ]);
 
+  console.log(`[chunk:${chunkId}] user=${user.id} wpm=${result.wpm} accuracy=${result.accuracy}% recordUpdated=${newAccuracyRecord}`);
+
   return {
     success: true,
     result,

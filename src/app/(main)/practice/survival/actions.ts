@@ -19,14 +19,19 @@ export async function saveSurvivalScore(
     created_at: new Date().toISOString(),
   };
 
-  await Promise.all([
-    SurvivalRepository.saveScore(fullScore),
-    SurvivalRepository.upsertLeaderboardEntry(fullScore),
+  const [, newAccuracyRecord] = await Promise.all([
     ProgressRepository.updatePersonalRecord(user.id, 'best_wpm', score.final_wpm),
     ProgressRepository.updatePersonalRecord(user.id, 'best_accuracy', score.accuracy),
   ]);
 
+  await Promise.all([
+    SurvivalRepository.saveScore(fullScore),
+    SurvivalRepository.upsertLeaderboardEntry(fullScore),
+  ]);
+
   await SurvivalRepository.pruneLeaderboard(score.mode, score.starting_wpm, 10);
+
+  console.log(`[survival:${score.mode}] user=${user.id} wpm=${score.final_wpm} accuracy=${score.accuracy}% recordUpdated=${newAccuracyRecord}`);
 
   return { success: true };
 }
