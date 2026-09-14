@@ -24,6 +24,7 @@ export default async function Header() {
       <nav className={styles.nav}>
         {user.role === 'student' && <Link href="/dashboard" className={styles.navLink}>Dashboard</Link>}
         {user.role === 'student' && <Link href="/practice" className={styles.navLink}>Practice</Link>}
+        {user.role === 'student' && <Link href="/chunks" className={styles.navLink}>Chunks</Link>}
         {user.role === 'student' && (
           <Link href="/profile" className={styles.navLink}>
             Profile

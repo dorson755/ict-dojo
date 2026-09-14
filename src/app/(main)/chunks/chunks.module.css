@@ -1,0 +1,19 @@
+.page { max-width: 1000px; margin: 0 auto; padding: var(--space-10) var(--space-6); }
+.header { align-items: end; display: flex; justify-content: space-between; margin-bottom: var(--space-8); }
+.kicker { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
+.title { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.06em; margin: var(--space-2) 0; }
+.subtitle { color: var(--ink-2); max-width: 560px; }
+.back { background: transparent; border: 0; color: var(--accent); cursor: pointer; font-size: var(--text-sm); }
+.grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: var(--space-5); }
+.pattern { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 700; }
+.examples { color: var(--ink-2); flex: 1; font-size: var(--text-sm); line-height: 1.5; margin: var(--space-3) 0 var(--space-5); }
+.startButton { background: var(--accent); border: 0; border-radius: var(--radius-md); color: white; font-weight: 700; padding: var(--space-3); width: 100%; }
+.result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); text-align: center; }
+.result h2 { font-size: var(--text-2xl); margin-bottom: var(--space-6); }
+.stats { display: flex; gap: var(--space-6); justify-content: center; margin-bottom: var(--space-8); }
+.stats div { display: flex; flex-direction: column; gap: var(--space-1); }
+.stats span { color: var(--ink-2); font-size: var(--text-xs); }
+.stats strong { font-family: var(--font-mono); font-size: var(--text-3xl); }
+.restartButton { background: var(--accent); border: 0; border-radius: var(--radius-md); color: white; font-weight: 700; padding: var(--space-4) var(--space-8); }
+@media (max-width: 640px) { .page { padding: var(--space-6) var(--space-4); } .header { align-items: start; flex-direction: column; gap: var(--space-4); } }

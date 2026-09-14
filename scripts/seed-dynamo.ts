@@ -60,6 +60,15 @@ const exercises = [
     grades: [1, 12],
   },
   {
+    id: 'typing-chunks',
+    skillId: TYPING_SKILL_IDS.chunks,
+    title: 'Chunk muscle memory',
+    passage: 'nation action station education invitation vision division decision explosion revision',
+    hint: 'Feel the chunk as one motion, not individual letters.',
+    difficulty: 2,
+    grades: [2, 12],
+  },
+  {
     id: 'typing-sentence-fluency',
     skillId: TYPING_SKILL_IDS.sentenceFluency,
     title: 'Smooth sentences',
