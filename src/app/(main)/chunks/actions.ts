@@ -10,8 +10,30 @@ import { MasteryService } from '@/domains/shared/mastery-service';
 import { TypingEvaluator } from '@/domains/typing/evaluator';
 import { TypingSessionInput } from '@/domains/typing/types';
 import { TYPING_SKILL_IDS } from '@/domains/typing/catalog';
+import { TYPING_CHUNKS, getChunkById } from '@/domains/typing/chunks';
+import type { SkillMastery } from '@/types/platform';
 
-export async function submitChunkPractice(chunkId: string, sessionData: TypingSessionInput) {
+const CHUNK_MASTERY_PREFIX = 'chunk:';
+
+function toMasterySnapshot(mastery: Awaited<ReturnType<typeof MasteryRepository.getMastery>>): SkillMastery | undefined {
+  if (!mastery) return undefined;
+  return {
+    id: mastery.skill_id,
+    student_id: mastery.student_id,
+    skill_id: mastery.skill_id,
+    mastery_score: mastery.mastery_score,
+    mastery_level: mastery.mastery_level as SkillMastery['mastery_level'],
+    practice_count: mastery.practice_count,
+    last_practiced_at: mastery.last_practiced_at ?? null,
+    updated_at: '',
+  };
+}
+
+export async function submitChunkPractice(
+  chunkId: string,
+  sessionData: TypingSessionInput,
+  creditedChunkIds?: string[]
+) {
   const user = await getUserSession();
   if (!user) throw new Error('Not authenticated');
   if (user.role !== 'student') throw new Error('Only students can practice chunks');
@@ -59,35 +81,65 @@ export async function submitChunkPractice(chunkId: string, sessionData: TypingSe
     last_assessed_at: new Date().toISOString(),
   });
 
-  // Update chunk mastery
-  const skillId = TYPING_SKILL_IDS.chunks;
-  const currentMastery = await MasteryRepository.getMastery(user.id, skillId);
+  // ── Chunk mastery ──
+  // Every chunk gets its own mastery record (skill id "chunk:<id>"), so the
+  // student can see per-chunk progress on the Chunk Dojo page.
   const masteryService = new MasteryService();
   const sessionScore = result.accuracy * 0.7 + Math.min(result.wpm / 40, 1) * 30;
-  const { newScore, newLevel } = masteryService.processAttempt(
-    currentMastery
-      ? {
-          id: currentMastery.skill_id,
-          student_id: user.id,
-          skill_id: skillId,
-          mastery_score: currentMastery.mastery_score,
-          mastery_level: currentMastery.mastery_level as 'not_started' | 'weak' | 'developing' | 'strong' | 'mastered',
-          practice_count: currentMastery.practice_count,
-          last_practiced_at: currentMastery.last_practiced_at ?? null,
-          updated_at: '',
-        }
-      : undefined,
-    user.id,
-    skillId,
-    sessionScore,
+  const now = new Date().toISOString();
+
+  const candidateIds = chunkId === 'mixed' ? (creditedChunkIds ?? []) : [chunkId];
+  const validChunkIds = candidateIds.filter((id) => Boolean(getChunkById(id)));
+
+  for (const id of validChunkIds) {
+    const chunkSkillId = `${CHUNK_MASTERY_PREFIX}${id}`;
+    const current = await MasteryRepository.getMastery(user.id, chunkSkillId);
+    const { newScore, newLevel } = masteryService.processAttempt(
+      toMasterySnapshot(current),
+      user.id,
+      chunkSkillId,
+      sessionScore,
+    );
+    await MasteryRepository.upsertMastery(user.id, {
+      student_id: user.id,
+      skill_id: chunkSkillId,
+      mastery_score: newScore,
+      mastery_level: newLevel,
+      practice_count: (current?.practice_count || 0) + 1,
+      last_practiced_at: now,
+      skills: { name: `Chunks · ${getChunkById(id)?.label ?? id}` },
+    });
+  }
+
+  // The overall Chunks skill mastery is the average across every chunk in the
+  // catalog (unattempted chunks count as zero), and it is only "mastered" once
+  // every chunk on the Chunk Dojo page is mastered individually.
+  const allMasteries = await MasteryRepository.getAllMastery(user.id);
+  const chunkMasteryById = new Map(
+    allMasteries
+      .filter((m) => m.skill_id.startsWith(CHUNK_MASTERY_PREFIX))
+      .map((m) => [m.skill_id.slice(CHUNK_MASTERY_PREFIX.length), m]),
   );
+  const sumScores = TYPING_CHUNKS.reduce(
+    (sum, chunk) => sum + (chunkMasteryById.get(chunk.id)?.mastery_score ?? 0),
+    0,
+  );
+  const overallScore = Number((sumScores / TYPING_CHUNKS.length).toFixed(2));
+  const scoreLevel = masteryService.getMasteryLevelFromScore(overallScore);
+  const allChunksMastered = TYPING_CHUNKS.every(
+    (chunk) => chunkMasteryById.get(chunk.id)?.mastery_level === 'mastered',
+  );
+  const overallLevel = allChunksMastered ? 'mastered' : scoreLevel === 'mastered' ? 'strong' : scoreLevel;
+
+  const skillId = TYPING_SKILL_IDS.chunks;
+  const currentOverall = await MasteryRepository.getMastery(user.id, skillId);
   await MasteryRepository.upsertMastery(user.id, {
     student_id: user.id,
     skill_id: skillId,
-    mastery_score: newScore,
-    mastery_level: newLevel,
-    practice_count: (currentMastery?.practice_count || 0) + 1,
-    last_practiced_at: new Date().toISOString(),
+    mastery_score: overallScore,
+    mastery_level: overallLevel,
+    practice_count: (currentOverall?.practice_count || 0) + 1,
+    last_practiced_at: now,
     skills: { name: 'Chunks' },
   });
 

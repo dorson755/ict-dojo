@@ -17,7 +17,8 @@
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; padding: var(--space-5); }
 .type { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .05em; margin-bottom: var(--space-1); text-transform: uppercase; }
 .pattern { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 700; }
-.examples { color: var(--ink-2); flex: 1; font-size: var(--text-sm); line-height: 1.5; margin: var(--space-3) 0 var(--space-5); }
+.examples { color: var(--ink-2); flex: 1; font-size: var(--text-sm); line-height: 1.5; margin: var(--space-3) 0 var(--space-2); }
+.mastery { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .03em; margin: 0 0 var(--space-4); }
 .startButton { background: var(--accent); border: 0; border-radius: var(--radius-md); color: white; font-weight: 700; padding: var(--space-3); width: 100%; }
 .result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-8); text-align: center; }
 .result h2 { font-size: var(--text-2xl); margin-bottom: var(--space-6); }

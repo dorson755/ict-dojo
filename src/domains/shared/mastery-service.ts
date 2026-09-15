@@ -1,4 +1,4 @@
-import { MasteryLevel, MasteryUpdateInput, SkillMastery } from '@/types/platform';
+import { MasteryLevel, MasteryUpdateInput, SkillMastery } from '../../types/platform';
 
 /**
  * Service for calculating and updating student mastery scores based on new performance evidence.

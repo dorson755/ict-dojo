@@ -43,7 +43,9 @@ export default async function PracticePage() {
   const NUMPAD_SKILL_ID = '00000000-0000-0000-0000-000000000007';
   const PUNCTUATION_SKILL_ID = '00000000-0000-0000-0000-000000000008';
 
-  if (isBeltTest && hasWeakKeys) {
+  // A manual "Train now" pick always honors the skill the student chose;
+  // the belt test only appears on organic visits.
+  if (isBeltTest && hasWeakKeys && activeRec?.source !== 'manual') {
     const passage = await AdaptiveGenerator.generateBeltTest(weakKeys, name, grade, 50);
     exercise = {
       id: 'belt-test',

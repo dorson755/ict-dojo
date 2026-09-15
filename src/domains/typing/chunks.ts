@@ -98,11 +98,17 @@ export function generateChunkDrill(chunk: TypingChunk, wordCount = 30): string {
   return mixed.join(' ');
 }
 
+export interface MixedChunkDrill {
+  passage: string;
+  chunkIds: string[];
+}
+
 /**
  * Builds a drill that cycles through several random chunks so students
  * practice switching between patterns instead of one fixed motion.
+ * Returns the sampled chunk ids so the session can credit each chunk.
  */
-export function generateMixedChunkDrill(wordCount = 30, chunkCount = 5): string {
+export function generateMixedChunkDrill(wordCount = 30, chunkCount = 5): MixedChunkDrill {
   const shuffled = [...TYPING_CHUNKS];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -122,5 +128,5 @@ export function generateMixedChunkDrill(wordCount = 30, chunkCount = 5): string 
     mixed.push(word);
     if (index % 4 === 3) mixed.push(DRILL_FILLERS[index % DRILL_FILLERS.length]);
   });
-  return mixed.join(' ');
+  return { passage: mixed.join(' '), chunkIds: picked.map((chunk) => chunk.id) };
 }

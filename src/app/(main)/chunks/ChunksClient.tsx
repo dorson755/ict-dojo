@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { TYPING_CHUNKS, generateChunkDrill, generateMixedChunkDrill, type TypingChunk, type ChunkType } from '@/domains/typing/chunks';
 import { TYPING_SKILL_IDS } from '@/domains/typing/catalog';
@@ -15,13 +16,28 @@ const TYPE_LABELS: Record<ChunkType, string> = {
   blend: 'Blend',
 };
 
-interface ChunksClientProps {
-  studentId: string;
+const MASTERY_LABELS: Record<string, string> = {
+  mastered: 'Mastered',
+  strong: 'Strong',
+  developing: 'Developing',
+  weak: 'Weak',
+};
+
+export interface ChunkMasteryInfo {
+  score: number;
+  level: string;
+  count: number;
 }
 
-export default function ChunksClient({ studentId }: ChunksClientProps) {
+interface ChunksClientProps {
+  studentId: string;
+  chunkMastery: Record<string, ChunkMasteryInfo>;
+}
+
+export default function ChunksClient({ studentId, chunkMastery }: ChunksClientProps) {
+  const router = useRouter();
   const [activeChunk, setActiveChunk] = useState<TypingChunk | null>(null);
-  const [mixedPassage, setMixedPassage] = useState<string | null>(null);
+  const [mixedDrill, setMixedDrill] = useState<{ passage: string; chunkIds: string[] } | null>(null);
   const [filter, setFilter] = useState<ChunkType | 'all'>('all');
   const [result, setResult] = useState<{ wpm: number; accuracy: number } | null>(null);
 
@@ -30,28 +46,35 @@ export default function ChunksClient({ studentId }: ChunksClientProps) {
     return TYPING_CHUNKS.filter((chunk) => chunk.type === filter);
   }, [filter]);
 
+  function formatMastery(chunkId: string): string {
+    const mastery = chunkMastery[chunkId];
+    if (!mastery || mastery.count === 0) return 'Not attempted yet';
+    return `${Math.round(mastery.score)}% · ${MASTERY_LABELS[mastery.level] ?? mastery.level}`;
+  }
+
   async function handleComplete(sessionData: TypingSessionInput) {
-    const chunkId = mixedPassage ? 'mixed' : activeChunk?.id;
+    const chunkId = mixedDrill ? 'mixed' : activeChunk?.id;
     if (!chunkId) return;
-    const response = await submitChunkPractice(chunkId, sessionData);
+    const response = await submitChunkPractice(chunkId, sessionData, mixedDrill?.chunkIds);
     if (response.success && response.result) {
       setResult({ wpm: response.result.wpm, accuracy: response.result.accuracy });
+      router.refresh();
     }
   }
 
   function exitDrill() {
     setActiveChunk(null);
-    setMixedPassage(null);
+    setMixedDrill(null);
     setResult(null);
   }
 
   function startMixedDrill() {
     setActiveChunk(null);
     setResult(null);
-    setMixedPassage(generateMixedChunkDrill());
+    setMixedDrill(generateMixedChunkDrill());
   }
 
-  if (mixedPassage) {
+  if (mixedDrill) {
     return (
       <main className={styles.page}>
         <header className={styles.header}>
@@ -72,13 +95,13 @@ export default function ChunksClient({ studentId }: ChunksClientProps) {
               <div><span>WPM</span><strong>{result.wpm}</strong></div>
               <div><span>Accuracy</span><strong>{result.accuracy}%</strong></div>
             </div>
-            <button className={styles.restartButton} onClick={() => { setResult(null); setMixedPassage(generateMixedChunkDrill()); }}>
+            <button className={styles.restartButton} onClick={() => { setResult(null); setMixedDrill(generateMixedChunkDrill()); }}>
               New mixed drill
             </button>
           </section>
         ) : (
           <TypingEngine
-            passage={mixedPassage}
+            passage={mixedDrill.passage}
             studentId={studentId}
             exerciseId="chunk-mixed"
             skillIds={[TYPING_SKILL_IDS.chunks]}
@@ -169,6 +192,7 @@ export default function ChunksClient({ studentId }: ChunksClientProps) {
             <span className={styles.type}>{TYPE_LABELS[chunk.type]}</span>
             <span className={styles.pattern}>{chunk.label}</span>
             <p className={styles.examples}>{chunk.examples.slice(0, 4).join(', ')}</p>
+            <p className={styles.mastery}>{formatMastery(chunk.id)}</p>
             <button className={styles.startButton} onClick={() => setActiveChunk(chunk)}>
               Drill {chunk.label}
             </button>

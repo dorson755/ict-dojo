@@ -26,14 +26,16 @@ export class RecommendationRepository {
     const items = (response.Items || []) as StoredRecommendation[];
     
     const activeRecs = items.filter(item => !item.is_acted_on);
-    
+
     if (activeRecs.length === 0) return null;
-    
-    // Sort by priority descending
+
+    // The newest recommendation wins: after each session the adaptive engine
+    // creates a new recommendation that supersedes older ones, and a manual
+    // "Train now" pick is always created last. Priority only breaks ties.
     activeRecs.sort((a, b) => {
-      const priorityDelta = (b.priority || 0) - (a.priority || 0);
-      if (priorityDelta !== 0) return priorityDelta;
-      return String(b.created_at || '').localeCompare(String(a.created_at || ''));
+      const timeDelta = String(b.created_at || '').localeCompare(String(a.created_at || ''));
+      if (timeDelta !== 0) return timeDelta;
+      return (b.priority || 0) - (a.priority || 0);
     });
     
     return activeRecs[0];
