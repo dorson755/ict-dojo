@@ -35,17 +35,22 @@ export class SurvivalRepository {
     const response = await dynamoClient.send(
       new QueryCommand({
         TableName: TABLE_NAME,
-        IndexName: 'GSI1',
-        KeyConditionExpression: 'GSI1PK = :pk AND begins_with(GSI1SK, :sk)',
+        // Leaderboard entries are already stored under this primary key.
+        // Querying GSI1 caused Survival mode to crash in environments where
+        // the legacy table was provisioned without that index.
+        KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
         ExpressionAttributeValues: {
           ':pk': `SURVIVAL_LEADERBOARD#${mode}#${startingWpm}`,
-          ':sk': 'SCORE#',
+          ':sk': 'USER#',
         },
-        ScanIndexForward: false,
-        Limit: limit,
       }),
     );
-    return (response.Items || []) as SurvivalScore[];
+    return ((response.Items || []) as SurvivalScore[])
+      .sort((a, b) => {
+        const scoreDelta = b.seconds_survived - a.seconds_survived;
+        return scoreDelta || b.created_at.localeCompare(a.created_at);
+      })
+      .slice(0, limit);
   }
 
   static async upsertLeaderboardEntry(score: SurvivalScore) {

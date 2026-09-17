@@ -39,6 +39,10 @@ export async function saveSurvivalScore(
 export async function getSurvivalLeaderboard(mode: SurvivalMode, startingWpm: number) {
   const user = await getUserSession();
   if (!user) return { error: 'Not authenticated' };
-  const scores = await SurvivalRepository.getLeaderboard(mode, startingWpm, 10);
-  return { scores };
+  try {
+    const scores = await SurvivalRepository.getLeaderboard(mode, startingWpm, 10);
+    return { scores };
+  } catch {
+    return { error: 'Leaderboard is temporarily unavailable.' };
+  }
 }

@@ -10,8 +10,8 @@ export default async function SurvivalPage() {
   if (user.role === 'parent') redirect('/parent');
 
   const [normalLeaderboard, extremeLeaderboard] = await Promise.all([
-    SurvivalRepository.getLeaderboard('normal', 15, 10),
-    SurvivalRepository.getLeaderboard('extreme', 15, 10),
+    SurvivalRepository.getLeaderboard('normal', 15, 10).catch(() => []),
+    SurvivalRepository.getLeaderboard('extreme', 15, 10).catch(() => []),
   ]);
 
   return (
