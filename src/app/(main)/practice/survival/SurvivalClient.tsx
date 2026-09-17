@@ -46,6 +46,7 @@ export default function SurvivalClient({
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const startTimeRef = useRef<number>(0);
   const lastIncrementRef = useRef<number>(0);
+  const lastTypedAtRef = useRef<number>(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const totalAttemptedRef = useRef(0);
   const totalCorrectRef = useRef(0);
@@ -94,6 +95,7 @@ export default function SurvivalClient({
     totalCorrectRef.current = 0;
     startTimeRef.current = 0;
     lastIncrementRef.current = 0;
+    lastTypedAtRef.current = 0;
     inputRef.current?.focus();
   }
 
@@ -124,6 +126,14 @@ export default function SurvivalClient({
       const elapsedMs = now - startTimeRef.current;
       const elapsedSeconds = Math.floor(elapsedMs / 1000);
       setSecondsSurvived(elapsedSeconds);
+
+      // A stopped typist cannot retain their last WPM indefinitely. A three
+      // second pause is a failed run, regardless of their prior speed.
+      if (now - lastTypedAtRef.current >= BELOW_THRESHOLD_TOLERANCE_MS) {
+        setCurrentWpm(0);
+        endGame();
+        return;
+      }
 
       // Extreme mode: increment threshold every 30 seconds, capped at 100 WPM
       if (
@@ -166,11 +176,15 @@ export default function SurvivalClient({
     // Accumulate attempted and correct characters for end-of-run accuracy
     const previousLength = typed.length;
     const newLength = value.length;
+    if (value !== typed) {
+      lastTypedAtRef.current = Date.now();
+    }
     if (newLength > previousLength) {
       if (!hasStartedTyping) {
         const now = Date.now();
         startTimeRef.current = now;
         lastIncrementRef.current = now;
+        lastTypedAtRef.current = now;
         setHasStartedTyping(true);
       }
       for (let i = previousLength; i < newLength; i++) {
@@ -302,7 +316,7 @@ export default function SurvivalClient({
             </div>
             <div>
               <span className={styles.hudLabel}>Current WPM</span>
-              <span className={styles.hudValue}>{currentWpm}</span>
+              <span className={styles.hudValue}>{hasStartedTyping ? currentWpm : '—'}</span>
             </div>
             <div>
               <span className={styles.hudLabel}>Threshold</span>
@@ -310,7 +324,7 @@ export default function SurvivalClient({
             </div>
             <div>
               <span className={styles.hudLabel}>Time</span>
-              <span className={styles.hudValue}>{secondsSurvived}s</span>
+              <span className={styles.hudValue}>{hasStartedTyping ? `${secondsSurvived}s` : 'Ready'}</span>
             </div>
           </div>
 
