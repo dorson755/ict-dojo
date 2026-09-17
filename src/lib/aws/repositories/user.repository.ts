@@ -10,6 +10,7 @@ export interface StudentProfile {
   streak_count?: number;
   last_practice_date?: string;
   linked_student_ids?: string[];
+  belt_exam_passed?: number;
 }
 
 export interface TypingDNA {
@@ -82,6 +83,7 @@ export class UserRepository {
       streak_count: response.Item.streak_count ?? 0,
       last_practice_date: response.Item.last_practice_date,
       linked_student_ids: response.Item.linked_student_ids ?? [],
+      belt_exam_passed: response.Item.belt_exam_passed ?? 0,
     };
   }
 
@@ -131,6 +133,28 @@ export class UserRepository {
       ExpressionAttributeValues: {
         ':xp': xpGained,
         ':lvl': newLevel,
+        ':u': new Date().toISOString(),
+      },
+    });
+
+    await dynamoClient.send(command);
+  }
+
+  /**
+   * Record the highest belt promotion exam the student has passed.
+   * Only moves up; a lower value is ignored.
+   */
+  static async setBeltExamPassed(userId: string, belt: number): Promise<void> {
+    const command = new UpdateCommand({
+      TableName: TABLE_NAME,
+      Key: {
+        PK: `USER#${userId}`,
+        SK: 'PROFILE',
+      },
+      UpdateExpression: 'SET belt_exam_passed = :belt, updated_at = :u',
+      ConditionExpression: 'attribute_not_exists(belt_exam_passed) OR belt_exam_passed < :belt',
+      ExpressionAttributeValues: {
+        ':belt': belt,
         ':u': new Date().toISOString(),
       },
     });

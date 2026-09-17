@@ -44,6 +44,16 @@ export async function submitPracticeSession(
   const user = await getUserSession();
   if (!user) throw new Error('Not authenticated');
 
+  // Anti-grind: how many times this exercise was already drilled today.
+  const today = new Date().toISOString().slice(0, 10);
+  const todaySessions = exerciseId
+    ? (await ExerciseRepository.getRecentSessions(user.id, 20)).filter(
+        (session) =>
+          session.exercise_id === exerciseId &&
+          String(session.created_at || '').slice(0, 10) === today
+      )
+    : [];
+
   // Log session
   await ExerciseRepository.logSession(user.id, {
     ...result,
@@ -196,7 +206,7 @@ export async function submitPracticeSession(
   const currentStreak = profile?.streak_count ?? 0;
   const lastPracticeDate = profile?.last_practice_date ?? null;
 
-  const xpAward = gamification.calculateSessionXp(result, difficulty);
+  const xpAward = gamification.calculateSessionXp(result, difficulty, { repeatsToday: todaySessions.length });
   const levelUpdate = gamification.calculateLevelUpdate(currentXp, currentLevel, xpAward.xpGained);
   const streakUpdate = gamification.calculateStreakUpdate(lastPracticeDate, currentStreak);
 

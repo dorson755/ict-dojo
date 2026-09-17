@@ -25,7 +25,6 @@ export default async function PracticePage() {
   
   const grade = profile?.grade_level || 6;
   const name = profile?.display_name || user.name || 'Learner';
-  const xp = profile?.xp_total || 0;
   const weakKeys = dna?.weak_keys || {};
   const hasWeakKeys = Object.keys(weakKeys).length > 0;
 
@@ -36,34 +35,13 @@ export default async function PracticePage() {
   }
 
   let exercise: PracticeExercise | null = null;
-  const isBeltTest = (xp % 1000) > 900;
 
   // Skill IDs that map to specialized AI generators
   const CODING_SYNTAX_SKILL_ID = '00000000-0000-0000-0000-000000000006';
   const NUMPAD_SKILL_ID = '00000000-0000-0000-0000-000000000007';
   const PUNCTUATION_SKILL_ID = '00000000-0000-0000-0000-000000000008';
 
-  // A manual "Train now" pick always honors the skill the student chose;
-  // the belt test only appears on organic visits.
-  if (isBeltTest && hasWeakKeys && activeRec?.source !== 'manual') {
-    const passage = await AdaptiveGenerator.generateBeltTest(weakKeys, name, grade, 50);
-    exercise = {
-      id: 'belt-test',
-      domain_id: '1',
-      skill_ids: [],
-      title: 'Belt Mastery Test',
-      difficulty: 3,
-      difficulty_metadata: {},
-      content: {
-        passage,
-        hint: 'This is a Belt Test! It is longer and harder, testing all your weaknesses to prepare you for the next level.',
-      },
-      is_ai_generated: true,
-      grade_level_min: 1,
-      grade_level_max: 12,
-      created_at: new Date().toISOString(),
-    };
-  } else if (targetSkillId === CODING_SYNTAX_SKILL_ID) {
+  if (targetSkillId === CODING_SYNTAX_SKILL_ID) {
     const passage = await AdaptiveGenerator.generateCodingDrill(weakKeys, grade, 25);
     exercise = {
       id: 'coding-drill-adaptive',

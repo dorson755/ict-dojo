@@ -58,6 +58,28 @@ describe('GamificationService', () => {
       expect(hard.breakdown.difficulty).toBe(30);
       expect(easy.breakdown.difficulty).toBe(10);
     });
+
+    it('applies a quality floor for sloppy sessions', () => {
+      const good = service.calculateSessionXp(mockResult({ accuracy: 90 }), 1);
+      const mediocre = service.calculateSessionXp(mockResult({ accuracy: 55 }), 1);
+      const poor = service.calculateSessionXp(mockResult({ accuracy: 30 }), 1);
+
+      expect(mediocre.breakdown.multiplier).toBe(0.5);
+      expect(poor.breakdown.multiplier).toBe(0.25);
+      expect(good.xpGained).toBeGreaterThan(mediocre.xpGained);
+      expect(mediocre.xpGained).toBeGreaterThan(poor.xpGained);
+    });
+
+    it('decays XP for repeated drills on the same day', () => {
+      const first = service.calculateSessionXp(mockResult({ accuracy: 90 }), 1);
+      const second = service.calculateSessionXp(mockResult({ accuracy: 90 }), 1, { repeatsToday: 1 });
+      const third = service.calculateSessionXp(mockResult({ accuracy: 90 }), 1, { repeatsToday: 2 });
+      const fifth = service.calculateSessionXp(mockResult({ accuracy: 90 }), 1, { repeatsToday: 10 });
+
+      expect(second.xpGained).toBe(Math.round(first.xpGained * 0.5));
+      expect(third.xpGained).toBe(Math.round(first.xpGained * 0.25));
+      expect(fifth.xpGained).toBe(third.xpGained); // floored at a quarter
+    });
   });
 
   describe('calculateDiagnosticXp', () => {

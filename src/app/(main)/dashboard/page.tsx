@@ -7,13 +7,21 @@ import { RecommendationRepository } from '@/lib/aws/repositories/recommendation.
 import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { ProgressRepository } from '@/lib/aws/repositories/progress.repository';
-import BeltBadge, { getBeltFromLevel } from '@/components/ui/BeltBadge';
+import BeltBadge, { getBeltName } from '@/components/ui/BeltBadge';
 import SkillTrackCard from '@/components/ui/SkillTrackCard';
 import AIGreeting from './AIGreeting';
 import styles from './dashboard.module.css';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { TYPING_DEPENDENCIES } from '@/domains/typing/catalog';
 import { SkillGraph } from '@/domains/shared/skill-graph';
+import {
+  MAX_BELT,
+  computeBelt,
+  countChunksMastered,
+  evaluateBeltRequirements,
+  getMasteryBelt,
+  getXpBelt,
+} from '@/domains/shared/belt-requirements';
 import type { MasteryLevel, SkillMastery as PlatformSkillMastery } from '@/types/platform';
 
 interface SessionRecord {
@@ -49,7 +57,6 @@ export default async function DashboardPage() {
 
   const level = profile.platform_level || 1;
   const xp = profile.xp_total || 0;
-  const belt = getBeltFromLevel(level);
   const streak = profile.streak_count || 0;
   const xpInLevel = xp % 1000;
   const xpPercent = Math.round((xpInLevel / 1000) * 100);
@@ -66,6 +73,19 @@ export default async function DashboardPage() {
       updated_at: '',
     },
   ]));
+  const masteryLevels = Object.fromEntries(
+    allMasteries.map((mastery) => [mastery.skill_id, mastery.mastery_level as MasteryLevel])
+  ) as Record<string, MasteryLevel>;
+  const chunksMastered = countChunksMastered(allMasteries);
+  const xpBelt = getXpBelt(level);
+  const masteryBelt = getMasteryBelt(masteryLevels, chunksMastered);
+  const examBelt = profile.belt_exam_passed ?? 0;
+  const belt = computeBelt(level, examBelt, masteryLevels, chunksMastered);
+  const nextBelt = Math.min(MAX_BELT, belt + 1);
+  const nextBeltChecklist = belt < MAX_BELT
+    ? evaluateBeltRequirements(nextBelt, level, masteryLevels, chunksMastered)
+    : null;
+  const examReady = belt < MAX_BELT && xpBelt >= nextBelt && masteryBelt >= nextBelt;
   const skillGraph = new SkillGraph(TYPING_SKILLS, TYPING_DEPENDENCIES);
   const activeSkillName = activeRec?.skills && typeof activeRec.skills === 'object' && 'name' in activeRec.skills
     ? String(activeRec.skills.name)
@@ -216,6 +236,40 @@ export default async function DashboardPage() {
               <p className={styles.statSubGap}>
                 Last assessed {new Date(dna.last_assessed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
               </p>
+            )}
+          </div>
+
+          <div className={`${styles.sideCard} ${styles.beltCard}`}>
+            <div className={styles.beltCardHeader}>
+              <h3 className={styles.sideCardTitle}>Belt progression</h3>
+              <span className={styles.beltStatus}>{getBeltName(belt)} Belt</span>
+            </div>
+            {nextBeltChecklist ? (
+              <>
+                <p className={styles.beltSummary}>
+                  Next: {getBeltName(nextBelt)} Belt. Earn the skills, then pass its exam.
+                </p>
+                <ul className={styles.beltChecklist}>
+                  <li className={nextBeltChecklist.xp.met ? styles.beltMet : styles.beltUnmet}>
+                    Level {nextBeltChecklist.xp.currentLevel}/{nextBeltChecklist.xp.requiredLevel}
+                  </li>
+                  {nextBeltChecklist.skills.filter((skill) => !skill.met).slice(0, 2).map((skill) => (
+                    <li key={skill.skillId} className={styles.beltUnmet}>
+                      {skill.skillId.replace(/^typing-/, '').replace(/-/g, ' ')} needs {skill.minLevel}
+                    </li>
+                  ))}
+                  {nextBeltChecklist.chunks.required > 0 && (
+                    <li className={nextBeltChecklist.chunks.met ? styles.beltMet : styles.beltUnmet}>
+                      Chunks {nextBeltChecklist.chunks.current}/{nextBeltChecklist.chunks.required} mastered
+                    </li>
+                  )}
+                </ul>
+                <Link className={styles.beltLink} href="/belt-exam">
+                  {examReady ? `Take ${getBeltName(nextBelt)} belt exam` : 'View promotion requirements'}
+                </Link>
+              </>
+            ) : (
+              <p className={styles.beltSummary}>Black Belt earned. Keep your skills sharp in the dojo.</p>
             )}
           </div>
 

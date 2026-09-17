@@ -16,6 +16,7 @@ export interface XpAward {
     accuracy: number;
     speed: number;
     difficulty: number;
+    multiplier: number;
   };
 }
 
@@ -36,10 +37,17 @@ export class GamificationService {
   /**
    * Calculate XP earned from a practice session.
    * Accuracy is weighted higher than speed to discourage reckless typing.
+   *
+   * Anti-grind rules:
+   *   - Quality floor: sessions below 60% accuracy earn half XP, and
+   *     below 40% only a quarter. Showing up pays, mashing keys doesn't.
+   *   - Repeat decay: re-drilling the same exercise on the same day pays
+   *     out half each time, floored at a quarter. Practice variety pays.
    */
   public calculateSessionXp(
     result: TypingSessionResult,
-    difficulty: number = 1
+    difficulty: number = 1,
+    options?: { repeatsToday?: number }
   ): XpAward {
     const base = 50;
 
@@ -49,14 +57,27 @@ export class GamificationService {
     // Speed bonus: 0-15, capped at 60 WPM so rushing doesn't dominate
     const speed = Math.round(Math.min(result.wpm, 60) * 0.25);
 
-    // Difficulty bonus: 10-30 for difficulty 1-3
+    // Difficulty bonus: 10 per difficulty level
     const diff = difficulty * 10;
 
-    const xpGained = base + accuracy + speed + diff;
+    // Quality floor — sloppy sessions earn reduced XP.
+    let qualityMultiplier = 1;
+    if (result.accuracy < 40) {
+      qualityMultiplier = 0.25;
+    } else if (result.accuracy < 60) {
+      qualityMultiplier = 0.5;
+    }
+
+    // Repeat decay — same drill again today pays out less each time.
+    const repeats = Math.max(0, options?.repeatsToday ?? 0);
+    const repeatMultiplier = Math.max(0.25, Math.pow(0.5, repeats));
+    const multiplier = qualityMultiplier * repeatMultiplier;
+
+    const xpGained = Math.round((base + accuracy + speed + diff) * multiplier);
 
     return {
       xpGained,
-      breakdown: { base, accuracy, speed, difficulty: diff },
+      breakdown: { base, accuracy, speed, difficulty: diff, multiplier },
     };
   }
 

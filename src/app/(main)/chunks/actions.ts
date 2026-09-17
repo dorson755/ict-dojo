@@ -41,9 +41,18 @@ export async function submitChunkPractice(
   const evaluator = new TypingEvaluator();
   const result = evaluator.evaluate({ ...sessionData, mode: 'technique' });
 
+  // Anti-grind: how many times this chunk was already drilled today.
+  const exerciseId = `chunk-${chunkId}`;
+  const today = new Date().toISOString().slice(0, 10);
+  const todaySessions = (await ExerciseRepository.getRecentSessions(user.id, 20)).filter(
+    (session) =>
+      session.exercise_id === exerciseId &&
+      String(session.created_at || '').slice(0, 10) === today
+  );
+
   await ExerciseRepository.logSession(user.id, {
     ...result,
-    exercise_id: `chunk-${chunkId}`,
+    exercise_id: exerciseId,
     skill_ids: [TYPING_SKILL_IDS.chunks],
     score: result.compositeScore,
   });
@@ -146,7 +155,7 @@ export async function submitChunkPractice(
   // Award XP and streaks
   const gamification = new GamificationService();
   const profile = await UserRepository.getProfile(user.id);
-  const xpAward = gamification.calculateSessionXp(result, 2);
+  const xpAward = gamification.calculateSessionXp(result, 2, { repeatsToday: todaySessions.length });
   const levelUpdate = gamification.calculateLevelUpdate(profile?.xp_total ?? 0, profile?.platform_level ?? 1, xpAward.xpGained);
   const streakUpdate = gamification.calculateStreakUpdate(profile?.last_practice_date ?? null, profile?.streak_count ?? 0);
   await UserRepository.awardXp(user.id, xpAward.xpGained, levelUpdate.newLevel);
