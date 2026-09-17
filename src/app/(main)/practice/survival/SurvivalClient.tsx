@@ -39,6 +39,7 @@ export default function SurvivalClient({
   const [secondsSurvived, setSecondsSurvived] = useState(0);
   const [wordsTyped, setWordsTyped] = useState(0);
   const [belowSince, setBelowSince] = useState<number | null>(null);
+  const [hasStartedTyping, setHasStartedTyping] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(initialLeaderboard);
   const [extremeLeaderboard, setExtremeLeaderboard] = useState<LeaderboardEntry[]>(initialExtremeLeaderboard);
   const [saved, setSaved] = useState(false);
@@ -87,11 +88,12 @@ export default function SurvivalClient({
     setSecondsSurvived(0);
     setWordsTyped(0);
     setBelowSince(null);
+    setHasStartedTyping(false);
     setSaved(false);
     totalAttemptedRef.current = 0;
     totalCorrectRef.current = 0;
-    startTimeRef.current = Date.now();
-    lastIncrementRef.current = Date.now();
+    startTimeRef.current = 0;
+    lastIncrementRef.current = 0;
     inputRef.current?.focus();
   }
 
@@ -115,7 +117,7 @@ export default function SurvivalClient({
   }
 
   useEffect(() => {
-    if (status !== 'running') return;
+    if (status !== 'running' || !hasStartedTyping) return;
 
     timerRef.current = setInterval(() => {
       const now = Date.now();
@@ -150,7 +152,7 @@ export default function SurvivalClient({
         timerRef.current = null;
       }
     };
-  }, [status, mode, currentWpm, currentThreshold, belowSince, endGame]);
+  }, [status, mode, currentWpm, currentThreshold, belowSince, hasStartedTyping, endGame]);
 
   function handleInput(event: React.ChangeEvent<HTMLTextAreaElement>) {
     if (status !== 'running') return;
@@ -165,6 +167,12 @@ export default function SurvivalClient({
     const previousLength = typed.length;
     const newLength = value.length;
     if (newLength > previousLength) {
+      if (!hasStartedTyping) {
+        const now = Date.now();
+        startTimeRef.current = now;
+        lastIncrementRef.current = now;
+        setHasStartedTyping(true);
+      }
       for (let i = previousLength; i < newLength; i++) {
         totalAttemptedRef.current += 1;
         if (value[i] === fullText[i]) totalCorrectRef.current += 1;
@@ -182,7 +190,9 @@ export default function SurvivalClient({
 
     // Calculate WPM based on correct characters in the current passage
     const correctChars = value.split('').filter((char, index) => char === fullText[index]).length;
-    const elapsedMinutes = (Date.now() - startTimeRef.current) / 60_000;
+    const elapsedMinutes = startTimeRef.current > 0
+      ? (Date.now() - startTimeRef.current) / 60_000
+      : 0;
     const wpm = elapsedMinutes > 0 ? Math.round((correctChars / 5) / elapsedMinutes) : 0;
     setCurrentWpm(wpm);
 
