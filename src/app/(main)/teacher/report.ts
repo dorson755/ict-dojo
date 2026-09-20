@@ -18,6 +18,7 @@ export async function getTeacherReport(teacherId: string) {
     const recentHalf = sessions.slice(0, 3);
     const previousHalf = sessions.slice(3, 6);
     const averageMastery = mastery.length ? Math.round(mastery.reduce((sum, item) => sum + item.mastery_score, 0) / mastery.length) : 0;
+    const hasStarted = sessions.length > 0 || mastery.some((item) => item.practice_count > 0);
     const lastPractice = sessions[0]?.created_at ? new Date(String(sessions[0].created_at)) : null;
     const daysSincePractice = lastPractice ? Math.floor((now - lastPractice.getTime()) / 86_400_000) : null;
     const weakSkills = mastery.filter((item) => item.mastery_level === 'weak').length;
@@ -25,6 +26,7 @@ export async function getTeacherReport(teacherId: string) {
     const reason = daysSincePractice === null ? 'No practice recorded' : daysSincePractice > 7 ? 'Inactive for over a week' : weakSkills ? `${weakSkills} skill${weakSkills === 1 ? '' : 's'} need reinforcement` : 'On track';
     return {
       ...student,
+      hasStarted,
       averageMastery,
       weakSkills,
       sessionsThisWeek,

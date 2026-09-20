@@ -42,15 +42,15 @@ export default async function TeacherDashboardPage() {
         </div>
         {students.length === 0 ? <p className={styles.emptyText}>Learners will appear here as they complete onboarding.</p> : (
           <div className={styles.learnerList}>
-            {students.sort((a, b) => Number(b.needsAttention) - Number(a.needsAttention) || b.averageMastery - a.averageMastery).map((student) => (
+            {students.sort((a, b) => Number(b.hasStarted) - Number(a.hasStarted) || Number(b.needsAttention) - Number(a.needsAttention) || b.averageMastery - a.averageMastery).map((student) => (
               <Link className={styles.learnerLink} href={`/teacher/student/${student.id}`} key={student.id}>
               <div className={styles.learnerRow}>
                 <div className={styles.learnerIdentity}><span className={styles.avatar}>{(student.display_name || 'S').slice(0, 1).toUpperCase()}</span><div><strong>{student.display_name || 'Unnamed learner'}</strong><span className={styles.learnerMeta}>Level {student.platform_level} · Grade {student.grade_level || '—'}</span></div></div>
-                <div className={styles.learnerMetric}><strong>{student.averageMastery}%</strong><span>mastery</span></div>
-                <div className={styles.learnerMetric}><strong>{student.sessionsThisWeek}</strong><span>sessions · {student.minutesThisWeek}m</span></div>
-                <div className={styles.learnerMetric}><strong>{student.averageAccuracy || '—'}%</strong><span>accuracy · {student.averageWpm || '—'} WPM</span></div>
-                <div className={styles.learnerMetric}><strong>{student.weakSkills}</strong><span>weak skills</span></div>
-                <span className={student.needsAttention ? styles.attentionBadge : styles.healthyBadge}>{student.needsAttention ? 'Review' : 'On track'}</span>
+                <div className={styles.learnerMetric}><strong>{student.hasStarted ? `${student.averageMastery}%` : '—'}</strong><span>mastery</span></div>
+                <div className={styles.learnerMetric}><strong>{student.hasStarted ? student.sessionsThisWeek : '—'}</strong><span>{student.hasStarted ? `sessions · ${student.minutesThisWeek}m` : 'no practice yet'}</span></div>
+                <div className={styles.learnerMetric}><strong>{student.hasStarted && student.averageAccuracy ? `${student.averageAccuracy}%` : '—'}</strong><span>accuracy · {student.hasStarted && student.averageWpm ? `${student.averageWpm} WPM` : '—'}</span></div>
+                <div className={styles.learnerMetric}><strong>{student.hasStarted ? student.weakSkills : '—'}</strong><span>weak skills</span></div>
+                <span className={!student.hasStarted ? styles.notStartedBadge : student.needsAttention ? styles.attentionBadge : styles.healthyBadge}>{!student.hasStarted ? 'Not started' : student.needsAttention ? 'Review' : 'On track'}</span>
               </div>
               </Link>
             ))}
