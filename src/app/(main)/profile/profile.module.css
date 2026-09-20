@@ -9,7 +9,9 @@
 .form { display: flex; flex-direction: column; gap: var(--space-3); }
 .label { color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; }
 .input { background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); color: var(--ink); font: inherit; padding: var(--space-3); }
+.hint { color: var(--ink-3); font-size: var(--text-xs); line-height: 1.45; margin-top: calc(var(--space-2) * -1); }
 .save { background: var(--accent); border: 0; border-radius: var(--radius-sm); color: white; cursor: pointer; font-weight: 700; margin-top: var(--space-2); padding: var(--space-3); }
+.verification { border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-6); padding-top: var(--space-6); }
 .success { color: var(--success); font-size: var(--text-sm); }
 .error { color: var(--danger); font-size: var(--text-sm); }
 .trophies { display: flex; flex-direction: column; gap: var(--space-3); }

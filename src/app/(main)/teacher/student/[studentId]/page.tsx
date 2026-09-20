@@ -4,6 +4,7 @@ import { getUserSession } from '@/lib/aws/auth-utils';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
+import { getCognitoProfileForTeacher } from '@/lib/aws/cognito-profile';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import styles from './student.module.css';
 
@@ -15,10 +16,11 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
   const allowed = (await UserRepository.getStudentProfiles(user.id)).some((student) => student.id === studentId);
   if (!allowed) notFound();
 
-  const [student, mastery, sessions] = await Promise.all([
+  const [student, mastery, sessions, cognitoProfile] = await Promise.all([
     UserRepository.getProfile(studentId),
     MasteryRepository.getAllMastery(studentId),
     ExerciseRepository.getRecentSessions(studentId, 12),
+    getCognitoProfileForTeacher(studentId).catch(() => null),
   ]);
   if (!student) notFound();
 
@@ -30,6 +32,11 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
   const mastered = mastery.filter((item) => item.mastery_level === 'mastered').length;
   const weak = mastery.filter((item) => item.mastery_level === 'weak').length;
   const assessedSkills = mastery.filter((item) => item.practice_count > 0).length;
+  const joinedAt = cognitoProfile?.createdAt
+    ?? (student.created_at ? new Date(student.created_at) : null);
+  const lastPractice = sessions[0]?.created_at
+    ? new Date(String(sessions[0].created_at))
+    : null;
 
   return (
     <div className={styles.page}>
@@ -37,6 +44,27 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
       <header className={styles.header}><div className={styles.avatar}>{(student.display_name || 'L').slice(0, 1).toUpperCase()}</div><div><h1 className={styles.title}>{student.display_name || 'Learner'}</h1><p className={styles.subtitle}>Grade {student.grade_level || '—'} · Level {student.platform_level || 1} · {student.streak_count || 0}-day streak</p></div></header>
       <section className={styles.kpis}>
         <div><span>Assessed mastery</span><strong>{assessedSkills ? `${averageMastery}%` : '—'}</strong><small>{assessedSkills} of {TYPING_SKILLS.length} skills assessed</small></div><div><span>Sessions</span><strong>{recent.length}</strong></div><div><span>Avg WPM</span><strong>{averageWpm || '—'}</strong></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong></div>
+      </section>
+      <section className={styles.profileCard}>
+        <div className={styles.profileCardHeader}>
+          <div>
+            <h2>Profile information</h2>
+            <p>Account and learner details for this student.</p>
+          </div>
+          <span className={styles.accountStatus}>
+            {!cognitoProfile ? 'Status unavailable' : cognitoProfile.enabled === false ? 'Disabled' : cognitoProfile.status === 'UNCONFIRMED' ? 'Email unconfirmed' : 'Active'}
+          </span>
+        </div>
+        <dl className={styles.profileDetails}>
+          <div><dt>Name</dt><dd>{student.display_name || cognitoProfile?.name || '—'}</dd></div>
+          <div><dt>Email</dt><dd>{cognitoProfile?.email || student.email || '—'}</dd></div>
+          <div><dt>Grade</dt><dd>{student.grade_level ? `Grade ${student.grade_level}` : '—'}</dd></div>
+          <div><dt>Level and XP</dt><dd>Level {student.platform_level || 1} · {student.xp_total || 0} XP</dd></div>
+          <div><dt>Streak</dt><dd>{student.streak_count || 0} day{student.streak_count === 1 ? '' : 's'}</dd></div>
+          <div><dt>Joined</dt><dd>{joinedAt ? joinedAt.toLocaleDateString() : '—'}</dd></div>
+          <div><dt>Last practice</dt><dd>{lastPractice ? lastPractice.toLocaleDateString() : 'Not started'}</dd></div>
+          <div><dt>Account updated</dt><dd>{cognitoProfile?.updatedAt ? cognitoProfile.updatedAt.toLocaleDateString() : '—'}</dd></div>
+        </dl>
       </section>
       <div className={styles.grid}>
         <section className={styles.card}>

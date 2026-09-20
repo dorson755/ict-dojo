@@ -76,6 +76,13 @@ export async function login(formData: FormData) {
 
     revalidatePath('/', 'layout');
     const claims = IdToken ? decodeJwt(IdToken) : {};
+    const userId = typeof claims.sub === 'string' ? claims.sub : null;
+    const confirmedEmail = typeof claims.email === 'string' ? claims.email : null;
+    if (userId && confirmedEmail) {
+      await UserRepository.updateEmail(userId, confirmedEmail).catch((error: unknown) => {
+        console.error('Profile email sync error:', error);
+      });
+    }
     const role = typeof claims['custom:role'] === 'string' ? claims['custom:role'] : 'student';
     redirect(role === 'teacher' ? '/teacher' : role === 'parent' ? '/parent' : '/dashboard');
   }
@@ -102,7 +109,7 @@ export async function signup(formData: FormData) {
 
     const response = await cognitoClient.send(command);
     if (response.UserSub) {
-      await UserRepository.ensureProfile(response.UserSub, displayName);
+      await UserRepository.ensureProfile(response.UserSub, displayName, email);
     }
 
     // Cognito requires email verification before login.

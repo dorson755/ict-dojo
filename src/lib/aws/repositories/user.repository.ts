@@ -5,12 +5,14 @@ export interface StudentProfile {
   id: string;
   grade_level?: number;
   display_name?: string;
+  email?: string;
   xp_total?: number;
   platform_level?: number;
   streak_count?: number;
   last_practice_date?: string;
   linked_student_ids?: string[];
   belt_exam_passed?: number;
+  created_at?: string;
 }
 
 export interface TypingDNA {
@@ -24,7 +26,7 @@ export interface TypingDNA {
 }
 
 export class UserRepository {
-  static async ensureProfile(userId: string, displayName: string): Promise<void> {
+  static async ensureProfile(userId: string, displayName: string, email?: string): Promise<void> {
     const key = { PK: `USER#${userId}`, SK: 'PROFILE' };
     const existing = await dynamoClient.send(new GetCommand({ TableName: TABLE_NAME, Key: key }));
     if (existing.Item) return;
@@ -34,6 +36,7 @@ export class UserRepository {
       Item: {
         ...key,
         display_name: displayName,
+        ...(email ? { email } : {}),
         role: 'student',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -53,11 +56,13 @@ export class UserRepository {
         id: String(item.PK || '').replace(/^USER#/, ''),
         grade_level: item.grade_level,
         display_name: item.display_name ?? item.name,
+        email: item.email,
         xp_total: item.xp_total ?? 0,
         platform_level: item.platform_level ?? 1,
         streak_count: item.streak_count ?? 0,
         last_practice_date: item.last_practice_date,
         linked_student_ids: item.linked_student_ids ?? [],
+        created_at: item.created_at,
       }))
       .filter((profile) => profile.id && profile.id !== excludeUserId && profile.id !== 'undefined');
   }
@@ -78,12 +83,14 @@ export class UserRepository {
       id: userId,
       grade_level: response.Item.grade_level,
       display_name: response.Item.display_name,
+      email: response.Item.email,
       xp_total: response.Item.xp_total ?? 0,
       platform_level: response.Item.platform_level ?? 1,
       streak_count: response.Item.streak_count ?? 0,
       last_practice_date: response.Item.last_practice_date,
       linked_student_ids: response.Item.linked_student_ids ?? [],
       belt_exam_passed: response.Item.belt_exam_passed ?? 0,
+      created_at: response.Item.created_at,
     };
   }
 
@@ -111,6 +118,21 @@ export class UserRepository {
     });
 
     await dynamoClient.send(command);
+  }
+
+  static async updateEmail(userId: string, email: string): Promise<void> {
+    await dynamoClient.send(new UpdateCommand({
+      TableName: TABLE_NAME,
+      Key: {
+        PK: `USER#${userId}`,
+        SK: 'PROFILE',
+      },
+      UpdateExpression: 'SET email = :email, updated_at = :updated',
+      ExpressionAttributeValues: {
+        ':email': email,
+        ':updated': new Date().toISOString(),
+      },
+    }));
   }
 
   /**

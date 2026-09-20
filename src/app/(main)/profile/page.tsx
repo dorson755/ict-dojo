@@ -31,7 +31,7 @@ export default async function ProfilePage() {
         <div><h1 className={styles.title}>{profile.display_name || user.name || 'Learner'}</h1><p className={styles.subtitle}>Your dojo identity and achievements</p></div>
       </header>
       <div className={styles.grid}>
-        <section className={styles.card}><h2 className={styles.cardTitle}>Edit profile</h2><ProfileForm displayName={profile.display_name || user.name || ''} gradeLevel={profile.grade_level ?? 6} /></section>
+        <section className={styles.card}><h2 className={styles.cardTitle}>Edit profile</h2><ProfileForm displayName={profile.display_name || user.name || ''} email={profile.email || user.email || ''} gradeLevel={profile.grade_level ?? 6} /></section>
         <section className={styles.card}><h2 className={styles.cardTitle}>Trophy collection</h2><div className={styles.trophies}>{trophies.map((trophy) => <div className={`${styles.trophy} ${trophy.earned ? styles.earned : styles.locked}`} key={trophy.name}><span className={styles.trophyIcon}>{trophy.icon}</span><div><strong>{trophy.name}</strong><p>{trophy.description}</p></div></div>)}</div></section>
       </div>
     </div>
