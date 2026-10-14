@@ -71,8 +71,6 @@ Output ONLY the raw passage text. No markdown, no explanations, no quotes around
   }
 
   public static async generateDashboardGreeting(name: string, weakKeys: string[], streak: number): Promise<string> {
-    const groq = getGroqClient();
-    
     const weakKeysText = weakKeys.length > 0 
       ? `They are currently struggling with the following keys: ${weakKeys.join(', ')}.`
       : `They have no specific weak keys right now.`;
@@ -91,6 +89,9 @@ Provide ONLY the raw text. Do not use quotes. Keep it highly encouraging, acknow
 `;
 
     try {
+      // Created inside the try so a missing or rotated key degrades to the plain greeting
+      // instead of taking down the dashboard.
+      const groq = getGroqClient();
       const completion = await groq.chat.completions.create({
         messages: [{ role: 'user', content: prompt }],
         model: GROQ_MODELS.FAST,
@@ -100,7 +101,7 @@ Provide ONLY the raw text. Do not use quotes. Keep it highly encouraging, acknow
       return completion.choices[0]?.message?.content?.trim() || `Welcome back, ${name}. Keep practicing to improve your skills.`;
     } catch (error) {
       console.error('Failed to generate greeting:', error);
-      return `Welcome back, ${name}. Let's get to work!`;
+      return `Welcome back, ${name}. Let's get to work.`;
     }
   }
 }

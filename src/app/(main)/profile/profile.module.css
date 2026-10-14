@@ -4,21 +4,24 @@
 .title, .cardTitle { font-family: var(--font-display); font-size: var(--text-xl); }
 .subtitle { color: var(--ink-2); font-size: var(--text-sm); margin-top: var(--space-1); }
 .grid { display: grid; grid-template-columns: minmax(280px, .8fr) 1.2fr; gap: var(--space-6); }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: var(--space-6); }
+.card { background: var(--surface); box-shadow: var(--shadow-sm); border-radius: var(--radius-lg); padding: var(--space-6); }
 .cardTitle { font-size: var(--text-lg); margin-bottom: var(--space-6); }
 .form { display: flex; flex-direction: column; gap: var(--space-3); }
 .label { color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; }
 .input { background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); color: var(--ink); font: inherit; padding: var(--space-3); }
 .hint { color: var(--ink-3); font-size: var(--text-xs); line-height: 1.45; margin-top: calc(var(--space-2) * -1); }
-.save { background: var(--accent); border: 0; border-radius: var(--radius-sm); color: white; cursor: pointer; font-weight: 700; margin-top: var(--space-2); padding: var(--space-3); }
+.save { background: var(--accent); border: 0; border-radius: var(--radius-sm); color: white; cursor: pointer; font-weight: 600; margin-top: var(--space-2); padding: var(--space-3); transition: background var(--transition), transform var(--transition); }
+.save:hover { background: var(--accent-hover); }
+.save:active { transform: translateY(1px) scale(0.98); }
 .verification { border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-6); padding-top: var(--space-6); }
-.success { color: var(--success); font-size: var(--text-sm); }
-.error { color: var(--danger); font-size: var(--text-sm); }
+.success { color: var(--success-ink); font-size: var(--text-sm); }
+.error { color: var(--danger-ink); font-size: var(--text-sm); }
 .trophies { display: flex; flex-direction: column; gap: var(--space-3); }
-.trophy { align-items: center; border: 1px solid var(--border); border-radius: var(--radius-md); display: flex; gap: var(--space-4); padding: var(--space-4); }
-.earned { background: var(--gold-light); border-color: var(--gold); }
-.locked { opacity: .5; }
-.trophyIcon { color: var(--gold); font-size: var(--text-2xl); width: 36px; }
+.trophy { align-items: center; background: var(--surface-2); border-radius: var(--radius-md); display: flex; gap: var(--space-4); padding: var(--space-4); }
+.earned { background: var(--gold-light); box-shadow: inset 3px 0 0 var(--gold); }
+.locked { background: transparent; box-shadow: inset 0 0 0 1px var(--border); }
+.locked .trophyIcon { color: var(--ink-3); }
+.trophyIcon { color: var(--gold-ink); font-size: var(--text-2xl); width: 36px; }
 .trophy strong { font-family: var(--font-display); font-size: var(--text-sm); }
 .trophy p { color: var(--ink-2); font-size: var(--text-xs); margin-top: var(--space-1); }
 @media (max-width: 700px) { .page { padding: var(--space-6) var(--space-4); } .grid { grid-template-columns: 1fr; } }

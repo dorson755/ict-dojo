@@ -18,14 +18,13 @@
 .profileDetails div { min-width: 0; }
 .profileDetails dt { color: var(--ink-3); font-size: var(--text-xs); margin-bottom: var(--space-1); }
 .profileDetails dd { color: var(--ink); font-size: var(--text-sm); font-weight: 600; margin: 0; overflow-wrap: anywhere; }
-.grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-6); }
+.grid { align-items: start; display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-6); }
 .caption { margin-bottom: var(--space-5); }
 .legend { display: flex; gap: var(--space-4); color: var(--ink-2); font-size: var(--text-xs); margin-bottom: var(--space-3); }
 .legend span { align-items: center; display: inline-flex; gap: var(--space-1); }
 .legend i { border-radius: var(--radius-full); display: inline-block; height: 8px; width: 8px; }
 .legendWpm { background: var(--accent); }
 .legendAccuracy { background: var(--success); }
-.chartScale { color: var(--ink-3); display: flex; font-family: var(--font-mono); font-size: var(--text-xs); justify-content: space-between; margin-bottom: calc(var(--space-1) * -1); }
 .chart { align-items: end; border-bottom: 1px solid var(--border-strong); display: flex; gap: var(--space-3); height: 230px; padding: var(--space-4) 0 0; }
 .barGroup { align-items: center; display: flex; flex: 1; flex-direction: column; height: 100%; justify-content: end; gap: var(--space-2); }
 .barPair { align-items: end; display: flex; gap: 2px; height: 100%; justify-content: center; width: 100%; }

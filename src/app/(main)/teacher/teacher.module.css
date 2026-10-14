@@ -15,8 +15,8 @@
 .title {
   font-family: var(--font-display);
   font-size: var(--text-2xl);
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.035em;
   margin-bottom: var(--space-2);
 }
 
@@ -32,7 +32,7 @@
 
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
   margin-bottom: var(--space-6);
 }
@@ -40,7 +40,7 @@
 .statCard,
 .panel {
   background: var(--surface);
-  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
 }
@@ -66,7 +66,7 @@
 }
 
 .statWarning {
-  color: var(--danger);
+  color: var(--danger-ink);
 }
 
 .panel {
@@ -100,7 +100,7 @@
   border-bottom: 1px solid var(--border);
   display: grid;
   gap: var(--space-4);
-  grid-template-columns: minmax(200px, 1fr) 90px 110px 90px 90px;
+  grid-template-columns: minmax(200px, 1fr) 80px 110px 100px 80px 92px;
   padding: var(--space-4) 0;
 }
 
@@ -321,6 +321,12 @@
   .notStartedBadge {
     grid-column: 2;
     grid-row: 1;
+  }
+}
+
+@media (max-width: 800px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

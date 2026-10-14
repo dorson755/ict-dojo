@@ -69,9 +69,10 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
       <div className={styles.grid}>
         <section className={styles.card}>
           <h2>Practice trend</h2>
-          <p className={styles.caption}>WPM and accuracy across the last {recent.length} sessions.</p>
+          <p className={styles.caption}>
+            WPM and accuracy across the last {recent.length} sessions. WPM bars are scaled to the best session ({maxWpm} WPM); accuracy bars are scaled to 100%.
+          </p>
           <div className={styles.legend}><span><i className={styles.legendWpm} /> WPM</span><span><i className={styles.legendAccuracy} /> Accuracy</span></div>
-          <div className={styles.chartScale}><span>100</span><span>50</span><span>0</span></div>
           <div className={styles.chart}>
             {recent.length ? recent.map((session, index) => {
               const wpm = Number(session.wpm || 0);

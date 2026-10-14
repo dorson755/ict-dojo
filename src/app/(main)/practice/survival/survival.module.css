@@ -1,6 +1,6 @@
 .page { max-width: 900px; margin: 0 auto; padding: var(--space-10) var(--space-6); }
 .header { align-items: end; display: flex; justify-content: space-between; margin-bottom: var(--space-8); }
-.kicker { color: var(--accent); font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; }
+.kicker { color: var(--ink-3); font-size: var(--text-sm); }
 .title { font-size: clamp(2.2rem, 5vw, 4rem); letter-spacing: -.06em; margin: var(--space-2) 0; }
 .subtitle { color: var(--ink-2); max-width: 560px; }
 .back { color: var(--accent); font-size: var(--text-sm); }

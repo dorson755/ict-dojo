@@ -325,17 +325,25 @@
 }
 
 /* Sidebar */
+/* The sidebar reads as one panel: cards share edges and are split by hairlines,
+   so empty states cost a row rather than a whole card. */
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-}
-
-.sideCard {
+  gap: 0;
+  align-self: start;
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  padding: var(--space-6);
+  overflow: hidden;
+}
+
+.sideCard {
+  padding: var(--space-5) var(--space-6);
+}
+
+.sideCard + .sideCard {
+  box-shadow: 0 -1px 0 var(--border);
 }
 
 .sideCardTitle {
@@ -346,8 +354,8 @@
   margin-bottom: var(--space-4);
 }
 
-.beltCard {
-  box-shadow: inset 3px 0 0 var(--gold), var(--shadow-sm);
+.sideCard.beltCard {
+  box-shadow: inset 3px 0 0 var(--gold), 0 -1px 0 var(--border);
 }
 
 .beltCardHeader {
