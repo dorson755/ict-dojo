@@ -47,3 +47,6 @@ serviceAccountKey.json
 # Test scripts
 test-admin-init.js
 test-login.js
+
+# Developer test credentials — NEVER commit
+testcred

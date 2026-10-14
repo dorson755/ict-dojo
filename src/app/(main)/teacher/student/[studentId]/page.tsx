@@ -11,7 +11,7 @@ import styles from './student.module.css';
 export default async function StudentAnalyticsPage({ params }: { params: Promise<{ studentId: string }> }) {
   const user = await getUserSession();
   if (!user) redirect('/login');
-  if (user.role !== 'teacher') redirect('/dashboard');
+  if (user.role !== 'teacher' && user.role !== 'admin') redirect('/dashboard');
   const { studentId } = await params;
   const allowed = (await UserRepository.getStudentProfiles(user.id)).some((student) => student.id === studentId);
   if (!allowed) notFound();

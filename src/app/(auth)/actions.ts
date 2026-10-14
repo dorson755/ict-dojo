@@ -84,7 +84,7 @@ export async function login(formData: FormData) {
       });
     }
     const role = typeof claims['custom:role'] === 'string' ? claims['custom:role'] : 'student';
-    redirect(role === 'teacher' ? '/teacher' : role === 'parent' ? '/parent' : '/dashboard');
+    redirect(role === 'teacher' || role === 'admin' ? '/teacher' : role === 'parent' ? '/parent' : '/dashboard');
   }
 
   return { error: 'Authentication failed — no tokens returned' };

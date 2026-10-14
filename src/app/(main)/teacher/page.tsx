@@ -7,7 +7,7 @@ import styles from './teacher.module.css';
 export default async function TeacherDashboardPage() {
   const user = await getUserSession();
   if (!user) redirect('/login');
-  if (user.role !== 'teacher') redirect('/dashboard');
+  if (user.role !== 'teacher' && user.role !== 'admin') redirect('/dashboard');
 
   const students = await getTeacherReport(user.id);
   const needsAttention = students.filter((student) => student.needsAttention);

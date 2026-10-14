@@ -7,7 +7,7 @@ function csv(value: unknown) {
 
 export async function GET() {
   const user = await getUserSession();
-  if (!user || user.role !== 'teacher') return new Response('Unauthorized', { status: 401 });
+  if (!user || (user.role !== 'teacher' && user.role !== 'admin')) return new Response('Unauthorized', { status: 401 });
   const students = await getTeacherReport(user.id);
   const headers = ['Learner', 'Grade', 'Level', 'Sessions this week', 'Minutes this week', 'Average WPM', 'Average accuracy', 'WPM trend', 'Accuracy trend', 'Average mastery', 'Weak skills', 'Streak', 'Last practice', 'Signal'];
   const rows = students.map((student) => [
