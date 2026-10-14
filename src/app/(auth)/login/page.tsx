@@ -108,7 +108,7 @@ function LoginForm() {
           </div>
 
           <button type="submit" className={styles.authButton} disabled={isLoading}>
-            {isLoading ? 'Verifying...' : 'Verify email'}
+            {isLoading ? 'Verifying…' : 'Verify email'}
           </button>
         </form>
 
@@ -164,7 +164,7 @@ function LoginForm() {
             />
           </div>
           <button type="submit" className={styles.authButton} disabled={isLoading}>
-            {isLoading ? 'Logging in...' : 'Log in'}
+            {isLoading ? 'Logging in…' : 'Log in'}
           </button>
         </form>
       </>
@@ -204,12 +204,12 @@ function LoginForm() {
         </div>
 
         <button type="submit" className={styles.authButton} disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Log in'}
+          {isLoading ? 'Logging in…' : 'Log in'}
         </button>
       </form>
 
       <div className={styles.footerText}>
-        <Link href="/reset-password" className={styles.authButton}>Forgot password</Link>
+        <Link href="/reset-password" className={styles.link}>Forgot your password?</Link>
       </div>
 
       <div className={styles.divider}>or</div>
@@ -233,7 +233,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<p aria-busy="true">Loading sign-in…</p>}>
       <LoginForm />
     </Suspense>
   );

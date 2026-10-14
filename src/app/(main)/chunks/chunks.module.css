@@ -5,7 +5,9 @@
 .subtitle { color: var(--ink-2); max-width: 560px; }
 .back { background: transparent; border: 0; color: var(--accent); cursor: pointer; font-size: var(--text-sm); }
 .filters { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6); }
-.filterButton { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-full); color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; padding: var(--space-2) var(--space-4); }
+.filterButton { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--ink-2); font-size: var(--text-sm); font-weight: 600; padding: var(--space-2) var(--space-4); transition: background var(--transition), color var(--transition), transform var(--transition); }
+.filterButton:hover { background: var(--surface-2); color: var(--ink); }
+.filterButton:active { transform: scale(0.98); }
 .filterButton:hover, .filterButton:focus-visible { border-color: var(--accent); color: var(--accent); }
 .filters .active { background: var(--accent); border-color: var(--accent); color: white; }
 .grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }

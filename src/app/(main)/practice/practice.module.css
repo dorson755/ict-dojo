@@ -30,9 +30,9 @@
 .loading {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(251, 251, 252, 0.92);
   backdrop-filter: blur(2px);
-  z-index: 50;
+  z-index: var(--z-overlay);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +60,7 @@
   border-radius: var(--radius-md);
   text-align: center;
   font-size: var(--text-sm);
-  color: #92400e;
+  color: var(--gold-ink);
   max-width: 760px;
   margin-left: auto;
   margin-right: auto;
@@ -71,7 +71,7 @@
   max-width: 560px;
   margin: 0 auto;
   background: var(--surface);
-  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
   border-radius: var(--radius-lg);
   padding: var(--space-10);
 }
@@ -79,8 +79,8 @@
 .resultsTitle {
   font-family: var(--font-display);
   font-size: var(--text-xl);
-  font-weight: 700;
-  text-align: center;
+  font-weight: 600;
+  text-align: left;
   margin-bottom: var(--space-8);
 }
 
@@ -114,7 +114,7 @@
 
 .resultWpm { color: var(--accent); }
 .resultAcc { color: var(--success); }
-.resultScore { color: var(--gold); }
+.resultScore { color: var(--gold-ink); }
 
 .nextRec {
   padding: var(--space-5);
@@ -154,31 +154,30 @@
 }
 
 .xpGained {
-  font-family: var(--font-display);
+  font-family: var(--font-mono);
   font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--gold);
+  font-weight: 600;
+  color: var(--gold-ink);
 }
 
 .levelUp {
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: 600;
-  color: var(--accent);
+  color: var(--accent-ink);
   background: var(--accent-tint);
-  border: 1px solid var(--accent-light);
-  border-radius: var(--radius-full);
-  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-xs);
+  padding: var(--space-1) var(--space-2);
 }
 
 .streakInfo {
   font-family: var(--font-display);
   font-size: var(--text-sm);
   font-weight: 600;
-  color: #c2410c;
+  color: var(--gold-ink);
   background: var(--gold-light);
-  border-radius: var(--radius-full);
-  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-xs);
+  padding: var(--space-1) var(--space-2);
 }
 
 /* Error */
@@ -186,7 +185,7 @@
   max-width: 480px;
   margin: var(--space-16) auto;
   background: var(--danger-light);
-  border: 1px solid #fecaca;
+  border: 1px solid var(--danger-border);
   border-radius: var(--radius-lg);
   padding: var(--space-8);
   text-align: center;
@@ -196,13 +195,13 @@
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 700;
-  color: var(--danger);
+  color: var(--danger-ink);
   margin-bottom: var(--space-2);
 }
 
 .errorMsg {
   font-size: var(--text-sm);
-  color: #991b1b;
+  color: var(--danger-ink);
   margin-bottom: var(--space-6);
 }
 

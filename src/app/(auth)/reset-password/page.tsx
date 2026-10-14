@@ -46,13 +46,13 @@ export default function ResetPasswordPage() {
     {!codeSent ? (
       <form onSubmit={sendCode}>
         <div className="form-group"><label className="label" htmlFor="email">Email</label><input className="input" id="email" type="email" required value={email} onChange={(event) => setEmail(event.target.value)} /></div>
-        <button className={styles.authButton} disabled={loading}>{loading ? 'Sending...' : 'Send forgot-password code'}</button>
+        <button className={styles.authButton} disabled={loading}>{loading ? 'Sending…' : 'Send forgot-password code'}</button>
       </form>
     ) : (
       <form onSubmit={submit}>
         <div className="form-group"><label className="label" htmlFor="code">6-digit code</label><input className="input" id="code" name="code" inputMode="numeric" autoComplete="one-time-code" required /></div>
         <div className="form-group"><label className="label" htmlFor="password">New password</label><input className="input" id="password" name="password" type="password" minLength={6} required /></div>
-        <button className={styles.authButton} disabled={loading}>{loading ? 'Resetting...' : 'Set new password'}</button>
+        <button className={styles.authButton} disabled={loading}>{loading ? 'Resetting…' : 'Set new password'}</button>
       </form>
     )}
   </>;

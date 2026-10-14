@@ -97,7 +97,7 @@ export default function SignupPage() {
           </div>
 
           <button type="submit" className={styles.authButton} disabled={isLoading}>
-            {isLoading ? 'Verifying...' : 'Verify email'}
+            {isLoading ? 'Verifying…' : 'Verify email'}
           </button>
         </form>
 
@@ -173,7 +173,7 @@ export default function SignupPage() {
         </div>
 
         <button type="submit" className={styles.authButton} disabled={isLoading}>
-          {isLoading ? 'Creating account...' : 'Sign up'}
+          {isLoading ? 'Creating account…' : 'Sign up'}
         </button>
       </form>
 

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getUserSession } from '@/lib/aws/auth-utils';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import LogoutButton from './LogoutButton';
+import NavLink from './NavLink';
 import styles from './Header.module.css';
 
 export default async function Header() {
@@ -21,41 +22,17 @@ export default async function Header() {
         Dojo
       </Link>
 
-      <nav className={styles.nav}>
-        {user.role === 'student' && <Link href="/dashboard" className={styles.navLink}>Dashboard</Link>}
-        {user.role === 'student' && <Link href="/practice" className={styles.navLink}>Practice</Link>}
-        {user.role === 'student' && <Link href="/chunks" className={styles.navLink}>Chunks</Link>}
+      <nav className={styles.nav} aria-label="Main">
+        {user.role === 'student' && <NavLink href="/dashboard">Dashboard</NavLink>}
+        {user.role === 'student' && <NavLink href="/practice">Practice</NavLink>}
+        {user.role === 'student' && <NavLink href="/chunks">Chunks</NavLink>}
+        {user.role === 'student' && <NavLink href="/profile">Profile</NavLink>}
         {user.role === 'student' && (
-          <Link href="/profile" className={styles.navLink}>
-            Profile
-          </Link>
+          <NavLink href="/document-craft/projects" matchPrefix="/document-craft">Documents</NavLink>
         )}
-        {user.role === 'student' && (
-          <Link href="/document-craft/projects" className={styles.navLink}>
-            Documents
-          </Link>
-        )}
-        {(profile?.platform_level ?? 1) >= 5 && (
-          <Link
-            href="/programming"
-            className={styles.navLink}
-          >
-            Programming
-          </Link>
-        )}
-        {user.role === 'teacher' && (
-          <Link
-            href="/teacher"
-            className={styles.navLink}
-          >
-            Teacher
-          </Link>
-        )}
-        {user.role === 'parent' && (
-          <Link href="/parent" className={styles.navLink}>
-            Family
-          </Link>
-        )}
+        {(profile?.platform_level ?? 1) >= 5 && <NavLink href="/programming">Programming</NavLink>}
+        {user.role === 'teacher' && <NavLink href="/teacher">Teacher</NavLink>}
+        {user.role === 'parent' && <NavLink href="/parent">Family</NavLink>}
       </nav>
 
       <div className={styles.userInfo}>

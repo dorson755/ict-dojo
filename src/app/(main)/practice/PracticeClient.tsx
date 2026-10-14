@@ -152,7 +152,7 @@ export default function PracticeClient({ studentId, exercise }: PracticeClientPr
     <div className={styles.wrapper}>
       {isSubmitting && (
         <div className={styles.loading}>
-          <div className={styles.loadingText}>Analyzing session...</div>
+          <div className={styles.loadingText}>Scoring your session…</div>
         </div>
       )}
 

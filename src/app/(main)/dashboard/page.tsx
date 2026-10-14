@@ -121,39 +121,39 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <hr className={styles.heroDivider} />
-
         <div className={styles.heroSection}>
           <div className={styles.heroIntro}>
-            <p className={styles.heroKicker}>Training hall / today</p>
+            <p className={styles.heroKicker}>Today</p>
             <h1 className={styles.heroTitle}>Good to see you, {profile.display_name || user.name || 'Learner'}.</h1>
           </div>
-          <Suspense fallback={<div className={styles.aiGreeting}><p className={styles.greetingText}>Loading Sensei&apos;s greeting...</p></div>}>
+          <Suspense fallback={<div className={styles.aiGreeting}><p className={styles.greetingText}>Writing your greeting…</p></div>}>
             <AIGreeting 
               name={profile.display_name || user.name || 'Learner'} 
               weakKeys={dna?.weak_keys ? Object.keys(dna.weak_keys).sort((a,b) => (dna.weak_keys as Record<string, number>)[b] - (dna.weak_keys as Record<string, number>)[a]).slice(0, 3) : []}
               streak={profile.streak_count || 0}
             />
           </Suspense>
-          <p className={styles.heroSectionLabel}>Your next move</p>
-          {activeRec ? (
-            <div className={styles.nextChallenge}>
-              <h3 className={styles.nextChallengeTitle}>
-                {activeSkillName}
-              </h3>
-              <p className={styles.nextChallengeReason}>{activeReason}</p>
-              <Link href="/practice" className="btn btn-primary btn-lg">
-                Start practice
-              </Link>
-            </div>
-          ) : (
-            <div className={styles.allCaughtUp}>
-              <p>You&apos;re all caught up. Keep training to push your limits.</p>
-              <Link href="/practice" className="btn btn-primary">
-                Enter the dojo
-              </Link>
-            </div>
-          )}
+          <div className={styles.heroAside}>
+            <p className={styles.heroSectionLabel}>Your next move</p>
+            {activeRec ? (
+              <div className={styles.nextChallenge}>
+                <div>
+                  <h2 className={styles.nextChallengeTitle}>{activeSkillName}</h2>
+                  <p className={styles.nextChallengeReason}>{activeReason}</p>
+                </div>
+                <Link href="/practice" className="btn btn-primary btn-lg">
+                  Start practice
+                </Link>
+              </div>
+            ) : (
+              <div className={styles.allCaughtUp}>
+                <p>Nothing is queued. Pick a skill track below, or run a free session.</p>
+                <Link href="/practice" className="btn btn-primary">
+                  Open practice
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

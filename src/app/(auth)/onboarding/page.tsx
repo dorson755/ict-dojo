@@ -63,7 +63,7 @@ export default function OnboardingPage() {
           className={styles.authButton}
           disabled={isLoading || !selectedGrade}
         >
-          {isLoading ? 'Saving...' : 'Start training'}
+          {isLoading ? 'Saving…' : 'Start training'}
         </button>
       </form>
     </>

@@ -21,8 +21,16 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ICT Dojo — Adaptive Learning",
-  description: "An adaptive digital learning dojo that teaches students how to use, understand, create with, and think about technology.",
+  title: {
+    default: "ICT Dojo",
+    template: "%s · ICT Dojo",
+  },
+  description: "Practice typing, documents and code at your own pace. Each skill you master moves you toward the next belt.",
+  openGraph: {
+    title: "ICT Dojo",
+    description: "Practice typing, documents and code at your own pace, one belt at a time.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

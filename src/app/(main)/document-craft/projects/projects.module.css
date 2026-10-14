@@ -13,7 +13,7 @@
 .card h2 { font-family: var(--font-display); font-size: var(--text-xl); margin: var(--space-8) 0 var(--space-2); }
 .card p { color: var(--ink-2); font-size: var(--text-sm); line-height: 1.6; margin-bottom: 0; padding-bottom: var(--space-4); }
 .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-4); }
-.tag { background: var(--surface-2); border: 1px solid var(--border); border-radius: var(--radius-full); color: var(--ink-2); font-size: var(--text-xs); padding: var(--space-1) var(--space-3); }
+.tag { background: var(--surface-2); border-radius: var(--radius-xs); color: var(--ink-2); font-size: var(--text-xs); padding: 2px var(--space-2); }
 .checklist { border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--ink-2); font-size: var(--text-sm); margin-bottom: var(--space-5); }
 .checklist summary { cursor: pointer; font-weight: 600; padding: var(--space-3) var(--space-4); }
 .checklist ul { border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: var(--space-2); list-style: disc; margin: 0; padding: var(--space-4) var(--space-4) var(--space-4) var(--space-7); }

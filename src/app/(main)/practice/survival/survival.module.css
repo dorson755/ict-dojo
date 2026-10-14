@@ -35,7 +35,7 @@
 .pending { color: var(--ink-3); }
 .input { border: 1px solid var(--border); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: var(--text-lg); line-height: 1.6; padding: var(--space-4); resize: none; width: 100%; }
 .input:focus { border-color: var(--accent); outline: 0; }
-.overlay { align-items: center; background: rgba(0, 0, 0, .4); display: flex; inset: 0; justify-content: center; position: fixed; z-index: 50; }
+.overlay { align-items: center; background: rgba(21, 30, 45, .45); display: flex; inset: 0; justify-content: center; position: fixed; z-index: var(--z-overlay); }
 .modal { background: var(--surface); border-radius: var(--radius-lg); max-width: 420px; padding: var(--space-8); text-align: center; width: 90%; }
 .modal h2 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
 .modal p { color: var(--ink-2); margin-bottom: var(--space-6); }

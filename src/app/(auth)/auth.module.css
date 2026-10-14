@@ -1,5 +1,5 @@
 .authContainer {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,23 +9,22 @@
 
 .authCard {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-10);
   width: 100%;
   max-width: 420px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(21, 30, 45, 0.04);
 }
 
 .authHeader {
-  text-align: center;
+  text-align: left;
   margin-bottom: var(--space-8);
 }
 
 .brandRow {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-2);
   margin-bottom: var(--space-2);
 }
@@ -62,14 +61,14 @@
   font-size: var(--text-lg);
   font-weight: 700;
   color: var(--ink);
-  text-align: center;
+  text-align: left;
   margin-bottom: var(--space-6);
 }
 
 .authDesc {
   font-size: var(--text-sm);
   color: var(--ink-2);
-  text-align: center;
+  text-align: left;
   margin-bottom: var(--space-6);
   line-height: 1.5;
 }
@@ -87,11 +86,16 @@
   font-size: var(--text-base);
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition);
+  transition: background var(--transition), transform var(--transition);
 }
 
 .authButton:hover {
   background: var(--accent-hover);
+}
+
+.authButton:active:not(:disabled),
+.googleButton:active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
 }
 
 .authButton:disabled {
@@ -132,7 +136,7 @@
   align-items: center;
   text-align: center;
   margin: var(--space-6) 0;
-  color: var(--ink-3);
+  color: var(--ink-2);
   font-size: var(--text-sm);
 }
 
@@ -170,12 +174,12 @@
 
 .errorMessage {
   background: var(--danger-light);
-  color: var(--danger);
+  color: var(--danger-ink);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-sm);
   font-size: var(--text-sm);
   margin-bottom: var(--space-5);
-  border: 1px solid #fecaca;
+  border: 1px solid var(--danger-border);
 }
 
 .infoMessage {
@@ -242,8 +246,10 @@
   font-size: var(--text-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: all var(--transition);
+  transition: border-color var(--transition), background var(--transition), color var(--transition), transform var(--transition);
 }
+
+.gradeBtn:active { transform: scale(0.98); }
 
 .gradeBtn:hover {
   border-color: var(--ink-3);
