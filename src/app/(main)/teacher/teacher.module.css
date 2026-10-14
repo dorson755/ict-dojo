@@ -138,6 +138,7 @@
 }
 
 .attentionBadge,
+.inactiveBadge,
 .healthyBadge,
 .notStartedBadge {
   border-radius: var(--radius-xs);
@@ -150,6 +151,11 @@
 .attentionBadge {
   background: var(--danger-light);
   color: var(--danger-ink);
+}
+
+.inactiveBadge {
+  background: var(--warning-light);
+  color: var(--warning-ink);
 }
 
 .healthyBadge {
@@ -317,6 +323,7 @@
   }
 
   .attentionBadge,
+  .inactiveBadge,
   .healthyBadge,
   .notStartedBadge {
     grid-column: 2;

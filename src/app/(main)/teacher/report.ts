@@ -1,6 +1,10 @@
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
+import { TYPING_SKILLS } from '@/domains/typing/catalog';
+import { averageCatalogMastery, classifyLearner, countWeakSkills } from './learner-status';
+
+const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
 
 export async function getTeacherReport(teacherId: string) {
   const profiles = await UserRepository.getStudentProfiles(teacherId);
@@ -17,13 +21,13 @@ export async function getTeacherReport(teacherId: string) {
     };
     const recentHalf = sessions.slice(0, 3);
     const previousHalf = sessions.slice(3, 6);
-    const averageMastery = mastery.length ? Math.round(mastery.reduce((sum, item) => sum + item.mastery_score, 0) / mastery.length) : 0;
+    const averageMastery = averageCatalogMastery(mastery, CATALOG_SKILL_IDS);
     const hasStarted = sessions.length > 0 || mastery.some((item) => item.practice_count > 0);
     const lastPractice = sessions[0]?.created_at ? new Date(String(sessions[0].created_at)) : null;
     const daysSincePractice = lastPractice ? Math.floor((now - lastPractice.getTime()) / 86_400_000) : null;
-    const weakSkills = mastery.filter((item) => item.mastery_level === 'weak').length;
+    const weakSkills = countWeakSkills(mastery, CATALOG_SKILL_IDS);
     const sessionsThisWeek = recent.length;
-    const reason = daysSincePractice === null ? 'No practice recorded' : daysSincePractice > 7 ? 'Inactive for over a week' : weakSkills ? `${weakSkills} skill${weakSkills === 1 ? '' : 's'} need reinforcement` : 'On track';
+    const { status, reason } = classifyLearner({ hasStarted, daysSincePractice, weakSkills });
     return {
       ...student,
       hasStarted,
@@ -37,8 +41,9 @@ export async function getTeacherReport(teacherId: string) {
       accuracyTrend: average(recentHalf, 'accuracy') - average(previousHalf, 'accuracy'),
       lastPractice,
       daysSincePractice,
+      status,
       reason,
-      needsAttention: reason !== 'On track',
+      needsAttention: status === 'needs_reinforcement' || status === 'inactive',
     };
   }));
 }

@@ -50,3 +50,6 @@ test-login.js
 
 # Developer test credentials — NEVER commit
 testcred
+
+# Local data backups (contain student records)
+scripts/backups/

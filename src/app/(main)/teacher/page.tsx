@@ -2,7 +2,15 @@ import { redirect } from 'next/navigation';
 import { getUserSession } from '@/lib/aws/auth-utils';
 import Link from 'next/link';
 import { getTeacherReport } from './report';
+import { STATUS_LABEL, STATUS_PRIORITY, type LearnerStatus } from './learner-status';
 import styles from './teacher.module.css';
+
+const BADGE_CLASS: Record<LearnerStatus, string> = {
+  needs_reinforcement: styles.attentionBadge,
+  inactive: styles.inactiveBadge,
+  on_track: styles.healthyBadge,
+  not_started: styles.notStartedBadge,
+};
 
 export default async function TeacherDashboardPage() {
   const user = await getUserSession();
@@ -32,7 +40,7 @@ export default async function TeacherDashboardPage() {
       <section className={styles.statsGrid}>
         <div className={styles.statCard}><span className={styles.statLabel}>Learners</span><strong className={styles.statValue}>{students.length}</strong><span className={styles.statHint}>Profiles in the dojo</span></div>
         <div className={styles.statCard}><span className={styles.statLabel}>Active this week</span><strong className={styles.statValue}>{activeThisWeek}</strong><span className={styles.statHint}>Practiced in the last 7 days</span></div>
-        <div className={styles.statCard}><span className={styles.statLabel}>Needs attention</span><strong className={`${styles.statValue} ${styles.statWarning}`}>{needsAttention.length}</strong><span className={styles.statHint}>Weakness or inactivity signal</span></div>
+        <div className={styles.statCard}><span className={styles.statLabel}>Needs attention</span><strong className={`${styles.statValue} ${styles.statWarning}`}>{needsAttention.length}</strong><span className={styles.statHint}>Struggling or inactive learners</span></div>
         <div className={styles.statCard}><span className={styles.statLabel}>Practice this week</span><strong className={styles.statValue}>{totalSessions}</strong><span className={styles.statHint}>{totalMinutes} minutes across the dojo</span></div>
       </section>
 
@@ -42,7 +50,7 @@ export default async function TeacherDashboardPage() {
         </div>
         {students.length === 0 ? <p className={styles.emptyText}>Learners will appear here as they complete onboarding.</p> : (
           <div className={styles.learnerList}>
-            {students.sort((a, b) => Number(b.hasStarted) - Number(a.hasStarted) || Number(b.needsAttention) - Number(a.needsAttention) || b.averageMastery - a.averageMastery).map((student) => (
+            {[...students].sort((a, b) => STATUS_PRIORITY[a.status] - STATUS_PRIORITY[b.status] || b.averageMastery - a.averageMastery).map((student) => (
               <Link className={styles.learnerLink} href={`/teacher/student/${student.id}`} key={student.id}>
               <div className={styles.learnerRow}>
                 <div className={styles.learnerIdentity}><span className={styles.avatar}>{(student.display_name || 'S').slice(0, 1).toUpperCase()}</span><div><strong>{student.display_name || 'Unnamed learner'}</strong><span className={styles.learnerMeta}>Level {student.platform_level} · Grade {student.grade_level || '—'}</span></div></div>
@@ -50,7 +58,7 @@ export default async function TeacherDashboardPage() {
                 <div className={styles.learnerMetric}><strong>{student.hasStarted ? student.sessionsThisWeek : '—'}</strong><span>{student.hasStarted ? `sessions · ${student.minutesThisWeek}m` : 'no practice yet'}</span></div>
                 <div className={styles.learnerMetric}><strong>{student.hasStarted && student.averageAccuracy ? `${student.averageAccuracy}%` : '—'}</strong><span>accuracy · {student.hasStarted && student.averageWpm ? `${student.averageWpm} WPM` : '—'}</span></div>
                 <div className={styles.learnerMetric}><strong>{student.hasStarted ? student.weakSkills : '—'}</strong><span>weak skills</span></div>
-                <span className={!student.hasStarted ? styles.notStartedBadge : student.needsAttention ? styles.attentionBadge : styles.healthyBadge}>{!student.hasStarted ? 'Not started' : student.needsAttention ? 'Review' : 'On track'}</span>
+                <span className={BADGE_CLASS[student.status]} title={student.reason}>{STATUS_LABEL[student.status]}</span>
               </div>
               </Link>
             ))}
