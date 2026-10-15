@@ -216,7 +216,7 @@
   align-items: center;
   column-gap: var(--space-4);
   display: grid;
-  grid-template-columns: minmax(180px, 1.3fr) minmax(150px, 1fr) 96px 110px 96px 92px;
+  grid-template-columns: minmax(170px, 1.3fr) minmax(140px, 1fr) 96px 104px 96px 96px 92px;
 }
 
 .listHead {
@@ -364,6 +364,121 @@
   color: var(--ink-3);
 }
 
+/* Belts */
+.beltStrip {
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.28);
+  display: inline-block;
+  flex-shrink: 0;
+  height: 10px;
+  width: 22px;
+}
+
+.beltName {
+  align-items: center;
+  display: inline-flex;
+  font-weight: 600;
+  gap: var(--space-2);
+}
+
+.beltReadyText {
+  color: var(--success-ink);
+  font-weight: 600;
+}
+
+.beltPanel {
+  margin-bottom: var(--space-6);
+}
+
+.beltGrid {
+  display: grid;
+  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+}
+
+.beltBars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.beltBars li {
+  align-items: center;
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 96px minmax(0, 1fr) 28px;
+}
+
+.beltBarName {
+  align-items: center;
+  color: var(--ink-2);
+  display: inline-flex;
+  font-size: var(--text-sm);
+  gap: var(--space-2);
+}
+
+.beltTrack {
+  background: var(--surface-2);
+  border-radius: 2px;
+  display: block;
+  height: 10px;
+  overflow: hidden;
+}
+
+.beltTrack b {
+  background: var(--accent);
+  border-radius: 2px;
+  display: block;
+  height: 100%;
+}
+
+.beltBars strong {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.beltWhyTitle {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin: 0 0 var(--space-3);
+}
+
+.beltWhyList {
+  display: grid;
+  gap: var(--space-2) var(--space-5);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.beltWhyList > div {
+  align-items: baseline;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: var(--space-2);
+}
+
+.beltWhyList dt {
+  color: var(--ink-2);
+  font-size: var(--text-xs);
+}
+
+.beltWhyList dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  margin: 0;
+}
+
+.beltReady {
+  color: var(--success-ink);
+  font-size: var(--text-sm);
+  margin: var(--space-4) 0 0;
+}
+
 .emptyText {
   color: var(--ink-2);
   font-size: var(--text-base);
@@ -390,7 +505,8 @@
 }
 
 @media (max-width: 800px) {
-  .secondary {
+  .secondary,
+  .beltGrid {
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -402,7 +518,8 @@
     grid-template-areas:
       'who who badge'
       'spark spark spark'
-      'latest mastery accuracy';
+      'latest mastery accuracy'
+      'belt belt belt';
     grid-template-columns: 1fr 1fr 1fr;
     row-gap: var(--space-3);
   }
@@ -412,6 +529,7 @@
   .metricLatest { grid-area: latest; }
   .metricMastery { grid-area: mastery; }
   .metricAccuracy { grid-area: accuracy; }
+  .metricBelt { flex-direction: row; gap: var(--space-3); grid-area: belt; align-items: center; }
   .learnerRow > .attentionBadge,
   .learnerRow > .inactiveBadge,
   .learnerRow > .healthyBadge,

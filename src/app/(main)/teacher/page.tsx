@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { getTeacherReport } from './report';
 import { STATUS_LABEL, STATUS_PRIORITY, type LearnerStatus } from './learner-status';
 import { activityWindow, classSeries, shortDay, summarizeWpm, wpmDistribution } from './progress';
+import { beltBlockerSummary, beltDistribution } from './belt-status';
+import { getBeltColor, getBeltName } from '@/components/ui/BeltBadge';
 import { LineChart } from '@/components/charts/LineChart';
 import { BarChart } from '@/components/charts/BarChart';
 import { Sparkline } from '@/components/charts/Sparkline';
@@ -84,6 +86,15 @@ export default async function TeacherDashboardPage() {
     status,
     count: students.filter((student) => student.status === status).length,
   }));
+
+  const beltCounts = beltDistribution(students.map((student) => student.belt.belt));
+  const beltMax = Math.max(1, ...beltCounts.map((entry) => entry.count));
+  const examReady = students.filter((student) => student.belt.examReady);
+  const heldBy = {
+    xp: students.filter((student) => student.belt.blockers.includes('xp') && !student.belt.blockers.includes('skills')).length,
+    skills: students.filter((student) => student.belt.blockers.includes('skills') && !student.belt.blockers.includes('xp')).length,
+    both: students.filter((student) => student.belt.blockers.includes('xp') && student.belt.blockers.includes('skills')).length,
+  };
 
   const roster = [...students].sort(
     (a, b) => STATUS_PRIORITY[a.status] - STATUS_PRIORITY[b.status] || b.wpmSummary.latest - a.wpmSummary.latest || b.averageMastery - a.averageMastery,
@@ -178,6 +189,50 @@ export default async function TeacherDashboardPage() {
         </div>
       </section>
 
+      <section className={`${styles.panel} ${styles.beltPanel}`} aria-label="Belt ranks">
+        <div className={styles.panelHeader}>
+          <div>
+            <h2 className={styles.panelTitle}>Belt ranks</h2>
+            <p className={styles.panelSubtitle}>
+              A belt needs enough XP, the right skills, and a passed promotion exam.
+            </p>
+          </div>
+          {examReady.length > 0 && (
+            <span className={`${styles.trendChip} ${styles['trend-up']}`}>{examReady.length} ready for exam</span>
+          )}
+        </div>
+        <div className={styles.beltGrid}>
+          <ul className={styles.beltBars} aria-label="Learners per belt">
+            {beltCounts.map(({ belt, count }) => (
+              <li key={belt}>
+                <span className={styles.beltBarName}>
+                  <i className={styles.beltStrip} style={{ background: getBeltColor(belt) }} aria-hidden="true" />
+                  {getBeltName(belt)}
+                </span>
+                <span className={styles.beltTrack} aria-hidden="true">
+                  <b style={{ width: `${(count / beltMax) * 100}%` }} />
+                </span>
+                <strong>{count}</strong>
+              </li>
+            ))}
+          </ul>
+          <div className={styles.beltWhy}>
+            <h3 className={styles.beltWhyTitle}>What is holding learners back</h3>
+            <dl className={styles.beltWhyList}>
+              <div><dt>Ready for exam</dt><dd>{examReady.length}</dd></div>
+              <div><dt>Skills only</dt><dd>{heldBy.skills}</dd></div>
+              <div><dt>XP only</dt><dd>{heldBy.xp}</dd></div>
+              <div><dt>XP and skills</dt><dd>{heldBy.both}</dd></div>
+            </dl>
+            {examReady.length > 0 && (
+              <p className={styles.beltReady}>
+                Ready now: {examReady.map((student) => student.display_name || 'Learner').join(', ')}.
+              </p>
+            )}
+          </div>
+        </div>
+      </section>
+
       <section className={styles.panel} aria-label="Learner status">
         <div className={styles.panelHeader}>
           <div>
@@ -199,7 +254,7 @@ export default async function TeacherDashboardPage() {
         {students.length === 0 ? <p className={styles.emptyText}>Learners will appear here as they complete onboarding.</p> : (
           <div className={styles.learnerList}>
             <div className={styles.listHead} aria-hidden="true">
-              <span>Learner</span><span>Speed trend</span><span>Latest</span><span>Mastery</span><span>Accuracy</span><span>Status</span>
+              <span>Learner</span><span>Speed trend</span><span>Latest</span><span>Mastery</span><span>Accuracy</span><span>Belt</span><span>Status</span>
             </div>
             {roster.map((student) => {
               const summary = student.wpmSummary;
@@ -232,6 +287,15 @@ export default async function TeacherDashboardPage() {
                     <div className={`${styles.learnerMetric} ${styles.metricAccuracy}`}>
                       <strong>{student.overallAccuracy ? `${student.overallAccuracy}%` : '—'}</strong>
                       <span>{student.sessionCount ? `${student.sessionCount} session${student.sessionCount === 1 ? '' : 's'}` : 'no sessions'}</span>
+                    </div>
+                    <div className={`${styles.learnerMetric} ${styles.metricBelt}`} title={beltBlockerSummary(student.belt)}>
+                      <strong className={styles.beltName}>
+                        <i className={styles.beltStrip} style={{ background: getBeltColor(student.belt.belt) }} aria-hidden="true" />
+                        {getBeltName(student.belt.belt)}
+                      </strong>
+                      <span className={student.belt.examReady ? styles.beltReadyText : undefined}>
+                        {student.belt.examReady ? 'Exam ready' : student.belt.nextBelt === null ? 'Top belt' : `Next: ${getBeltName(student.belt.nextBelt)}`}
+                      </span>
                     </div>
                     <span className={BADGE_CLASS[student.status]} title={student.reason}>{STATUS_LABEL[student.status]}</span>
                   </div>

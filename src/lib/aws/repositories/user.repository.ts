@@ -62,6 +62,7 @@ export class UserRepository {
         streak_count: item.streak_count ?? 0,
         last_practice_date: item.last_practice_date,
         linked_student_ids: item.linked_student_ids ?? [],
+        belt_exam_passed: item.belt_exam_passed ?? 0,
         created_at: item.created_at,
       }))
       .filter((profile) => profile.id && profile.id !== excludeUserId && profile.id !== 'undefined');

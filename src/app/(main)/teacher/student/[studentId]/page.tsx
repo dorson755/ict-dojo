@@ -9,7 +9,9 @@ import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { LineChart } from '@/components/charts/LineChart';
 import { KeyboardHeat } from '@/components/charts/KeyboardHeat';
 import { Sparkline } from '@/components/charts/Sparkline';
+import { getBeltColor, getBeltName } from '@/components/ui/BeltBadge';
 import { averageCatalogMastery, countWeakSkills } from '../../learner-status';
+import { beltBlockerSummary, beltGateRows, beltStatus } from '../../belt-status';
 import { dailySeries, daysSinceLatest, shortDay, summarizeWpm, validSessions } from '../../progress';
 import {
   modeBreakdown,
@@ -78,6 +80,13 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
   const keys = problemKeys(dna?.weak_keys);
   const pairs = topPairSlips(sessions);
   const skillName = (id: string) => TYPING_SKILLS.find((skill) => skill.id === id)?.name ?? id;
+  const belt = beltStatus({
+    level: student.platform_level ?? 1,
+    examPassed: student.belt_exam_passed,
+    mastery,
+  });
+  const gateRows = beltGateRows(belt, skillName);
+  const gatesMet = gateRows.filter((row) => row.met).length;
   const firstDay = series[0];
   const lastDay = series[series.length - 1];
   const weakSkillNames = mastery
@@ -114,6 +123,39 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
           <ul className={styles.narrativeList}>
             {narrative.points.map((point) => <li key={point}>{point}</li>)}
           </ul>
+        )}
+      </section>
+      <section className={styles.beltCard} aria-label="Belt journey">
+        <div className={styles.beltHead}>
+          <div className={styles.beltCurrent}>
+            <i className={styles.beltStripLarge} style={{ background: getBeltColor(belt.belt) }} aria-hidden="true" />
+            <div>
+              <span className={styles.beltEyebrow}>Current belt</span>
+              <h2 className={styles.beltTitle}>{getBeltName(belt.belt)} belt</h2>
+            </div>
+          </div>
+          <span className={belt.examReady ? styles.beltReadyChip : styles.beltNoteChip}>{beltBlockerSummary(belt)}</span>
+        </div>
+        {belt.nextBelt === null ? (
+          <p className={styles.caption}>This learner holds the top belt.</p>
+        ) : (
+          <>
+            <p className={styles.caption}>
+              Toward the {getBeltName(belt.nextBelt)} belt: {gatesMet} of {gateRows.length} requirements met.
+              A belt only promotes when XP, skills, and the exam are all done.
+            </p>
+            <ul className={styles.gateList}>
+              {gateRows.map((row) => (
+                <li key={row.key} className={row.met ? styles.gateMet : styles.gateOpen}>
+                  <span className={styles.gateMark} aria-hidden="true">{row.met ? '✓' : ''}</span>
+                  <span className={styles.gateLabel}>{row.label}</span>
+                  <span className={styles.gateDetail}>
+                    <span className={styles.srOnly}>{row.met ? 'Met. ' : 'Not met. '}</span>{row.detail}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </section>
       <section className={styles.profileCard}>
