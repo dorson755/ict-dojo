@@ -26,7 +26,7 @@ Teacher and admin accounts are not counted as learners.
 
 ### 1. Add the SES permission to the runtime user
 
-The deployed app signs requests as the IAM user `ict-dojo-runtime`, which cannot send mail yet. `infrastructure/runtime-ses-policy.json` allows `ses:SendEmail` from `reports@aldion.life` only.
+The deployed app signs requests as the IAM user `ict-dojo-runtime`, which cannot send mail yet. `infrastructure/runtime-ses-policy.json` allows `ses:SendEmail` and `ses:SendRawEmail` (the app sends raw MIME, which SES authorizes as the latter) from `reports@aldion.life` only.
 
 ```bash
 aws iam put-user-policy \
