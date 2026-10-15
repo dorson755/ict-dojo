@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
-  ICT Dojo weekly report. EventBridge Scheduler calls the app's
-  /api/reports/weekly route every Friday at 11:00 PM GMT-5, and the app emails
+  ICT Dojo weekly report. EventBridge Scheduler triggers a rule that calls the
+  app's /api/reports/weekly route every Friday at 11:00 PM GMT-5, and the app emails
   the report through SES.
 
 Parameters:
@@ -36,6 +36,50 @@ Resources:
       InvocationEndpoint: !Sub '${AppUrl}/api/reports/weekly'
       InvocationRateLimitPerSecond: 1
 
+  # Scheduler cannot target an API destination directly, so it drops an event on
+  # the default bus and a rule forwards that event to the destination.
+  RuleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ict-dojo-weekly-report-rule
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+      Policies:
+        - PolicyName: invoke-report-destination
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: events:InvokeApiDestination
+                Resource: !GetAtt ReportDestination.Arn
+
+  ReportRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: ict-dojo-weekly-report
+      Description: Forwards the weekly schedule event to the report route.
+      State: ENABLED
+      EventPattern:
+        source:
+          - ict-dojo.weekly-report
+        detail-type:
+          - weekly-report-due
+      Targets:
+        - Id: report-route
+          Arn: !GetAtt ReportDestination.Arn
+          RoleArn: !GetAtt RuleRole.Arn
+          RetryPolicy:
+            MaximumRetryAttempts: 2
+            MaximumEventAgeInSeconds: 3600
+
   SchedulerRole:
     Type: AWS::IAM::Role
     Properties:
@@ -51,13 +95,13 @@ Resources:
               StringEquals:
                 aws:SourceAccount: !Ref AWS::AccountId
       Policies:
-        - PolicyName: invoke-report-destination
+        - PolicyName: put-report-event
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
-                Action: events:InvokeApiDestination
-                Resource: !GetAtt ReportDestination.Arn
+                Action: events:PutEvents
+                Resource: !Sub 'arn:${AWS::Partition}:events:${AWS::Region}:${AWS::AccountId}:event-bus/default'
 
   WeeklySchedule:
     Type: AWS::Scheduler::Schedule
@@ -70,8 +114,10 @@ Resources:
         Mode: 'OFF'
       State: ENABLED
       Target:
-        Arn: !GetAtt ReportDestination.Arn
+        Arn: !Sub 'arn:${AWS::Partition}:scheduler:::aws-sdk:eventbridge:putEvents'
         RoleArn: !GetAtt SchedulerRole.Arn
+        Input: !Sub |
+          {"Entries":[{"EventBusName":"default","Source":"ict-dojo.weekly-report","DetailType":"weekly-report-due","Detail":"{}"}]}
         RetryPolicy:
           MaximumRetryAttempts: 2
           MaximumEventAgeInSeconds: 3600

@@ -1,11 +1,13 @@
 # Weekly report email
 
-Every Friday at 11:00 PM GMT-5, EventBridge Scheduler calls the app, and the app emails a summary of all learners to `info@theheuristicacademy.com` with the full table attached as CSV.
+Every Friday at 11:00 PM GMT-5, EventBridge calls the app, and the app emails a summary of all learners to `info@theheuristicacademy.com` with the full table attached as CSV.
 
 ```
-EventBridge Scheduler  ->  POST /api/reports/weekly  ->  getTeacherReport  ->  SES
-   (Fri 23:00 Bogota)        (bearer secret)
+Scheduler -> default bus event -> rule -> API destination -> POST /api/reports/weekly -> getTeacherReport -> SES
+(Fri 23:00 Bogota)                                              (bearer secret)
 ```
+
+Scheduler cannot call an API destination directly, so it puts an event (`ict-dojo.weekly-report` / `weekly-report-due`) on the default bus, and an EventBridge rule forwards it to the destination.
 
 The schedule uses the `America/Bogota` time zone. It is a fixed UTC-5 zone with no daylight saving, so the hour never shifts.
 
@@ -73,7 +75,12 @@ curl -X POST -H "Authorization: Bearer $WEEKLY_REPORT_SECRET" \
   "https://main.d1tba7l6rvz1gn.amplifyapp.com/api/reports/weekly?dryRun=1"
 ```
 
-Drop `?dryRun=1` to send one real email now. To trigger the schedule itself without waiting for Friday, run it from the EventBridge Scheduler console.
+Drop `?dryRun=1` to send one real email now. To trigger the schedule itself without waiting for Friday, put the event on the bus yourself (this sends a real email):
+
+```bash
+aws events put-events --region us-east-2 --entries \
+  '[{"Source":"ict-dojo.weekly-report","DetailType":"weekly-report-due","Detail":"{}"}]'
+```
 
 ## Behavior to know about
 
