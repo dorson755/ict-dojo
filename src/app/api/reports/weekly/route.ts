@@ -2,6 +2,7 @@ import { checkReportSecret } from '@/lib/report-auth';
 import { getTeacherReport } from '@/app/(main)/teacher/report';
 import { buildWeeklyEmail } from '@/app/(main)/teacher/weekly-email';
 import { sendRawEmail } from '@/lib/aws/ses';
+import { parseRecipients } from '@/lib/recipients';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,9 +18,11 @@ export async function POST(request: Request) {
   if (auth === 'not_configured') return json({ error: 'Weekly report is not configured' }, 503);
   if (auth === 'unauthorized') return json({ error: 'Unauthorized' }, 401);
 
-  const recipient = process.env.WEEKLY_REPORT_TO;
+  const recipients = parseRecipients(process.env.WEEKLY_REPORT_TO);
   const sender = process.env.WEEKLY_REPORT_FROM;
-  if (!recipient || !sender) return json({ error: 'WEEKLY_REPORT_TO and WEEKLY_REPORT_FROM must be set' }, 503);
+  if (!recipients || !sender) {
+    return json({ error: 'WEEKLY_REPORT_TO (comma-separated addresses) and WEEKLY_REPORT_FROM must be set' }, 503);
+  }
 
   const dryRun = new URL(request.url).searchParams.get('dryRun') === '1';
 
@@ -28,18 +31,18 @@ export async function POST(request: Request) {
     const email = buildWeeklyEmail(students, new Date());
 
     if (dryRun) {
-      return json({ dryRun: true, to: recipient, subject: email.subject, learners: students.length, preview: email.text }, 200);
+      return json({ dryRun: true, to: recipients, subject: email.subject, learners: students.length, preview: email.text }, 200);
     }
 
     const messageId = await sendRawEmail({
       from: `ICT Dojo <${sender}>`,
-      to: [recipient],
+      to: recipients,
       subject: email.subject,
       text: email.text,
       html: email.html,
       attachment: { filename: email.csvFilename, contentType: 'text/csv; charset=utf-8', content: email.csv },
     });
-    return json({ sent: true, to: recipient, subject: email.subject, learners: students.length, messageId }, 200);
+    return json({ sent: true, to: recipients, subject: email.subject, learners: students.length, messageId }, 200);
   } catch (error) {
     // The scheduler only needs to know it failed; details stay in the server log.
     console.error('Weekly report failed:', error);

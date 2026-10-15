@@ -42,7 +42,7 @@ In the Amplify console, open the `ict-dojo` app, then Environment variables, and
 | Variable | Value |
 | --- | --- |
 | `WEEKLY_REPORT_SECRET` | A random string of at least 24 characters, for example `openssl rand -hex 32` |
-| `WEEKLY_REPORT_TO` | `info@theheuristicacademy.com` |
+| `WEEKLY_REPORT_TO` | One or more addresses, comma-separated, for example `info@theheuristicacademy.com,clearhillpc@gmail.com` |
 | `WEEKLY_REPORT_FROM` | `reports@aldion.life` |
 
 `amplify.yml` copies only some variables into the build, so add the three names to the `grep` pattern on the `env | grep -E` line, then redeploy:
