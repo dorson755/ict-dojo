@@ -40,20 +40,25 @@ export async function submitDiagnostic(results: DiagnosticStageAttempt[]) {
 
   const skills = await SkillRepository.getSkillsByDomain('1');
   const skillById = new Map(skills.map((skill) => [skill.id, skill]));
-  const measurements = new Map<string, number[]>();
+  const measurements = new Map<string, { scores: number[]; speeds: number[] }>();
   for (const attempt of results) {
     if (!attempt.sessionResult.isValid) continue;
     for (const skillId of attempt.skillIds) {
-      const scores = measurements.get(skillId) ?? [];
-      scores.push(diagnosticScore(attempt.sessionResult));
-      measurements.set(skillId, scores);
+      const entry = measurements.get(skillId) ?? { scores: [], speeds: [] };
+      entry.scores.push(diagnosticScore(attempt.sessionResult));
+      entry.speeds.push(attempt.sessionResult.wpm);
+      measurements.set(skillId, entry);
     }
   }
 
   const masteryService = new MasteryService();
-  for (const [skillId, scores] of measurements) {
+  for (const [skillId, { scores, speeds }] of measurements) {
     const score = scores.reduce((total, value) => total + value, 0) / scores.length;
-    const level: MasteryLevel = masteryService.getMasteryLevelFromScore(score);
+    const averageSpeed = speeds.reduce((total, value) => total + value, 0) / speeds.length;
+    const level: MasteryLevel = masteryService.capLevelBySpeed(
+      masteryService.getMasteryLevelFromScore(score),
+      averageSpeed,
+    );
     await MasteryRepository.upsertMastery(user.id, {
       student_id: user.id,
       skill_id: skillId,

@@ -136,7 +136,8 @@ export async function submitPracticeSession(
       currentMastery ? toMasterySnapshot(currentMastery) : undefined,
       user.id,
       skillId,
-      sessionScore
+      sessionScore,
+      result.wpm
     );
 
     // Save history

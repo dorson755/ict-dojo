@@ -12,6 +12,28 @@ export class MasteryService {
   private static readonly FIRST_ATTEMPT_SCORE_CAP = 85;
 
   /**
+   * Accuracy carries 70% of a session score, so a slow but careful typist can
+   * score highly. These minimum speeds stop a skill being labelled strong or
+   * mastered until the learner types at a usable pace. They only limit the
+   * label; the score stays an honest record of the session.
+   */
+  private static readonly MIN_WPM_FOR_STRONG = 20;
+  private static readonly MIN_WPM_FOR_MASTERED = 30;
+
+  /**
+   * Lowers a level that the speed has not earned. A missing or invalid speed
+   * means no information, so the level is left alone.
+   */
+  public capLevelBySpeed(level: MasteryLevel, wpm: number | undefined): MasteryLevel {
+    if (wpm === undefined || !Number.isFinite(wpm)) return level;
+    if (level === 'mastered' && wpm < MasteryService.MIN_WPM_FOR_MASTERED) {
+      return wpm < MasteryService.MIN_WPM_FOR_STRONG ? 'developing' : 'strong';
+    }
+    if (level === 'strong' && wpm < MasteryService.MIN_WPM_FOR_STRONG) return 'developing';
+    return level;
+  }
+
+  /**
    * Determine the categorical MasteryLevel based on the numerical score (0-100).
    */
   public getMasteryLevelFromScore(score: number): MasteryLevel {
@@ -51,14 +73,15 @@ export class MasteryService {
     currentMastery: SkillMastery | undefined,
     studentId: string,
     skillId: string,
-    sessionScore: number
+    sessionScore: number,
+    sessionWpm?: number
   ): MasteryUpdateInput {
     
     const currentScore = currentMastery ? currentMastery.mastery_score : 0;
     const practiceCount = currentMastery ? currentMastery.practice_count : 0;
 
     const newScore = this.calculateNewMasteryScore(currentScore, sessionScore, practiceCount);
-    const newLevel = this.getMasteryLevelFromScore(newScore);
+    const newLevel = this.capLevelBySpeed(this.getMasteryLevelFromScore(newScore), sessionWpm);
 
     return {
       studentId,

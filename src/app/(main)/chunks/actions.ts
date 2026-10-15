@@ -108,6 +108,7 @@ export async function submitChunkPractice(
       user.id,
       chunkSkillId,
       sessionScore,
+      result.wpm,
     );
     await MasteryRepository.upsertMastery(user.id, {
       student_id: user.id,

@@ -73,6 +73,63 @@ describe('MasteryService', () => {
       expect(result.newLevel).toBe('strong');
     });
 
+    describe('speed gate', () => {
+      it('holds a slow learner at developing even with a high score', () => {
+        const result = service.processAttempt(undefined, 'student-1', 'skill-1', 85, 8);
+        expect(result.newScore).toBe(85);
+        expect(result.newLevel).toBe('developing');
+      });
+
+      it('allows strong at the minimum speed', () => {
+        const result = service.processAttempt(undefined, 'student-1', 'skill-1', 85, 20);
+        expect(result.newLevel).toBe('strong');
+      });
+
+      it('holds a mid-speed learner at strong even with a mastered-level score', () => {
+        const current = { mastery_score: 85, practice_count: 1 } as SkillMastery;
+        const result = service.processAttempt(current, 'student-1', 'skill-1', 100, 25);
+        expect(result.newScore).toBe(90.25);
+        expect(result.newLevel).toBe('strong');
+      });
+
+      it('allows mastered at the mastered speed', () => {
+        const current = { mastery_score: 85, practice_count: 1 } as SkillMastery;
+        const result = service.processAttempt(current, 'student-1', 'skill-1', 100, 30);
+        expect(result.newLevel).toBe('mastered');
+      });
+
+      it('never touches the score, only the level', () => {
+        const slow = service.processAttempt(undefined, 'student-1', 'skill-1', 80, 5);
+        const unmeasured = service.processAttempt(undefined, 'student-1', 'skill-1', 80);
+        expect(slow.newScore).toBe(unmeasured.newScore);
+      });
+
+      it('does not raise a level that the score has not earned', () => {
+        const result = service.processAttempt(undefined, 'student-1', 'skill-1', 30, 60);
+        expect(result.newLevel).toBe('weak');
+      });
+
+      it('ignores the gate when no speed is supplied', () => {
+        const result = service.processAttempt(undefined, 'student-1', 'skill-1', 85);
+        expect(result.newLevel).toBe('strong');
+      });
+    });
+
+    describe('capLevelBySpeed', () => {
+      it('exposes the thresholds', () => {
+        expect(service.capLevelBySpeed('mastered', 29.9)).toBe('strong');
+        expect(service.capLevelBySpeed('mastered', 30)).toBe('mastered');
+        expect(service.capLevelBySpeed('strong', 19.9)).toBe('developing');
+        expect(service.capLevelBySpeed('developing', 1)).toBe('developing');
+        expect(service.capLevelBySpeed('weak', 1)).toBe('weak');
+      });
+
+      it('treats a missing or invalid speed as no information', () => {
+        expect(service.capLevelBySpeed('mastered', undefined)).toBe('mastered');
+        expect(service.capLevelBySpeed('strong', Number.NaN)).toBe('strong');
+      });
+    });
+
     it('caps alpha at 0.1 for many practice counts', () => {
       const currentMastery = {
         mastery_score: 90,
