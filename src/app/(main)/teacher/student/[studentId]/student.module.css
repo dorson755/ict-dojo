@@ -5,6 +5,9 @@
 .title, .card h2 { font-family: var(--font-display); font-size: var(--text-xl); }
 .subtitle, .caption { color: var(--ink-2); font-size: var(--text-sm); margin-top: var(--space-1); }
 .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-bottom: var(--space-6); }
+.kpis div:last-child small { text-wrap: balance; }
+.kpis strong { font-variant-numeric: tabular-nums; }
+.wide { margin-bottom: var(--space-6); }
 .kpis div, .card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); }
 .kpis span { color: var(--ink-3); display: block; font-size: var(--text-xs); }
 .kpis strong { display: block; font-family: var(--font-display); font-size: var(--text-2xl); margin-top: var(--space-2); }
@@ -20,23 +23,10 @@
 .profileDetails dd { color: var(--ink); font-size: var(--text-sm); font-weight: 600; margin: 0; overflow-wrap: anywhere; }
 .grid { align-items: start; display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--space-6); }
 .caption { margin-bottom: var(--space-5); }
-.legend { display: flex; gap: var(--space-4); color: var(--ink-2); font-size: var(--text-xs); margin-bottom: var(--space-3); }
-.legend span { align-items: center; display: inline-flex; gap: var(--space-1); }
-.legend i { border-radius: var(--radius-full); display: inline-block; height: 8px; width: 8px; }
-.legendWpm { background: var(--accent); }
-.legendAccuracy { background: var(--success); }
-.chart { align-items: end; border-bottom: 1px solid var(--border-strong); display: flex; gap: var(--space-3); height: 230px; padding: var(--space-4) 0 0; }
-.barGroup { align-items: center; display: flex; flex: 1; flex-direction: column; height: 100%; justify-content: end; gap: var(--space-2); }
-.barPair { align-items: end; display: flex; gap: 2px; height: 100%; justify-content: center; width: 100%; }
-.bar { border-radius: var(--radius-sm) var(--radius-sm) 0 0; min-height: 6px; width: 45%; }
-.barWpm { background: var(--accent); }
-.barAccuracy { background: var(--success); opacity: 0.75; }
-.barGroup span { color: var(--ink-3); font-family: var(--font-mono); font-size: var(--text-xs); }
 .masteryList { display: flex; flex-direction: column; gap: var(--space-4); }
 .masteryRow { display: grid; grid-template-columns: 1fr 40px; gap: var(--space-2); font-size: var(--text-xs); }
 .masteryRow small { color: var(--ink-3); display: block; font-size: var(--text-xs); margin-top: 2px; }
 .masteryRow strong { font-family: var(--font-mono); text-align: right; }
 .track { background: var(--surface-3); border-radius: var(--radius-full); grid-column: 1 / -1; height: 7px; overflow: hidden; }
 .track i { background: var(--success); display: block; height: 100%; }
-.empty { color: var(--ink-3); margin: auto; }
 @media (max-width: 700px) { .page { padding: var(--space-6) var(--space-4); } .kpis { grid-template-columns: repeat(2, 1fr); } .profileDetails { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid { grid-template-columns: 1fr; } }

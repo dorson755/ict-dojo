@@ -6,7 +6,13 @@ import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { getCognitoProfileForTeacher } from '@/lib/aws/cognito-profile';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
+import { LineChart } from '@/components/charts/LineChart';
+import { averageCatalogMastery, countWeakSkills } from '../../learner-status';
+import { dailySeries, shortDay, summarizeWpm, validSessions } from '../../progress';
 import styles from './student.module.css';
+
+const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
+const HISTORY_LIMIT = 200;
 
 export default async function StudentAnalyticsPage({ params }: { params: Promise<{ studentId: string }> }) {
   const user = await getUserSession();
@@ -19,19 +25,32 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
   const [student, mastery, sessions, cognitoProfile] = await Promise.all([
     UserRepository.getProfile(studentId),
     MasteryRepository.getAllMastery(studentId),
-    ExerciseRepository.getRecentSessions(studentId, 12),
+    ExerciseRepository.getRecentSessions(studentId, HISTORY_LIMIT),
     getCognitoProfileForTeacher(studentId).catch(() => null),
   ]);
   if (!student) notFound();
 
-  const recent = [...sessions].reverse();
-  const averageAccuracy = recent.length ? Math.round(recent.reduce((sum, session) => sum + Number(session.accuracy || 0), 0) / recent.length) : 0;
-  const averageWpm = recent.length ? Math.round(recent.reduce((sum, session) => sum + Number(session.wpm || 0), 0) / recent.length) : 0;
-  const maxWpm = Math.max(...recent.map((session) => Number(session.wpm || 0)), 1);
-  const averageMastery = mastery.length ? Math.round(mastery.reduce((sum, item) => sum + item.mastery_score, 0) / mastery.length) : 0;
-  const mastered = mastery.filter((item) => item.mastery_level === 'mastered').length;
-  const weak = mastery.filter((item) => item.mastery_level === 'weak').length;
-  const assessedSkills = mastery.filter((item) => item.practice_count > 0).length;
+  const valid = validSessions(sessions);
+  const series = dailySeries(sessions);
+  const summary = summarizeWpm(series);
+  const averageAccuracy = valid.length ? Math.round(valid.reduce((sum, session) => sum + Number(session.accuracy || 0), 0) / valid.length) : 0;
+  const chartPoints = series.map((point) => ({
+    label: shortDay(point.day),
+    value: point.wpm,
+    secondary: point.accuracy || undefined,
+    detail: `${point.sessions} session${point.sessions === 1 ? '' : 's'}${point.accuracy ? `, ${point.accuracy}% accuracy` : ''}`,
+  }));
+  const trendLabel = summary.direction === 'none'
+    ? 'No sessions yet'
+    : summary.points < 2
+      ? 'Needs another practice day'
+      : summary.direction === 'flat'
+        ? 'Holding steady'
+        : `${summary.change > 0 ? '+' : ''}${summary.change} WPM across practice days`;
+  const averageMastery = averageCatalogMastery(mastery, CATALOG_SKILL_IDS);
+  const mastered = mastery.filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.mastery_level === 'mastered').length;
+  const weak = countWeakSkills(mastery, CATALOG_SKILL_IDS);
+  const assessedSkills = mastery.filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.practice_count > 0).length;
   const joinedAt = cognitoProfile?.createdAt
     ?? (student.created_at ? new Date(student.created_at) : null);
   const lastPractice = sessions[0]?.created_at
@@ -43,7 +62,7 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
       <Link href="/teacher" className={styles.back}>← Back to mentor view</Link>
       <header className={styles.header}><div className={styles.avatar}>{(student.display_name || 'L').slice(0, 1).toUpperCase()}</div><div><h1 className={styles.title}>{student.display_name || 'Learner'}</h1><p className={styles.subtitle}>Grade {student.grade_level || '—'} · Level {student.platform_level || 1} · {student.streak_count || 0}-day streak</p></div></header>
       <section className={styles.kpis}>
-        <div><span>Assessed mastery</span><strong>{assessedSkills ? `${averageMastery}%` : '—'}</strong><small>{assessedSkills} of {TYPING_SKILLS.length} skills assessed</small></div><div><span>Sessions</span><strong>{recent.length}</strong></div><div><span>Avg WPM</span><strong>{averageWpm || '—'}</strong></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong></div>
+        <div><span>Assessed mastery</span><strong>{assessedSkills ? `${averageMastery}%` : '—'}</strong><small>{assessedSkills} of {TYPING_SKILLS.length} skills assessed</small></div><div><span>Latest speed</span><strong>{summary.latest ? Math.round(summary.latest) : '—'}</strong><small>{summary.best ? `WPM · best ${Math.round(summary.best)}` : 'WPM'}</small></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong><small>across {valid.length} session{valid.length === 1 ? '' : 's'}</small></div><div><span>Practice days</span><strong>{series.length}</strong><small>{trendLabel}</small></div>
       </section>
       <section className={styles.profileCard}>
         <div className={styles.profileCardHeader}>
@@ -66,25 +85,20 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
           <div><dt>Account updated</dt><dd>{cognitoProfile?.updatedAt ? cognitoProfile.updatedAt.toLocaleDateString() : '—'}</dd></div>
         </dl>
       </section>
+      <section className={`${styles.card} ${styles.wide}`}>
+        <h2>Typing speed over time</h2>
+        <p className={styles.caption}>
+          One point per practice day, averaging that day&apos;s sessions. Dotted line is accuracy on the right axis.
+        </p>
+        <LineChart
+          points={chartPoints}
+          title="Words per minute"
+          secondaryName="Accuracy"
+          referenceValue={summary.best}
+          referenceLabel={`Personal best ${Math.round(summary.best)}`}
+        />
+      </section>
       <div className={styles.grid}>
-        <section className={styles.card}>
-          <h2>Practice trend</h2>
-          <p className={styles.caption}>
-            WPM and accuracy across the last {recent.length} sessions. WPM bars are scaled to the best session ({maxWpm} WPM); accuracy bars are scaled to 100%.
-          </p>
-          <div className={styles.legend}><span><i className={styles.legendWpm} /> WPM</span><span><i className={styles.legendAccuracy} /> Accuracy</span></div>
-          <div className={styles.chart}>
-            {recent.length ? recent.map((session, index) => {
-              const wpm = Number(session.wpm || 0);
-              const accuracy = Number(session.accuracy || 0);
-              const date = session.created_at ? new Date(String(session.created_at)) : null;
-              return <div className={styles.barGroup} key={`${session.created_at}-${index}`} title={`${date?.toLocaleDateString() || 'Session'}: ${wpm} WPM, ${accuracy}% accuracy`}>
-                <div className={styles.barPair}><div className={`${styles.bar} ${styles.barWpm}`} style={{ height: `${Math.max(6, (wpm / maxWpm) * 100)}%` }} /><div className={`${styles.bar} ${styles.barAccuracy}`} style={{ height: `${Math.max(6, accuracy)}%` }} /></div>
-                <span>{date ? `${date.getMonth() + 1}/${date.getDate()}` : index + 1}</span>
-              </div>;
-            }) : <p className={styles.empty}>No sessions yet.</p>}
-          </div>
-        </section>
         <section className={styles.card}>
           <h2>Mastery snapshot</h2>
           <p className={styles.caption}>{mastered} mastered · {weak} need reinforcement · scores update after each session</p>

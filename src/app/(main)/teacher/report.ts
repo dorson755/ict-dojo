@@ -3,8 +3,10 @@ import { MasteryRepository } from '@/lib/aws/repositories/mastery.repository';
 import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { averageCatalogMastery, classifyLearner, countWeakSkills } from './learner-status';
+import { dailySeries, summarizeWpm, validSessions } from './progress';
 
 const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
+const SESSION_HISTORY_LIMIT = 200;
 
 export async function getTeacherReport(teacherId: string) {
   const profiles = await UserRepository.getStudentProfiles(teacherId);
@@ -12,8 +14,10 @@ export async function getTeacherReport(teacherId: string) {
   return Promise.all(profiles.map(async (student) => {
     const [mastery, sessions] = await Promise.all([
       MasteryRepository.getAllMastery(student.id).catch(() => []),
-      ExerciseRepository.getRecentSessions(student.id, 50).catch(() => []),
+      ExerciseRepository.getRecentSessions(student.id, SESSION_HISTORY_LIMIT).catch(() => []),
     ]);
+    const wpmSeries = dailySeries(sessions);
+    const wpmSummary = summarizeWpm(wpmSeries);
     const recent = sessions.filter((session) => now - new Date(String(session.created_at)).getTime() <= 7 * 86_400_000);
     const average = (items: typeof recent, key: 'wpm' | 'accuracy') => {
       const values = items.map((item) => Number(item[key])).filter((value) => Number.isFinite(value) && value > 0);
@@ -37,10 +41,15 @@ export async function getTeacherReport(teacherId: string) {
       minutesThisWeek: Math.round(recent.reduce((sum, item) => sum + (Number(item.durationMs) || 0), 0) / 60000),
       averageWpm: average(recent, 'wpm'),
       averageAccuracy: average(recent, 'accuracy'),
+      overallAccuracy: average(validSessions(sessions), 'accuracy'),
       wpmTrend: average(recentHalf, 'wpm') - average(previousHalf, 'wpm'),
       accuracyTrend: average(recentHalf, 'accuracy') - average(previousHalf, 'accuracy'),
       lastPractice,
       daysSincePractice,
+      sessionCount: sessions.length,
+      sessions,
+      wpmSeries,
+      wpmSummary,
       status,
       reason,
       needsAttention: status === 'needs_reinforcement' || status === 'inactive',
