@@ -1,22 +1,16 @@
 import styles from './BeltBadge.module.css';
+import { getBeltName } from '@/domains/shared/belt-names';
+
+export { getBeltName };
 
 const BELT_COLORS = [
   'white', 'yellow', 'orange', 'green',
   'blue', 'purple', 'brown', 'black',
 ] as const;
 
-const BELT_NAMES = [
-  'White', 'Yellow', 'Orange', 'Green',
-  'Blue', 'Purple', 'Brown', 'Black',
-] as const;
-
 export function getBeltFromLevel(level: number): number {
   // Every 5 levels = 1 belt. Level 1-5 = White, 6-10 = Yellow, etc.
   return Math.min(7, Math.floor((level - 1) / 5));
-}
-
-export function getBeltName(belt: number): string {
-  return BELT_NAMES[belt] ?? 'White';
 }
 
 export function getBeltColor(belt: number): string {

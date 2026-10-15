@@ -5,13 +5,14 @@ import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { averageCatalogMastery, classifyLearner, countWeakSkills } from './learner-status';
 import { beltStatus } from './belt-status';
 import { summarizeMastery } from './mastery-summary';
+import { isLearnerProfile } from './learner-filter';
 import { dailySeries, summarizeWpm, validSessions } from './progress';
 
 const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
 const SESSION_HISTORY_LIMIT = 200;
 
 export async function getTeacherReport(teacherId: string) {
-  const profiles = await UserRepository.getStudentProfiles(teacherId);
+  const profiles = (await UserRepository.getStudentProfiles(teacherId)).filter(isLearnerProfile);
   const now = new Date().getTime();
   return Promise.all(profiles.map(async (student) => {
     const [mastery, sessions] = await Promise.all([

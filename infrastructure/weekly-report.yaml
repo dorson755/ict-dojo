@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  ICT Dojo weekly report. EventBridge Scheduler calls the app's
+  /api/reports/weekly route every Friday at 11:00 PM GMT-5, and the app emails
+  the report through SES.
+
+Parameters:
+  AppUrl:
+    Type: String
+    Default: https://main.d1tba7l6rvz1gn.amplifyapp.com
+    Description: Base URL of the deployed app, with no trailing slash.
+  WeeklyReportSecret:
+    Type: String
+    NoEcho: true
+    MinLength: 24
+    Description: Must equal the WEEKLY_REPORT_SECRET environment variable set in Amplify.
+
+Resources:
+  ReportConnection:
+    Type: AWS::Events::Connection
+    Properties:
+      Name: ict-dojo-weekly-report
+      Description: Sends the bearer secret the report route checks.
+      AuthorizationType: API_KEY
+      AuthParameters:
+        ApiKeyAuthParameters:
+          ApiKeyName: Authorization
+          ApiKeyValue: !Sub 'Bearer ${WeeklyReportSecret}'
+
+  ReportDestination:
+    Type: AWS::Events::ApiDestination
+    Properties:
+      Name: ict-dojo-weekly-report
+      ConnectionArn: !GetAtt ReportConnection.Arn
+      HttpMethod: POST
+      InvocationEndpoint: !Sub '${AppUrl}/api/reports/weekly'
+      InvocationRateLimitPerSecond: 1
+
+  SchedulerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ict-dojo-weekly-report-scheduler
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: scheduler.amazonaws.com
+            Action: sts:AssumeRole
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+      Policies:
+        - PolicyName: invoke-report-destination
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: events:InvokeApiDestination
+                Resource: !GetAtt ReportDestination.Arn
+
+  WeeklySchedule:
+    Type: AWS::Scheduler::Schedule
+    Properties:
+      Name: ict-dojo-weekly-report
+      Description: Friday 11:00 PM GMT-5. America/Bogota has no daylight saving, so the hour never shifts.
+      ScheduleExpression: cron(0 23 ? * FRI *)
+      ScheduleExpressionTimezone: America/Bogota
+      FlexibleTimeWindow:
+        Mode: 'OFF'
+      State: ENABLED
+      Target:
+        Arn: !GetAtt ReportDestination.Arn
+        RoleArn: !GetAtt SchedulerRole.Arn
+        RetryPolicy:
+          MaximumRetryAttempts: 2
+          MaximumEventAgeInSeconds: 3600
+
+Outputs:
+  ScheduleName:
+    Value: !Ref WeeklySchedule

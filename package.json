@@ -23,6 +23,7 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.1131.0",
     "@aws-sdk/client-dynamodb": "^3.1131.0",
+    "@aws-sdk/client-sesv2": "^3.1152.0",
     "@aws-sdk/lib-dynamodb": "^3.1131.0",
     "@tinymce/tinymce-react": "^6.3.0",
     "groq-sdk": "^1.6.0",

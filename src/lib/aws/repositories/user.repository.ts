@@ -12,6 +12,7 @@ export interface StudentProfile {
   last_practice_date?: string;
   linked_student_ids?: string[];
   belt_exam_passed?: number;
+  role?: string;
   created_at?: string;
 }
 
@@ -63,6 +64,7 @@ export class UserRepository {
         last_practice_date: item.last_practice_date,
         linked_student_ids: item.linked_student_ids ?? [],
         belt_exam_passed: item.belt_exam_passed ?? 0,
+        role: item.role,
         created_at: item.created_at,
       }))
       .filter((profile) => profile.id && profile.id !== excludeUserId && profile.id !== 'undefined');

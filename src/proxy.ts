@@ -10,6 +10,9 @@ const COGNITO_CLIENT_ID = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID;
 // Public paths that do not require authentication
 const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/reset-password', '/'];
 
+// Called by the scheduler, which has no login cookie. The route checks its own bearer secret.
+const SCHEDULER_PATHS = ['/api/reports/weekly'];
+
 // Create JWKS store outside of middleware function so it's cached across requests
 let jwks: ReturnType<typeof createRemoteJWKSet> | null = null;
 
@@ -19,6 +22,7 @@ export async function proxy(request: NextRequest) {
   // Skip auth check for public paths and static files
   if (
     PUBLIC_PATHS.includes(pathname) ||
+    SCHEDULER_PATHS.includes(pathname) ||
     pathname.startsWith('/_next') ||
     pathname.includes('.')
   ) {
