@@ -7,26 +7,47 @@ import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { getCognitoProfileForTeacher } from '@/lib/aws/cognito-profile';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { LineChart } from '@/components/charts/LineChart';
+import { KeyboardHeat } from '@/components/charts/KeyboardHeat';
+import { Sparkline } from '@/components/charts/Sparkline';
 import { averageCatalogMastery, countWeakSkills } from '../../learner-status';
-import { dailySeries, shortDay, summarizeWpm, validSessions } from '../../progress';
+import { dailySeries, daysSinceLatest, shortDay, summarizeWpm, validSessions } from '../../progress';
+import {
+  modeBreakdown,
+  practiceRhythm,
+  problemKeys,
+  progressNarrative,
+  skillGrowth,
+  spokenPair,
+  topPairSlips,
+  visiblePair,
+  type MasteryHistoryRow,
+} from '../../personal-trends';
 import styles from './student.module.css';
 
 const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
 const HISTORY_LIMIT = 200;
+
+// Reading the clock inside a component body trips the React purity rule, so it is isolated here.
+async function currentTime(): Promise<number> {
+  return Date.now();
+}
 
 export default async function StudentAnalyticsPage({ params }: { params: Promise<{ studentId: string }> }) {
   const user = await getUserSession();
   if (!user) redirect('/login');
   if (user.role !== 'teacher' && user.role !== 'admin') redirect('/dashboard');
   const { studentId } = await params;
+  const requestTime = await currentTime();
   const allowed = (await UserRepository.getStudentProfiles(user.id)).some((student) => student.id === studentId);
   if (!allowed) notFound();
 
-  const [student, mastery, sessions, cognitoProfile] = await Promise.all([
+  const [student, mastery, sessions, cognitoProfile, history, dna] = await Promise.all([
     UserRepository.getProfile(studentId),
     MasteryRepository.getAllMastery(studentId),
     ExerciseRepository.getRecentSessions(studentId, HISTORY_LIMIT),
     getCognitoProfileForTeacher(studentId).catch(() => null),
+    MasteryRepository.getMasteryHistory(studentId).catch(() => []),
+    UserRepository.getTypingDNA(studentId).catch(() => null),
   ]);
   if (!student) notFound();
 
@@ -51,6 +72,29 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
   const mastered = mastery.filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.mastery_level === 'mastered').length;
   const weak = countWeakSkills(mastery, CATALOG_SKILL_IDS);
   const assessedSkills = mastery.filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.practice_count > 0).length;
+  const modes = modeBreakdown(sessions);
+  const rhythm = practiceRhythm(sessions);
+  const growth = skillGrowth(history as MasteryHistoryRow[], CATALOG_SKILL_IDS);
+  const keys = problemKeys(dna?.weak_keys);
+  const pairs = topPairSlips(sessions);
+  const skillName = (id: string) => TYPING_SKILLS.find((skill) => skill.id === id)?.name ?? id;
+  const firstDay = series[0];
+  const lastDay = series[series.length - 1];
+  const weakSkillNames = mastery
+    .filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.mastery_level === 'weak')
+    .map((item) => skillName(item.skill_id));
+  const narrative = progressNarrative({
+    practiceDays: series.length,
+    sessions: valid.length,
+    firstWpm: firstDay?.wpm ?? 0,
+    latestWpm: lastDay?.wpm ?? 0,
+    bestWpm: summary.best,
+    firstAccuracy: firstDay?.accuracy ?? 0,
+    latestAccuracy: lastDay?.accuracy ?? 0,
+    weakSkillNames,
+    masteredCount: mastered,
+    daysSincePractice: daysSinceLatest(sessions, requestTime),
+  });
   const joinedAt = cognitoProfile?.createdAt
     ?? (student.created_at ? new Date(student.created_at) : null);
   const lastPractice = sessions[0]?.created_at
@@ -63,6 +107,14 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
       <header className={styles.header}><div className={styles.avatar}>{(student.display_name || 'L').slice(0, 1).toUpperCase()}</div><div><h1 className={styles.title}>{student.display_name || 'Learner'}</h1><p className={styles.subtitle}>Grade {student.grade_level || '—'} · Level {student.platform_level || 1} · {student.streak_count || 0}-day streak</p></div></header>
       <section className={styles.kpis}>
         <div><span>Assessed mastery</span><strong>{assessedSkills ? `${averageMastery}%` : '—'}</strong><small>{assessedSkills} of {TYPING_SKILLS.length} skills assessed</small></div><div><span>Latest speed</span><strong>{summary.latest ? Math.round(summary.latest) : '—'}</strong><small>{summary.best ? `WPM · best ${Math.round(summary.best)}` : 'WPM'}</small></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong><small>across {valid.length} session{valid.length === 1 ? '' : 's'}</small></div><div><span>Practice days</span><strong>{series.length}</strong><small>{trendLabel}</small></div>
+      </section>
+      <section className={styles.narrative} aria-label="Progress summary">
+        <h2 className={styles.narrativeHeadline}>{narrative.headline}</h2>
+        {narrative.points.length > 0 && (
+          <ul className={styles.narrativeList}>
+            {narrative.points.map((point) => <li key={point}>{point}</li>)}
+          </ul>
+        )}
       </section>
       <section className={styles.profileCard}>
         <div className={styles.profileCardHeader}>
@@ -99,6 +151,86 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
         />
       </section>
       <div className={styles.grid}>
+        <section className={styles.card}>
+          <h2>Where practice goes</h2>
+          <p className={styles.caption}>
+            Average speed and accuracy by practice mode. A mode with high speed but low accuracy is where a learner may be rushing.
+          </p>
+          {modes.length === 0 ? <p className={styles.emptyNote}>No sessions yet.</p> : (
+            <table className={styles.modeTable}>
+              <thead><tr><th scope="col">Mode</th><th scope="col">Sessions</th><th scope="col">Speed</th><th scope="col">Accuracy</th></tr></thead>
+              <tbody>
+                {modes.map((mode) => (
+                  <tr key={mode.mode}>
+                    <th scope="row">{mode.label}</th>
+                    <td>{mode.sessions}</td>
+                    <td>{mode.wpm} <small>WPM</small></td>
+                    <td>
+                      {mode.accuracy ? `${mode.accuracy}%` : '—'}
+                      {mode.accuracy > 0 && <i className={styles.modeMeter}><b style={{ width: `${mode.accuracy}%` }} /></i>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {rhythm.activeDays > 0 && (
+            <dl className={styles.rhythm}>
+              <div><dt>Practice days</dt><dd>{rhythm.activeDays} <small>over {rhythm.spanDays} day{rhythm.spanDays === 1 ? '' : 's'}</small></dd></div>
+              <div><dt>Longest run</dt><dd>{rhythm.longestStreak} <small>day{rhythm.longestStreak === 1 ? '' : 's'} in a row</small></dd></div>
+              <div><dt>Per practice day</dt><dd>{rhythm.sessionsPerActiveDay} <small>session{rhythm.sessionsPerActiveDay === 1 ? '' : 's'}</small></dd></div>
+            </dl>
+          )}
+        </section>
+        <section className={styles.card}>
+          <h2>Problem keys</h2>
+          <p className={styles.caption}>
+            The ten keys this learner misses most, shaded against their own worst key. Keys that are not shaded are not necessarily perfect, only outside the top ten.
+          </p>
+          {keys.length === 0 ? <p className={styles.emptyNote}>No key-level data recorded yet.</p> : <KeyboardHeat keys={keys} />}
+          {pairs.length > 0 && (
+            <div className={styles.pairs}>
+              <h3>Frequent slips between two keys</h3>
+              <ul>
+                {pairs.map((slip) => (
+                  <li key={slip.pair}>
+                    <code aria-hidden="true">{visiblePair(slip.pair)}</code>
+                    <span className={styles.srOnly}>{spokenPair(slip.pair)}, </span>
+                    <span>{slip.count}×</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </section>
+      </div>
+      <div className={styles.grid}>
+        <section className={styles.card}>
+          <h2>Mastery growth</h2>
+          <p className={styles.caption}>Score after each practice update, per skill. The line starts at the score before the first update.</p>
+          {growth.length === 0 ? <p className={styles.emptyNote}>No mastery updates recorded yet.</p> : (
+            <ul className={styles.growthList}>
+              {growth.map((entry) => (
+                <li key={entry.skillId}>
+                  <span className={styles.growthName}>{skillName(entry.skillId)}<small>{entry.updates === 1 ? 'assessed once' : `${entry.updates} assessments`}</small></span>
+                  {entry.updates > 1 ? (
+                    <Sparkline
+                      values={entry.scores}
+                      width={120}
+                      height={30}
+                      tone={entry.change > 0 ? 'success' : entry.change < 0 ? 'danger' : 'muted'}
+                      label={`${skillName(entry.skillId)} mastery from ${Math.round(entry.first)} to ${Math.round(entry.latest)} over ${entry.updates} assessments`}
+                    />
+                  ) : <span className={styles.growthNote}>Needs a second session to show a trend</span>}
+                  <strong className={entry.change > 0 ? styles.up : entry.change < 0 ? styles.down : undefined}>
+                    {Math.round(entry.latest)}%
+                    {entry.updates > 1 && <small>{entry.change > 0 ? '+' : ''}{Math.round(entry.change)}</small>}
+                  </strong>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
         <section className={styles.card}>
           <h2>Mastery snapshot</h2>
           <p className={styles.caption}>{mastered} mastered · {weak} need reinforcement · scores update after each session</p>

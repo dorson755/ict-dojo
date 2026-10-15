@@ -3,6 +3,7 @@ import {
   classSeries,
   dailySeries,
   dayKey,
+  daysSinceLatest,
   shortDay,
   summarizeWpm,
   validSessions,
@@ -129,6 +130,20 @@ describe('classSeries', () => {
 
   it('returns nothing for an empty class', () => {
     expect(classSeries([])).toEqual([]);
+  });
+});
+
+describe('daysSinceLatest', () => {
+  const now = new Date(2026, 9, 14, 12, 0, 0).getTime();
+
+  it('measures from the newest session regardless of order', () => {
+    const sessions = [at(new Date(2026, 9, 1, 9).toISOString(), 30), at(new Date(2026, 9, 10, 9).toISOString(), 30)];
+    expect(daysSinceLatest(sessions, now)).toBe(4);
+  });
+
+  it('returns null with no dated sessions and never goes negative', () => {
+    expect(daysSinceLatest([], now)).toBeNull();
+    expect(daysSinceLatest([at(new Date(2026, 9, 20).toISOString(), 30)], now)).toBe(0);
   });
 });
 

@@ -148,6 +148,15 @@ export function classSeries(seriesByLearner: DayPoint[][]): DayPoint[] {
     }));
 }
 
+/** Whole days between the newest session and `now`, or null when there are none. */
+export function daysSinceLatest(sessions: SessionLike[], now: number): number | null {
+  const times = sessions
+    .map((session) => toDate(session.created_at)?.getTime())
+    .filter((time): time is number => time !== undefined);
+  if (!times.length) return null;
+  return Math.max(0, Math.floor((now - Math.max(...times)) / DAY_MS));
+}
+
 /** Short axis label such as "10/7". */
 export function shortDay(day: string): string {
   const [, month, date] = day.split('-');

@@ -76,6 +76,25 @@ export class MasteryRepository {
     await dynamoClient.send(command);
   }
 
+  static async getMasteryHistory(userId: string): Promise<Array<Record<string, unknown>>> {
+    const items: Array<Record<string, unknown>> = [];
+    let startKey: Record<string, unknown> | undefined;
+    do {
+      const response = await dynamoClient.send(new QueryCommand({
+        TableName: TABLE_NAME,
+        KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',
+        ExpressionAttributeValues: {
+          ':pk': `USER#${userId}`,
+          ':sk': 'MASTERY_HISTORY#',
+        },
+        ExclusiveStartKey: startKey,
+      }));
+      items.push(...(response.Items || []));
+      startKey = response.LastEvaluatedKey;
+    } while (startKey);
+    return items;
+  }
+
   static async logMasteryHistory(userId: string, history: Record<string, unknown>): Promise<void> {
     const timestamp = new Date().toISOString();
     const command = new PutCommand({
