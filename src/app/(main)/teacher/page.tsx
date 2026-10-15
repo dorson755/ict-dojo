@@ -5,6 +5,7 @@ import { getTeacherReport } from './report';
 import { STATUS_LABEL, STATUS_PRIORITY, type LearnerStatus } from './learner-status';
 import { activityWindow, classSeries, shortDay, summarizeWpm, wpmDistribution } from './progress';
 import { beltBlockerSummary, beltDistribution } from './belt-status';
+import { masteryExplanation } from './mastery-summary';
 import { getBeltColor, getBeltName } from '@/components/ui/BeltBadge';
 import { LineChart } from '@/components/charts/LineChart';
 import { BarChart } from '@/components/charts/BarChart';
@@ -80,7 +81,9 @@ export default async function TeacherDashboardPage() {
   const medianWpm = latestWpms.length
     ? [...latestWpms].sort((a, b) => a - b)[Math.floor(latestWpms.length / 2)]
     : 0;
-  const avgMastery = started.length ? Math.round(started.reduce((sum, student) => sum + student.averageMastery, 0) / started.length) : 0;
+  const avgCoverage = started.length
+    ? Math.round(started.reduce((sum, student) => sum + student.masterySummary.coverage, 0) / started.length)
+    : 0;
 
   const statusCounts = SEGMENT_ORDER.map((status) => ({
     status,
@@ -149,8 +152,8 @@ export default async function TeacherDashboardPage() {
             <dd>{classBest ? Math.round(classBest) : '—'}<small>WPM</small></dd>
           </div>
           <div>
-            <dt>Average mastery</dt>
-            <dd>{started.length ? avgMastery : '—'}<small>%</small></dd>
+            <dt>Skills assessed</dt>
+            <dd>{started.length ? avgCoverage : '—'}<small>% of catalog, on average</small></dd>
           </div>
           <div>
             <dt>Active this week</dt>
@@ -254,7 +257,7 @@ export default async function TeacherDashboardPage() {
         {students.length === 0 ? <p className={styles.emptyText}>Learners will appear here as they complete onboarding.</p> : (
           <div className={styles.learnerList}>
             <div className={styles.listHead} aria-hidden="true">
-              <span>Learner</span><span>Speed trend</span><span>Latest</span><span>Mastery</span><span>Accuracy</span><span>Belt</span><span>Status</span>
+              <span>Learner</span><span>Speed trend</span><span>Latest</span><span>Skills assessed</span><span>Accuracy</span><span>Belt</span><span>Status</span>
             </div>
             {roster.map((student) => {
               const summary = student.wpmSummary;
@@ -280,9 +283,14 @@ export default async function TeacherDashboardPage() {
                       <strong>{summary.latest ? Math.round(summary.latest) : '—'}</strong>
                       <span>{summary.best ? `WPM · best ${Math.round(summary.best)}` : 'WPM'}</span>
                     </div>
-                    <div className={`${styles.learnerMetric} ${styles.metricMastery}`}>
-                      <strong>{student.hasStarted ? `${student.averageMastery}%` : '—'}</strong>
-                      {student.hasStarted && <i className={styles.meter}><b style={{ width: `${student.averageMastery}%` }} /></i>}
+                    <div className={`${styles.learnerMetric} ${styles.metricMastery}`} title={masteryExplanation(student.masterySummary)}>
+                      <strong>{student.masterySummary.assessed ? `${student.masterySummary.assessed} of ${student.masterySummary.total}` : '—'}</strong>
+                      <span>
+                        {student.masterySummary.assessed
+                          ? `skills · avg score ${student.masterySummary.averageScore}`
+                          : 'skills assessed'}
+                      </span>
+                      {student.masterySummary.assessed > 0 && <i className={styles.meter}><b style={{ width: `${student.masterySummary.coverage}%` }} /></i>}
                     </div>
                     <div className={`${styles.learnerMetric} ${styles.metricAccuracy}`}>
                       <strong>{student.overallAccuracy ? `${student.overallAccuracy}%` : '—'}</strong>

@@ -55,7 +55,7 @@
 .up small { color: var(--success-ink); }
 .down small { color: var(--danger-ink); }
 .masteryList { display: flex; flex-direction: column; gap: var(--space-4); }
-.masteryRow { display: grid; grid-template-columns: 1fr 40px; gap: var(--space-2); font-size: var(--text-xs); }
+.masteryRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); font-size: var(--text-xs); }
 .masteryRow small { color: var(--ink-3); display: block; font-size: var(--text-xs); margin-top: 2px; }
 .masteryRow strong { font-family: var(--font-mono); text-align: right; }
 .track { background: var(--surface-3); border-radius: var(--radius-full); grid-column: 1 / -1; height: 7px; overflow: hidden; }

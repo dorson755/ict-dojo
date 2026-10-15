@@ -10,7 +10,9 @@ import { LineChart } from '@/components/charts/LineChart';
 import { KeyboardHeat } from '@/components/charts/KeyboardHeat';
 import { Sparkline } from '@/components/charts/Sparkline';
 import { getBeltColor, getBeltName } from '@/components/ui/BeltBadge';
-import { averageCatalogMastery, countWeakSkills } from '../../learner-status';
+import { countWeakSkills } from '../../learner-status';
+import { masteryExplanation, summarizeMastery } from '../../mastery-summary';
+import { masteryLevelName } from '@/domains/shared/mastery-labels';
 import { beltBlockerSummary, beltGateRows, beltStatus } from '../../belt-status';
 import { dailySeries, daysSinceLatest, shortDay, summarizeWpm, validSessions } from '../../progress';
 import {
@@ -70,10 +72,9 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
       : summary.direction === 'flat'
         ? 'Holding steady'
         : `${summary.change > 0 ? '+' : ''}${summary.change} WPM across practice days`;
-  const averageMastery = averageCatalogMastery(mastery, CATALOG_SKILL_IDS);
+  const masterySummary = summarizeMastery(mastery, CATALOG_SKILL_IDS);
   const mastered = mastery.filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.mastery_level === 'mastered').length;
   const weak = countWeakSkills(mastery, CATALOG_SKILL_IDS);
-  const assessedSkills = mastery.filter((item) => CATALOG_SKILL_IDS.has(item.skill_id) && item.practice_count > 0).length;
   const modes = modeBreakdown(sessions);
   const rhythm = practiceRhythm(sessions);
   const growth = skillGrowth(history as MasteryHistoryRow[], CATALOG_SKILL_IDS);
@@ -115,7 +116,7 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
       <Link href="/teacher" className={styles.back}>← Back to mentor view</Link>
       <header className={styles.header}><div className={styles.avatar}>{(student.display_name || 'L').slice(0, 1).toUpperCase()}</div><div><h1 className={styles.title}>{student.display_name || 'Learner'}</h1><p className={styles.subtitle}>Grade {student.grade_level || '—'} · Level {student.platform_level || 1} · {student.streak_count || 0}-day streak</p></div></header>
       <section className={styles.kpis}>
-        <div><span>Assessed mastery</span><strong>{assessedSkills ? `${averageMastery}%` : '—'}</strong><small>{assessedSkills} of {TYPING_SKILLS.length} skills assessed</small></div><div><span>Latest speed</span><strong>{summary.latest ? Math.round(summary.latest) : '—'}</strong><small>{summary.best ? `WPM · best ${Math.round(summary.best)}` : 'WPM'}</small></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong><small>across {valid.length} session{valid.length === 1 ? '' : 's'}</small></div><div><span>Practice days</span><strong>{series.length}</strong><small>{trendLabel}</small></div>
+        <div title={masteryExplanation(masterySummary)}><span>Skills assessed</span><strong>{masterySummary.assessed} of {masterySummary.total}</strong><small>{masterySummary.assessed ? `${masterySummary.secure} strong or better · avg score ${masterySummary.averageScore}` : 'No skills scored yet'}</small></div><div><span>Latest speed</span><strong>{summary.latest ? Math.round(summary.latest) : '—'}</strong><small>{summary.best ? `WPM · best ${Math.round(summary.best)}` : 'WPM'}</small></div><div><span>Accuracy</span><strong>{averageAccuracy ? `${averageAccuracy}%` : '—'}</strong><small>across {valid.length} session{valid.length === 1 ? '' : 's'}</small></div><div><span>Practice days</span><strong>{series.length}</strong><small>{trendLabel}</small></div>
       </section>
       <section className={styles.narrative} aria-label="Progress summary">
         <h2 className={styles.narrativeHeadline}>{narrative.headline}</h2>
@@ -274,12 +275,14 @@ export default async function StudentAnalyticsPage({ params }: { params: Promise
           )}
         </section>
         <section className={styles.card}>
-          <h2>Mastery snapshot</h2>
-          <p className={styles.caption}>{mastered} mastered · {weak} need reinforcement · scores update after each session</p>
+          <h2>Skill levels</h2>
+          <p className={styles.caption}>
+            Each skill has a level and a score out of 100. The score blends accuracy (70 points) and speed (30 points, full marks at 40 WPM). Strong needs 20 WPM and mastered needs 30 WPM, however high the score. {mastered} mastered · {weak} need reinforcement.
+          </p>
           <div className={styles.masteryList}>{TYPING_SKILLS.map((skill) => {
             const item = mastery.find((entry) => entry.skill_id === skill.id);
             const score = Math.round(item?.mastery_score || 0);
-            return <div className={styles.masteryRow} key={skill.id}><span>{skill.name}<small>{item ? `${item.practice_count} session${item.practice_count === 1 ? '' : 's'} · ${item.mastery_level}` : 'Not started'}</small></span><strong>{item ? `${score}%` : '—'}</strong><div className={styles.track}><i style={{ width: `${score}%` }} /></div></div>;
+            return <div className={styles.masteryRow} key={skill.id}><span>{skill.name}<small>{item ? `${item.practice_count} session${item.practice_count === 1 ? '' : 's'} · score ${score} of 100` : 'Not started'}</small></span><strong>{item ? masteryLevelName(item.mastery_level) : '—'}</strong><div className={styles.track}><i style={{ width: `${score}%` }} /></div></div>;
           })}</div>
         </section>
       </div>

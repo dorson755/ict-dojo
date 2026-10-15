@@ -4,6 +4,7 @@ import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { averageCatalogMastery, classifyLearner, countWeakSkills } from './learner-status';
 import { beltStatus } from './belt-status';
+import { summarizeMastery } from './mastery-summary';
 import { dailySeries, summarizeWpm, validSessions } from './progress';
 
 const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
@@ -33,6 +34,7 @@ export async function getTeacherReport(teacherId: string) {
     const weakSkills = countWeakSkills(mastery, CATALOG_SKILL_IDS);
     const sessionsThisWeek = recent.length;
     const { status, reason } = classifyLearner({ hasStarted, daysSincePractice, weakSkills });
+    const masterySummary = summarizeMastery(mastery, CATALOG_SKILL_IDS);
     const belt = beltStatus({
       level: student.platform_level ?? 1,
       examPassed: student.belt_exam_passed,
@@ -41,6 +43,7 @@ export async function getTeacherReport(teacherId: string) {
     return {
       ...student,
       belt,
+      masterySummary,
       hasStarted,
       averageMastery,
       weakSkills,

@@ -9,6 +9,7 @@ import { ExerciseRepository } from '@/lib/aws/repositories/exercise.repository';
 import { ProgressRepository } from '@/lib/aws/repositories/progress.repository';
 import BeltBadge, { getBeltName } from '@/components/ui/BeltBadge';
 import SkillTrackCard from '@/components/ui/SkillTrackCard';
+import { masteryLevelName } from '@/domains/shared/mastery-labels';
 import AIGreeting from './AIGreeting';
 import styles from './dashboard.module.css';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
@@ -189,7 +190,7 @@ export default async function DashboardPage() {
                 <h2 className={styles.sectionTitle}>Your skill path</h2>
                 <p className={styles.pathSubtitle}>Master each gate to unlock the next challenge.</p>
               </div>
-              <span className={styles.pathLegend}>10 skills · Typing</span>
+              <span className={styles.pathLegend}>{TYPING_SKILLS.length} skills · Typing</span>
             </div>
             <div className={styles.pathMap}>
               {TYPING_SKILLS.map((skill, index) => {
@@ -206,7 +207,7 @@ export default async function DashboardPage() {
                     </div>
                     <h3 className={styles.pathName}>{skill.name}</h3>
                     <p className={styles.pathStatus}>
-                      {status === 'mastered' ? 'Mastered' : status === 'training' ? `${mastery?.mastery_score ?? 0}% mastery` : status === 'ready' ? 'Ready to train' : 'Locked'}
+                      {status === 'mastered' ? 'Mastered' : status === 'training' ? `${masteryLevelName(mastery?.mastery_level ?? 'not_started')} · ${Math.round(mastery?.mastery_score ?? 0)}/100` : status === 'ready' ? 'Ready to train' : 'Locked'}
                     </p>
                     {index < TYPING_SKILLS.length - 1 && <span className={styles.pathConnector} />}
                   </div>
