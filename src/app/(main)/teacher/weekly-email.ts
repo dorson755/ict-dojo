@@ -1,5 +1,6 @@
 import { learnersToCsv, type CsvLearner } from './csv-export';
 import { STATUS_LABEL } from './learner-status';
+import { emailVisualsHtml, escapeHtml } from './email-visuals';
 
 export interface EmailLearner extends CsvLearner {
   hasStarted: boolean;
@@ -12,14 +13,6 @@ export interface WeeklyEmail {
   html: string;
   csv: string;
   csvFilename: string;
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
 }
 
 function name(student: EmailLearner): string {
@@ -77,12 +70,12 @@ export function buildWeeklyEmail(students: EmailLearner[], now: Date): WeeklyEma
 
   const html = `<!doctype html>
 <html lang="en"><body style="margin:0;padding:24px;background:#f5f6f8;font-family:Arial,Helvetica,sans-serif;color:#1c2024;">
-<div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e1e4e8;border-radius:8px;padding:24px;">
+<div style="max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e1e4e8;border-radius:8px;padding:24px;">
 <h1 style="margin:0 0 4px;font-size:20px;">ICT Dojo weekly report</h1>
 <p style="margin:0 0 16px;color:#5b636b;font-size:14px;">${escapeHtml(date)}</p>
 <p style="margin:0 0 4px;font-size:16px;font-weight:bold;">${escapeHtml(headline[0])}</p>
 <p style="margin:0 0 12px;font-size:14px;">${escapeHtml(headline[1])}</p>
-<p style="margin:0 0 8px;font-size:13px;color:#5b636b;">${escapeHtml(statusCounts.join('  ·  '))}</p>
+${emailVisualsHtml(students)}
 ${lists.map((list) => `<h2 style="margin:20px 0 6px;font-size:15px;">${escapeHtml(list.title)} (${list.items.length})</h2>
 <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.6;">${list.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`).join('\n')}
 <p style="margin:24px 0 0;font-size:13px;color:#5b636b;">The full learner table is attached as a CSV file.</p>

@@ -89,6 +89,17 @@ describe('buildWeeklyEmail', () => {
     expect(email.html).toContain('a &amp; b');
   });
 
+  it('includes the visual blocks in the HTML and keeps the text version plain', () => {
+    const email = buildWeeklyEmail([
+      learner({ display_name: 'Ada', sessionsThisWeek: 2, minutesThisWeek: 15, hasStarted: true, averageWpm: 20, averageAccuracy: 90 }),
+    ], SEND_TIME);
+    expect(email.html).toContain('Class health');
+    expect(email.html).toContain('Practice minutes this week');
+    expect(email.html).toContain('Belt ranks');
+    expect(email.text).not.toContain('<table');
+    expect(email.text).toContain('On track: 0');
+  });
+
   it('attaches the same CSV the export produces, named for the GMT-5 date', () => {
     const email = buildWeeklyEmail([learner({ display_name: 'Ada' })], SEND_TIME);
     expect(email.csvFilename).toBe('ict-dojo-weekly-2026-10-16.csv');
