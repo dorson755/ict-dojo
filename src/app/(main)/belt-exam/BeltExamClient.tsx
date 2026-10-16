@@ -5,6 +5,8 @@ import Link from 'next/link';
 import TypingEngine from '@/components/typing/TypingEngine';
 import { submitBeltExam } from './actions';
 import { TypingSessionInput, TypingSessionResult } from '@/domains/typing/types';
+import BeltPromotion from '@/components/motion/BeltPromotion';
+import CountUp from '@/components/motion/CountUp';
 import styles from './belt-exam.module.css';
 
 interface BeltExamClientProps {
@@ -21,6 +23,7 @@ interface ExamOutcome {
   wpm: number;
   accuracy: number;
   xpGained: number;
+  newBelt: number | null;
   newBeltName: string | null;
 }
 
@@ -44,6 +47,7 @@ export default function BeltExamClient({
         wpm: result.wpm,
         accuracy: result.accuracy,
         xpGained: 'xpGained' in response ? response.xpGained ?? 0 : 0,
+        newBelt: 'newBelt' in response ? response.newBelt ?? null : null,
         newBeltName: 'newBeltName' in response ? response.newBeltName ?? null : null,
       });
     } catch (err: unknown) {
@@ -85,10 +89,17 @@ export default function BeltExamClient({
         </header>
 
         <section className={styles.result}>
+          {outcome.passed && (
+            <BeltPromotion fromBelt={Math.max(0, belt - 1)} toBelt={outcome.newBelt ?? belt} />
+          )}
           <div className={styles.stats}>
-            <div><span>WPM</span><strong>{outcome.wpm}</strong><em>target {targets.wpm}+</em></div>
-            <div><span>Accuracy</span><strong>{outcome.accuracy}%</strong><em>target {targets.accuracy}%+</em></div>
-            <div><span>Result</span><strong>{outcome.passed ? 'PASS' : 'FAIL'}</strong><em>{outcome.passed ? `+${outcome.xpGained} XP` : 'try again'}</em></div>
+            <div><span>WPM</span><strong><CountUp value={outcome.wpm} /></strong><em>target {targets.wpm}+</em></div>
+            <div><span>Accuracy</span><strong><CountUp value={outcome.accuracy} suffix="%" /></strong><em>target {targets.accuracy}%+</em></div>
+            <div>
+              <span>Result</span>
+              <strong>{outcome.passed ? 'PASS' : 'FAIL'}</strong>
+              <em>{outcome.passed ? <CountUp value={outcome.xpGained} prefix="+" suffix=" XP" /> : 'try again'}</em>
+            </div>
           </div>
           {outcome.passed ? (
             <Link className={styles.cta} href="/dashboard">See your new belt →</Link>
