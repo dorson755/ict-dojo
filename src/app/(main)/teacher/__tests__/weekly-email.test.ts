@@ -100,6 +100,26 @@ describe('buildWeeklyEmail', () => {
     expect(email.text).toContain('On track: 0');
   });
 
+  it('compares this week with last week and names the most improved learner', () => {
+    const day = 86_400_000;
+    const at = (daysAgo: number, wpm: number) => ({
+      created_at: new Date(SEND_TIME.getTime() - daysAgo * day).toISOString(), wpm, accuracy: 90, durationMs: 60_000,
+    });
+    const email = buildWeeklyEmail([
+      learner({ display_name: 'Ada', hasStarted: true, sessionsThisWeek: 2, minutesThisWeek: 2, sessions: [at(1, 40), at(2, 40), at(8, 20), at(9, 20)] }),
+    ], SEND_TIME);
+    expect(email.html).toContain('This week vs last week');
+    expect(email.html).toContain('Most improved');
+    expect(email.text).toContain('Most improved (1)');
+    expect(email.text).toContain('- Ada: 20 to 40 WPM (+20)');
+  });
+
+  it('omits the comparison sections when learners carry no session history', () => {
+    const email = buildWeeklyEmail([learner({ display_name: 'Ada', hasStarted: true })], SEND_TIME);
+    expect(email.html).not.toContain('This week vs last week');
+    expect(email.html).not.toContain('Most improved');
+  });
+
   it('attaches the same CSV the export produces, named for the GMT-5 date', () => {
     const email = buildWeeklyEmail([learner({ display_name: 'Ada' })], SEND_TIME);
     expect(email.csvFilename).toBe('ict-dojo-weekly-2026-10-16.csv');

@@ -1,10 +1,15 @@
 import { learnersToCsv, type CsvLearner } from './csv-export';
 import { STATUS_LABEL } from './learner-status';
 import { emailVisualsHtml, escapeHtml } from './email-visuals';
+import { progressBlocks } from './email-progress';
+import type { SessionLike } from './progress';
 
 export interface EmailLearner extends CsvLearner {
   hasStarted: boolean;
   needsAttention: boolean;
+  /** Stored session history, newest first. Optional so callers without it still get the rest of the email. */
+  sessions?: SessionLike[];
+  historyTruncated?: boolean;
 }
 
 export interface WeeklyEmail {
@@ -34,6 +39,10 @@ export function buildWeeklyEmail(students: EmailLearner[], now: Date): WeeklyEma
   const examReady = students.filter((student) => student.belt.examReady);
   const quiet = started.filter((student) => student.sessionsThisWeek === 0 && !student.needsAttention);
   const date = weekLabel(now);
+  const progress = progressBlocks(
+    students.map((student) => ({ display_name: student.display_name, sessions: student.sessions ?? [], historyTruncated: student.historyTruncated })),
+    now.getTime(),
+  );
 
   const headline = [
     `${active.length} of ${students.length} learners practiced this week`,
@@ -63,6 +72,7 @@ export function buildWeeklyEmail(students: EmailLearner[], now: Date): WeeklyEma
     '',
     ...headline,
     statusCounts.join(' | '),
+    ...progress.text,
     ...lists.flatMap((list) => ['', `${list.title} (${list.items.length})`, ...list.items.map((item) => `- ${item}`)]),
     '',
     'The full learner table is attached as a CSV file.',
@@ -76,6 +86,7 @@ export function buildWeeklyEmail(students: EmailLearner[], now: Date): WeeklyEma
 <p style="margin:0 0 4px;font-size:16px;font-weight:bold;">${escapeHtml(headline[0])}</p>
 <p style="margin:0 0 12px;font-size:14px;">${escapeHtml(headline[1])}</p>
 ${emailVisualsHtml(students)}
+${progress.html}
 ${lists.map((list) => `<h2 style="margin:20px 0 6px;font-size:15px;">${escapeHtml(list.title)} (${list.items.length})</h2>
 <ul style="margin:0;padding-left:20px;font-size:14px;line-height:1.6;">${list.items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`).join('\n')}
 <p style="margin:24px 0 0;font-size:13px;color:#5b636b;">The full learner table is attached as a CSV file.</p>

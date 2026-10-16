@@ -7,6 +7,7 @@ import { beltStatus } from './belt-status';
 import { summarizeMastery } from './mastery-summary';
 import { isLearnerProfile } from './learner-filter';
 import { dailySeries, summarizeWpm, validSessions } from './progress';
+import { isHistoryTruncated } from './week-comparison';
 
 const CATALOG_SKILL_IDS: ReadonlySet<string> = new Set(TYPING_SKILLS.map((skill) => skill.id));
 const SESSION_HISTORY_LIMIT = 200;
@@ -58,6 +59,7 @@ export async function getTeacherReport(teacherId: string) {
       lastPractice,
       daysSincePractice,
       sessionCount: sessions.length,
+      historyTruncated: isHistoryTruncated(sessions, SESSION_HISTORY_LIMIT, now),
       sessions,
       wpmSeries,
       wpmSummary,
