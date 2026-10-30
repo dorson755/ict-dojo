@@ -1,4 +1,5 @@
 import { getGroqClient, GROQ_MODELS } from './client';
+import { assessPassage, sanitizePassage } from './passage-quality';
 
 export interface PassageGenerationInput {
   gradeLevel: number;
@@ -54,13 +55,17 @@ Output ONLY the raw passage text. No markdown, no explanations, no quotes around
         messages: [{ role: 'user', content: prompt }],
         model: GROQ_MODELS.FAST,
         temperature: 0.8,
-        max_tokens: 500,
+        // Headroom for reasoning tokens, which count toward the budget on gpt-oss models.
+        max_tokens: 800,
+        // Keep the model's private thinking brief so the budget goes to the passage.
+        reasoning_effort: 'low',
       });
 
-      const passage = completion.choices[0]?.message?.content?.trim() || '';
-      
-      if (!passage) {
-        throw new Error('Groq API returned empty passage.');
+      const raw = completion.choices[0]?.message?.content?.trim() || '';
+      const passage = sanitizePassage(raw);
+      const quality = assessPassage(passage, input.requiredCharacters, input.lengthMin, input.lengthMax);
+      if (!quality.ok) {
+        throw new Error(`Generated passage failed quality checks: ${quality.reasons.join(', ')}`);
       }
 
       return passage;
@@ -96,7 +101,9 @@ Provide ONLY the raw text. Do not use quotes. Keep it highly encouraging, acknow
         messages: [{ role: 'user', content: prompt }],
         model: GROQ_MODELS.FAST,
         temperature: 0.7,
-        max_tokens: 150,
+        max_tokens: 300,
+        // Without this the model spends its token budget reasoning and the greeting truncates.
+        reasoning_effort: 'low',
       });
       return completion.choices[0]?.message?.content?.trim() || `Welcome back, ${name}. Keep practicing to improve your skills.`;
     } catch (error) {

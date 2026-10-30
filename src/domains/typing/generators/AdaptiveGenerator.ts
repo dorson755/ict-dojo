@@ -15,6 +15,16 @@ const DICTIONARY = [
 
 import { ContentGenerator } from '@/lib/groq/content-generator';
 
+export interface GeneratedPassage {
+  passage: string;
+  /**
+   * 'ai' when Groq produced the text and it passed the quality gate;
+   * 'fallback' when the local generator did. The UI must not claim AI
+   * authorship for a fallback passage.
+   */
+  source: 'ai' | 'fallback';
+}
+
 export class AdaptiveGenerator {
   /**
    * Generates a passage tailored to a user's weak keys.
@@ -24,11 +34,11 @@ export class AdaptiveGenerator {
     studentName: string = '',
     gradeLevel: number = 6,
     length: number = 20
-  ): Promise<string> {
+  ): Promise<GeneratedPassage> {
     const keys = Object.keys(weakKeys);
-    
+
     if (keys.length === 0) {
-      return this.generateRandomPassage(length);
+      return { passage: this.generateRandomPassage(length), source: 'fallback' };
     }
 
     const sortedWeaknesses = Object.entries(weakKeys)
@@ -48,10 +58,10 @@ export class AdaptiveGenerator {
         vocabularyLevel: 'intermediate',
         format: 'story'
       });
-      return aiPassage;
+      return { passage: aiPassage, source: 'ai' };
     } catch (err) {
       console.warn('Groq API generation failed, falling back to local dictionary:', err);
-      return this.fallbackGeneration(topWeaknesses, length);
+      return { passage: this.fallbackGeneration(topWeaknesses, length), source: 'fallback' };
     }
   }
 
@@ -63,8 +73,7 @@ export class AdaptiveGenerator {
     studentName: string = '',
     gradeLevel: number = 6,
     length: number = 50
-  ): Promise<string> {
-    const keys = Object.keys(weakKeys);
+  ): Promise<GeneratedPassage> {
     const sortedWeaknesses = Object.entries(weakKeys)
       .sort((a, b) => b[1] - a[1])
       .map(entry => entry[0].toLowerCase());
@@ -82,10 +91,10 @@ export class AdaptiveGenerator {
         vocabularyLevel: 'advanced',
         format: 'belt-test'
       });
-      return aiPassage;
+      return { passage: aiPassage, source: 'ai' };
     } catch (err) {
       console.warn('Groq API belt test failed, falling back:', err);
-      return this.fallbackGeneration(topWeaknesses, length);
+      return { passage: this.fallbackGeneration(topWeaknesses, length), source: 'fallback' };
     }
   }
 
@@ -96,7 +105,7 @@ export class AdaptiveGenerator {
     weakKeys: Record<string, number>,
     gradeLevel: number = 6,
     length: number = 20
-  ): Promise<string> {
+  ): Promise<GeneratedPassage> {
     const sortedWeaknesses = Object.entries(weakKeys)
       .sort((a, b) => b[1] - a[1])
       .map(entry => entry[0].toLowerCase());
@@ -108,38 +117,50 @@ export class AdaptiveGenerator {
     const targetChars = codeSymbols.length > 0 ? codeSymbols.slice(0, 5) : ['{', '}', '(', ')', '='];
 
     try {
-      return await ContentGenerator.generatePassage({
-        gradeLevel,
-        targetSkills: ['Coding Syntax Mastery', 'Symbol Key Precision'],
-        requiredCharacters: targetChars,
-        lengthMin: length * 5,
-        lengthMax: length * 7,
-        vocabularyLevel: 'technical',
-        format: 'code-snippet',
-      });
+      return {
+        passage: await ContentGenerator.generatePassage({
+          gradeLevel,
+          targetSkills: ['Coding Syntax Mastery', 'Symbol Key Precision'],
+          requiredCharacters: targetChars,
+          lengthMin: length * 5,
+          lengthMax: length * 7,
+          vocabularyLevel: 'technical',
+          format: 'code-snippet',
+        }),
+        source: 'ai',
+      };
     } catch (err) {
       console.warn('Groq coding drill failed, falling back:', err);
-      return `function greet(name) {\n  const msg = "Hello, " + name + "!";\n  return msg;\n}\n\nconst result = greet("World");\nconsole.log(result);`;
+      return {
+        passage: `function greet(name) {\n  const msg = "Hello, " + name + "!";\n  return msg;\n}\n\nconst result = greet("World");\nconsole.log(result);`,
+        source: 'fallback',
+      };
     }
   }
 
   /**
    * Generates a data-entry drill focused on numbers and numpad symbols.
    */
-  static async generateNumpadDrill(length: number = 20): Promise<string> {
+  static async generateNumpadDrill(length: number = 20): Promise<GeneratedPassage> {
     try {
-      return await ContentGenerator.generatePassage({
-        gradeLevel: 1,
-        targetSkills: ['10-Key Numpad Speed', 'Numeric Data Entry'],
-        requiredCharacters: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ','],
-        lengthMin: length * 4,
-        lengthMax: length * 6,
-        vocabularyLevel: 'basic',
-        format: 'data-entry',
-      });
+      return {
+        passage: await ContentGenerator.generatePassage({
+          gradeLevel: 1,
+          targetSkills: ['10-Key Numpad Speed', 'Numeric Data Entry'],
+          requiredCharacters: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ','],
+          lengthMin: length * 4,
+          lengthMax: length * 6,
+          vocabularyLevel: 'basic',
+          format: 'data-entry',
+        }),
+        source: 'ai',
+      };
     } catch (err) {
       console.warn('Groq numpad drill failed, falling back:', err);
-      return `192.168.1.1  192.168.0.254  10.0.0.1\n2,450.75  13,200.00  8,999.99\n(800) 555-1234  (212) 867-5309\n47 units @ $12.50 = $587.50\n98.6  72.4  101.2  36.5`;
+      return {
+        passage: `192.168.1.1  192.168.0.254  10.0.0.1\n2,450.75  13,200.00  8,999.99\n(800) 555-1234  (212) 867-5309\n47 units @ $12.50 = $587.50\n98.6  72.4  101.2  36.5`,
+        source: 'fallback',
+      };
     }
   }
 
@@ -150,22 +171,28 @@ export class AdaptiveGenerator {
     studentName: string = '',
     gradeLevel: number = 6,
     length: number = 20
-  ): Promise<string> {
+  ): Promise<GeneratedPassage> {
     try {
-      return await ContentGenerator.generatePassage({
-        gradeLevel,
-        studentName,
-        targetSkills: ['Advanced Punctuation', 'Dialogue Writing'],
-        requiredCharacters: ['"', "'", ';', ':', ',', '-', '!', '?'],
-        lengthMin: length * 5,
-        lengthMax: length * 7,
-        vocabularyLevel: 'intermediate',
-        format: 'story',
-        theme: 'Use heavy dialogue and complex sentence structures with semicolons, colons, em-dashes, and quoted speech.',
-      });
+      return {
+        passage: await ContentGenerator.generatePassage({
+          gradeLevel,
+          studentName,
+          targetSkills: ['Advanced Punctuation', 'Dialogue Writing'],
+          requiredCharacters: ['"', "'", ';', ':', ',', '-', '!', '?'],
+          lengthMin: length * 5,
+          lengthMax: length * 7,
+          vocabularyLevel: 'intermediate',
+          format: 'story',
+          theme: 'Use heavy dialogue and complex sentence structures with semicolons, colons, em-dashes, and quoted speech.',
+        }),
+        source: 'ai',
+      };
     } catch (err) {
       console.warn('Groq punctuation drill failed, falling back:', err);
-      return `"Wait," she said; "you can't leave yet!"\nHe paused — hand on the doorknob — and turned around slowly.\n"Why not?" he asked. "I've done everything you asked."\nShe folded her arms: "Not quite everything."`;
+      return {
+        passage: `"Wait," she said; "you can't leave yet!"\nHe paused — hand on the doorknob — and turned around slowly.\n"Why not?" he asked. "I've done everything you asked."\nShe folded her arms: "Not quite everything."`,
+        source: 'fallback',
+      };
     }
   }
 
@@ -194,4 +221,3 @@ export class AdaptiveGenerator {
     return selectedWords.join(' ');
   }
 }
-

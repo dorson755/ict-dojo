@@ -18,7 +18,11 @@ export function getGroqClient(): Groq {
 
 export const GROQ_MODELS = {
   /** Fast — for exercise/passage generation */
-  FAST: 'llama-3.3-70b-versatile',
+  FAST: 'openai/gpt-oss-20b',
   /** High quality — for explanations and structured output */
-  QUALITY: 'llama-3.1-70b-versatile',
+  QUALITY: 'openai/gpt-oss-120b',
 } as const;
+
+// The previous llama-3.x models were decommissioned by Groq; every generation
+// silently fell back to the local dictionary until this was updated. Verify a
+// model still exists here before swapping it: `groq.models.list()`.
