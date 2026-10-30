@@ -11,6 +11,10 @@ interface TypingEngineProps {
   skillIds: string[];
   onComplete: (data: TypingSessionInput) => void;
   mode?: TypingMode;
+  /** Live progress per keystroke, for UIs that race or mirror the typing. Optional. */
+  onProgress?: (charsTyped: number, elapsedMs: number) => void;
+  /** Games can require each character to be correct before advancing. */
+  requireCorrect?: boolean;
 }
 
 export default function TypingEngine({
@@ -20,6 +24,8 @@ export default function TypingEngine({
   skillIds,
   onComplete,
   mode = 'accuracy',
+  onProgress,
+  requireCorrect = false,
 }: TypingEngineProps) {
   // --------------------------------------------------------
   // State
@@ -28,6 +34,7 @@ export default function TypingEngine({
   const [keystrokes, setKeystrokes] = useState<KeystrokeEvent[]>([]);
   const [isFocused, setIsFocused] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const [liveWpm, setLiveWpm] = useState(0);
   const [liveAccuracy, setLiveAccuracy] = useState(100);
 
@@ -62,8 +69,9 @@ export default function TypingEngine({
 
       const words = correctCount / 5;
       const wpm = durationMins > 0 ? Math.max(0, Math.round(words / durationMins)) : 0;
-      const accuracy = chars.length > 0
-        ? Math.round((correctCount / chars.length) * 100)
+      const attempts = requireCorrect ? keystrokesRef.current.length : chars.length;
+      const accuracy = attempts > 0
+        ? Math.round((correctCount / attempts) * 100)
         : 100;
 
       setLiveWpm(wpm);
@@ -71,22 +79,25 @@ export default function TypingEngine({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isFinished, passage]);
+  }, [isFinished, passage, hasStarted, requireCorrect]);
 
   // --------------------------------------------------------
   // Input Handling
   // --------------------------------------------------------
   const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (isFinishedRef.current) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
 
     // Ignore modifier keys
     if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
+    if (e.key !== 'Backspace' && e.key.length !== 1) return;
 
     const now = Date.now();
 
     // Start timer on first non-backspace keystroke — use ref so it's immediate
     if (!startedAtRef.current && e.key !== 'Backspace') {
       startedAtRef.current = now;
+      setHasStarted(true);
     }
 
     if (e.key === 'Backspace') {
@@ -109,6 +120,9 @@ export default function TypingEngine({
         ];
         keystrokesRef.current = newKs;
         setKeystrokes(newKs);
+        if (onProgress && startedAtRef.current) {
+          onProgress(next.length, now - startedAtRef.current);
+        }
       }
       return;
     }
@@ -121,7 +135,9 @@ export default function TypingEngine({
     const actual = e.key;
     const isCorrect = expected === actual;
 
-    const nextChars = [...typedCharsRef.current, actual];
+    const nextChars = requireCorrect && !isCorrect
+      ? typedCharsRef.current
+      : [...typedCharsRef.current, actual];
     typedCharsRef.current = nextChars;
     setTypedChars(nextChars);
 
@@ -132,8 +148,12 @@ export default function TypingEngine({
     keystrokesRef.current = newKs;
     setKeystrokes(newKs);
 
+    if (onProgress && startedAtRef.current) {
+      onProgress(nextChars.length, now - startedAtRef.current);
+    }
+
     // Check completion — use ref values so everything is synchronous
-    if (currentIndex + 1 === passage.length) {
+    if (nextChars.length === passage.length) {
       isFinishedRef.current = true;
       setIsFinished(true);
 
@@ -149,7 +169,7 @@ export default function TypingEngine({
           mode,
       });
     }
-  }, [passage, studentId, exerciseId, skillIds, onComplete, mode]);
+  }, [passage, studentId, exerciseId, skillIds, onComplete, mode, onProgress, requireCorrect]);
 
   // --------------------------------------------------------
   // Render Helpers

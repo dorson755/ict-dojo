@@ -1,0 +1,106 @@
+/* Shared styles for the games hub and game page headers. */
+
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-10) var(--space-6);
+}
+
+.header {
+  margin-bottom: var(--space-8);
+}
+
+.kicker {
+  color: var(--ink-3);
+  font-size: var(--text-sm);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  letter-spacing: -0.05em;
+  margin: var(--space-2) 0;
+}
+
+.subtitle {
+  color: var(--ink-2);
+  max-width: 58ch;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-5);
+}
+
+.card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.card h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+  color: var(--ink);
+}
+
+.card p {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.meta {
+  display: inline-block;
+  font-size: var(--text-xs);
+  color: var(--accent-ink);
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-light);
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+}
+
+.chips {
+  display: flex;
+  gap: 4px;
+  margin: var(--space-2) 0 var(--space-4);
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 1px 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: var(--space-6) var(--space-4);
+  }
+}

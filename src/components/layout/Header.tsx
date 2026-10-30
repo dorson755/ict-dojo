@@ -25,6 +25,7 @@ export default async function Header() {
       <nav className={styles.nav} aria-label="Main">
         {user.role === 'student' && <NavLink href="/dashboard">Dashboard</NavLink>}
         {user.role === 'student' && <NavLink href="/practice">Practice</NavLink>}
+        {user.role === 'student' && <NavLink href="/games">Games</NavLink>}
         {user.role === 'student' && <NavLink href="/chunks">Chunks</NavLink>}
         {user.role === 'student' && <NavLink href="/profile">Profile</NavLink>}
         {user.role === 'student' && (
