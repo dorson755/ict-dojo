@@ -26,6 +26,11 @@ export default async function GamesPage() {
       </header>
 
       <div className={styles.grid}>
+        <Link href="/games/dojo-quest" className={styles.card}>
+          <h2>Dojo Quest</h2>
+          <p>Type to defend a pixel-art world. Return to four settings with harder words at each belt, then face the guardian&apos;s scroll.</p>
+          <span className={styles.meta}>Eight belt-locked stages · AI-targeted words</span>
+        </Link>
         <Link href="/games/falling-words" className={styles.card}>
           <h2>Falling Words</h2>
           {weakChars.length > 0 ? (
