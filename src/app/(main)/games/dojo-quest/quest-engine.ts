@@ -31,6 +31,14 @@ export interface QuestStatus {
   words: string[];
   target: string;
   scroll: string;
+  paused?: boolean;
+  duel?: {
+    playerHp: number;
+    rivalHp: number;
+    combo: number;
+    gems: number;
+    remaining: number;
+  };
 }
 
 /** Imperative canvas loop. React owns the controls, loading, and persistence. */
@@ -493,6 +501,7 @@ export function createQuestGame(
         words: enemies.map((enemy) => enemy.word),
         target: locked ? locked.word.slice(locked.typed) : '',
         scroll: phase === 'boss' ? content.bossLine.slice(bossTyped) : '',
+        paused: document.activeElement !== canvas || document.hidden,
       });
     }
     if (!disposed) raf = requestAnimationFrame(frame);

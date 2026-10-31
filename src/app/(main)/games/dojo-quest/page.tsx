@@ -28,6 +28,15 @@ export default async function QuestPage() {
         </p>
         <BeltBadge belt={access.belt} size="md" />
       </header>
+      <Link href="/games/dojo-quest/duel" className={styles.sparring}>
+        <div>
+          <h2>Try courtyard sparring</h2>
+          <p>
+            A new one-on-one typing duel. Accurate words build combos and charge a special strike.
+          </p>
+        </div>
+        <span>Play the prototype</span>
+      </Link>
       <div className={styles.stages}>
         {QUEST_STAGES.map((stage) => {
           const unlocked = canEnterStage(access.belt, stage.belt);

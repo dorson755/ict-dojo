@@ -99,6 +99,47 @@ a.stage:hover {
   font-size: 14px;
   margin: 0;
 }
+.audioControls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.volume {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.volume input {
+  width: 112px;
+  accent-color: var(--accent);
+}
+.sparring {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  margin-bottom: 24px;
+  background: var(--accent);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+}
+.sparring h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+.sparring p {
+  margin: 0;
+  line-height: 1.5;
+  max-width: 560px;
+}
+.sparring > span {
+  flex-shrink: 0;
+  font-weight: 600;
+}
 .canvas {
   display: block;
   width: 100%;
@@ -138,6 +179,12 @@ a.stage:hover {
   margin-top: 20px;
 }
 @media (max-width: 600px) {
+  .sparring {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+  }
   .page {
     padding: 16px 12px 32px;
   }

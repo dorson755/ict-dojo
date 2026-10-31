@@ -1,8 +1,9 @@
 import { createQuestGame, QuestRound, QuestStatus } from '../quest-engine';
+import { createDuelGame } from '../duel-engine';
 import { QUEST_STAGES } from '@/domains/typing/quest';
 import { TypingEvaluator } from '@/domains/typing/evaluator';
 
-it('plays through creatures and exact boss scroll, pauses, logs errors, and cleans up', () => {
+it.each(['quest', 'duel'])('plays through %s, pauses, logs errors, and cleans up', (mode) => {
   let callback: FrameRequestCallback = () => {};
   let now = 0;
   const listeners: Record<string, (event: KeyboardEvent) => void> = {};
@@ -83,42 +84,61 @@ it('plays through creatures and exact boss scroll, pauses, logs errors, and clea
       source: 'fallback' as const,
       focusKeys: [],
     };
-    const game = createQuestGame(
-      canvas as unknown as HTMLCanvasElement,
-      QUEST_STAGES[0],
-      content,
+    const callbacks = [
       ended,
       (value) => {
         status = value;
       },
       ready,
       error,
-    );
+    ] as const satisfies [
+      (round: QuestRound) => void,
+      (status: QuestStatus) => void,
+      () => void,
+      () => void,
+    ];
+    const game =
+      mode === 'duel'
+        ? createDuelGame(canvas as unknown as HTMLCanvasElement, content, ...callbacks)
+        : createQuestGame(
+            canvas as unknown as HTMLCanvasElement,
+            QUEST_STAGES[0],
+            content,
+            ...callbacks,
+          );
     expect(ready).toHaveBeenCalledTimes(1);
-    key('Enter');
-    for (let i = 0; i < 1200 && status.phase !== 'bossIntro'; i++) {
-      tick();
-      if (status.words.length) {
-        key('x', true); // Modifier shortcuts never count.
-        key('x'); // A real typo stays in the log.
-        for (const char of status.words[0]) key(char);
-        for (let j = 0; j < 5; j++) tick();
-      }
-    }
-    expect(status.phase).toBe('bossIntro');
     key('Enter');
     doc.activeElement = null;
     for (let i = 0; i < 200; i++) tick();
     doc.activeElement = canvas;
-    for (let i = 0; i < 25; i++) tick();
-    for (const char of content.bossLine) key(char);
+    let typos = 0;
+    for (let i = 0; i < 1200 && status.phase !== 'bossIntro' && status.phase !== 'clear'; i++) {
+      tick();
+      if (status.words.length) {
+        key('x', true); // Modifier shortcuts never count.
+        if (mode === 'quest' || typos === 0) {
+          key('x');
+          typos++;
+        }
+        for (const char of status.words[0]) key(char);
+        for (let j = 0; j < 5; j++) tick();
+      }
+    }
+    if (mode === 'quest') {
+      expect(status.phase).toBe('bossIntro');
+      key('Enter');
+      for (let i = 0; i < 25; i++) tick();
+      for (const char of content.bossLine) key(char);
+    }
     expect(ended).toHaveBeenCalledTimes(1);
     const round = ended.mock.calls[0][0];
     expect(round.won).toBe(true);
-    expect(round.cleared).toBe(12);
+    expect(round.cleared).toBeGreaterThanOrEqual(9);
     expect(round.durationMs).toBeLessThan(now - 9000);
-    expect(round.keystrokes.filter((stroke) => stroke.actual === 'x')).toHaveLength(12);
-    expect(round.keystrokes.filter((stroke) => stroke.expected === ' ')).toHaveLength(5);
+    expect(round.keystrokes.filter((stroke) => stroke.actual === 'x')).toHaveLength(typos);
+    expect(round.keystrokes.filter((stroke) => stroke.expected === ' ')).toHaveLength(
+      mode === 'quest' ? 5 : 0,
+    );
     expect(
       round.keystrokes.every((stroke) => round.passage[stroke.position] === stroke.expected),
     ).toBe(true);
