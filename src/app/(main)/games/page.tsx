@@ -31,6 +31,11 @@ export default async function GamesPage() {
           <p>Type to defend a pixel-art world. Return to four settings with harder words at each belt, then face the guardian&apos;s scroll.</p>
           <span className={styles.meta}>Eight belt-locked stages · AI-targeted words</span>
         </Link>
+        <Link href="/games/dojo-defense" className={styles.card}>
+          <h2>Dojo Defense</h2>
+          <p>Two cats hold the street against five waves and a boss. Clean words earn team attacks and shields.</p>
+          <span className={styles.meta}>Words matched to your belt · AI-targeted words</span>
+        </Link>
         <Link href="/games/falling-words" className={styles.card}>
           <h2>Falling Words</h2>
           {weakChars.length > 0 ? (

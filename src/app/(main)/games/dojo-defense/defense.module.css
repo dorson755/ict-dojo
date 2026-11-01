@@ -1,0 +1,141 @@
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+}
+.page a {
+  color: var(--accent, #1f5f66);
+}
+.header {
+  margin: 28px 0 18px;
+}
+.header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+  margin: 0 0 12px;
+}
+.header p {
+  color: var(--ink-2);
+  font-size: 18px;
+  line-height: 1.5;
+}
+.briefing {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 28px;
+}
+.briefing > div {
+  padding: 30px;
+}
+.briefing h2,
+.summary h2 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  line-height: 1.25;
+  margin: 0 0 18px;
+}
+.briefing p,
+.summary p {
+  line-height: 1.7;
+  max-width: 60ch;
+}
+.mission {
+  background: #e6eff0;
+  color: #193c43;
+}
+.mission h3 {
+  font-size: 20px;
+  margin-top: 0;
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0 16px;
+  font-size: 14px;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.controls label {
+  display: grid;
+  font-size: 12px;
+  gap: 6px;
+}
+.controls input {
+  width: 110px;
+  accent-color: #1f5f66;
+}
+.canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 3px solid #193c43;
+  border-radius: 10px;
+  background: #193c43;
+}
+.canvas:focus-visible {
+  outline: 3px solid #1f5f66;
+  outline-offset: 5px;
+}
+.help,
+.credit {
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.help {
+  margin: 16px 0;
+  max-width: 85ch;
+}
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 20px;
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+.status p {
+  margin: 4px 0;
+}
+.announcement {
+  min-height: 24px;
+  color: var(--accent);
+  font-size: 14px;
+}
+.summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+  margin: 20px 0;
+}
+.credit {
+  margin-top: 28px;
+}
+.credit p {
+  margin: 4px 0;
+}
+@media (max-width: 650px) {
+  .page {
+    padding: 20px 12px 32px;
+  }
+  .briefing {
+    grid-template-columns: 1fr;
+  }
+  .briefing > div {
+    padding: 24px;
+  }
+}
