@@ -16,10 +16,12 @@ describe('sanitizePassage', () => {
   });
 
   it('drops a preamble line when real text follows', () => {
-    expect(sanitizePassage('Here is your passage:\nthe quick brown fox jumps over the lazy dog today.'))
-      .toBe('the quick brown fox jumps over the lazy dog today.');
-    expect(sanitizePassage('Sure! Here you go:\nthe quick brown fox jumps over the lazy dog today.'))
-      .toBe('the quick brown fox jumps over the lazy dog today.');
+    expect(
+      sanitizePassage('Here is your passage:\nthe quick brown fox jumps over the lazy dog today.'),
+    ).toBe('the quick brown fox jumps over the lazy dog today.');
+    expect(
+      sanitizePassage('Sure! Here you go:\nthe quick brown fox jumps over the lazy dog today.'),
+    ).toBe('the quick brown fox jumps over the lazy dog today.');
   });
 
   it('keeps a short "here is" sentence that is the whole answer rather than a preamble', () => {
@@ -32,19 +34,22 @@ describe('assessPassage', () => {
   const MAX = 140;
 
   it('accepts a passage of the right length that uses the target characters', () => {
-    const passage = 'the fox jumps over the lazy dog again and again, because the odd task keeps it going strong';
+    const passage =
+      'the fox jumps over the lazy dog again and again, because the odd task keeps it going strong';
     const quality = assessPassage(passage, ['o', 't', 's'], MIN, MAX);
     expect(quality.ok).toBe(true);
     expect(quality.coverage).toBe(1);
   });
 
   it('accepts when most targets appear, since one odd symbol can slip', () => {
-    const passage = 'the fox jumps over the lazy dog again and again, because the odd task keeps it going strong';
+    const passage =
+      'the fox jumps over the lazy dog again and again, because the odd task keeps it going strong';
     expect(assessPassage(passage, ['o', 't', 's', 'q', 'z'], MIN, MAX).ok).toBe(true);
   });
 
   it('rejects a passage missing most of the targets', () => {
-    const passage = 'zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz';
+    const passage =
+      'zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz zzz';
     const quality = assessPassage(passage, ['o', 't', 's'], MIN, MAX);
     expect(quality.ok).toBe(false);
     expect(quality.reasons).toContain('missing-targets');
@@ -59,13 +64,21 @@ describe('assessPassage', () => {
   });
 
   it('ignores whitespace-only targets when scoring coverage', () => {
-    const passage = 'the fox jumps over the lazy dog again and again, because the odd task keeps it going strong';
+    const passage =
+      'the fox jumps over the lazy dog again and again, because the odd task keeps it going strong';
     const quality = assessPassage(passage, [' ', '  '], MIN, MAX);
     expect(quality.coverage).toBe(1);
     expect(quality.ok).toBe(true);
   });
 
   it('only checks length when no targets were requested', () => {
-    expect(assessPassage('the fox jumps over the lazy dog again and again, because the odd task keeps it going', [], MIN, MAX).ok).toBe(true);
+    expect(
+      assessPassage(
+        'the fox jumps over the lazy dog again and again, because the odd task keeps it going',
+        [],
+        MIN,
+        MAX,
+      ).ok,
+    ).toBe(true);
   });
 });

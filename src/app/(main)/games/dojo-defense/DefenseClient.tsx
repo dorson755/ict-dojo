@@ -167,7 +167,7 @@ export default function DefenseClient({
     setStatus(null);
     setReady(false);
     try {
-      setContent(await prepareQuestStage(stage.belt));
+      setContent(await prepareQuestStage(stage.belt, true));
     } catch {
       setError('Words could not load. Check your connection and try again.');
     } finally {

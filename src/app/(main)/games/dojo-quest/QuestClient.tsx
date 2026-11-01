@@ -177,7 +177,7 @@ export default function QuestClient({
     setReady(false);
     setContent(null);
     try {
-      setContent(await prepareQuestStage(stage.belt));
+      setContent(await prepareQuestStage(stage.belt, mode === 'duel'));
     } catch {
       setError('The stage could not open. Check your connection, then try again.');
     } finally {

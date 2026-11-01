@@ -36,5 +36,15 @@ it('uses the authenticated learner weakness profile for unlocked stages', async 
   (generateQuestContent as jest.Mock).mockResolvedValue({ source: 'ai' });
   await expect(prepareQuestStage(1)).resolves.toEqual({ source: 'ai' });
   expect(UserRepository.getTypingDNA).toHaveBeenCalledWith('student');
-  expect(generateQuestContent).toHaveBeenCalledWith(expect.objectContaining({ belt: 1 }), { a: 3 });
+  expect(generateQuestContent).toHaveBeenCalledWith(
+    expect.objectContaining({ belt: 1 }),
+    { a: 3 },
+    { scroll: true },
+  );
+  await prepareQuestStage(1, true);
+  expect(generateQuestContent).toHaveBeenLastCalledWith(
+    expect.objectContaining({ belt: 1 }),
+    { a: 3 },
+    { scroll: false },
+  );
 });

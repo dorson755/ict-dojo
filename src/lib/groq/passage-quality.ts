@@ -23,7 +23,10 @@ export function sanitizePassage(raw: string): string {
   if (fenced) text = fenced[1].trim();
 
   // Surrounding quotes
-  if (text.length >= 2 && ((text.startsWith('"') && text.endsWith('"')) || (text.startsWith("'") && text.endsWith("'")))) {
+  if (
+    text.length >= 2 &&
+    ((text.startsWith('"') && text.endsWith('"')) || (text.startsWith("'") && text.endsWith("'")))
+  ) {
     text = text.slice(1, -1).trim();
   }
 
@@ -45,7 +48,7 @@ export function assessPassage(
   passage: string,
   requiredCharacters: string[],
   lengthMin: number,
-  lengthMax: number
+  lengthMax: number,
 ): PassageQuality {
   const reasons: string[] = [];
   const text = passage.trim();

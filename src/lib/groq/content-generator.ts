@@ -25,12 +25,15 @@ export class ContentGenerator {
     } else if (input.format === 'data-entry') {
       formatContext = `Write a block of raw data (like a spreadsheet row, IP addresses, or financial ledger entry) focused heavily on numbers and symbols. Do NOT use markdown.`;
     } else {
-      nameContext = input.studentName ? `The student's name is ${input.studentName}. Incorporate their name as the main character.` : '';
-      formatContext = input.format === 'belt-test'
-        ? `This is a highly intense 'Belt Test' to evaluate their mastery. Make it sound epic, challenging, and slightly dramatic.`
-        : input.format === 'story'
-          ? `Write an engaging, short narrative story.`
-          : `Write an educational paragraph.`;
+      nameContext = input.studentName
+        ? `The student's name is ${input.studentName}. Incorporate their name as the main character.`
+        : '';
+      formatContext =
+        input.format === 'belt-test'
+          ? `This is a highly intense 'Belt Test' to evaluate their mastery. Make it sound epic, challenging, and slightly dramatic.`
+          : input.format === 'story'
+            ? `Write an engaging, short narrative story.`
+            : `Write an educational paragraph.`;
     }
 
     const prompt = `
@@ -63,7 +66,12 @@ Output ONLY the raw passage text. No markdown, no explanations, no quotes around
 
       const raw = completion.choices[0]?.message?.content?.trim() || '';
       const passage = sanitizePassage(raw);
-      const quality = assessPassage(passage, input.requiredCharacters, input.lengthMin, input.lengthMax);
+      const quality = assessPassage(
+        passage,
+        input.requiredCharacters,
+        input.lengthMin,
+        input.lengthMax,
+      );
       if (!quality.ok) {
         throw new Error(`Generated passage failed quality checks: ${quality.reasons.join(', ')}`);
       }
@@ -75,14 +83,20 @@ Output ONLY the raw passage text. No markdown, no explanations, no quotes around
     }
   }
 
-  public static async generateDashboardGreeting(name: string, weakKeys: string[], streak: number): Promise<string> {
-    const weakKeysText = weakKeys.length > 0 
-      ? `They are currently struggling with the following keys: ${weakKeys.join(', ')}.`
-      : `They have no specific weak keys right now.`;
-      
-    const streakText = streak > 0
-      ? `They have a ${streak} day practice streak.`
-      : `They don't have an active streak.`;
+  public static async generateDashboardGreeting(
+    name: string,
+    weakKeys: string[],
+    streak: number,
+  ): Promise<string> {
+    const weakKeysText =
+      weakKeys.length > 0
+        ? `They are currently struggling with the following keys: ${weakKeys.join(', ')}.`
+        : `They have no specific weak keys right now.`;
+
+    const streakText =
+      streak > 0
+        ? `They have a ${streak} day practice streak.`
+        : `They don't have an active streak.`;
 
     const prompt = `
 You are an encouraging martial arts Sensei inside a typing application called "ICT Dojo".
@@ -105,11 +119,13 @@ Provide ONLY the raw text. Do not use quotes. Keep it highly encouraging, acknow
         // Without this the model spends its token budget reasoning and the greeting truncates.
         reasoning_effort: 'low',
       });
-      return completion.choices[0]?.message?.content?.trim() || `Welcome back, ${name}. Keep practicing to improve your skills.`;
+      return (
+        completion.choices[0]?.message?.content?.trim() ||
+        `Welcome back, ${name}. Keep practicing to improve your skills.`
+      );
     } catch (error) {
       console.error('Failed to generate greeting:', error);
       return `Welcome back, ${name}. Let's get to work.`;
     }
   }
 }
-
