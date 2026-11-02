@@ -73,7 +73,49 @@ export const SUBJECT_GROUPS = [
 export const EXAM_SUBJECTS = SUBJECT_GROUPS.flatMap((group) =>
   group.subjects.map(([id, name]) => ({ id, name, group: group.name })),
 );
-export type ExamSubject = (typeof EXAM_SUBJECTS)[number]['id'];
+export const BJC_SUBJECT_GROUPS = [
+  {
+    name: 'Core Academic Subjects',
+    subjects: [
+      ['english-language', 'English Language'],
+      ['literature', 'Literature'],
+      ['mathematics', 'Mathematics'],
+      ['social-studies', 'Social Studies'],
+      ['religious-studies', 'Religious Studies'],
+    ],
+  },
+  {
+    name: 'Sciences',
+    subjects: [
+      ['general-science', 'General Science'],
+      ['health-science', 'Health Science'],
+    ],
+  },
+  {
+    name: 'Creative, Technical & Vocational Arts',
+    subjects: [
+      ['art-design', 'Art & Design'],
+      ['craft', 'Craft'],
+      ['family-consumer-science', 'Family & Consumer Science'],
+      ['technical-drawing', 'Technical Drawing'],
+    ],
+  },
+] as const;
+export const EXAM_QUALIFICATIONS = {
+  bgcse: { name: 'Bahamas BGCSE', label: 'BGCSE', groups: SUBJECT_GROUPS },
+  bjc: { name: 'Bahamas BJC', label: 'BJC', groups: BJC_SUBJECT_GROUPS },
+} as const;
+export type ExamQualification = keyof typeof EXAM_QUALIFICATIONS;
+const BJC_SUBJECTS = BJC_SUBJECT_GROUPS.flatMap((group) =>
+  group.subjects.map(([id, name]) => ({ id, name, group: group.name })),
+);
+export type ExamSubject = (typeof EXAM_SUBJECTS | typeof BJC_SUBJECTS)[number]['id'];
+export function isExamQualification(value: unknown): value is ExamQualification {
+  return typeof value === 'string' && Object.hasOwn(EXAM_QUALIFICATIONS, value);
+}
+export function subjectsFor(qualification: ExamQualification) {
+  return qualification === 'bjc' ? BJC_SUBJECTS : EXAM_SUBJECTS;
+}
 
 export function examYears(currentYear = new Date().getUTCFullYear()): number[] {
   return Array.from(
@@ -81,8 +123,13 @@ export function examYears(currentYear = new Date().getUTCFullYear()): number[] {
     (_, i) => currentYear - i,
   );
 }
-export function isExamSubject(value: unknown): value is ExamSubject {
-  return typeof value === 'string' && EXAM_SUBJECTS.some((subject) => subject.id === value);
+export function isExamSubject(
+  value: unknown,
+  qualification: ExamQualification = 'bgcse',
+): value is ExamSubject {
+  return (
+    typeof value === 'string' && subjectsFor(qualification).some((subject) => subject.id === value)
+  );
 }
 export function validExamYear(value: unknown): value is number {
   return (
@@ -93,7 +140,7 @@ export function validExamYear(value: unknown): value is number {
   );
 }
 export function subjectName(id: string): string {
-  return EXAM_SUBJECTS.find((subject) => subject.id === id)?.name ?? id;
+  return [...EXAM_SUBJECTS, ...BJC_SUBJECTS].find((subject) => subject.id === id)?.name ?? id;
 }
 
 export interface AcceptedPaper {
@@ -102,6 +149,7 @@ export interface AcceptedPaper {
   kind: PaperKind;
 }
 export interface ExamCoverage {
+  qualification: ExamQualification;
   subject: ExamSubject;
   year: number;
   version: number;
@@ -123,6 +171,7 @@ export const COVERAGE_LABELS: Record<CoverageStatus, string> = {
 };
 
 export interface PaperMetadata {
+  qualification: ExamQualification;
   subject: ExamSubject;
   year: number;
   component: string;
@@ -135,7 +184,9 @@ export function parsePaperMetadata(raw: unknown): PaperMetadata {
   if (!raw || typeof raw !== 'object')
     throw new ExamError('Choose a subject, year, and paper component.');
   const value = raw as Record<string, unknown>;
-  if (!isExamSubject(value.subject) || !validExamYear(value.year))
+  const qualification = value.qualification ?? 'bgcse';
+  if (!isExamQualification(qualification)) throw new ExamError('Choose BJC or BGCSE.');
+  if (!isExamSubject(value.subject, qualification) || !validExamYear(value.year))
     throw new ExamError('Choose a listed subject and a year from 1999 to the current year.');
   if (!PAPER_KINDS.includes(value.kind as PaperKind))
     throw new ExamError('Choose a document type.');
@@ -169,6 +220,7 @@ export function parsePaperMetadata(raw: unknown): PaperMetadata {
   if (value.permission !== true)
     throw new ExamError('Confirm that you have permission to contribute this document.');
   return {
+    qualification,
     subject: value.subject,
     year: value.year,
     component: value.component.trim(),

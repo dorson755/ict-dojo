@@ -5,20 +5,26 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   COVERAGE_LABELS,
-  EXAM_NAME,
-  EXAM_SUBJECTS,
+  EXAM_QUALIFICATIONS,
   MAX_PAPER_BYTES,
   PAPER_KINDS,
-  SUBJECT_GROUPS,
+  subjectsFor,
   coverageStatus,
   subjectName,
 } from '@/domains/exams/catalog';
-import type { ExamCoverage, ExamSubject, PaperKind } from '@/domains/exams/catalog';
+import type {
+  ExamCoverage,
+  ExamQualification,
+  ExamSubject,
+  PaperKind,
+} from '@/domains/exams/catalog';
 import { beginPaperUpload, finishPaperUpload } from './actions';
 import { unwrapExamResult } from '@/domains/exams/results';
 import styles from './papers.module.css';
+import QualificationPicker from './QualificationPicker';
 
 export default function PaperArchive({
+  qualification,
   coverage,
   years,
   available,
@@ -26,6 +32,7 @@ export default function PaperArchive({
   superadmin,
   intakeEnabled,
 }: {
+  qualification: ExamQualification;
   coverage: ExamCoverage[];
   years: number[];
   available: boolean;
@@ -34,6 +41,8 @@ export default function PaperArchive({
   intakeEnabled: boolean;
 }) {
   const router = useRouter();
+  const exam = EXAM_QUALIFICATIONS[qualification];
+  const subjects = subjectsFor(qualification);
   const [subject, setSubject] = useState<ExamSubject>('mathematics');
   const [year, setYear] = useState(years[0]);
   const [search, setSearch] = useState('');
@@ -47,12 +56,20 @@ export default function PaperArchive({
   const details = useRef<HTMLElement>(null);
   const form = useRef<HTMLFormElement>(null);
   const uploadLock = useRef(false);
-  const records = new Map(coverage.map((row) => [`${row.subject}#${row.year}`, row]));
+  const records = new Map(
+    coverage
+      .filter((row) => row.qualification === qualification)
+      .map((row) => [`${row.subject}#${row.year}`, row]),
+  );
   const selected = records.get(`${subject}#${year}`);
-  const complete = coverage.filter((row) => row.complete).length;
-  const subjectComplete = coverage.filter((row) => row.subject === subject && row.complete).length;
-  const total = EXAM_SUBJECTS.length * years.length;
-  const matching = EXAM_SUBJECTS.filter((item) =>
+  const complete = coverage.filter(
+    (row) => row.qualification === qualification && row.complete,
+  ).length;
+  const subjectComplete = coverage.filter(
+    (row) => row.qualification === qualification && row.subject === subject && row.complete,
+  ).length;
+  const total = subjects.length * years.length;
+  const matching = subjects.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase()),
   );
 
@@ -83,7 +100,7 @@ export default function PaperArchive({
     try {
       if (retryId) {
         setStage('Confirming your upload…');
-        unwrapExamResult(await finishPaperUpload(retryId));
+        unwrapExamResult(await finishPaperUpload(retryId, qualification));
       } else {
         const pdf = file!;
         if (pdf.size > MAX_PAPER_BYTES || !pdf.name.toLowerCase().endsWith('.pdf'))
@@ -94,6 +111,7 @@ export default function PaperArchive({
         setStage('Preparing private upload…');
         const result = unwrapExamResult(
           await beginPaperUpload({
+            qualification,
             subject,
             year,
             kind,
@@ -117,7 +135,7 @@ export default function PaperArchive({
           throw new Error('The file did not upload. Check your connection and try again.');
         setRetryId(result.id);
         setStage('Confirming your upload…');
-        unwrapExamResult(await finishPaperUpload(result.id));
+        unwrapExamResult(await finishPaperUpload(result.id, qualification));
       }
       setRetryId(null);
       setSuccess(
@@ -139,10 +157,11 @@ export default function PaperArchive({
 
   return (
     <div className={styles.page}>
+      <QualificationPicker qualification={qualification} disabled={busy || !!retryId} />
       <header className={styles.intro}>
         <div>
           <p className={styles.qualification}>
-            {EXAM_NAME} · 1999–{years[0]}
+            {exam.name} · 1999–{years[0]}
           </p>
           <h1>A paper for every year.</h1>
           <p className={styles.lead}>
@@ -151,7 +170,9 @@ export default function PaperArchive({
           </p>
           <div className={styles.introLinks}>
             <a href="#collection">Browse the collection</a>
-            {superadmin && <Link href="/past-papers/review">Superadmin review</Link>}
+            {superadmin && (
+              <Link href={`/past-papers/review?exam=${qualification}`}>Superadmin review</Link>
+            )}
             {!signedIn && <Link href="/login">Sign in to contribute</Link>}
           </div>
         </div>
@@ -206,7 +227,7 @@ export default function PaperArchive({
             onChange={(event) => chooseSubject(event.target.value as ExamSubject)}
             disabled={busy || !!retryId}
           >
-            {SUBJECT_GROUPS.map((group) => (
+            {exam.groups.map((group) => (
               <optgroup key={group.name} label={group.name}>
                 {group.subjects
                   .filter(([id]) => matching.some((item) => item.id === id))
@@ -219,14 +240,14 @@ export default function PaperArchive({
             ))}
           </select>
           <div className={styles.subjectList}>
-            {SUBJECT_GROUPS.map((group) => {
-              const subjects = group.subjects.filter(([id]) =>
+            {exam.groups.map((group) => {
+              const groupedSubjects = group.subjects.filter(([id]) =>
                 matching.some((item) => item.id === id),
               );
-              return subjects.length ? (
+              return groupedSubjects.length ? (
                 <div key={group.name} className={styles.subjectGroup}>
                   <h3>{group.name}</h3>
-                  {subjects.map(([id, name]) => (
+                  {groupedSubjects.map(([id, name]) => (
                     <button
                       key={id}
                       type="button"
@@ -249,7 +270,7 @@ export default function PaperArchive({
         <div className={styles.ledger}>
           <div className={styles.ledgerHeading}>
             <div>
-              <p>{EXAM_NAME}</p>
+              <p>{exam.name}</p>
               <h2>{subjectName(subject)}</h2>
             </div>
             <span>

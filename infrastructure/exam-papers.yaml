@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Private, versioned BGCSE intake storage. Deploy only after owner approval.
+Description: Private, versioned BJC and BGCSE intake storage. Deploy only after owner approval.
 Parameters:
   AllowedOrigin:
     Type: String
@@ -54,3 +54,5 @@ Outputs:
     Value: !Ref ExamPapers
   RuntimeObjectResource:
     Value: !Sub '${ExamPapers.Arn}/intake/bgcse/*'
+  BjcRuntimeObjectResource:
+    Value: !Sub '${ExamPapers.Arn}/intake/bjc/*'

@@ -2,15 +2,29 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { EXAM_SUBJECTS, subjectName } from '@/domains/exams/catalog';
-import type { ExamCoverage, ExamSubject, PaperSubmission } from '@/domains/exams/catalog';
+import { EXAM_QUALIFICATIONS, subjectsFor, subjectName } from '@/domains/exams/catalog';
+import type {
+  ExamCoverage,
+  ExamQualification,
+  ExamSubject,
+  PaperSubmission,
+} from '@/domains/exams/catalog';
 import { downloadReviewPaper, reviewPaper, setYearCollected } from '../actions';
 import { unwrapExamResult } from '@/domains/exams/results';
 import styles from '../papers.module.css';
 
 type ReviewRow = Pick<
   PaperSubmission,
-  'id' | 'subject' | 'year' | 'component' | 'kind' | 'filename' | 'size' | 'notes' | 'createdAt'
+  | 'qualification'
+  | 'id'
+  | 'subject'
+  | 'year'
+  | 'component'
+  | 'kind'
+  | 'filename'
+  | 'size'
+  | 'notes'
+  | 'createdAt'
 >;
 function ReviewCard({
   row,
@@ -26,7 +40,8 @@ function ReviewCard({
   return (
     <article className={styles.reviewCard}>
       <h3>
-        {subjectName(row.subject)}, {row.year}: {row.component}
+        {EXAM_QUALIFICATIONS[row.qualification].label} · {subjectName(row.subject)}, {row.year}:{' '}
+        {row.component}
       </h3>
       <p>
         {row.kind} · {row.filename} · {(row.size / 1024 / 1024).toFixed(1)} MB
@@ -39,7 +54,7 @@ function ReviewCard({
         disabled={busy}
         onClick={() =>
           run(async () => {
-            const result = unwrapExamResult(await downloadReviewPaper(row.id));
+            const result = unwrapExamResult(await downloadReviewPaper(row.id, row.qualification));
             window.location.assign(result.url);
           })
         }
@@ -80,7 +95,7 @@ function ReviewCard({
           disabled={busy || !checked}
           onClick={() =>
             run(async () => {
-              unwrapExamResult(await reviewPaper(row.id, true, note, checked));
+              unwrapExamResult(await reviewPaper(row.id, true, note, checked, row.qualification));
             })
           }
         >
@@ -92,7 +107,7 @@ function ReviewCard({
           disabled={busy || !note.trim()}
           onClick={() =>
             run(async () => {
-              unwrapExamResult(await reviewPaper(row.id, false, note, false));
+              unwrapExamResult(await reviewPaper(row.id, false, note, false, row.qualification));
             })
           }
         >
@@ -103,10 +118,12 @@ function ReviewCard({
   );
 }
 export default function ReviewQueue({
+  qualification,
   rows,
   coverage,
   years,
 }: {
+  qualification: ExamQualification;
   rows: ReviewRow[];
   coverage: ExamCoverage[];
   years: number[];
@@ -118,7 +135,9 @@ export default function ReviewQueue({
   const [subject, setSubject] = useState<ExamSubject>('mathematics');
   const [year, setYear] = useState(years[0]);
   const [confirmed, setConfirmed] = useState(false);
-  const selected = coverage.find((row) => row.subject === subject && row.year === year);
+  const selected = coverage.find(
+    (row) => row.qualification === qualification && row.subject === subject && row.year === year,
+  );
   async function run(work: () => Promise<void>) {
     if (busy) return;
     setBusy(true);
@@ -177,7 +196,7 @@ export default function ReviewQueue({
                 setConfirmed(false);
               }}
             >
-              {EXAM_SUBJECTS.map((item) => (
+              {subjectsFor(qualification).map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.name}
                 </option>
@@ -224,8 +243,8 @@ export default function ReviewQueue({
               onChange={(event) => setConfirmed(event.target.checked)}
             />
             <span>
-              I verified that every required question-paper component for this BGCSE subject and
-              year has been accepted.
+              I verified that every required question-paper component for this{' '}
+              {EXAM_QUALIFICATIONS[qualification].label} subject and year has been accepted.
             </span>
           </label>
         )}
@@ -237,7 +256,9 @@ export default function ReviewQueue({
               disabled={busy}
               onClick={() =>
                 void run(async () => {
-                  unwrapExamResult(await setYearCollected(subject, year, false, true));
+                  unwrapExamResult(
+                    await setYearCollected(subject, year, false, true, qualification),
+                  );
                 })
               }
             >
@@ -254,7 +275,9 @@ export default function ReviewQueue({
               }
               onClick={() =>
                 void run(async () => {
-                  unwrapExamResult(await setYearCollected(subject, year, true, confirmed));
+                  unwrapExamResult(
+                    await setYearCollected(subject, year, true, confirmed, qualification),
+                  );
                   setConfirmed(false);
                 })
               }

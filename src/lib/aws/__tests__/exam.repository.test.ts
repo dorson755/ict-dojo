@@ -6,6 +6,7 @@ import type { ExamCoverage, PaperSubmission } from '@/domains/exams/catalog';
 
 const send = dynamoClient.send as jest.Mock;
 const submission: PaperSubmission = {
+  qualification: 'bgcse',
   id: '12345678-1234-4234-8234-123456789012',
   owner: 'contributor',
   subject: 'mathematics',
@@ -106,6 +107,7 @@ it('rejects a component without exposing it or completing coverage', async () =>
 it('requires an accepted question paper before manual completion and supports reopening', async () => {
   await expect(ExamRepository.setComplete('mathematics', 2020, true, 'admin')).rejects.toThrow();
   coverage = {
+    qualification: 'bgcse',
     subject: 'mathematics',
     year: 2020,
     version: 1,
@@ -158,4 +160,57 @@ it('paginates the public catalog and strips internal fields', async () => {
     PK: 'next',
     SK: 'next',
   });
+});
+it('keeps BJC catalog, submissions, queue, and coverage in separate namespaces', async () => {
+  send.mockResolvedValue({});
+  await ExamRepository.catalog('bjc');
+  await ExamRepository.getSubmission(submission.id, 'bjc');
+  await ExamRepository.getCoverage('mathematics', 2020, 'bjc');
+  await ExamRepository.reviewQueue(undefined, 'bjc');
+  expect((send.mock.calls[0][0] as QueryCommand).input.ExpressionAttributeValues).toEqual({
+    ':pk': 'EXAM#BJC#CATALOG',
+  });
+  expect((send.mock.calls[1][0] as GetCommand).input.Key?.PK).toBe(
+    `EXAM#BJC#SUBMISSION#${submission.id}`,
+  );
+  expect((send.mock.calls[2][0] as GetCommand).input.Key?.PK).toBe('EXAM#BJC#CATALOG');
+  expect((send.mock.calls[3][0] as QueryCommand).input.ExpressionAttributeValues).toEqual({
+    ':pk': 'EXAM#BJC#STATUS#pending',
+  });
+});
+it('reads legacy BGCSE rows without changing their keys', async () => {
+  const legacy: Partial<PaperSubmission> = { ...submission };
+  delete legacy.qualification;
+  send.mockResolvedValue({ Item: legacy });
+  expect(await ExamRepository.getSubmission(submission.id)).toMatchObject({
+    qualification: 'bgcse',
+  });
+  expect((send.mock.calls[0][0] as GetCommand).input.Key?.PK).toBe(
+    `EXAM#BGCSE#SUBMISSION#${submission.id}`,
+  );
+});
+it('confirms and accepts BJC papers without writing any BGCSE coverage', async () => {
+  stored = { ...submission, qualification: 'bjc' };
+  const implementation = send.getMockImplementation()!;
+  send.mockImplementation(async (command) => {
+    const result = await implementation(command);
+    if (command instanceof TransactWriteCommand) {
+      for (const write of command.input.TransactItems ?? []) {
+        if (write.Put?.Item?.PK === 'EXAM#BJC#CATALOG')
+          coverage = write.Put.Item as unknown as ExamCoverage;
+      }
+    }
+    return result;
+  });
+  await ExamRepository.submit(submission.id, submission.owner, 'v', 'bjc');
+  await ExamRepository.review(submission.id, true, 'superadmin', 'Checked', 'bjc');
+  expect(coverage).toMatchObject({
+    qualification: 'bjc',
+    pending: 0,
+    complete: false,
+    accepted: [{ id: submission.id }],
+  });
+  for (const command of transactions) {
+    expect(JSON.stringify(command.input)).not.toContain('BGCSE');
+  }
 });

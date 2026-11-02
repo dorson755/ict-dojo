@@ -1,16 +1,25 @@
 import { GetCommand, QueryCommand, TransactWriteCommand } from '@aws-sdk/lib-dynamodb';
 import { dynamoClient, TABLE_NAME } from '../dynamodb';
-import type { ExamCoverage, ExamSubject, PaperSubmission } from '@/domains/exams/catalog';
+import type {
+  ExamCoverage,
+  ExamQualification,
+  ExamSubject,
+  PaperSubmission,
+} from '@/domains/exams/catalog';
 import { ExamError } from '@/domains/exams/results';
 
-const CATALOG = 'EXAM#BGCSE#CATALOG';
-const submissionKey = (id: string) => ({ PK: `EXAM#BGCSE#SUBMISSION#${id}`, SK: 'META' });
-const coverageKey = (subject: ExamSubject, year: number) => ({
-  PK: CATALOG,
+const catalogKey = (qualification: ExamQualification) =>
+  `EXAM#${qualification.toUpperCase()}#CATALOG`;
+const submissionKey = (id: string, qualification: ExamQualification) => ({
+  PK: `EXAM#${qualification.toUpperCase()}#SUBMISSION#${id}`,
+  SK: 'META',
+});
+const coverageKey = (subject: ExamSubject, year: number, qualification: ExamQualification) => ({
+  PK: catalogKey(qualification),
   SK: `${subject}#${year}`,
 });
-const statusIndex = (status: string, id: string) => ({
-  GSI1PK: `EXAM#BGCSE#STATUS#${status}`,
+const statusIndex = (status: string, id: string, qualification: ExamQualification) => ({
+  GSI1PK: `EXAM#${qualification.toUpperCase()}#STATUS#${status}`,
   GSI1SK: id,
 });
 async function read<T>(Key: { PK: string; SK: string }): Promise<T | null> {
@@ -23,7 +32,7 @@ function coveragePut(previous: ExamCoverage | null, next: ExamCoverage) {
   return {
     TableName: TABLE_NAME,
     Item: {
-      ...coverageKey(next.subject, next.year),
+      ...coverageKey(next.subject, next.year, next.qualification),
       ...next,
       version: (previous?.version ?? 0) + 1,
     },
@@ -46,17 +55,27 @@ async function retryConflict(work: () => Promise<void>) {
     }
   }
 }
-function emptyCoverage(subject: ExamSubject, year: number): ExamCoverage {
-  return { subject, year, version: 0, pending: 0, accepted: [], complete: false };
+function emptyCoverage(
+  subject: ExamSubject,
+  year: number,
+  qualification: ExamQualification,
+): ExamCoverage {
+  return { qualification, subject, year, version: 0, pending: 0, accepted: [], complete: false };
 }
 export class ExamRepository {
-  static getSubmission(id: string) {
-    return read<PaperSubmission>(submissionKey(id));
+  static async getSubmission(id: string, qualification: ExamQualification = 'bgcse') {
+    const row = await read<PaperSubmission>(submissionKey(id, qualification));
+    return row ? { ...row, qualification } : null;
   }
-  static getCoverage(subject: ExamSubject, year: number) {
-    return read<ExamCoverage>(coverageKey(subject, year));
+  static async getCoverage(
+    subject: ExamSubject,
+    year: number,
+    qualification: ExamQualification = 'bgcse',
+  ) {
+    const row = await read<ExamCoverage>(coverageKey(subject, year, qualification));
+    return row ? { ...row, qualification } : null;
   }
-  static async catalog(): Promise<ExamCoverage[]> {
+  static async catalog(qualification: ExamQualification = 'bgcse'): Promise<ExamCoverage[]> {
     const rows: ExamCoverage[] = [];
     let cursor: Record<string, unknown> | undefined;
     do {
@@ -64,7 +83,7 @@ export class ExamRepository {
         new QueryCommand({
           TableName: TABLE_NAME,
           KeyConditionExpression: 'PK = :pk',
-          ExpressionAttributeValues: { ':pk': CATALOG },
+          ExpressionAttributeValues: { ':pk': catalogKey(qualification) },
           ConsistentRead: true,
           ExclusiveStartKey: cursor,
         }),
@@ -72,6 +91,7 @@ export class ExamRepository {
       // Explicit projection prevents contributor IDs and storage keys reaching the public page.
       for (const row of response.Items ?? [])
         rows.push({
+          qualification,
           subject: row.subject,
           year: row.year,
           version: row.version,
@@ -96,7 +116,7 @@ export class ExamRepository {
           {
             Put: {
               TableName: TABLE_NAME,
-              Item: { ...submissionKey(submission.id), ...submission },
+              Item: { ...submissionKey(submission.id, submission.qualification), ...submission },
               ConditionExpression: 'attribute_not_exists(PK)',
             },
           },
@@ -114,16 +134,21 @@ export class ExamRepository {
       }),
     );
   }
-  static async submit(id: string, owner: string, versionId: string) {
+  static async submit(
+    id: string,
+    owner: string,
+    versionId: string,
+    qualification: ExamQualification = 'bgcse',
+  ) {
     await retryConflict(async () => {
-      const row = await this.getSubmission(id);
+      const row = await this.getSubmission(id, qualification);
       if (!row || row.owner !== owner)
         throw new ExamError('This upload belongs to another account.');
       if (row.status !== 'uploading') return;
       if (row.expiresAt < Date.now())
         throw new ExamError('This upload expired. Start a new submission.');
-      const previous = await this.getCoverage(row.subject, row.year);
-      const next = previous ?? emptyCoverage(row.subject, row.year);
+      const previous = await this.getCoverage(row.subject, row.year, qualification);
+      const next = previous ?? emptyCoverage(row.subject, row.year, qualification);
       await dynamoClient.send(
         new TransactWriteCommand({
           TransactItems: [
@@ -131,7 +156,7 @@ export class ExamRepository {
             {
               Update: {
                 TableName: TABLE_NAME,
-                Key: submissionKey(id),
+                Key: submissionKey(id, qualification),
                 UpdateExpression:
                   'SET #status = :pending, versionId = :version, GSI1PK = :index, GSI1SK = :id',
                 ConditionExpression: '#status = :uploading AND #owner = :owner',
@@ -141,7 +166,7 @@ export class ExamRepository {
                   ':uploading': 'uploading',
                   ':owner': owner,
                   ':version': versionId,
-                  ':index': statusIndex('pending', id).GSI1PK,
+                  ':index': statusIndex('pending', id, qualification).GSI1PK,
                   ':id': id,
                 },
               },
@@ -151,30 +176,44 @@ export class ExamRepository {
       );
     });
   }
-  static async reviewQueue(cursor?: string): Promise<{ rows: PaperSubmission[]; next?: string }> {
+  static async reviewQueue(
+    cursor?: string,
+    qualification: ExamQualification = 'bgcse',
+  ): Promise<{ rows: PaperSubmission[]; next?: string }> {
     const response = await dynamoClient.send(
       new QueryCommand({
         TableName: TABLE_NAME,
         IndexName: 'GSI1',
         KeyConditionExpression: 'GSI1PK = :pk',
-        ExpressionAttributeValues: { ':pk': statusIndex('pending', '').GSI1PK },
+        ExpressionAttributeValues: { ':pk': statusIndex('pending', '', qualification).GSI1PK },
         Limit: 30,
         ...(cursor
-          ? { ExclusiveStartKey: { ...submissionKey(cursor), ...statusIndex('pending', cursor) } }
+          ? {
+              ExclusiveStartKey: {
+                ...submissionKey(cursor, qualification),
+                ...statusIndex('pending', cursor, qualification),
+              },
+            }
           : {}),
       }),
     );
     return {
-      rows: (response.Items ?? []) as PaperSubmission[],
+      rows: (response.Items ?? []).map((row) => ({ ...row, qualification })) as PaperSubmission[],
       next: response.LastEvaluatedKey?.GSI1SK,
     };
   }
-  static async review(id: string, accept: boolean, reviewer: string, note: string) {
+  static async review(
+    id: string,
+    accept: boolean,
+    reviewer: string,
+    note: string,
+    qualification: ExamQualification = 'bgcse',
+  ) {
     await retryConflict(async () => {
-      const row = await this.getSubmission(id);
+      const row = await this.getSubmission(id, qualification);
       if (!row || row.status !== 'pending')
         throw new ExamError('This paper has already been reviewed. Refresh the queue.');
-      const previous = await this.getCoverage(row.subject, row.year);
+      const previous = await this.getCoverage(row.subject, row.year, qualification);
       if (!previous || previous.pending < 1)
         throw new ExamError('Coverage changed. Refresh before reviewing.');
       if (accept && previous.accepted.length >= 100)
@@ -191,7 +230,7 @@ export class ExamRepository {
             {
               Update: {
                 TableName: TABLE_NAME,
-                Key: submissionKey(id),
+                Key: submissionKey(id, qualification),
                 UpdateExpression:
                   'SET #status = :next, reviewedBy = :reviewer, reviewedAt = :at, reviewNote = :note REMOVE GSI1PK, GSI1SK',
                 ConditionExpression: '#status = :pending',
@@ -215,9 +254,10 @@ export class ExamRepository {
     year: number,
     complete: boolean,
     reviewer: string,
+    qualification: ExamQualification = 'bgcse',
   ) {
     await retryConflict(async () => {
-      const previous = await this.getCoverage(subject, year);
+      const previous = await this.getCoverage(subject, year, qualification);
       if (
         !previous ||
         (complete && !previous.accepted.some((paper) => paper.kind === 'Question paper'))

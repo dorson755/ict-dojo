@@ -8,8 +8,8 @@ export default function ExamExpansion() {
       <div>
         <h2 id="exam-expansion-title">National-exam practice is coming.</h2>
         <p>
-          We&apos;re building a Bahamas BGCSE paper collection, ahead of syllabus-aligned practice
-          that tests understanding, not just memory.
+          We&apos;re building Bahamas BJC and BGCSE paper collections, ahead of syllabus-aligned
+          practice that tests understanding, not just memory.
         </p>
       </div>
       <Link href="/past-papers">Help collect past papers</Link>

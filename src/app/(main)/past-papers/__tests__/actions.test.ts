@@ -107,7 +107,7 @@ it('checks ownership before storage access and pins the verified version', async
   expect((await finishPaperUpload(id)).ok).toBe(false);
   expect(verifyPaperObject).not.toHaveBeenCalled();
   expect((await finishPaperUpload(id)).ok).toBe(true);
-  expect(ExamRepository.submit).toHaveBeenCalledWith(id, 'contributor', 'version-1');
+  expect(ExamRepository.submit).toHaveBeenCalledWith(id, 'contributor', 'version-1', 'bgcse');
 });
 it('requires explicit acceptance attestation, rejection notes, and year confirmation', async () => {
   expect((await reviewPaper(id, true, '', false)).ok).toBe(false);
@@ -138,4 +138,37 @@ it('reports quota exhaustion only when the budget condition actually failed', as
     ok: false,
     error: expect.not.stringContaining('daily limit'),
   });
+});
+it('allocates BJC storage paths and passes the qualification through confirmation', async () => {
+  expect(
+    (await beginPaperUpload({ ...metadata, qualification: 'bjc', subject: 'general-science' })).ok,
+  ).toBe(true);
+  expect(ExamRepository.begin).toHaveBeenCalledWith(
+    expect.objectContaining({
+      qualification: 'bjc',
+      objectKey: expect.stringMatching(/^intake\/bjc\/[a-f0-9-]+\.pdf$/),
+    }),
+  );
+  await finishPaperUpload(id, 'bjc');
+  expect(ExamRepository.getSubmission).toHaveBeenCalledWith(id, 'bjc');
+  expect(ExamRepository.submit).toHaveBeenCalledWith(id, 'contributor', 'version-1', 'bjc');
+});
+it('rejects cross-qualification subjects when completing coverage', async () => {
+  expect((await setYearCollected('chemistry', 2020, true, true, 'bjc')).ok).toBe(false);
+  expect((await setYearCollected('general-science', 2020, true, true, 'bgcse')).ok).toBe(false);
+  expect(ExamRepository.setComplete).not.toHaveBeenCalled();
+  expect((await setYearCollected('mathematics', 2020, true, true, 'bjc')).ok).toBe(true);
+  expect(ExamRepository.setComplete).toHaveBeenCalledWith(
+    'mathematics',
+    2020,
+    true,
+    'contributor',
+    'bjc',
+  );
+});
+it('validates the qualification on confirmation, reviews, and private downloads', async () => {
+  expect((await finishPaperUpload(id, '__proto__')).ok).toBe(false);
+  expect((await reviewPaper(id, true, '', true, 'invalid')).ok).toBe(false);
+  expect((await downloadReviewPaper(id, 'invalid')).ok).toBe(false);
+  expect(ExamRepository.getSubmission).not.toHaveBeenCalled();
 });

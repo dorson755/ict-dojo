@@ -10,6 +10,25 @@
   align-items: center;
   padding-bottom: 38px;
 }
+.qualificationSwitch {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+.qualificationSwitch button {
+  border: 1px solid var(--border-strong);
+  border-radius: 5px;
+  padding: 10px 22px;
+  background: var(--surface);
+  color: var(--ink-2);
+  font: 600 0.9rem var(--font-body);
+  cursor: pointer;
+}
+.qualificationSwitch button[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
 .qualification {
   color: var(--accent);
   font-size: 0.9rem;

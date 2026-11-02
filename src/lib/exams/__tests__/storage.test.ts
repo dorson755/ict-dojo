@@ -18,6 +18,7 @@ import type { PaperSubmission } from '@/domains/exams/catalog';
 const send = (S3Client as jest.Mock).mock.results[0].value.send as jest.Mock;
 const original = { ...process.env };
 const row: PaperSubmission = {
+  qualification: 'bgcse',
   id: 'id',
   owner: 'user',
   objectKey: 'intake/bgcse/id.pdf',

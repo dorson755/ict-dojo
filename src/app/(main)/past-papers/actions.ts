@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import {
   isExamSubject,
+  isExamQualification,
   parsePaperMetadata,
   validExamYear,
   validSubmissionId,
@@ -30,7 +31,7 @@ export async function beginPaperUpload(raw: unknown) {
       ...metadata,
       id,
       owner: user.id,
-      objectKey: `intake/bgcse/${id}.pdf`,
+      objectKey: `intake/${metadata.qualification}/${id}.pdf`,
       createdAt: new Date().toISOString(),
       expiresAt: Date.now() + 15 * 60_000,
       status: 'uploading',
@@ -52,26 +53,34 @@ export async function beginPaperUpload(raw: unknown) {
     return { id, upload };
   });
 }
-export async function finishPaperUpload(id: unknown) {
+export async function finishPaperUpload(id: unknown, qualification: unknown = 'bgcse') {
   return examAction(async () => {
     const user = await requireExamUser();
+    if (!isExamQualification(qualification)) throw new ExamError('Choose BJC or BGCSE.');
     if (!validSubmissionId(id)) throw new ExamError('Invalid upload.');
-    const row = await ExamRepository.getSubmission(id);
+    const row = await ExamRepository.getSubmission(id, qualification);
     if (!row || row.owner !== user.id)
       throw new ExamError('This upload belongs to another account.');
     if (row.status !== 'uploading') return { success: true };
     if (row.expiresAt < Date.now())
       throw new ExamError('This upload expired. Start a new submission.');
     const version = await verifyPaperObject(row);
-    await ExamRepository.submit(id, user.id, version);
+    await ExamRepository.submit(id, user.id, version, qualification);
     revalidatePath('/past-papers');
     revalidatePath('/past-papers/review');
     return { success: true };
   });
 }
-export async function reviewPaper(id: unknown, accept: unknown, note: unknown, checked: unknown) {
+export async function reviewPaper(
+  id: unknown,
+  accept: unknown,
+  note: unknown,
+  checked: unknown,
+  qualification: unknown = 'bgcse',
+) {
   return examAction(async () => {
     const user = await requireExamUser(true);
+    if (!isExamQualification(qualification)) throw new ExamError('Choose BJC or BGCSE.');
     if (
       !validSubmissionId(id) ||
       typeof accept !== 'boolean' ||
@@ -82,7 +91,7 @@ export async function reviewPaper(id: unknown, accept: unknown, note: unknown, c
     if (!accept && !note.trim()) throw new ExamError('Explain why this paper was not accepted.');
     if (accept && checked !== true)
       throw new ExamError('Confirm the document safety and content checks before accepting.');
-    await ExamRepository.review(id, accept, user.id, note.trim());
+    await ExamRepository.review(id, accept, user.id, note.trim(), qualification);
     revalidatePath('/past-papers');
     revalidatePath('/past-papers/review');
   });
@@ -92,22 +101,29 @@ export async function setYearCollected(
   year: unknown,
   complete: unknown,
   confirmed: unknown,
+  qualification: unknown = 'bgcse',
 ) {
   return examAction(async () => {
     const user = await requireExamUser(true);
-    if (!isExamSubject(subject) || !validExamYear(year) || typeof complete !== 'boolean')
+    if (
+      !isExamQualification(qualification) ||
+      !isExamSubject(subject, qualification) ||
+      !validExamYear(year) ||
+      typeof complete !== 'boolean'
+    )
       throw new ExamError('Choose a valid subject and year.');
     if (confirmed !== true) throw new ExamError('Confirm that you checked the year coverage.');
-    await ExamRepository.setComplete(subject, year, complete, user.id);
+    await ExamRepository.setComplete(subject, year, complete, user.id, qualification);
     revalidatePath('/past-papers');
     revalidatePath('/past-papers/review');
   });
 }
-export async function downloadReviewPaper(id: unknown) {
+export async function downloadReviewPaper(id: unknown, qualification: unknown = 'bgcse') {
   return examAction(async () => {
     await requireExamUser(true);
+    if (!isExamQualification(qualification)) throw new ExamError('Choose BJC or BGCSE.');
     if (!validSubmissionId(id)) throw new ExamError('Invalid upload.');
-    const row = await ExamRepository.getSubmission(id);
+    const row = await ExamRepository.getSubmission(id, qualification);
     if (!row || row.status === 'uploading') throw new ExamError('Paper not found.');
     return { url: await paperDownloadUrl(row) };
   });

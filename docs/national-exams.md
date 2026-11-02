@@ -1,8 +1,11 @@
-# National-exam expansion: BGCSE intake
+# National-exam expansion: BJC and BGCSE intake
 
-The first release is a public **Bahamas BGCSE** collection at `/past-papers`.
-It lists all 26 supplied subjects in seven categories, and years from 1999
-through the current UTC year. The new platform name remains undecided.
+Public **Bahamas BGCSE** and **Bahamas BJC** collections live at `/past-papers`.
+The qualification selector uses `?exam=bgcse` (default) and `?exam=bjc`.
+BGCSE lists the 26 supplied subjects in seven categories; BJC lists the 11
+supplied subjects in three categories. Both cover 1999 through the current UTC
+year. Subject lists, coverage, review queues, and files stay separate even for
+shared names such as Mathematics. The new platform name remains undecided.
 
 ## Current scope
 
@@ -13,7 +16,7 @@ through the current UTC year. The new platform name remains undecided.
 - Private superadmin queue at `/past-papers/review`.
 - Accepting a component does **not** complete the year. A superadmin must verify
   the official component requirements, then explicitly mark that subject/year
-  collected. They can reopen it. At least one accepted question paper is required;
+  collected within its qualification. They can reopen it. At least one accepted question paper is required;
   a syllabus or mark scheme alone cannot make a year complete.
 - No public file downloads, extraction, AI processing, question bank, or marking.
   The dashboard and archive describe future exam practice as coming soon.
@@ -38,7 +41,8 @@ After approval:
    and the bucket private. For local integration tests, add only the exact
    local development origin to CORS temporarily, with owner approval.
 3. Grant the runtime principal `s3:PutObject`, `s3:GetObject`, and
-   `s3:GetObjectVersion` scoped to the output `RuntimeObjectResource`. It does
+   `s3:GetObjectVersion` scoped to the outputs `RuntimeObjectResource` (BGCSE)
+   and `BjcRuntimeObjectResource` (BJC). It does
    not need bucket listing, deletion, ACLs, or public access.
 4. Confirm DynamoDB permissions include GetItem, Query (including GSI1),
    PutItem, and UpdateItem on the existing table and underlying transactional
@@ -92,7 +96,12 @@ Data:
 - Coverage: `PK=EXAM#BGCSE#CATALOG`, `SK=<subject>#<year>`.
 - Private submission: `PK=EXAM#BGCSE#SUBMISSION#<uuid>`, `SK=META`.
 - Pending index: `GSI1PK=EXAM#BGCSE#STATUS#pending`, `GSI1SK=<uuid>`.
+- BJC uses the same structure with `EXAM#BJC` instead of `EXAM#BGCSE`.
+  Object prefixes are `intake/bgcse/` and `intake/bjc/`. New records carry an
+  explicit `qualification`; legacy BGCSE records retain their original keys and
+  are interpreted as BGCSE on read. No migration or live-data writes are needed.
 - Budget: `PK=USER#<sub>`, `SK=EXAM_UPLOAD_BUDGET#<UTC-date>`.
+  The 15-attempt daily allowance is shared across both qualifications.
 
 Confirmation and reviews atomically update submission status and version-checked
 coverage. Concurrent conflicts retry three times. Confirmation retries are

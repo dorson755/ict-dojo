@@ -77,7 +77,7 @@ export async function paperDownloadUrl(submission: PaperSubmission) {
       Key: submission.objectKey,
       VersionId: submission.versionId,
       ResponseContentType: 'application/octet-stream',
-      ResponseContentDisposition: `attachment; filename="bgcse-${submission.subject}-${submission.year}-${submission.id}.pdf"`,
+      ResponseContentDisposition: `attachment; filename="${submission.qualification}-${submission.subject}-${submission.year}-${submission.id}.pdf"`,
     }),
     { expiresIn: 60 },
   );

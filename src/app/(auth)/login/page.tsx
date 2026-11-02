@@ -264,7 +264,7 @@ function LoginForm() {
       </div>
       <div className={styles.footerText}>
         <Link href="/past-papers" className={styles.link}>
-          Explore the public BGCSE paper collection
+          Explore the public BJC and BGCSE paper collections
         </Link>
       </div>
     </>

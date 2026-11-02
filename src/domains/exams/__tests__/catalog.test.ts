@@ -4,6 +4,8 @@ import {
   examYears,
   MAX_PAPER_BYTES,
   parsePaperMetadata,
+  subjectsFor,
+  isExamQualification,
   validExamYear,
   validSubmissionId,
 } from '../catalog';
@@ -35,6 +37,7 @@ it('includes every year from 1999 to the current year, newest first', () => {
 });
 it('requires explicit completion, not just an accepted component', () => {
   const row: ExamCoverage = {
+    qualification: 'bgcse',
     subject: 'mathematics',
     year: 2020,
     version: 1,
@@ -54,6 +57,38 @@ it('normalizes valid metadata without trusting storage paths or identities', () 
   expect(result.component).toBe('Paper 1, May/June');
   expect(result).not.toHaveProperty('owner');
   expect(result).not.toHaveProperty('objectKey');
+});
+it('includes the 11 BJC subjects in the exact three supplied categories', () => {
+  const subjects = subjectsFor('bjc');
+  expect(subjects.map((subject) => subject.name)).toEqual([
+    'English Language',
+    'Literature',
+    'Mathematics',
+    'Social Studies',
+    'Religious Studies',
+    'General Science',
+    'Health Science',
+    'Art & Design',
+    'Craft',
+    'Family & Consumer Science',
+    'Technical Drawing',
+  ]);
+  expect(new Set(subjects.map((subject) => subject.group)).size).toBe(3);
+  expect(subjects.length * examYears(2026).length).toBe(308);
+});
+it('validates subjects within their qualification instead of mixing shared names', () => {
+  expect(
+    parsePaperMetadata({ ...metadata, qualification: 'bjc', subject: 'general-science' }),
+  ).toMatchObject({ qualification: 'bjc', subject: 'general-science' });
+  expect(() =>
+    parsePaperMetadata({ ...metadata, qualification: 'bgcse', subject: 'general-science' }),
+  ).toThrow();
+  expect(() =>
+    parsePaperMetadata({ ...metadata, qualification: 'bjc', subject: 'chemistry' }),
+  ).toThrow();
+  expect(() => parsePaperMetadata({ ...metadata, qualification: '__proto__' })).toThrow();
+  expect(isExamQualification('bjc')).toBe(true);
+  expect(isExamQualification('constructor')).toBe(false);
 });
 it.each([
   null,
