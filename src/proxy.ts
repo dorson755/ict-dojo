@@ -8,7 +8,15 @@ const COGNITO_USER_POOL_ID = process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID;
 const COGNITO_CLIENT_ID = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID;
 
 // Public paths that do not require authentication
-const PUBLIC_PATHS = ['/login', '/signup', '/auth/callback', '/onboarding', '/reset-password', '/'];
+const PUBLIC_PATHS = [
+  '/login',
+  '/signup',
+  '/auth/callback',
+  '/onboarding',
+  '/reset-password',
+  '/',
+  '/past-papers',
+];
 
 // Called by the scheduler, which has no login cookie. The route checks its own bearer secret.
 const SCHEDULER_PATHS = ['/api/reports/weekly'];
@@ -46,7 +54,9 @@ export async function proxy(request: NextRequest) {
     }
 
     if (!jwks) {
-      const jwksUrl = new URL(`https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}/.well-known/jwks.json`);
+      const jwksUrl = new URL(
+        `https://cognito-idp.${COGNITO_REGION}.amazonaws.com/${COGNITO_USER_POOL_ID}/.well-known/jwks.json`,
+      );
       jwks = createRemoteJWKSet(jwksUrl);
     }
 

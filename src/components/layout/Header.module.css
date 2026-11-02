@@ -11,6 +11,7 @@
 }
 
 .brand {
+  flex-shrink: 0;
   font-family: var(--font-display);
   font-size: var(--text-lg);
   font-weight: 600;
@@ -39,15 +40,22 @@
   display: flex;
   align-items: center;
   gap: var(--space-6);
+  min-width: 0;
+  margin: 0 var(--space-4);
+  overflow-x: auto;
 }
 
 .navLink {
+  flex-shrink: 0;
+  white-space: nowrap;
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--ink-2);
   padding: var(--space-1) 0;
   border-bottom: 2px solid transparent;
-  transition: color var(--transition), border-color var(--transition);
+  transition:
+    color var(--transition),
+    border-color var(--transition);
 }
 
 .navLink:hover {
@@ -61,6 +69,7 @@
 }
 
 .userInfo {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   gap: var(--space-4);
@@ -80,7 +89,9 @@
   font-weight: 600;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
-  transition: background var(--transition), transform var(--transition);
+  transition:
+    background var(--transition),
+    transform var(--transition);
 }
 
 .logoutBtn:active:not(:disabled) {

@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Private, versioned BGCSE intake storage. Deploy only after owner approval.
+Parameters:
+  AllowedOrigin:
+    Type: String
+    Description: Exact HTTPS site origin, without a trailing slash.
+    AllowedPattern: '^https://[a-zA-Z0-9.-]+$'
+Resources:
+  ExamPapers:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - !Ref AllowedOrigin
+            AllowedMethods: [POST]
+            AllowedHeaders: ['*']
+            MaxAge: 300
+  ExamPapersPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ExamPapers
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: RequireTLS
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !GetAtt ExamPapers.Arn
+              - !Sub '${ExamPapers.Arn}/*'
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+Outputs:
+  BucketName:
+    Value: !Ref ExamPapers
+  RuntimeObjectResource:
+    Value: !Sub '${ExamPapers.Arn}/intake/bgcse/*'

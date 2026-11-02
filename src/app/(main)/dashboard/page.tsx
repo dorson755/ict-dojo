@@ -11,6 +11,7 @@ import BeltBadge, { getBeltName } from '@/components/ui/BeltBadge';
 import SkillTrackCard from '@/components/ui/SkillTrackCard';
 import { masteryLevelName } from '@/domains/shared/mastery-labels';
 import AIGreeting from './AIGreeting';
+import ExamExpansion from '@/components/exams/ExamExpansion';
 import styles from './dashboard.module.css';
 import { TYPING_SKILLS } from '@/domains/typing/catalog';
 import { TYPING_DEPENDENCIES } from '@/domains/typing/catalog';
@@ -46,36 +47,39 @@ export default async function DashboardPage() {
     redirect('/onboarding');
   }
 
-  const [dna, activeRec, allMasteries, recentSessions, dailyQuest, weeklyQuest, records] = await Promise.all([
-    UserRepository.getTypingDNA(user.id).catch(() => null),
-    RecommendationRepository.getActiveRecommendation(user.id).catch(() => null),
-    MasteryRepository.getAllMastery(user.id).catch(() => []),
-    ExerciseRepository.getRecentSessions(user.id, 5).catch(() => []),
-    ProgressRepository.getTodaysQuest(user.id).catch(() => null),
-    ProgressRepository.getCurrentWeeklyQuest(user.id).catch(() => null),
-    ProgressRepository.getPersonalRecords(user.id).catch(() => []),
-  ]);
+  const [dna, activeRec, allMasteries, recentSessions, dailyQuest, weeklyQuest, records] =
+    await Promise.all([
+      UserRepository.getTypingDNA(user.id).catch(() => null),
+      RecommendationRepository.getActiveRecommendation(user.id).catch(() => null),
+      MasteryRepository.getAllMastery(user.id).catch(() => []),
+      ExerciseRepository.getRecentSessions(user.id, 5).catch(() => []),
+      ProgressRepository.getTodaysQuest(user.id).catch(() => null),
+      ProgressRepository.getCurrentWeeklyQuest(user.id).catch(() => null),
+      ProgressRepository.getPersonalRecords(user.id).catch(() => []),
+    ]);
 
   const level = profile.platform_level || 1;
   const xp = profile.xp_total || 0;
   const streak = profile.streak_count || 0;
   const xpInLevel = xp % 1000;
   const xpPercent = Math.round((xpInLevel / 1000) * 100);
-  const masteryMap = new Map<string, PlatformSkillMastery>(allMasteries.map((mastery) => [
-    mastery.skill_id,
-    {
-      id: mastery.skill_id,
-      student_id: mastery.student_id,
-      skill_id: mastery.skill_id,
-      mastery_score: mastery.mastery_score,
-      mastery_level: mastery.mastery_level as MasteryLevel,
-      practice_count: mastery.practice_count,
-      last_practiced_at: mastery.last_practiced_at ?? null,
-      updated_at: '',
-    },
-  ]));
+  const masteryMap = new Map<string, PlatformSkillMastery>(
+    allMasteries.map((mastery) => [
+      mastery.skill_id,
+      {
+        id: mastery.skill_id,
+        student_id: mastery.student_id,
+        skill_id: mastery.skill_id,
+        mastery_score: mastery.mastery_score,
+        mastery_level: mastery.mastery_level as MasteryLevel,
+        practice_count: mastery.practice_count,
+        last_practiced_at: mastery.last_practiced_at ?? null,
+        updated_at: '',
+      },
+    ]),
+  );
   const masteryLevels = Object.fromEntries(
-    allMasteries.map((mastery) => [mastery.skill_id, mastery.mastery_level as MasteryLevel])
+    allMasteries.map((mastery) => [mastery.skill_id, mastery.mastery_level as MasteryLevel]),
   ) as Record<string, MasteryLevel>;
   const chunksMastered = countChunksMastered(allMasteries);
   const xpBelt = getXpBelt(level);
@@ -83,21 +87,25 @@ export default async function DashboardPage() {
   const examBelt = profile.belt_exam_passed ?? 0;
   const belt = computeBelt(level, examBelt, masteryLevels, chunksMastered);
   const nextBelt = Math.min(MAX_BELT, belt + 1);
-  const nextBeltChecklist = belt < MAX_BELT
-    ? evaluateBeltRequirements(nextBelt, level, masteryLevels, chunksMastered)
-    : null;
+  const nextBeltChecklist =
+    belt < MAX_BELT
+      ? evaluateBeltRequirements(nextBelt, level, masteryLevels, chunksMastered)
+      : null;
   const examReady = belt < MAX_BELT && xpBelt >= nextBelt && masteryBelt >= nextBelt;
   const skillGraph = new SkillGraph(TYPING_SKILLS, TYPING_DEPENDENCIES);
-  const activeSkillName = activeRec?.skills && typeof activeRec.skills === 'object' && 'name' in activeRec.skills
-    ? String(activeRec.skills.name)
-    : 'Targeted practice';
-  const activeReason = activeRec?.reason ? String(activeRec.reason) : 'Your next recommended challenge.';
+  const activeSkillName =
+    activeRec?.skills && typeof activeRec.skills === 'object' && 'name' in activeRec.skills
+      ? String(activeRec.skills.name)
+      : 'Targeted practice';
+  const activeReason = activeRec?.reason
+    ? String(activeRec.reason)
+    : 'Your next recommended challenge.';
   const focusKeys = Object.entries(dna?.weak_keys ?? {})
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3)
-    .map(([key]) => key === ' ' ? 'space' : key.toUpperCase());
+    .map(([key]) => (key === ' ' ? 'space' : key.toUpperCase()));
   const dnaAccuracy = Math.round(dna?.avg_accuracy ?? 0);
-  const dnaConsistency = Math.min(100, ((dna?.sessions_analyzed ?? 0) * 5) + (streak * 5));
+  const dnaConsistency = Math.min(100, (dna?.sessions_analyzed ?? 0) * 5 + streak * 5);
 
   return (
     <div className={styles.page}>
@@ -125,12 +133,30 @@ export default async function DashboardPage() {
         <div className={styles.heroSection}>
           <div className={styles.heroIntro}>
             <p className={styles.heroKicker}>Today</p>
-            <h1 className={styles.heroTitle}>Good to see you, {profile.display_name || user.name || 'Learner'}.</h1>
+            <h1 className={styles.heroTitle}>
+              Good to see you, {profile.display_name || user.name || 'Learner'}.
+            </h1>
           </div>
-          <Suspense fallback={<div className={styles.aiGreeting}><p className={styles.greetingText}>Writing your greeting…</p></div>}>
-            <AIGreeting 
-              name={profile.display_name || user.name || 'Learner'} 
-              weakKeys={dna?.weak_keys ? Object.keys(dna.weak_keys).sort((a,b) => (dna.weak_keys as Record<string, number>)[b] - (dna.weak_keys as Record<string, number>)[a]).slice(0, 3) : []}
+          <Suspense
+            fallback={
+              <div className={styles.aiGreeting}>
+                <p className={styles.greetingText}>Writing your greeting…</p>
+              </div>
+            }
+          >
+            <AIGreeting
+              name={profile.display_name || user.name || 'Learner'}
+              weakKeys={
+                dna?.weak_keys
+                  ? Object.keys(dna.weak_keys)
+                      .sort(
+                        (a, b) =>
+                          (dna.weak_keys as Record<string, number>)[b] -
+                          (dna.weak_keys as Record<string, number>)[a],
+                      )
+                      .slice(0, 3)
+                  : []
+              }
               streak={profile.streak_count || 0}
             />
           </Suspense>
@@ -158,6 +184,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
+      <ExamExpansion />
       <div className={styles.grid}>
         {/* Main column */}
         <div>
@@ -188,7 +215,9 @@ export default async function DashboardPage() {
             <div className={styles.pathHeading}>
               <div>
                 <h2 className={styles.sectionTitle}>Your skill path</h2>
-                <p className={styles.pathSubtitle}>Master each gate to unlock the next challenge.</p>
+                <p className={styles.pathSubtitle}>
+                  Master each gate to unlock the next challenge.
+                </p>
               </div>
               <span className={styles.pathLegend}>{TYPING_SKILLS.length} skills · Typing</span>
             </div>
@@ -197,17 +226,34 @@ export default async function DashboardPage() {
                 const mastery = masteryMap.get(skill.id);
                 const isMastered = mastery?.mastery_level === 'mastered';
                 const isUnlocked = skillGraph.arePrerequisitesMet(skill.id, masteryMap);
-                const status = isMastered ? 'mastered' : !isUnlocked ? 'locked' : mastery?.practice_count ? 'training' : 'ready';
+                const status = isMastered
+                  ? 'mastered'
+                  : !isUnlocked
+                    ? 'locked'
+                    : mastery?.practice_count
+                      ? 'training'
+                      : 'ready';
                 const metadata = skill.metadata as { icon?: string };
                 return (
-                  <div key={skill.id} className={`${styles.pathNode} ${styles[`pathNode${status[0].toUpperCase()}${status.slice(1)}`]}`}>
+                  <div
+                    key={skill.id}
+                    className={`${styles.pathNode} ${styles[`pathNode${status[0].toUpperCase()}${status.slice(1)}`]}`}
+                  >
                     <div className={styles.pathNodeTop}>
                       <span className={styles.pathIndex}>{String(index + 1).padStart(2, '0')}</span>
-                      <span className={styles.pathIcon}>{status === 'locked' ? '·' : metadata.icon ?? '⌨'}</span>
+                      <span className={styles.pathIcon}>
+                        {status === 'locked' ? '·' : (metadata.icon ?? '⌨')}
+                      </span>
                     </div>
                     <h3 className={styles.pathName}>{skill.name}</h3>
                     <p className={styles.pathStatus}>
-                      {status === 'mastered' ? 'Mastered' : status === 'training' ? `${masteryLevelName(mastery?.mastery_level ?? 'not_started')} · ${Math.round(mastery?.mastery_score ?? 0)}/100` : status === 'ready' ? 'Ready to train' : 'Locked'}
+                      {status === 'mastered'
+                        ? 'Mastered'
+                        : status === 'training'
+                          ? `${masteryLevelName(mastery?.mastery_level ?? 'not_started')} · ${Math.round(mastery?.mastery_score ?? 0)}/100`
+                          : status === 'ready'
+                            ? 'Ready to train'
+                            : 'Locked'}
                     </p>
                     {index < TYPING_SKILLS.length - 1 && <span className={styles.pathConnector} />}
                   </div>
@@ -227,15 +273,17 @@ export default async function DashboardPage() {
                 <p className={styles.statSub}>Day streak</p>
               </div>
               <div>
-                <div className={styles.bigStat}>
-                  {dna?.baseline_wpm ?? dna?.avg_wpm ?? '--'}
-                </div>
+                <div className={styles.bigStat}>{dna?.baseline_wpm ?? dna?.avg_wpm ?? '--'}</div>
                 <p className={styles.statSub}>Baseline WPM</p>
               </div>
             </div>
             {dna?.last_assessed_at && (
               <p className={styles.statSubGap}>
-                Last assessed {new Date(dna.last_assessed_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                Last assessed{' '}
+                {new Date(dna.last_assessed_at).toLocaleDateString(undefined, {
+                  month: 'short',
+                  day: 'numeric',
+                })}
               </p>
             )}
           </div>
@@ -254,35 +302,59 @@ export default async function DashboardPage() {
                   <li className={nextBeltChecklist.xp.met ? styles.beltMet : styles.beltUnmet}>
                     Level {nextBeltChecklist.xp.currentLevel}/{nextBeltChecklist.xp.requiredLevel}
                   </li>
-                  {nextBeltChecklist.skills.filter((skill) => !skill.met).slice(0, 2).map((skill) => (
-                    <li key={skill.skillId} className={styles.beltUnmet}>
-                      {skill.skillId.replace(/^typing-/, '').replace(/-/g, ' ')} needs {skill.minLevel}
-                    </li>
-                  ))}
+                  {nextBeltChecklist.skills
+                    .filter((skill) => !skill.met)
+                    .slice(0, 2)
+                    .map((skill) => (
+                      <li key={skill.skillId} className={styles.beltUnmet}>
+                        {skill.skillId.replace(/^typing-/, '').replace(/-/g, ' ')} needs{' '}
+                        {skill.minLevel}
+                      </li>
+                    ))}
                   {nextBeltChecklist.chunks.required > 0 && (
-                    <li className={nextBeltChecklist.chunks.met ? styles.beltMet : styles.beltUnmet}>
-                      Chunks {nextBeltChecklist.chunks.current}/{nextBeltChecklist.chunks.required} mastered
+                    <li
+                      className={nextBeltChecklist.chunks.met ? styles.beltMet : styles.beltUnmet}
+                    >
+                      Chunks {nextBeltChecklist.chunks.current}/{nextBeltChecklist.chunks.required}{' '}
+                      mastered
                     </li>
                   )}
                 </ul>
                 <Link className={styles.beltLink} href="/belt-exam">
-                  {examReady ? `Take ${getBeltName(nextBelt)} belt exam` : 'View promotion requirements'}
+                  {examReady
+                    ? `Take ${getBeltName(nextBelt)} belt exam`
+                    : 'View promotion requirements'}
                 </Link>
               </>
             ) : (
-              <p className={styles.beltSummary}>Black Belt earned. Keep your skills sharp in the dojo.</p>
+              <p className={styles.beltSummary}>
+                Black Belt earned. Keep your skills sharp in the dojo.
+              </p>
             )}
           </div>
 
           <div className={styles.sideCard}>
             <h3 className={styles.sideCardTitle}>Your learning DNA</h3>
             <p className={styles.dnaSummary}>
-              {dnaAccuracy >= 95 ? 'You are building precise, controlled technique.' : dnaAccuracy >= 85 ? 'Your accuracy is developing steadily.' : 'Your Sensei is prioritizing control before speed.'}
+              {dnaAccuracy >= 95
+                ? 'You are building precise, controlled technique.'
+                : dnaAccuracy >= 85
+                  ? 'Your accuracy is developing steadily.'
+                  : 'Your Sensei is prioritizing control before speed.'}
             </p>
             <div className={styles.dnaRows}>
-              <div><span>Accuracy pattern</span><strong>{dna?.avg_accuracy ? `${dnaAccuracy}%` : 'Building'}</strong></div>
-              <div><span>Current focus</span><strong>{focusKeys.length ? focusKeys.join(' · ') : 'Discovering'}</strong></div>
-              <div><span>Consistency</span><strong>{dna?.sessions_analyzed ? `${dnaConsistency}%` : 'New'}</strong></div>
+              <div>
+                <span>Accuracy pattern</span>
+                <strong>{dna?.avg_accuracy ? `${dnaAccuracy}%` : 'Building'}</strong>
+              </div>
+              <div>
+                <span>Current focus</span>
+                <strong>{focusKeys.length ? focusKeys.join(' · ') : 'Discovering'}</strong>
+              </div>
+              <div>
+                <span>Consistency</span>
+                <strong>{dna?.sessions_analyzed ? `${dnaConsistency}%` : 'New'}</strong>
+              </div>
             </div>
           </div>
 
@@ -292,20 +364,40 @@ export default async function DashboardPage() {
               <>
                 <p className={styles.questTitle}>{weeklyQuest.title}</p>
                 <p className={styles.questDescription}>{weeklyQuest.description}</p>
-                <div className={styles.questProgress}><span style={{ width: `${(weeklyQuest.progress / weeklyQuest.target) * 100}%` }} /></div>
-                <p className={styles.statSub}>{weeklyQuest.completed ? 'Complete' : `${weeklyQuest.progress} of ${weeklyQuest.target}`} · {weeklyQuest.reward_xp} XP</p>
+                <div className={styles.questProgress}>
+                  <span
+                    style={{ width: `${(weeklyQuest.progress / weeklyQuest.target) * 100}%` }}
+                  />
+                </div>
+                <p className={styles.statSub}>
+                  {weeklyQuest.completed
+                    ? 'Complete'
+                    : `${weeklyQuest.progress} of ${weeklyQuest.target}`}{' '}
+                  · {weeklyQuest.reward_xp} XP
+                </p>
               </>
-            ) : <p className={styles.emptyState}>Complete a session to start this week&apos;s goal.</p>}
+            ) : (
+              <p className={styles.emptyState}>
+                Complete a session to start this week&apos;s goal.
+              </p>
+            )}
           </div>
 
           <div className={styles.sideCard}>
             <h3 className={styles.sideCardTitle}>Earned badges</h3>
             <div className={styles.badges}>
               {level >= 2 && <span className={styles.badge}>First milestone</span>}
-              {(dna?.avg_accuracy ?? 0) >= 95 && <span className={styles.badge}>Precision adept</span>}
+              {(dna?.avg_accuracy ?? 0) >= 95 && (
+                <span className={styles.badge}>Precision adept</span>
+              )}
               {streak >= 7 && <span className={styles.badge}>Seven-day discipline</span>}
-              {allMasteries.filter((mastery) => mastery.mastery_level === 'mastered').length >= 3 && <span className={styles.badge}>Skill builder</span>}
-              {level < 2 && (dna?.avg_accuracy ?? 0) < 95 && streak < 7 && <p className={styles.emptyState}>Your next badge is earned through steady practice.</p>}
+              {allMasteries.filter((mastery) => mastery.mastery_level === 'mastered').length >=
+                3 && <span className={styles.badge}>Skill builder</span>}
+              {level < 2 && (dna?.avg_accuracy ?? 0) < 95 && streak < 7 && (
+                <p className={styles.emptyState}>
+                  Your next badge is earned through steady practice.
+                </p>
+              )}
             </div>
           </div>
 
@@ -338,11 +430,16 @@ export default async function DashboardPage() {
                   <span style={{ width: `${(dailyQuest.progress / dailyQuest.target) * 100}%` }} />
                 </div>
                 <p className={styles.statSub}>
-                  {dailyQuest.completed ? 'Complete' : `${dailyQuest.progress} of ${dailyQuest.target}`} · {dailyQuest.reward_xp} XP
+                  {dailyQuest.completed
+                    ? 'Complete'
+                    : `${dailyQuest.progress} of ${dailyQuest.target}`}{' '}
+                  · {dailyQuest.reward_xp} XP
                 </p>
               </>
             ) : (
-              <p className={styles.emptyState}>Complete a practice session to begin today&apos;s quest.</p>
+              <p className={styles.emptyState}>
+                Complete a practice session to begin today&apos;s quest.
+              </p>
             )}
           </div>
 
@@ -356,7 +453,9 @@ export default async function DashboardPage() {
                       {record.metric === 'best_wpm' ? 'Best WPM' : 'Best accuracy'}
                     </span>
                     <span className={styles.wpmStat}>
-                      {record.metric === 'best_accuracy' ? `${record.value}%` : `${record.value} WPM`}
+                      {record.metric === 'best_accuracy'
+                        ? `${record.value}%`
+                        : `${record.value} WPM`}
                     </span>
                   </div>
                 ))}
@@ -375,7 +474,10 @@ export default async function DashboardPage() {
                   <div key={i} className={styles.sessionItem}>
                     <span className={styles.sessionDate}>
                       {session.created_at
-                        ? new Date(session.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+                        ? new Date(session.created_at).toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                          })
                         : '—'}
                     </span>
                     <div className={styles.sessionStats}>

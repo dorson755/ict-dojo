@@ -1,0 +1,50 @@
+.expansion {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 24px;
+  padding: 24px 28px;
+  margin-top: 28px;
+  background: #dce8ed;
+  border-radius: 12px;
+}
+.expansion > span {
+  color: #315e68;
+  border: 1px solid #9eb8c0;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.expansion h2 {
+  font-size: 1.15rem;
+  letter-spacing: -0.03em;
+}
+.expansion p {
+  margin-top: 8px;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: #3e555d;
+  max-width: 65ch;
+}
+.expansion a {
+  color: var(--accent);
+  font-size: 0.82rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  padding-top: 5px;
+}
+.expansion a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+@media (max-width: 760px) {
+  .expansion {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 22px;
+  }
+  .expansion > span {
+    justify-self: start;
+  }
+}

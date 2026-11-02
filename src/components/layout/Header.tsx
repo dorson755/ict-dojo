@@ -9,7 +9,19 @@ export default async function Header() {
   const user = await getUserSession();
 
   if (!user) {
-    return null;
+    return (
+      <header className={styles.header}>
+        <Link href="/" className={styles.brand}>
+          <span className={styles.brandMark}>ICT</span>Dojo
+        </Link>
+        <nav className={styles.nav} aria-label="Main">
+          <NavLink href="/past-papers">Past papers</NavLink>
+        </nav>
+        <Link href="/login" className={styles.navLink}>
+          Sign in
+        </Link>
+      </header>
+    );
   }
 
   const profile = await UserRepository.getProfile(user.id);
@@ -17,7 +29,12 @@ export default async function Header() {
 
   return (
     <header className={styles.header}>
-      <Link href={user.role === 'teacher' ? '/teacher' : user.role === 'parent' ? '/parent' : '/dashboard'} className={styles.brand}>
+      <Link
+        href={
+          user.role === 'teacher' ? '/teacher' : user.role === 'parent' ? '/parent' : '/dashboard'
+        }
+        className={styles.brand}
+      >
         <span className={styles.brandMark}>ICT</span>
         Dojo
       </Link>
@@ -29,17 +46,18 @@ export default async function Header() {
         {user.role === 'student' && <NavLink href="/chunks">Chunks</NavLink>}
         {user.role === 'student' && <NavLink href="/profile">Profile</NavLink>}
         {user.role === 'student' && (
-          <NavLink href="/document-craft/projects" matchPrefix="/document-craft">Documents</NavLink>
+          <NavLink href="/document-craft/projects" matchPrefix="/document-craft">
+            Documents
+          </NavLink>
         )}
         {(profile?.platform_level ?? 1) >= 5 && <NavLink href="/programming">Programming</NavLink>}
         {user.role === 'teacher' && <NavLink href="/teacher">Teacher</NavLink>}
         {user.role === 'parent' && <NavLink href="/parent">Family</NavLink>}
+        <NavLink href="/past-papers">Past papers</NavLink>
       </nav>
 
       <div className={styles.userInfo}>
-        {gradeLevel && (
-          <span className={styles.gradeTag}>Grade {gradeLevel}</span>
-        )}
+        {gradeLevel && <span className={styles.gradeTag}>Grade {gradeLevel}</span>}
         <LogoutButton />
       </div>
     </header>
