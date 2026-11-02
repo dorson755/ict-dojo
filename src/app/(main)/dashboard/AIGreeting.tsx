@@ -8,7 +8,7 @@ interface AIGreetingProps {
 }
 
 export default async function AIGreeting({ name, weakKeys, streak }: AIGreetingProps) {
-  // Generate greeting dynamically using Groq on the server side
+  // Personalize locally, without a model call on every dashboard visit.
   const greeting = await ContentGenerator.generateDashboardGreeting(name, weakKeys, streak);
 
   return (

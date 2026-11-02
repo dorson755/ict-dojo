@@ -11,7 +11,8 @@ import type { QuestStage, QuestContent } from '@/domains/typing/quest';
 /** Bump when the prompt changes so older cached lists stop being served. */
 const PROMPT_VERSION = 2;
 const CACHE_SLOTS = 3;
-const CACHE_HOURS = 6;
+// Daily reuse preserves the three variants without regenerating them every six hours.
+const CACHE_HOURS = 24;
 
 export interface GenerateOptions {
   /** Games without a boss scroll skip it: fewer tokens and fewer rejected lists. */
@@ -75,7 +76,8 @@ export async function generateQuestContent(
   const key = `v${PROMPT_VERSION}#${scroll ? 'scroll' : 'words'}#belt${stage.belt}#${[...focus].sort().join('') || '-'}#${slot}`;
   try {
     const cached = await AiWordCacheRepository.get(key);
-    if (cached && Date.now() - Date.parse(cached.created_at) < CACHE_HOURS * 3600_000) {
+    const age = cached ? Date.now() - Date.parse(cached.created_at) : NaN;
+    if (cached && age >= 0 && age < CACHE_HOURS * 3600_000) {
       const content = validate(cached, stage, focus, scroll);
       if (content) return content;
     }

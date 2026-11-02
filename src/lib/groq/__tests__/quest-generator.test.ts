@@ -33,21 +33,29 @@ it('labels valid model output as AI and stores it in the chosen slot', async () 
   expect(cache.put).toHaveBeenCalledWith('v2#scroll#belt0#-#2', result);
 });
 
-it('serves a fresh, valid cached list without calling the model', async () => {
-  const payload = fallbackQuestContent(QUEST_STAGES[0], { i: 3 });
-  cache.get.mockResolvedValue({ ...payload, created_at: fresh() });
-  const create = modelReturns('{}');
-  const result = await generateQuestContent(QUEST_STAGES[0], { i: 3 }, { rand: () => 0 });
-  expect(result).toMatchObject({ source: 'ai', words: payload.words, focusKeys: ['i'] });
-  expect(cache.get).toHaveBeenCalledWith('v2#scroll#belt0#i#0');
-  expect(create).not.toHaveBeenCalled();
-});
+it.each([0, 7, 23.99])(
+  'serves a valid %s-hour-old cached list without calling the model',
+  async (hours) => {
+    const payload = fallbackQuestContent(QUEST_STAGES[0], { i: 3 });
+    cache.get.mockResolvedValue({
+      ...payload,
+      created_at: new Date(Date.now() - hours * 3600_000).toISOString(),
+    });
+    const create = modelReturns('{}');
+    const result = await generateQuestContent(QUEST_STAGES[0], { i: 3 }, { rand: () => 0 });
+    expect(result).toMatchObject({ source: 'ai', words: payload.words, focusKeys: ['i'] });
+    expect(cache.get).toHaveBeenCalledWith('v2#scroll#belt0#i#0');
+    expect(create).not.toHaveBeenCalled();
+  },
+);
 
 it('regenerates stale or invalid cached lists, and survives storage errors', async () => {
   const payload = fallbackQuestContent(QUEST_STAGES[0], {});
-  const stale = new Date(Date.now() - 7 * 3600_000).toISOString();
+  const stale = new Date(Date.now() - 24 * 3600_000).toISOString();
   for (const stored of [
     { ...payload, created_at: stale },
+    { ...payload, created_at: new Date(Date.now() + 3600_000).toISOString() },
+    { ...payload, created_at: 'invalid date' },
     { words: ['<script>'], bossLine: payload.bossLine, created_at: fresh() },
   ]) {
     cache.get.mockResolvedValue(stored);

@@ -88,44 +88,22 @@ Output ONLY the raw passage text. No markdown, no explanations, no quotes around
     weakKeys: string[],
     streak: number,
   ): Promise<string> {
-    const weakKeysText =
-      weakKeys.length > 0
-        ? `They are currently struggling with the following keys: ${weakKeys.join(', ')}.`
-        : `They have no specific weak keys right now.`;
-
-    const streakText =
-      streak > 0
-        ? `They have a ${streak} day practice streak.`
-        : `They don't have an active streak.`;
-
-    const prompt = `
-You are an encouraging martial arts Sensei inside a typing application called "ICT Dojo".
-Write a short, punchy, 2-sentence welcome greeting for a student named ${name}.
-${weakKeysText}
-${streakText}
-
-Provide ONLY the raw text. Do not use quotes. Keep it highly encouraging, acknowledge their streak if they have one, and give them a quick tip or challenge based on their weak keys (if any).
-`;
-
-    try {
-      // Created inside the try so a missing or rotated key degrades to the plain greeting
-      // instead of taking down the dashboard.
-      const groq = getGroqClient();
-      const completion = await groq.chat.completions.create({
-        messages: [{ role: 'user', content: prompt }],
-        model: GROQ_MODELS.FAST,
-        temperature: 0.7,
-        max_tokens: 300,
-        // Without this the model spends its token budget reasoning and the greeting truncates.
-        reasoning_effort: 'low',
-      });
-      return (
-        completion.choices[0]?.message?.content?.trim() ||
-        `Welcome back, ${name}. Keep practicing to improve your skills.`
-      );
-    } catch (error) {
-      console.error('Failed to generate greeting:', error);
-      return `Welcome back, ${name}. Let's get to work.`;
-    }
+    // Simple personalization needs no model call, tokens, or student data sent to Groq.
+    const learner = name.trim() || 'Learner';
+    const days = Number.isFinite(streak) ? Math.max(0, Math.floor(streak)) : 0;
+    const keys = [
+      ...new Set(
+        weakKeys
+          .filter((key) => /^[\x20-\x7e]$/.test(key))
+          .map((key) => (key === ' ' ? 'Space' : key.toUpperCase())),
+      ),
+    ].slice(0, 3);
+    const welcome = days
+      ? `Welcome back, ${learner}, your ${days}-day streak shows real discipline.`
+      : `Welcome back, ${learner}, today is a good day to build your rhythm.`;
+    const challenge = keys.length
+      ? `Focus on the ${keys.join(', ')} ${keys.length === 1 ? 'key' : 'keys'} with slow, accurate practice before adding speed.`
+      : 'Keep your hands relaxed and aim for accuracy before speed.';
+    return `${welcome} ${challenge}`;
   }
 }
