@@ -5,6 +5,10 @@ Parameters:
     Type: String
     Description: Exact HTTPS site origin, without a trailing slash.
     AllowedPattern: '^https://[a-zA-Z0-9.-]+$'
+  RuntimeUserName:
+    Type: String
+    Default: ict-dojo-runtime
+    Description: Existing application runtime IAM user. No new credentials are created.
 Resources:
   ExamPapers:
     Type: AWS::S3::Bucket
@@ -49,6 +53,24 @@ Resources:
             Condition:
               Bool:
                 aws:SecureTransport: false
+  RuntimePaperPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: !Sub '${AWS::StackName}-runtime'
+      Users:
+        - !Ref RuntimeUserName
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: PrivatePaperObjects
+            Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+              - s3:GetObjectVersion
+            Resource:
+              - !Sub '${ExamPapers.Arn}/intake/bgcse/*'
+              - !Sub '${ExamPapers.Arn}/intake/bjc/*'
 Outputs:
   BucketName:
     Value: !Ref ExamPapers

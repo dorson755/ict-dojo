@@ -18,9 +18,9 @@ const coverageKey = (subject: ExamSubject, year: number, qualification: ExamQual
   PK: catalogKey(qualification),
   SK: `${subject}#${year}`,
 });
-const statusIndex = (status: string, id: string, qualification: ExamQualification) => ({
-  GSI1PK: `EXAM#${qualification.toUpperCase()}#STATUS#${status}`,
-  GSI1SK: id,
+const reviewKey = (id: string, qualification: ExamQualification) => ({
+  PK: `EXAM#${qualification.toUpperCase()}#REVIEW`,
+  SK: id,
 });
 async function read<T>(Key: { PK: string; SK: string }): Promise<T | null> {
   const response = await dynamoClient.send(
@@ -157,8 +157,7 @@ export class ExamRepository {
               Update: {
                 TableName: TABLE_NAME,
                 Key: submissionKey(id, qualification),
-                UpdateExpression:
-                  'SET #status = :pending, versionId = :version, GSI1PK = :index, GSI1SK = :id',
+                UpdateExpression: 'SET #status = :pending, versionId = :version',
                 ConditionExpression: '#status = :uploading AND #owner = :owner',
                 ExpressionAttributeNames: { '#status': 'status', '#owner': 'owner' },
                 ExpressionAttributeValues: {
@@ -166,9 +165,14 @@ export class ExamRepository {
                   ':uploading': 'uploading',
                   ':owner': owner,
                   ':version': versionId,
-                  ':index': statusIndex('pending', id, qualification).GSI1PK,
-                  ':id': id,
                 },
+              },
+            },
+            {
+              Put: {
+                TableName: TABLE_NAME,
+                Item: { ...row, status: 'pending', versionId, ...reviewKey(id, qualification) },
+                ConditionExpression: 'attribute_not_exists(PK)',
               },
             },
           ],
@@ -183,23 +187,20 @@ export class ExamRepository {
     const response = await dynamoClient.send(
       new QueryCommand({
         TableName: TABLE_NAME,
-        IndexName: 'GSI1',
-        KeyConditionExpression: 'GSI1PK = :pk',
-        ExpressionAttributeValues: { ':pk': statusIndex('pending', '', qualification).GSI1PK },
+        KeyConditionExpression: 'PK = :pk',
+        ExpressionAttributeValues: { ':pk': reviewKey('', qualification).PK },
+        ConsistentRead: true,
         Limit: 30,
         ...(cursor
           ? {
-              ExclusiveStartKey: {
-                ...submissionKey(cursor, qualification),
-                ...statusIndex('pending', cursor, qualification),
-              },
+              ExclusiveStartKey: reviewKey(cursor, qualification),
             }
           : {}),
       }),
     );
     return {
       rows: (response.Items ?? []).map((row) => ({ ...row, qualification })) as PaperSubmission[],
-      next: response.LastEvaluatedKey?.GSI1SK,
+      next: response.LastEvaluatedKey?.SK,
     };
   }
   static async review(
@@ -232,7 +233,7 @@ export class ExamRepository {
                 TableName: TABLE_NAME,
                 Key: submissionKey(id, qualification),
                 UpdateExpression:
-                  'SET #status = :next, reviewedBy = :reviewer, reviewedAt = :at, reviewNote = :note REMOVE GSI1PK, GSI1SK',
+                  'SET #status = :next, reviewedBy = :reviewer, reviewedAt = :at, reviewNote = :note',
                 ConditionExpression: '#status = :pending',
                 ExpressionAttributeNames: { '#status': 'status' },
                 ExpressionAttributeValues: {
@@ -242,6 +243,13 @@ export class ExamRepository {
                   ':at': new Date().toISOString(),
                   ':note': note,
                 },
+              },
+            },
+            {
+              Delete: {
+                TableName: TABLE_NAME,
+                Key: reviewKey(id, qualification),
+                ConditionExpression: 'attribute_exists(PK)',
               },
             },
           ],

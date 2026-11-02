@@ -65,6 +65,14 @@ it('confirmation is idempotent and never marks a year collected', async () => {
   await ExamRepository.submit(submission.id, submission.owner, 'v1');
   expect(coverage).toMatchObject({ pending: 1, accepted: [], complete: false });
   expect(stored).toMatchObject({ status: 'pending', versionId: 'v1' });
+  const writes = transactions[0].input.TransactItems!;
+  expect(writes).toHaveLength(3);
+  expect(writes[2].Put?.Item).toMatchObject({
+    PK: 'EXAM#BGCSE#REVIEW',
+    SK: submission.id,
+    status: 'pending',
+    versionId: 'v1',
+  });
   await ExamRepository.submit(submission.id, submission.owner, 'v2');
   expect(transactions).toHaveLength(1);
   expect(stored.versionId).toBe('v1');
@@ -79,7 +87,7 @@ it('rejects foreign or expired confirmations without writes', async () => {
   );
   expect(transactions).toHaveLength(0);
 });
-it('accepts only the component, consumes pending once, and guards both writes', async () => {
+it('accepts only the component, consumes pending once, and guards all writes', async () => {
   await ExamRepository.submit(submission.id, submission.owner, 'v');
   transactions = [];
   await ExamRepository.review(submission.id, true, 'superadmin', 'Checked');
@@ -90,9 +98,14 @@ it('accepts only the component, consumes pending once, and guards both writes', 
   });
   const writes = transactions[0].input.TransactItems!;
   expect(
-    writes.every((write) => write.Put?.ConditionExpression || write.Update?.ConditionExpression),
+    writes.every(
+      (write) =>
+        write.Put?.ConditionExpression ||
+        write.Update?.ConditionExpression ||
+        write.Delete?.ConditionExpression,
+    ),
   ).toBe(true);
-  expect(writes[1].Update?.UpdateExpression).toContain('REMOVE GSI1PK, GSI1SK');
+  expect(writes[2].Delete?.Key).toEqual({ PK: 'EXAM#BGCSE#REVIEW', SK: submission.id });
   await expect(ExamRepository.review(submission.id, true, 'superadmin', '')).rejects.toThrow(
     'already been reviewed',
   );
@@ -175,8 +188,21 @@ it('keeps BJC catalog, submissions, queue, and coverage in separate namespaces',
   );
   expect((send.mock.calls[2][0] as GetCommand).input.Key?.PK).toBe('EXAM#BJC#CATALOG');
   expect((send.mock.calls[3][0] as QueryCommand).input.ExpressionAttributeValues).toEqual({
-    ':pk': 'EXAM#BJC#STATUS#pending',
+    ':pk': 'EXAM#BJC#REVIEW',
   });
+  expect((send.mock.calls[3][0] as QueryCommand).input.IndexName).toBeUndefined();
+  expect((send.mock.calls[3][0] as QueryCommand).input.ConsistentRead).toBe(true);
+});
+it('paginates the private review queue using only the base table key', async () => {
+  send.mockResolvedValue({
+    Items: [{ ...submission, status: 'pending' }],
+    LastEvaluatedKey: { PK: 'EXAM#BGCSE#REVIEW', SK: submission.id },
+  });
+  const result = await ExamRepository.reviewQueue(submission.id);
+  const query = (send.mock.calls[0][0] as QueryCommand).input;
+  expect(query.IndexName).toBeUndefined();
+  expect(query.ExclusiveStartKey).toEqual({ PK: 'EXAM#BGCSE#REVIEW', SK: submission.id });
+  expect(result.next).toBe(submission.id);
 });
 it('reads legacy BGCSE rows without changing their keys', async () => {
   const legacy: Partial<PaperSubmission> = { ...submission };

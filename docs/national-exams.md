@@ -26,32 +26,38 @@ Status precedence: collected, partly collected (some accepted), under review
 collected years. Public records contain only coverage and accepted component
 names/types, not account IDs, filenames, notes, storage keys, or review notes.
 
-## Deployment is deliberately disabled
+## Deployment and access
 
-No AWS resource, Cognito user, IAM policy, or environment setting is created by
-this change. The catalog is usable without S3; file controls say “intake opens
-soon” until configured. Ask the owner before provisioning or changing access.
+The owner approved private storage, scoped permissions, and
+review access for existing admin accounts, along with the dependency security
+updates needed before activation. The `ict-dojo-exam-papers` CloudFormation
+stack manages the private bucket and its runtime object-access policy. No new
+Cognito account, password, or access key is created.
 
-After approval:
+For deployment or recovery:
 
 1. Resolve the existing production dependency advisories reported by
-   `npm audit --omit=dev`. This feature does not silently upgrade the framework.
+   `npm audit --omit=dev`. Activation updates Next.js/eslint-config-next to
+   16.4.3, TinyMCE to 8.10.1, and affected transitive packages.
 2. Deploy `infrastructure/exam-papers.yaml` with the exact production HTTPS
    origin. Keep S3 Block Public Access on, encryption on, versioning enabled,
    and the bucket private. For local integration tests, add only the exact
    local development origin to CORS temporarily, with owner approval.
-3. Grant the runtime principal `s3:PutObject`, `s3:GetObject`, and
+3. The template grants the existing runtime principal `s3:PutObject`, `s3:GetObject`, and
    `s3:GetObjectVersion` scoped to the outputs `RuntimeObjectResource` (BGCSE)
    and `BjcRuntimeObjectResource` (BJC). It does
    not need bucket listing, deletion, ACLs, or public access.
-4. Confirm DynamoDB permissions include GetItem, Query (including GSI1),
-   PutItem, and UpdateItem on the existing table and underlying transactional
-   use. No new DynamoDB table/index is needed.
+4. Confirm DynamoDB permissions include GetItem, Query, PutItem, UpdateItem,
+   and DeleteItem on the existing table and underlying transactional use.
+   The live table has no secondary indexes. Pending reviews use a separate
+   base-table partition, atomically maintained with the submission and coverage.
+   No live table/index change is needed.
 5. Set server-only variables:
    - `EXAM_PAPERS_BUCKET`: bucket output.
    - `EXAM_SUPERADMIN_IDS`: comma-separated Cognito **sub IDs**, explicitly
-     designated by the owner. No student, teacher, or existing admin role
-     automatically gains exam-review authority.
+     designated by the owner. For activation, this is the existing enabled,
+     confirmed Cognito admin membership. Teachers and students are not included.
+     The list is an explicit snapshot: update it when admins are added or removed.
    - `EXAM_INTAKE_ENABLED=true`: only after storage, permissions, and review
      responsibilities have been verified.
 6. Deploy, then test one authorized upload and review with the owner's
@@ -95,7 +101,10 @@ Data:
 
 - Coverage: `PK=EXAM#BGCSE#CATALOG`, `SK=<subject>#<year>`.
 - Private submission: `PK=EXAM#BGCSE#SUBMISSION#<uuid>`, `SK=META`.
-- Pending index: `GSI1PK=EXAM#BGCSE#STATUS#pending`, `GSI1SK=<uuid>`.
+- Private pending queue: `PK=EXAM#BGCSE#REVIEW`, `SK=<uuid>`. Submission
+  confirmation creates the queue record in the same transaction; review removes
+  it in the transaction that accepts/rejects the submission. Queue reads are
+  strongly consistent and do not depend on a secondary index.
 - BJC uses the same structure with `EXAM#BJC` instead of `EXAM#BGCSE`.
   Object prefixes are `intake/bgcse/` and `intake/bjc/`. New records carry an
   explicit `qualification`; legacy BGCSE records retain their original keys and

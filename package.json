@@ -31,10 +31,10 @@
     "@tinymce/tinymce-react": "^6.3.0",
     "groq-sdk": "^1.6.0",
     "jose": "^6.2.12",
-    "next": "16.3.4",
+    "next": "16.4.3",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "tinymce": "^8.9.1"
+    "tinymce": "^8.10.1"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
@@ -42,7 +42,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.4.3",
     "husky": "^9.1.7",
     "jest": "^30.5.1",
     "lint-staged": "^17.4.1",
