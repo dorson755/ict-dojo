@@ -20,20 +20,34 @@ export default async function GamesPage() {
         <p className={styles.kicker}>Games</p>
         <h1 className={styles.title}>The arcade</h1>
         <p className={styles.subtitle}>
-          Every game logs a real session: XP, streaks, personal records and skill
-          mastery all count, just like practice.
+          Every game logs a real session: XP, streaks, personal records and skill mastery all count,
+          just like practice.
         </p>
       </header>
 
       <div className={styles.grid}>
+        <Link href="/games/pokemon-trails" className={styles.card}>
+          <h2>Pokémon Typing Trails</h2>
+          <p>
+            Choose a partner, explore the meadow, and type to battle and befriend wild Pokémon.
+            Train your collection through evolution.
+          </p>
+          <span className={styles.meta}>Saved collection · Accuracy-powered battles</span>
+        </Link>
         <Link href="/games/dojo-quest" className={styles.card}>
           <h2>Dojo Quest</h2>
-          <p>Type to defend a pixel-art world. Return to four settings with harder words at each belt, then face the guardian&apos;s scroll.</p>
+          <p>
+            Type to defend a pixel-art world. Return to four settings with harder words at each
+            belt, then face the guardian&apos;s scroll.
+          </p>
           <span className={styles.meta}>Eight belt-locked stages · AI-targeted words</span>
         </Link>
         <Link href="/games/dojo-defense" className={styles.card}>
           <h2>Dojo Defense</h2>
-          <p>Two cats hold the street against five waves and a boss. Clean words earn team attacks and shields.</p>
+          <p>
+            Two cats hold the street against five waves and a boss. Clean words earn team attacks
+            and shields.
+          </p>
           <span className={styles.meta}>Words matched to your belt · AI-targeted words</span>
         </Link>
         <Link href="/games/falling-words" className={styles.card}>
@@ -41,11 +55,15 @@ export default async function GamesPage() {
           {weakChars.length > 0 ? (
             <div className={styles.chips}>
               {weakChars.map((char) => (
-                <span key={char} className={styles.chip}>{char}</span>
+                <span key={char} className={styles.chip}>
+                  {char}
+                </span>
               ))}
             </div>
           ) : null}
-          <p>Words drop from the sky, built from the keys you miss most. Type them before they land.</p>
+          <p>
+            Words drop from the sky, built from the keys you miss most. Type them before they land.
+          </p>
           <span className={styles.meta}>Weak-key practice</span>
         </Link>
 
@@ -57,7 +75,10 @@ export default async function GamesPage() {
 
         <Link href="/practice/survival" className={styles.card}>
           <h2>Survival</h2>
-          <p>Keep your speed above a bar that rises every 30 seconds. Class leaderboards for both modes.</p>
+          <p>
+            Keep your speed above a bar that rises every 30 seconds. Class leaderboards for both
+            modes.
+          </p>
           <span className={styles.meta}>Leaderboards</span>
         </Link>
       </div>

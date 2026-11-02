@@ -1,0 +1,813 @@
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+  color: #173c38;
+}
+.back {
+  font-size: 0.875rem;
+  color: #1f5f66;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 22px 0 26px;
+}
+.header h1 {
+  font: 600 clamp(1.7rem, 4vw, 2.7rem)/1.1 var(--font-display);
+  letter-spacing: -0.055em;
+}
+.header p {
+  margin-top: 8px;
+  color: #4d645e;
+}
+.belt {
+  border: 1px solid #b3c9c4;
+  border-radius: 6px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  font-size: 0.82rem;
+}
+.primary,
+.secondary,
+.textButton,
+.starter {
+  font: inherit;
+  cursor: pointer;
+}
+.primary,
+.secondary {
+  border-radius: 7px;
+  padding: 12px 19px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.primary {
+  color: #fff;
+  background: #1f5f66;
+  border: 1px solid #1f5f66;
+}
+.primary:hover:not(:disabled) {
+  background: #174b51;
+}
+.secondary {
+  color: #173c38;
+  background: #f6faf8;
+  border: 1px solid #9db9b0;
+}
+.textButton {
+  color: #1f5f66;
+  border: 0;
+  background: transparent;
+  padding: 8px 0;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 0.85rem;
+}
+.page button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.page button:focus-visible,
+.back:focus-visible,
+.typingInput:focus-visible {
+  outline: 3px solid #1f5f66;
+  outline-offset: 4px;
+}
+.onboarding {
+  background: #f6faf8;
+  border: 1px solid #c8d7ce;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.introduction {
+  padding: 38px 38px 28px;
+  background: #e4ede6;
+}
+.introduction h2,
+.camp h2 {
+  font: 600 clamp(2rem, 5vw, 3.5rem)/1.05 var(--font-display);
+  letter-spacing: -0.055em;
+  margin-bottom: 18px;
+}
+.introduction p {
+  max-width: 62ch;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.quiet {
+  color: #526b61;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+.starters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.starter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: #173c38;
+  padding: 24px;
+  border: 0;
+  text-align: center;
+}
+.starter + .starter {
+  border-left: 1px solid #d0dfd4;
+}
+.starter:hover:not(:disabled) {
+  background: #e9f1e9;
+}
+.starter strong {
+  font: 600 1.5rem var(--font-display);
+}
+.starter > span:not(.type):not(.choose) {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  max-width: 25ch;
+}
+.choose {
+  margin-top: 10px;
+  color: #1f5f66;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.type {
+  font-size: 0.75rem;
+  border-bottom: 2px solid #c1d5ba;
+  padding-bottom: 4px;
+}
+.sprite {
+  display: block;
+  width: 180px;
+  height: 180px;
+}
+.sprite img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+.camp {
+  position: relative;
+  min-height: 460px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #a4bd7c url('/pokemon-trails/meadow.svg') center/cover;
+}
+.campCopy {
+  position: relative;
+  z-index: 2;
+  width: min(550px, 64%);
+  padding: 36px 38px;
+}
+.campCopy p {
+  max-width: 37ch;
+  color: #24483f;
+  line-height: 1.6;
+  margin: 15px 0 24px;
+}
+.location {
+  display: inline-block;
+  margin-bottom: 18px;
+  font-size: 0.85rem;
+  color: #173c38;
+  border-bottom: 1px solid #668777;
+  padding-bottom: 4px;
+}
+.campPartner {
+  position: absolute;
+  bottom: 29px;
+  right: 7%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.campPartner .sprite {
+  width: 220px;
+  height: 220px;
+}
+.campPartner > span {
+  background: #f6faf8;
+  border: 1px solid #799a79;
+  padding: 7px 14px;
+  border-radius: 5px;
+  font-size: 0.85rem;
+}
+.trailMarkers {
+  position: absolute;
+  bottom: 15%;
+  left: 43%;
+  width: 21%;
+  height: 19%;
+  border-bottom: 3px dashed #e9e9ba;
+  transform: rotate(-20deg);
+}
+.trailMarkers span {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  bottom: -7px;
+  background: #e9e9ba;
+  border: 2px solid #55744f;
+  border-radius: 50%;
+}
+.trailMarkers span:nth-child(2) {
+  left: 50%;
+}
+.trailMarkers span:nth-child(3) {
+  left: 100%;
+}
+.campDetails {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 26px;
+  margin-top: 30px;
+}
+.fieldGuide {
+  min-width: 0;
+  background: #f6faf8;
+  border: 1px solid #d0dcd3;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.sectionHeading {
+  padding: 23px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #d0dcd3;
+}
+.sectionHeading h2,
+.guardian h2,
+.notebook h2 {
+  font: 600 1.35rem/1.2 var(--font-display);
+  letter-spacing: -0.035em;
+}
+.sectionHeading p {
+  font-size: 0.8rem;
+  color: #526b61;
+  margin-top: 6px;
+}
+.sectionHeading > span {
+  white-space: nowrap;
+  font: 600 1.1rem var(--font-display);
+}
+.collectionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid #e0e8e0;
+}
+.collectionRow:last-child {
+  border: 0;
+}
+.activePartner {
+  background: #e6f0e6;
+}
+.evolutionLine {
+  display: flex;
+  gap: 8px;
+}
+.evolutionLine > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+}
+.evolutionLine img {
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+.evolutionLine span {
+  font-size: 0.66rem;
+}
+.undiscovered img {
+  filter: brightness(0);
+  opacity: 0.17;
+}
+.undiscovered span {
+  color: #66776d;
+}
+.collectionAction {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  max-width: 145px;
+}
+.collectionAction > span {
+  font-size: 0.72rem;
+  color: #526b61;
+}
+.guardian {
+  padding: 24px;
+  background: #e4ece2;
+  border-radius: 12px;
+  align-self: start;
+}
+.guardian > .sprite {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto;
+}
+.guardian p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 12px 0;
+}
+.guardian button {
+  width: 100%;
+  font-size: 0.82rem;
+}
+.badgeShape {
+  float: right;
+  font-size: 1.9rem;
+  color: #80601a;
+  padding-left: 8px;
+}
+.adventure {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 24px;
+  align-items: start;
+}
+.battleCard {
+  border: 1px solid #b9cdbe;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f6faf8;
+}
+.scene {
+  height: 380px;
+  position: relative;
+  overflow: hidden;
+  background: #a4bd7c url('/pokemon-trails/meadow.svg') center/cover;
+}
+.sceneTitle {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  font-size: 0.85rem;
+  color: #173c38;
+}
+.sceneTitle span {
+  display: block;
+  font-size: 0.7rem;
+  margin-top: 4px;
+}
+.opponent {
+  position: absolute;
+  top: 66px;
+  right: 13%;
+  width: 160px;
+  height: 160px;
+}
+.partner {
+  position: absolute;
+  bottom: -12px;
+  left: 9%;
+  width: 235px;
+  height: 235px;
+}
+.opponentStatus,
+.partnerStatus {
+  position: absolute;
+  min-width: 195px;
+  padding: 11px 14px;
+  background: #f6faf8;
+  border: 1px solid #6f9479;
+  border-radius: 5px;
+  z-index: 1;
+}
+.opponentStatus {
+  top: 55px;
+  left: 26px;
+}
+.partnerStatus {
+  right: 22px;
+  bottom: 24px;
+}
+.opponentStatus strong,
+.partnerStatus strong {
+  font: 600 1rem var(--font-display);
+}
+.partnerStatus strong > span {
+  font: 400 0.75rem var(--font-body);
+}
+.scene label {
+  display: block;
+  font-size: 0.65rem;
+  margin-top: 7px;
+}
+.scene label > span {
+  float: right;
+}
+.scene progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin-top: 5px;
+  border: 0;
+  accent-color: #1f5f66;
+}
+.captureSeal {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-8deg);
+  background: #f8e9b5;
+  border: 2px solid #8b7028;
+  padding: 12px 28px;
+  border-radius: 7px;
+  font: 600 1.8rem var(--font-display);
+  z-index: 3;
+}
+.console {
+  padding: 22px 26px;
+}
+.message {
+  min-height: 44px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  border-bottom: 1px solid #d2ded5;
+  padding-bottom: 14px;
+}
+.move {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 20px 0;
+}
+.move strong {
+  font: 600 1.1rem var(--font-display);
+}
+.move > span {
+  font-size: 0.7rem;
+  color: #526b61;
+  text-align: right;
+}
+.prompt {
+  font: 500 clamp(1.4rem, 3.6vw, 2rem)/1.7 var(--font-mono);
+  letter-spacing: 0.035em;
+  color: #405b52;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 20px 0;
+}
+.typed {
+  color: #22704d;
+  background: #e1eddf;
+}
+.cursor {
+  background: #173c38;
+  color: #fff;
+  border-radius: 2px;
+}
+.inputLabel {
+  display: block;
+  font-size: 0.76rem;
+  color: #526b61;
+  margin-bottom: 8px;
+}
+.typingInput {
+  width: 100%;
+  padding: 12px;
+  color: #173c38;
+  border: 1px solid #9db9b0;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  margin-bottom: 8px;
+}
+.typingInput:focus {
+  border-color: #1f5f66;
+}
+.actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 18px;
+}
+.notebook {
+  padding: 26px 8px 20px;
+}
+.notebookIcon {
+  font-size: 2rem;
+  color: #80601a;
+}
+.notebook h2 {
+  font-size: 1.6rem;
+  margin: 18px 0;
+}
+.notebook p {
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.notebook dl {
+  margin: 24px 0;
+}
+.notebook dl > div {
+  padding: 12px 0;
+  border-bottom: 1px solid #ccd8ce;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.75rem;
+}
+.notebook dd {
+  font-weight: 600;
+}
+.result h2 {
+  font: 600 1.7rem var(--font-display);
+  letter-spacing: -0.04em;
+  margin: 20px 0;
+}
+.result p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+.metrics {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
+.metrics > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.metrics strong {
+  font: 600 1.65rem var(--font-display);
+}
+.metrics span {
+  font-size: 0.75rem;
+  color: #526b61;
+}
+.evolution {
+  padding: 15px;
+  background: #f8e9b5;
+  border-radius: 6px;
+}
+.error,
+.leaveBox {
+  padding: 16px 20px;
+  border: 1px solid #dfbeb3;
+  background: #fff0e9;
+  color: #703d2d;
+  border-radius: 7px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+.leaveBox button {
+  margin: 10px 12px 0 0;
+}
+.resumeNote {
+  padding: 16px 20px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #cad8cf;
+}
+.resumeNote p {
+  line-height: 1.6;
+}
+.credits {
+  font-size: 0.68rem;
+  line-height: 1.8;
+  color: #5d6b65;
+  margin-top: 34px;
+  max-width: 100ch;
+}
+.credits a {
+  text-decoration: underline;
+}
+.hit {
+  animation: hit 0.3s ease-out;
+}
+@keyframes hit {
+  50% {
+    transform: translateX(10px);
+    filter: brightness(1.5);
+  }
+}
+@media (max-width: 1000px) {
+  .adventure {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .notebook {
+    display: none;
+  }
+  .campDetails {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .guardian {
+    display: grid;
+    grid-template-columns: 1fr 140px;
+    gap: 0 20px;
+  }
+  .guardian > .sprite {
+    grid-column: 2;
+    grid-row: 1 / 4;
+  }
+  .guardian p,
+  .guardian button {
+    grid-column: 1;
+  }
+  .badgeShape {
+    display: none;
+  }
+}
+@media (max-width: 640px) {
+  .page {
+    padding: 22px 14px 36px;
+  }
+  .header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .header h1 {
+    font-size: 1.9rem;
+  }
+  .header p {
+    font-size: 0.85rem;
+  }
+  .belt {
+    font-size: 0.7rem;
+    padding: 5px 9px;
+  }
+  .introduction {
+    padding: 26px 22px;
+  }
+  .starters {
+    grid-template-columns: 1fr;
+  }
+  .starter {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    text-align: left;
+    align-items: start;
+    column-gap: 18px;
+    padding: 20px;
+  }
+  .starter + .starter {
+    border-left: 0;
+    border-top: 1px solid #d0dfd4;
+  }
+  .starter .sprite {
+    grid-row: 1 / 5;
+    width: 110px;
+    height: 130px;
+    align-self: center;
+  }
+  .starter strong {
+    font-size: 1.25rem;
+  }
+  .type {
+    justify-self: start;
+  }
+  .choose {
+    font-size: 0.75rem;
+  }
+  .camp {
+    min-height: 540px;
+    background-position: 63% center;
+  }
+  .campCopy {
+    width: 100%;
+    padding: 28px 24px;
+  }
+  .camp h2 {
+    font-size: 2.4rem;
+  }
+  .campCopy p {
+    max-width: 31ch;
+    font-size: 0.85rem;
+  }
+  .campCopy .primary {
+    font-size: 0.85rem;
+  }
+  .campPartner {
+    right: 16px;
+    bottom: 18px;
+  }
+  .campPartner .sprite {
+    width: 155px;
+    height: 155px;
+  }
+  .trailMarkers {
+    left: 10%;
+    width: 35%;
+    bottom: 14%;
+  }
+  .campPartner > span {
+    font-size: 0.7rem;
+  }
+  .sectionHeading {
+    padding: 20px 16px;
+  }
+  .sectionHeading h2 {
+    font-size: 1.2rem;
+  }
+  .sectionHeading p {
+    font-size: 0.72rem;
+  }
+  .collectionRow {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px 10px;
+  }
+  .evolutionLine {
+    justify-content: space-around;
+  }
+  .collectionAction {
+    max-width: none;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 8px;
+  }
+  .guardian {
+    display: block;
+    padding: 22px;
+  }
+  .guardian > .sprite {
+    float: right;
+    width: 100px;
+    height: 100px;
+  }
+  .guardian h2 {
+    max-width: 18ch;
+  }
+  .scene {
+    height: 320px;
+  }
+  .sceneTitle {
+    top: 13px;
+    left: 14px;
+    font-size: 0.75rem;
+  }
+  .opponentStatus {
+    top: 57px;
+    left: 12px;
+    min-width: 150px;
+    padding: 9px 10px;
+  }
+  .opponent {
+    top: 91px;
+    right: 4%;
+    width: 130px;
+    height: 130px;
+  }
+  .partner {
+    bottom: -5px;
+    left: 0;
+    width: 180px;
+    height: 180px;
+  }
+  .partnerStatus {
+    right: 12px;
+    bottom: 18px;
+    min-width: 155px;
+    padding: 10px;
+  }
+  .console {
+    padding: 18px;
+  }
+  .move {
+    align-items: flex-start;
+  }
+  .move > span {
+    max-width: 18ch;
+  }
+  .prompt {
+    font-size: 1.5rem;
+  }
+  .metrics {
+    gap: 22px;
+  }
+  .metrics strong {
+    font-size: 1.4rem;
+  }
+  .result h2 {
+    font-size: 1.45rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hit {
+    animation: none;
+  }
+}
