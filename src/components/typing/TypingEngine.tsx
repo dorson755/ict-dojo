@@ -47,8 +47,12 @@ export default function TypingEngine({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Keep refs in sync with state
-  useEffect(() => { typedCharsRef.current = typedChars; }, [typedChars]);
-  useEffect(() => { keystrokesRef.current = keystrokes; }, [keystrokes]);
+  useEffect(() => {
+    typedCharsRef.current = typedChars;
+  }, [typedChars]);
+  useEffect(() => {
+    keystrokesRef.current = keystrokes;
+  }, [keystrokes]);
 
   // --------------------------------------------------------
   // Live WPM / Accuracy ticker
@@ -70,9 +74,7 @@ export default function TypingEngine({
       const words = correctCount / 5;
       const wpm = durationMins > 0 ? Math.max(0, Math.round(words / durationMins)) : 0;
       const attempts = requireCorrect ? keystrokesRef.current.length : chars.length;
-      const accuracy = attempts > 0
-        ? Math.round((correctCount / attempts) * 100)
-        : 100;
+      const accuracy = attempts > 0 ? Math.round((correctCount / attempts) * 100) : 100;
 
       setLiveWpm(wpm);
       setLiveAccuracy(accuracy);
@@ -84,92 +86,95 @@ export default function TypingEngine({
   // --------------------------------------------------------
   // Input Handling
   // --------------------------------------------------------
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (isFinishedRef.current) return;
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.target !== e.currentTarget) return;
+      if (isFinishedRef.current) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
 
-    // Ignore modifier keys
-    if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
-    if (e.key !== 'Backspace' && e.key.length !== 1) return;
+      // Ignore modifier keys
+      if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
+      if (e.key !== 'Backspace' && e.key.length !== 1) return;
 
-    const now = Date.now();
+      const now = Date.now();
 
-    // Start timer on first non-backspace keystroke — use ref so it's immediate
-    if (!startedAtRef.current && e.key !== 'Backspace') {
-      startedAtRef.current = now;
-      setHasStarted(true);
-    }
-
-    if (e.key === 'Backspace') {
-      e.preventDefault();
-      const current = typedCharsRef.current;
-      if (current.length > 0) {
-        const next = current.slice(0, -1);
-        typedCharsRef.current = next;
-        setTypedChars(next);
-
-        const newKs: KeystrokeEvent[] = [
-          ...keystrokesRef.current,
-          {
-            position: current.length - 1,
-            expected: 'Backspace',
-            actual: 'Backspace',
-            correct: false,
-            timestamp_ms: now,
-          },
-        ];
-        keystrokesRef.current = newKs;
-        setKeystrokes(newKs);
-        if (onProgress && startedAtRef.current) {
-          onProgress(next.length, now - startedAtRef.current);
-        }
+      // Start timer on first non-backspace keystroke — use ref so it's immediate
+      if (!startedAtRef.current && e.key !== 'Backspace') {
+        startedAtRef.current = now;
+        setHasStarted(true);
       }
-      return;
-    }
 
-    const currentIndex = typedCharsRef.current.length;
-    if (currentIndex >= passage.length) return;
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        const current = typedCharsRef.current;
+        if (current.length > 0) {
+          const next = current.slice(0, -1);
+          typedCharsRef.current = next;
+          setTypedChars(next);
 
-    e.preventDefault();
-    const expected = passage[currentIndex];
-    const actual = e.key;
-    const isCorrect = expected === actual;
+          const newKs: KeystrokeEvent[] = [
+            ...keystrokesRef.current,
+            {
+              position: current.length - 1,
+              expected: 'Backspace',
+              actual: 'Backspace',
+              correct: false,
+              timestamp_ms: now,
+            },
+          ];
+          keystrokesRef.current = newKs;
+          setKeystrokes(newKs);
+          if (onProgress && startedAtRef.current) {
+            onProgress(next.length, now - startedAtRef.current);
+          }
+        }
+        return;
+      }
 
-    const nextChars = requireCorrect && !isCorrect
-      ? typedCharsRef.current
-      : [...typedCharsRef.current, actual];
-    typedCharsRef.current = nextChars;
-    setTypedChars(nextChars);
+      const currentIndex = typedCharsRef.current.length;
+      if (currentIndex >= passage.length) return;
 
-    const newKs: KeystrokeEvent[] = [
-      ...keystrokesRef.current,
-      { position: currentIndex, expected, actual, correct: isCorrect, timestamp_ms: now },
-    ];
-    keystrokesRef.current = newKs;
-    setKeystrokes(newKs);
+      e.preventDefault();
+      const expected = passage[currentIndex];
+      const actual = e.key;
+      const isCorrect = expected === actual;
 
-    if (onProgress && startedAtRef.current) {
-      onProgress(nextChars.length, now - startedAtRef.current);
-    }
+      const nextChars =
+        requireCorrect && !isCorrect ? typedCharsRef.current : [...typedCharsRef.current, actual];
+      typedCharsRef.current = nextChars;
+      setTypedChars(nextChars);
 
-    // Check completion — use ref values so everything is synchronous
-    if (nextChars.length === passage.length) {
-      isFinishedRef.current = true;
-      setIsFinished(true);
+      const newKs: KeystrokeEvent[] = [
+        ...keystrokesRef.current,
+        { position: currentIndex, expected, actual, correct: isCorrect, timestamp_ms: now },
+      ];
+      keystrokesRef.current = newKs;
+      setKeystrokes(newKs);
 
-      // startedAtRef is guaranteed to be set because we set it above on first keystroke
-      onComplete({
-        studentId,
-        exerciseId,
-        passage,
-        keystrokes: newKs,
-        startedAt: startedAtRef.current!,
-        completedAt: now,
-        skillIds,
+      if (onProgress && startedAtRef.current) {
+        onProgress(nextChars.length, now - startedAtRef.current);
+      }
+
+      // Check completion — use ref values so everything is synchronous
+      if (nextChars.length === passage.length) {
+        isFinishedRef.current = true;
+        setIsFinished(true);
+
+        // startedAtRef is guaranteed to be set because we set it above on first keystroke
+        onComplete({
+          studentId,
+          exerciseId,
+          passage,
+          keystrokes: newKs,
+          startedAt: startedAtRef.current!,
+          completedAt: now,
+          skillIds,
           mode,
-      });
-    }
-  }, [passage, studentId, exerciseId, skillIds, onComplete, mode, onProgress, requireCorrect]);
+        });
+      }
+    },
+    [passage, studentId, exerciseId, skillIds, onComplete, mode, onProgress, requireCorrect],
+  );
 
   // --------------------------------------------------------
   // Render Helpers
@@ -212,8 +217,14 @@ export default function TypingEngine({
         role="textbox"
         aria-label={`${mode} typing practice passage`}
         aria-multiline="true"
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={(event) => {
+          // Child buttons receive focus before click. Keep them mounted until
+          // their activation explicitly transfers focus to the typing area.
+          if (event.target === event.currentTarget) setIsFocused(true);
+        }}
+        onBlur={(event) => {
+          if (event.target === event.currentTarget) setIsFocused(false);
+        }}
         onKeyDown={handleKeyDown}
       >
         {!isFocused && !isFinished && (

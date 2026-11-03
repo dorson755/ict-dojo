@@ -126,13 +126,13 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
 
   const elapsedMs = useCallback(
     () => (startedAtRef.current ? Date.now() - startedAtRef.current : 0),
-    []
+    [],
   );
 
   const fallSpeed = useCallback(() => {
     const ramp = Math.min(
       MAX_FALL_PX_PER_MS - START_FALL_PX_PER_MS,
-      (elapsedMs() / 1000) * FALL_RAMP_PER_SECOND
+      (elapsedMs() / 1000) * FALL_RAMP_PER_SECOND,
     );
     const speed = START_FALL_PX_PER_MS + ramp;
     return reducedMotionRef.current ? speed * 0.6 : speed;
@@ -140,7 +140,7 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
 
   const spawnInterval = useCallback(
     () => Math.max(MIN_SPAWN_MS, START_SPAWN_MS - elapsedMs() * SPAWN_SPEEDUP_PER_MS),
-    [elapsedMs]
+    [elapsedMs],
   );
 
   const nextWord = useCallback(() => {
@@ -163,7 +163,7 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
       wordsRef.current.push({ id: nextIdRef.current++, text, x, y: -26, base });
       lastSpawnRef.current = now;
     },
-    [nextWord]
+    [nextWord],
   );
 
   const submit = useCallback(async () => {
@@ -191,7 +191,13 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
       if (response.success) {
         const gamification = response.gamification as GamificationSummary | undefined;
         const nextRec = response.nextRecommendation as { reason?: string } | null | undefined;
-        setSummary({ result, tooShort: false, destroyed, gamification, nextRecReason: nextRec?.reason });
+        setSummary({
+          result,
+          tooShort: false,
+          destroyed,
+          gamification,
+          nextRecReason: nextRec?.reason,
+        });
       } else {
         setSummary({ result, tooShort: false, destroyed });
       }
@@ -229,7 +235,8 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
         if (landed.length > 0) {
           const landedIds = new Set(landed.map((word) => word.id));
           wordsRef.current = wordsRef.current.filter((word) => !landedIds.has(word.id));
-          if (lockedRef.current && landedIds.has(lockedRef.current.word.id)) lockedRef.current = null;
+          if (lockedRef.current && landedIds.has(lockedRef.current.word.id))
+            lockedRef.current = null;
           livesRef.current -= landed.length;
           if (livesRef.current <= 0) {
             syncFrame();
@@ -270,6 +277,7 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.target !== event.currentTarget) return;
       if (phaseRef.current !== 'running') return;
       if (event.ctrlKey || event.metaKey || event.altKey) return;
       const key = event.key;
@@ -324,7 +332,7 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
       // Nothing matched: an error against the most urgent word on screen.
       const urgent = wordsRef.current.reduce<FallingWord | null>(
         (worst, word) => (worst === null || word.y > worst.y ? word : worst),
-        null
+        null,
       );
       if (urgent) {
         keystrokesRef.current.push({
@@ -337,11 +345,12 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
       }
       syncFrame();
     },
-    [syncFrame]
+    [syncFrame],
   );
 
   const liveWpm = frame.minutes > 0 ? Math.round(frame.correct / 5 / frame.minutes) : 0;
-  const liveAccuracy = frame.attempts > 0 ? Math.round((frame.correct / frame.attempts) * 100) : 100;
+  const liveAccuracy =
+    frame.attempts > 0 ? Math.round((frame.correct / frame.attempts) * 100) : 100;
 
   if (phase === 'ended' && summary) {
     return (
@@ -351,9 +360,7 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
         </h2>
 
         {summary.tooShort ? (
-          <p className={styles.note}>
-            {summary.result.invalidReason} Try another round.
-          </p>
+          <p className={styles.note}>{summary.result.invalidReason} Try another round.</p>
         ) : (
           <>
             <div className={styles.grid}>
@@ -374,16 +381,18 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
             {summary.gamification && (
               <div className={styles.xpLine}>
                 +{summary.gamification.xpGained} XP
-                {summary.gamification.leveledUp ? ` · Level ${summary.gamification.newLevel} reached` : ''}
-                {summary.gamification.streak > 1 ? ` · ${summary.gamification.streak} day streak` : ''}
+                {summary.gamification.leveledUp
+                  ? ` · Level ${summary.gamification.newLevel} reached`
+                  : ''}
+                {summary.gamification.streak > 1
+                  ? ` · ${summary.gamification.streak} day streak`
+                  : ''}
                 {summary.gamification.newWpmRecord ? ' · New best WPM' : ''}
                 {summary.gamification.newAccuracyRecord ? ' · New best accuracy' : ''}
               </div>
             )}
 
-            {summary.nextRecReason && (
-              <p className={styles.note}>Next: {summary.nextRecReason}</p>
-            )}
+            {summary.nextRecReason && <p className={styles.note}>Next: {summary.nextRecReason}</p>}
           </>
         )}
 
@@ -402,16 +411,26 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
   }
 
   if (phase === 'ended') {
-    return <p role="status" className={styles.note}>Saving your round…</p>;
+    return (
+      <p role="status" className={styles.note}>
+        Saving your round…
+      </p>
+    );
   }
 
   return (
     <div>
       <div className={styles.statsBar} aria-live="polite">
-        <span className={styles.stat}>Words<b>{frame.destroyed}</b></span>
+        <span className={styles.stat}>
+          Words<b>{frame.destroyed}</b>
+        </span>
         <span className={styles.stat}>
           Lives
-          <span className={styles.lives} role="img" aria-label={`${Math.max(0, frame.lives)} lives remaining`}>
+          <span
+            className={styles.lives}
+            role="img"
+            aria-label={`${Math.max(0, frame.lives)} lives remaining`}
+          >
             {Array.from({ length: LIVES }, (_, index) => (
               <span
                 key={index}
@@ -420,8 +439,12 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
             ))}
           </span>
         </span>
-        <span className={styles.stat}>WPM<b>{liveWpm}</b></span>
-        <span className={styles.stat}>Accuracy<b>{liveAccuracy}%</b></span>
+        <span className={styles.stat}>
+          WPM<b>{liveWpm}</b>
+        </span>
+        <span className={styles.stat}>
+          Accuracy<b>{liveAccuracy}%</b>
+        </span>
       </div>
 
       <div
@@ -431,11 +454,13 @@ export default function FallingWordsClient({ studentId, weakKeys }: FallingWords
         role="textbox"
         aria-label="Falling words game. Type each falling word before it reaches the bottom."
         onKeyDown={handleKeyDown}
-        onFocus={() => {
+        onFocus={(event) => {
+          if (event.target !== event.currentTarget) return;
           setIsFocused(true);
           focusedRef.current = true;
         }}
-        onBlur={() => {
+        onBlur={(event) => {
+          if (event.target !== event.currentTarget) return;
           setIsFocused(false);
           focusedRef.current = false;
         }}
