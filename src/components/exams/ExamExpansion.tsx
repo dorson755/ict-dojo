@@ -9,7 +9,8 @@ export default function ExamExpansion() {
         <h2 id="exam-expansion-title">National-exam practice is coming.</h2>
         <p>
           We&apos;re building Bahamas BJC and BGCSE paper collections, ahead of syllabus-aligned
-          practice that tests understanding, not just memory.
+          practice that tests understanding, not just memory. The{' '}
+          <Link href="/study">study library</Link> is now open, starting with BGCSE Keyboarding.
         </p>
       </div>
       <Link href="/past-papers">Help collect past papers</Link>

@@ -30,6 +30,8 @@ export async function proxy(request: NextRequest) {
   // Skip auth check for public paths and static files
   if (
     PUBLIC_PATHS.includes(pathname) ||
+    pathname === '/study' ||
+    pathname.startsWith('/study/') ||
     SCHEDULER_PATHS.includes(pathname) ||
     pathname.startsWith('/_next') ||
     pathname.includes('.')

@@ -15,6 +15,9 @@ export default async function Header() {
           <span className={styles.brandMark}>ICT</span>Dojo
         </Link>
         <nav className={styles.nav} aria-label="Main">
+          <NavLink href="/study" matchPrefix="/study">
+            Study library
+          </NavLink>
           <NavLink href="/past-papers">Past papers</NavLink>
         </nav>
         <Link href="/login" className={styles.navLink}>
@@ -54,6 +57,9 @@ export default async function Header() {
         {user.role === 'teacher' && <NavLink href="/teacher">Teacher</NavLink>}
         {user.role === 'parent' && <NavLink href="/parent">Family</NavLink>}
         <NavLink href="/past-papers">Past papers</NavLink>
+        <NavLink href="/study" matchPrefix="/study">
+          Study library
+        </NavLink>
       </nav>
 
       <div className={styles.userInfo}>

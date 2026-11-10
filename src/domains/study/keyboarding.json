@@ -1,0 +1,701 @@
+{
+  "sessions": [
+    {
+      "number": 1,
+      "slug": "session-1",
+      "title": "Introduction to the Online Typing Platform",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Speed and precision come from muscle memory built on your own typing style, and the platform tracks it for you."
+        },
+        {
+          "title": "Key points",
+          "text": "The platform logs your WPM, accuracy, and struggle keys.\n\nYour baseline test is your starting point; every later score is compared to it.\n\nHome row (ASDF / JKL;) is a useful anchor. Use a consistent, comfortable technique and return to your anchor after reaching for other keys. Keep wrists neutral and take short breaks. Practise letters, numbers, symbols and opposite-hand Shift as well as words.\n\nMuscle-memory clusters: practise the key groups and sequences you personally miss most.\n\nSpeed and precision improve together through repeated, targeted drills."
+        },
+        {
+          "title": "Check yourself",
+          "text": "What are my top struggle keys on the platform?\n\nIs my accuracy rising on those keys week to week?"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "slug": "session-2",
+      "title": "Word Interface Orientation & Page Setup",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Word's ribbon is organised by purpose, so once you know where a tool lives you never have to guess."
+        },
+        {
+          "title": "Key points",
+          "text": "Home = fonts and paragraphs; Layout = margins; Insert = tables and headers.\n\nDefault margins are 1 in; a left-bound document uses a wider left margin.\n\nSpacing: single = 1.0, double = 2.0.\n\nFirst-line indent = 0.5 in."
+        },
+        {
+          "title": "How to",
+          "text": "1. Margins: Layout > Margins > Custom Margins > OK.\n\n2. Spacing: Home > Line and Paragraph Spacing.\n\n3. Indent: Home > Paragraph dialog launcher > Special > First line > 0.5 in.\n\n4. Check your work with Show/Hide (the paragraph mark icon)."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Can I open page setup without help?\n\nWhich tab controls margins and which controls spacing?"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "slug": "session-3",
+      "title": "Proofreader's Marks",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Proofreader's marks are a shared code between editor and typist; they only work if both know the meaning."
+        },
+        {
+          "title": "Key points",
+          "text": "Stet = leave as it was (dots under the text).\n\nCaret (^) = insert.\n\nStrike-through = delete.\n\nThree lines under a letter = capitalise.\n\nTranspose mark = swap letters or words.\n\nNew paragraph mark = start a new paragraph."
+        },
+        {
+          "title": "How to",
+          "text": "1. Scan the whole page before typing.\n\n2. Apply each mark exactly as shown.\n\n3. Proofread your typing against the marked copy."
+        },
+        {
+          "title": "Worked example: marked copy and typed result",
+          "text": "MARKED:  Thank you for you letter of 3 October.   (insert ^ r after 'you')\n\n         the course starts on monday.            (capitalise the initial 't' and 'm')\n\n         Please [delete: kindly] confirm.         (strike-through 'kindly')\n\nTYPED:   Thank you for your letter of 3 October. The course starts on Monday. Please confirm."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Can I name all six core marks without the chart?\n\nDid I apply every correction on my last transcription?"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "slug": "session-4",
+      "title": "Business Letter Styles",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Letter style signals formality, and tab stops (not the spacebar) keep layout stable."
+        },
+        {
+          "title": "Key points",
+          "text": "Fully Blocked: every line at the left margin; fastest style.\n\nModified block: position the date and closing block at the specified tab stop, often near the horizontal centre. Paragraphs may remain blocked; indent the first line 0.5 in only when the requested style calls for it.\n\nOpen punctuation: no commas after the salutation or close.\n\nMixed punctuation: punctuation after the salutation and complimentary close, following the supplied style guide. Open, mixed and closed punctuation are not interchangeable. Follow the question or model rather than assuming one convention for all letters.\n\nYours faithfully goes with Dear Sir or Madam; Yours sincerely goes with a named person.\n\nAMS simplified style is also named in the syllabus: use a subject heading and omit the salutation and complimentary close. Practise it with the supplied model. Letter layout is determined by the requested style, not simply by how formal the message feels."
+        },
+        {
+          "title": "How to",
+          "text": "1. Ruler: click at the position, then press Tab once.\n\n2. Dialog: Home > Paragraph launcher > Tabs > position > Left > Set > OK.\n\n3. Remove: drag the stop off the ruler, or Clear in the dialog."
+        },
+        {
+          "title": "Worked example: Fully Blocked, Open Punctuation",
+          "text": "Nassau Business Institute\n\nCollins Avenue, P.O. Box N-9012\n\nNassau, The Bahamas\n\n \n\n16 October 2026\n\n \n\nMs Andrea Knowles\n\nBahamas Freight Services\n\nNassau, The Bahamas\n\n \n\nDear Ms Knowles\n\n \n\nTraining courses for office staff\n\n \n\nThank you for your letter of 3 October. ...\n\n \n\nYours sincerely\n\n \n\n \n\nT. Moss\n\nCourse Coordinator"
+        },
+        {
+          "title": "Check yourself",
+          "text": "Which style suits a formal complaint? A quick update?\n\nDoes my date still line up after I change the font?"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "slug": "session-5",
+      "title": "Special Letter Features & Multi-Page Letters",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Subject lines, enclosures, and cc notations tell the reader what is included and who else has the letter."
+        },
+        {
+          "title": "Key points",
+          "text": "Subject line: one blank line below the salutation; capitals, bold, or underline.\n\nEnclosure notation: one blank line below the signature block.\n\ncc lists others who receive a copy.\n\nA continuation header (name, page number, date) goes on page 2 onward so separated pages can be reassembled."
+        },
+        {
+          "title": "How to",
+          "text": "1. Insert > Header > Edit Header > tick Different First Page.\n\n2. Type the continuation details on page 2 only, then close the header."
+        },
+        {
+          "title": "Worked example: ending a letter with special notations",
+          "text": "Yours faithfully\n\n \n\n \n\nJ. Rolle\n\nSales Manager\n\n \n\nEnc. Price list (2 pages)\n\ncc: Finance Office\n\n \n\n(Page 2 header: Island Office Supplies | Page 2 | 12 October 2026)"
+        },
+        {
+          "title": "Check yourself",
+          "text": "If the pages were shuffled, could someone reorder them?\n\nDoes the header appear on page 2 only?"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "slug": "session-6",
+      "title": "Envelope Formatting",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Envelope layout follows how postal scanners read the envelope."
+        },
+        {
+          "title": "Key points",
+          "text": "Recipient address sits right of centre, single-spaced, 3 to 5 lines.\n\nReturn address is top left, about 0.5 in from the edges, 9 to 10 pt.\n\nDL = 110 x 220 mm; C5 = 162 x 229 mm.\n\nSpecial notations (such as CONFIDENTIAL) are typed separately from the address."
+        },
+        {
+          "title": "How to",
+          "text": "1. Mailings > Envelopes; Word may detect the delivery address from your letter; always verify it.\n\n2. Edit the return address.\n\n3. Choose Add to Document or Print."
+        },
+        {
+          "title": "Worked example: envelope layout",
+          "text": "Island Office Supplies Ltd.\n\nBay Street, P.O. Box N-1234\n\nNassau, The Bahamas\n\n \n\n                          The Principal\n\n                          Harbour View High School\n\n                          Nassau, The Bahamas"
+        },
+        {
+          "title": "Check yourself",
+          "text": "Does the envelope match the letter's inside address?\n\nIs my return address small and top left?"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "slug": "session-7",
+      "title": "Interoffice Memos",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Memos skip the formal letter structure because sender and reader share the workplace."
+        },
+        {
+          "title": "Key points",
+          "text": "Header block: TO, FROM, DATE, SUBJECT.\n\nNo salutation or complimentary close; initials replace the signature.\n\nBody is single-spaced, block format, one blank line between paragraphs.\n\nTab stops align the header entries."
+        },
+        {
+          "title": "How to",
+          "text": "1. Set one tab stop.\n\n2. Type each label, press Tab once, then type the entry."
+        },
+        {
+          "title": "Worked example: memo",
+          "text": "MEMORANDUM\n\n \n\nTO:       All Teaching Staff\n\nFROM:     Vice Principal\n\nDATE:      19 October 2026\n\nSUBJECT:  Updated office hours\n\n \n\nOffice hours will change from 1 November. ...\n\n \n\n(initials) JM"
+        },
+        {
+          "title": "Check yourself",
+          "text": "Are all four header fields present and aligned?\n\nDid I use Tab instead of the spacebar?"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "slug": "session-8",
+      "title": "Table Structures",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Choose a table style according to how much structure the data needs."
+        },
+        {
+          "title": "Key points",
+          "text": "Boxed: full gridlines for dense comparison data.\n\nRuled: top, header, and bottom lines for financial summaries.\n\nOpen: no gridlines; tab alignment.\n\nCentre the table the way you would centre a title."
+        },
+        {
+          "title": "How to",
+          "text": "1. Insert > Table.\n\n2. Table Design > Borders.\n\n3. Table Properties > Alignment > Center.\n\n4. Use Distribute Columns Evenly to tidy widths."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Does my table style fit how dense my data is?\n\nIs any numeric text wrapping?"
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "slug": "session-9",
+      "title": "Column Alignment",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Numbers are decimal-aligned so place values stack and can be compared at a glance."
+        },
+        {
+          "title": "Key points",
+          "text": "Text columns: left-align.\n\nWhole numbers: right-align.\n\nDecimals and currency: decimal-align.\n\nDollar sign on the first row and the total row only.\n\nTotal row: single line above, double line below."
+        },
+        {
+          "title": "How to",
+          "text": "1. Home > Paragraph dialog > Tabs.\n\n2. Enter the position, choose Decimal, then Set and OK."
+        },
+        {
+          "title": "Worked example: decimal-aligned ledger",
+          "text": "Item                          Amount\nPrinter paper                 $12.50\nInk cartridges                 45.00\nUSB drives                      8.75\nTotal                         $66.25\n\nThese are line amounts, not unit prices. Use a single rule above the total and a double rule below it when the task specifies this accounting style."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Do all my decimal points line up?\n\nIs the dollar sign only where it should be?"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "slug": "session-10",
+      "title": "Display Documents",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Size, boldness, and spacing control what the reader sees first; this is function, not decoration."
+        },
+        {
+          "title": "Key points",
+          "text": "Title 18 to 24 pt bold; subheadings 14 to 16 pt; body 11 to 12 pt.\n\nUse at most two font families.\n\nBorders and boxes isolate must-not-miss details.\n\nDot leaders link items to prices on menus."
+        },
+        {
+          "title": "How to",
+          "text": "1. Design > Page Borders.\n\n2. Tabs dialog: right tab with a dotted leader.\n\n3. Insert > Text Box for callouts."
+        },
+        {
+          "title": "Worked example: menu with dot leaders",
+          "text": "Grilled Chicken Plate ................ $12.00\n\nConch Salad ........................... $9.50\n\nFresh Juice ........................... $3.00"
+        },
+        {
+          "title": "Check yourself",
+          "text": "Where does my eye land first on my flyer?\n\nIs that the most important detail?"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "slug": "session-11",
+      "title": "Month 3 Consolidation",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Deciding between a table and a display document is a skill: is the content data to compare, or a message to promote?"
+        },
+        {
+          "title": "Key points",
+          "text": "Table = rows and columns to compare.\n\nDisplay document = persuasion or event promotion.\n\nReuse decimal alignment and visual hierarchy rules."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Before typing, did I decide table or display, and why?"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "slug": "session-12",
+      "title": "Reports & Manuscripts",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "A left-bound report needs a wider left margin because the binding takes space."
+        },
+        {
+          "title": "Key points",
+          "text": "Left margin 1.5 in; other margins 1 in.\n\nHeading hierarchy: Main Title, Primary Heading, Paragraph Heading.\n\nDouble spacing leaves room for edits."
+        },
+        {
+          "title": "How to",
+          "text": "1. Layout > Margins > Custom Margins.\n\n2. Set the left margin to 1.5 in."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Would any text disappear into the binding?\n\nDo heading sizes step down logically?"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "slug": "session-13",
+      "title": "Footnotes, Citations & Title Pages",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Footnotes give evidence without breaking the flow of your argument."
+        },
+        {
+          "title": "Key points",
+          "text": "Footnote number is a superscript at the exact point of the claim.\n\nFootnote text sits at the bottom of the same page below a divider.\n\nTitle page: title, author, date."
+        },
+        {
+          "title": "How to",
+          "text": "1. Click after the cited word.\n\n2. References > Insert Footnote."
+        },
+        {
+          "title": "Worked example: footnote",
+          "text": "Typing instruction improves with drills.¹\n\n \n\n_______\n\n¹ Smith, J. (2020). Typing Skills. Nassau Press, p. 14."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Is the footnote mark right at the claim?\n\nAre footnotes numbered in sequence?"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "slug": "session-14",
+      "title": "Agendas & Minutes",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Minutes record what was decided and who is responsible."
+        },
+        {
+          "title": "Key points",
+          "text": "Standard sections: Call to Order, Confirmation of Previous Minutes, Matters Arising, New Business, Adjournment.\n\nAn ACTION BY column names who is responsible.\n\nAgenda items are numbered in order."
+        },
+        {
+          "title": "How to",
+          "text": "1. Insert > Table for the action-item list."
+        },
+        {
+          "title": "Worked example: minutes skeleton",
+          "text": "MINUTES OF STAFF MEETING, 19 October 2026\n\nPresent: ...   Apologies: ...\n\n1.0 Call to Order\n\n2.0 Confirmation of Previous Minutes\n\n3.0 Matters Arising\n\n4.0 New Business            ACTION BY: V. Rolle\n\n5.0 Adjournment"
+        },
+        {
+          "title": "Check yourself",
+          "text": "Could someone prove what was decided from these minutes?\n\nDoes every decision have an owner?"
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "slug": "session-15",
+      "title": "Travel Itineraries & Admin Forms",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Itineraries and forms are built to be scanned quickly, so clarity beats density."
+        },
+        {
+          "title": "Key points",
+          "text": "Group the itinerary by day.\n\nTimes or flights on the left, activities or hotels on the right.\n\nForms use boxed fields and shaded labels."
+        },
+        {
+          "title": "How to",
+          "text": "1. Click the cell.\n\n2. Table Design > Shading > choose a light fill."
+        },
+        {
+          "title": "Worked example: itinerary layout",
+          "text": "DAY 1 - Monday 2 November\n\n07:30   Flight BA-210 Nassau to Miami\n\n12:00   Check in, Harbour Hotel\n\n15:00   Meeting with suppliers"
+        },
+        {
+          "title": "Check yourself",
+          "text": "Could I use this itinerary while rushing?\n\nAre the form labels clearly shaded?"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "slug": "session-16",
+      "title": "Decoding Handwritten Manuscripts",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Fix structural changes first and small edits second, or you will undo your own corrections."
+        },
+        {
+          "title": "Key points",
+          "text": "Pre-scan the whole page for 15 to 30 seconds.\n\nDo moves and inserts first, then spelling and capitals.\n\nStet = leave it; strike-through = delete."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Did I scan the page before typing?\n\nDid I resolve every structural instruction?"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "slug": "session-17",
+      "title": "Error Diagnostics",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Naming the category of an error is what lets you fix it."
+        },
+        {
+          "title": "Key points",
+          "text": "Weak-finger substitution: the wrong finger hits a nearby key.\n\nTransposition: letters swapped (the becomes teh).\n\nShift timing: the capital lands on the wrong letter.\n\nVisual lag: eyes read ahead of the fingers."
+        },
+        {
+          "title": "How to",
+          "text": "1. Log each error with a category.\n\n2. Drill that category."
+        },
+        {
+          "title": "Check yourself",
+          "text": "What is my number one error category?\n\nDid my drill target it?"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "slug": "session-18",
+      "title": "Speed Building & NWPM",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Clean and steady usually beats fast and messy. For this classroom exercise, use the supplied five-word error penalty; official scoring must follow the actual paper and mark scheme."
+        },
+        {
+          "title": "Key points",
+          "text": "NWPM = (Gross Words - (Errors x 5)) / Time in Minutes.\n\nExample: 250 gross words in 5 minutes with 3 errors gives (250 - 15) / 5 = 47 NWPM.\n\n1-minute bursts build peak speed.\n\n5-minute runs rebuild control.\n\nAvoid sprinting at the start.\n\nThis is the formula in the supplied classroom notes, not a verified official BGCSE formula or the Dojo’s WPM calculation. Use the assigned definition of gross words; do not substitute a displayed WPM rate for a word count."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Did NWPM rise because I was faster or cleaner?"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "slug": "session-19",
+      "title": "Mixed Document Marathon",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Exams mix document types without labels, so recognise the type fast."
+        },
+        {
+          "title": "Key points",
+          "text": "TO / FROM header = memo.\n\nInside address and salutation = letter.\n\nRows and columns = table.\n\nRecall the rules and tool steps from Sessions 4 to 15."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Did I identify the type before formatting?"
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "slug": "session-20",
+      "title": "Paper 1 Simulation",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Knowing your own NWPM baseline lets you set a realistic exam target."
+        },
+        {
+          "title": "Key points",
+          "text": "Recap the NWPM formula.\n\nError penalties are heavy; clean beats fast.\n\nCompare results to your Session 18 baseline.\n\nThis session is a speed-and-accuracy rehearsal, not a complete Paper 1. The supplied syllabus describes Paper 1 as five tasks across the content. Use a complete authorised paper and its stated timing for a full simulation."
+        },
+        {
+          "title": "Check yourself",
+          "text": "What NWPM am I realistically aiming for?"
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "slug": "session-21",
+      "title": "Paper 2 Simulation: Correspondence & Envelopes",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Budget exam minutes by document complexity, not evenly."
+        },
+        {
+          "title": "Key points",
+          "text": "Recap letter styles, punctuation, and envelope steps.\n\nPlan your time before you start."
+        },
+        {
+          "title": "Exam tips",
+          "text": "Spend the first minute reading the whole paper and planning your order.\n\nDo your strongest document first for early confidence.\n\nProofread carefully. Apply the actual paper’s mark scheme; the five-word classroom drill penalty is not a universal document-production rule."
+        },
+        {
+          "title": "Check yourself",
+          "text": "How many minutes did the letter take, and was that right?"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "slug": "session-22",
+      "title": "Paper 2 Simulation: Tables & Display Documents",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Some formatting errors cost more marks than others; check those first."
+        },
+        {
+          "title": "Key points",
+          "text": "Decimal alignment and total-row formatting are high-value checks.\n\nKeep two minutes at the end for checking."
+        },
+        {
+          "title": "Exam tips",
+          "text": "Spend more minutes on the letter than on the envelope.\n\nUse the Mailings tool for the envelope to save time.\n\nCheck the inside address matches the envelope."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Did I check the highest-value items first?"
+        }
+      ]
+    },
+    {
+      "number": 23,
+      "slug": "session-23",
+      "title": "Full Mock Exam",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "The mock is the diagnostic: apply everything under full exam conditions."
+        },
+        {
+          "title": "Key points",
+          "text": "No new content.\n\nNote which section felt weakest.\n\nA full paper, or both papers together, needs a separate extended sitting. Do not compress full official timing into a 90-minute lesson. Confirm the current paper instructions with your teacher."
+        },
+        {
+          "title": "Exam tips",
+          "text": "Check decimal alignment and total lines first.\n\nVerify centred title and consistent font sizes.\n\nLeave two minutes for a final read-through."
+        },
+        {
+          "title": "Check yourself",
+          "text": "Which section felt weakest under pressure?"
+        }
+      ]
+    },
+    {
+      "number": 24,
+      "slug": "session-24",
+      "title": "Review & Targeted Remediation",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Mock exam mistakes are fixable through targeted practice."
+        },
+        {
+          "title": "Key points",
+          "text": "Build a personal plan from your actual lost marks.\n\nReuse the error categories from Session 17."
+        },
+        {
+          "title": "Exam tips",
+          "text": "Review your scored mock with feedback, then retry the weakest section independently. Follow the actual rules during a separate full simulation.\n\nMark your own paper afterwards and write down every lost mark."
+        },
+        {
+          "title": "Check yourself",
+          "text": "What single pattern must I fix before the final?"
+        }
+      ]
+    },
+    {
+      "number": 25,
+      "slug": "session-25",
+      "title": "Final Exam Simulation",
+      "sections": [
+        {
+          "title": "Big idea",
+          "text": "Pacing, checking order, and tool steps should now be automatic."
+        },
+        {
+          "title": "Key points",
+          "text": "State your pacing plan aloud before you start.\n\nCompare your final result with your Session 1 baseline.\n\nA full paper, or both papers together, needs a separate extended sitting. Do not compress full official timing into a 90-minute lesson. Confirm the current paper instructions with your teacher."
+        },
+        {
+          "title": "Exam tips",
+          "text": "Sort lost marks into categories: layout, accuracy, time, or misreading instructions.\n\nPractise your weakest category twice before the final.\n\nRedo the weakest section and compare scores."
+        },
+        {
+          "title": "Check yourself",
+          "text": "How far have I come since my baseline?"
+        }
+      ]
+    }
+  ],
+  "teacherLessons": [
+    {
+      "title": "Ergonomics, Home Row & Why Touch-Typing Works",
+      "text": "Month 1 — Week 1   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand *why* eyes-off-keyboard typing is faster and more accurate long-term than hunt-and-peck, not just that it is 'correct.'\n\n1. Diagnose & Question (10 min)\n\nTime two volunteers typing the same short sentence — one hunting and pecking, one using a hint of touch-typing (even if slow). Ask the class: which one will get faster with practice, and why?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nHome Row Anchoring: Left hand A-S-D-F, Right hand J-K-L-; (F and J tactile bumps let fingers find home without looking).\n\nMuscle memory principle: consistent finger-to-key mapping turns typing into an automatic reflex, freeing the brain to focus on content instead of key location.\n\nErgonomics: monitor at eye level 18-24 inches away, wrists neutral, feet flat — framed as prevention against strain from years of typing, not just a checklist.\n\n3. Guided Production (35 min)\n\nStudents complete blind home-row drills (fff jjj fjf) with keyboard covers, then type simple home-row-only words (fall, flask, glad). Emphasize rhythm over speed.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nPeer posture check using a checklist; 2-minute home-row passage, target 15 WPM at 95% accuracy. Discuss: did looking at the keyboard cost you time or accuracy?\n\nMaterials Needed:\n\nKeyboard covers/skins, typing software (TypingClub/Keybr), posture checklist handout."
+    },
+    {
+      "title": "Full Keyboard Reaches, Shift Key & the Numeric Pad",
+      "text": "Month 1 — Week 2   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand shift-key logic (opposite-hand pinky) as a system for never breaking home-row anchoring, and see the numeric keypad as its own small home-row system.\n\n1. Diagnose & Question (10 min)\n\nShow a sentence typed with Caps Lock left on by mistake, and a paragraph with numbers typed using the top-row number keys versus the numeric keypad. Ask: what's inefficient here?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nTop row (QWERTYUIOP) and bottom row (ZXCVBNM) reach patterns — fingers travel out and immediately return home.\n\nShift key rule: opposite-hand pinky presses Shift so the typing hand stays free to strike the letter.\n\nNumeric keypad home position: index-4, middle-5 (tactile bump), ring-6 — same anchor-and-return logic as the main keyboard.\n\n3. Guided Production (35 min)\n\nDrills on vertical reach combinations, then a short paragraph mixing capitalized proper nouns and numeric data typed on the keypad.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\n3-minute full-keyboard timed test, target 20 WPM/95% accuracy. Shift-key spot-check: are pinkies doing the work?\n\nMaterials Needed:\n\nFull keyboards with numeric keypad, timed drill software, numeric worksheet."
+    },
+    {
+      "title": "Word Interface Orientation & Page Setup",
+      "text": "Month 1 — Week 3   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand the Word interface as a toolbox organized by purpose, and know the exact menu path for every formatting change introduced today — so production never requires guessing where a tool lives.\n\n1. Diagnose & Question (10 min)\n\nHand students a page with visibly wrong margins (text crammed edge-to-edge), inconsistent spacing, and no paragraph indents. Ask: if you had to fix this, where would you even start looking in Word? Let them explore/guess before instruction.\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nRibbon orientation: tabs group related actions (Home = fonts/paragraphs, Layout = margins/orientation, Insert = tables/headers).\n\nMargins exist to prevent text from being cut off in printing/binding — Default 1 inch; use the task’s binding allowance. The report lesson in this guide uses 1.5 inches on the left.\n\nLine spacing (1.0 single, 2.0 double) and first-line paragraph indents (0.5 inch) both exist to make dense text easier to read and scan.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nSetting margins: Layout tab > Margins button (in the Page Setup group) > choose a preset, or click Custom Margins at the bottom to open the Page Setup dialog box and type exact inch values > OK.\n\nSetting line spacing: Home tab > Paragraph group > click the Line and Paragraph Spacing icon (the icon with horizontal lines and up/down arrows) > select 1.0 or 2.0 from the dropdown.\n\nSetting a first-line paragraph indent: Home tab > click the small diagonal arrow in the bottom-right corner of the Paragraph group (the dialog box launcher) > this opens the Paragraph dialog > under Indentation, set 'Special' to 'First line' and enter 0.5 inch > OK.\n\nChecking your work: turn on Show/Hide formatting marks (Home tab > paragraph symbol icon, ¶) to see exactly where returns, spaces, and indents actually landed.\n\n4. Guided Production (25 min)\n\nStudents open Word, follow the same three steps just demonstrated to reformat the flawed page from the diagnose step: correct margins, correct line spacing, and correct first-line indents — then compare before/after readability.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nPractical check: given a new unformatted file, apply correct page setup, spacing, and indents in 15 minutes without teacher prompting. Discuss which fix mattered most for readability.\n\nMaterials Needed:\n\nComputers with MS Word, sample unformatted text files, projector for live demonstration and before/after comparison."
+    },
+    {
+      "title": "Proofreader's Marks as a Shared Editing Language",
+      "text": "Month 1 — Week 4   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand proofreader's marks as a communication system between editor and typist — a shorthand that only works if both sides agree on its meaning.\n\n1. Diagnose & Question (10 min)\n\nShow a handwritten manuscript page marked up with proofreader symbols but no key/legend. Ask: could you type this correctly right now? What's missing?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nCore marks: Stet (leave it), Transpose, Capitalize, Delete, Insert caret (^), New Paragraph — each solves a specific communication gap between editor and typist.\n\nInsertion vs. deletion marks follow a directional logic (arrows point to the exact insertion point; strike-through means permanently gone).\n\n3. Guided Production (35 min)\n\nFlashcard matching drill on 15-20 marks, then transcribing a short marked-up letter, converting handwritten instructions into a clean typed document using the Word skills from Week 3.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nSymbol identification quiz (target 100% on core marks); timed transcription of a 300-word marked draft with zero uncorrected markup errors.\n\nMaterials Needed:\n\nProofreader's marks reference chart, marked-up practice manuscripts, red pens for peer marking."
+    },
+    {
+      "title": "Business Letter Styles as Solutions to Formality Levels",
+      "text": "Month 2 — Week 1   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand that letter styles (Fully Blocked, Blocked, Indented) and punctuation styles (Open/Closed) signal formality, and know how to actually position the date/close using tab stops rather than the spacebar.\n\n1. Diagnose & Question (10 min)\n\nShow three real-looking letters — one fully blocked, one indented, one a messy hybrid built with spacebar taps that misaligns when the font changes. Ask: which looks most official, and why did the spacebar version break?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nFully Blocked: everything starts at the left margin — fastest to produce, most common in modern business.\n\nModified Block/Indented: date and closing shifted to center — a more traditional, formal look.\n\nOpen Punctuation (no comma after salutation/close) vs. Closed Punctuation (comma after 'Dear Sir,') — connects to formality and speed trade-off.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nSetting a custom tab stop: click directly on the horizontal ruler at the desired position (e.g., the 3.25-inch mark) to place a left tab stop; or Home tab > Paragraph dialog launcher > Tabs button > enter an exact position > Set > OK for precision.\n\nUsing the tab stop: press the Tab key once to jump the cursor to that exact position — never use multiple spacebar presses, which shift when fonts change.\n\nRemoving a tab stop: drag it off the ruler, or select it in the Tabs dialog and click Clear.\n\n4. Guided Production (25 min)\n\nStudents format one Fully Blocked letter with Open Punctuation (no tabs needed) and one Indented letter with Closed Punctuation, using a ruler tab stop to position the date and closing.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nTimed production: error-free 150-200 word Fully Blocked letter in 12 minutes. Discuss: which style would you choose for a formal complaint letter vs. a quick client update?\n\nMaterials Needed:\n\nBGCSE correspondence style guide, sample raw letter content, Word with ruler enabled."
+    },
+    {
+      "title": "Special Letter Features & Multi-Page Continuation",
+      "text": "Month 2 — Week 2   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand subject lines, enclosures, and cc notations as reader navigation aids, and know how to insert a header that only appears on page 2 onward.\n\n1. Diagnose & Question (10 min)\n\nShow a 2-page letter with no continuation header and no subject line. Ask: if these pages got separated, what problem occurs?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nSubject line answers 'what is this about' before reading the body.\n\nEnclosure notation answers 'should something else have come with this.'\n\ncc/bcc answers 'who else knows about this.'\n\nContinuation header (Name/Page/Date) exists specifically to solve the 'pages got separated' problem just diagnosed.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nInserting a page-2-only header: Insert tab > Header button > Edit Header > in the Header & Footer Design tab, check 'Different First Page' so page 1 stays blank while page 2+ shows the header.\n\nTyping the continuation content directly into the header area (Recipient Name / Page Number / Date), then Close Header and Footer to return to the body.\n\n4. Guided Production (25 min)\n\nStudents format a 2-page executive letter with a subject line, enclosure notation, cc list, and a page-2-only continuation header.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nBenchmark: complete 2-page letter with all special notations in 20 minutes; check that the continuation header appears only on page 2.\n\nMaterials Needed:\n\nMulti-page draft prompts, continuation header checklist."
+    },
+    {
+      "title": "Envelope Formatting & Postal Logic",
+      "text": "Month 2 — Week 3   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand envelope layout as driven by how postal sorting actually reads an envelope, and know how to generate a matched envelope directly from a letter in Word.\n\n1. Diagnose & Question (10 min)\n\nShow an envelope with the return address in the center and recipient address in a corner. Ask: would this get delivered correctly?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nRecipient address sits right-of-center where scanners expect it; return address top-left, small font.\n\nSpecial notations (CONFIDENTIAL, AIR MAIL) placed where they'll be seen first without interfering with scan zones.\n\nDL vs. C5 sizing driven by what's being mailed.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nGenerating an envelope: Mailings tab > Envelopes button > this opens the Envelopes and Labels dialog.\n\nWord auto-fills the Delivery Address box if it detects an address in your open letter; type or edit the Return Address box manually.\n\nClick Add to Document to insert the envelope as a new page, or Print if printing directly onto envelope stock.\n\n4. Guided Production (25 min)\n\nStudents use the Envelopes and Labels tool to produce a matching envelope for the letter built in Session 2.1, plus one with a CONFIDENTIAL notation typed manually above the address block.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nPrecision check against a postal template overlay; speed drill producing 3 envelopes in under 8 minutes.\n\nMaterials Needed:\n\nEnvelope stock or templates, Word Envelopes/Labels tool."
+    },
+    {
+      "title": "Interoffice Memos — Internal Communication Shorthand",
+      "text": "Month 2 — Week 4   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand why memos skip formal letter structure, and reuse the tab-stop skill from Session 2.1 to align a memo header block precisely.\n\n1. Diagnose & Question (10 min)\n\nPlace a formal letter and a memo side by side. Ask: what's missing from the memo, and why doesn't that matter here?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nTO/FROM/DATE/SUBJECT header block — the internal equivalent of an inside address and subject line combined.\n\nNo complimentary close/signature — replaced by handwritten initials next to the sender's name.\n\nTab stops align header fields precisely — the same ruler technique from Session 2.1, applied to a new layout.\n\n3. Guided Production (35 min)\n\nStudents format a policy memo from a handwritten draft, aligning the header block with the tab-stop method already learned.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nTimed test: 200-word memo in 10 minutes, zero tab misalignments. Month 2 wrap check: one letter + one memo in a single 35-minute session.\n\nMaterials Needed:\n\nSample memo drafts, BGCSE memo marking guide."
+    },
+    {
+      "title": "Table Structures as Data Organization Choices",
+      "text": "Month 3 — Week 1   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand that Boxed, Ruled, and Open table styles are chosen based on how much visual structure the data needs, and know how to actually insert and style a table in Word.\n\n1. Diagnose & Question (10 min)\n\nShow the same data three ways: dense boxed grid, minimal ruled lines, and plain tabbed text. Ask: which is easiest to scan?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nBoxed tables suit dense, comparison-heavy data.\n\nRuled tables suit financial summaries — a top rule, header rule, and bottom total rule direct the eye to the total without clutter.\n\nCentering a table on the page mirrors how centering a title focuses the eye.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nInserting a table: Insert tab > Table button > drag across the grid to choose rows/columns, or click Insert Table for an exact number.\n\nChanging border style: click inside the table, then the Table Design tab appears > use Borders dropdown to select All Borders (boxed) or apply borders to only top/bottom rows (ruled).\n\nCentering the table: click inside the table > Table Layout tab (or right-click > Table Properties) > Table tab > Alignment > Center.\n\nAdjusting column width: hover over a column border until the cursor changes, then drag; or right-click > Distribute Columns Evenly for auto-fit.\n\n4. Guided Production (25 min)\n\nStudents build one boxed schedule table and one ruled financial summary from the same raw dataset, choosing which style fits which purpose.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nPractical test: construct a formatted table from raw data in 15 minutes; check for zero text wrapping in numeric columns.\n\nMaterials Needed:\n\nWord Table Design tools, raw tabular datasets."
+    },
+    {
+      "title": "Column Alignment as a Number-Reading Aid",
+      "text": "Month 3 — Week 2   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand why numbers are right/decimal-aligned while text is left-aligned, and know how to set a decimal tab stop for currency columns.\n\n1. Diagnose & Question (10 min)\n\nShow a column of prices left-aligned versus decimal-aligned. Ask: which column lets you tell at a glance which price is bigger?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nLeft-align text (names, descriptions) because we read text left to right.\n\nRight-align whole numbers and decimal-align currency so digits stack by place value.\n\nDollar sign appears only on the first row and the total row — repeating it every row clutters the column.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nSetting a decimal tab: Home tab > Paragraph dialog launcher > Tabs button > enter a ruler position > under Alignment select Decimal > Set > OK. Word will now align every number in that column on its decimal point when you press Tab.\n\nApplying a single or double underline to a total row: select the row > Home tab > Borders dropdown (next to the underline icon in the table area) > Top Border for the single line above the total, Bottom Double Border for below it.\n\n4. Guided Production (25 min)\n\nStudents build a 5-column financial ledger table with a decimal tab for currency and a properly ruled total line.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nBenchmark: 4-column financial table in 15 minutes with 100% correct decimal alignment.\n\nMaterials Needed:\n\nAccounting-style raw data sheets, decimal tab practice sets."
+    },
+    {
+      "title": "Display Documents — Designing for a Reader's Eye Path",
+      "text": "Month 3 — Week 3   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand visual hierarchy (size, bold, spacing) as controlling what a reader sees first, and know how to apply page borders and font-size hierarchy in Word.\n\n1. Diagnose & Question (10 min)\n\nHand students a single dense, unformatted block of text advertising a school event. Ask: where does your eye go first? Where should it go first?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nVisual hierarchy: largest/boldest element = most important info, then key details, then fine print — max 2 font families to avoid competing signals.\n\nBorders and callout boxes isolate must-not-miss details from the rest of the flow.\n\nDot leaders connect two related pieces of information across empty space.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nAdding a page border: Design tab (or Layout tab in some versions) > Page Borders > choose a style/width in the Borders and Shading dialog > OK.\n\nAdjusting font size for hierarchy: Home tab > Font Size box > type or select a larger number (e.g., 24pt for the title, 14pt for subheadings, 11pt for body).\n\nCreating dot leaders: Home tab > Paragraph dialog launcher > Tabs button > enter a right-aligned tab position > under Leader select the dotted-line option (option 2) > Set > OK.\n\nAdding a callout box: Insert tab > Shapes or Text Box > draw the box, then type inside it and apply a border/fill from the Shape Format tab.\n\n4. Guided Production (25 min)\n\nStudents redesign the ugly announcement from the diagnose step into a flyer with clear hierarchy, then build a short menu using dot leaders.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nDesign portfolio check: one flyer + one menu within 25 minutes each, evaluated on hierarchy and balance, not just correctness.\n\nMaterials Needed:\n\nUgly unformatted announcement sample, borders/shading tools in Word."
+    },
+    {
+      "title": "Month 3 Consolidation & Mixed Practice",
+      "text": "Month 3 — Week 4   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand tables and display documents as related tools for the same goal — making information easy to scan — by choosing the right one for a new scenario using only tools already taught.\n\n1. Diagnose & Question (10 min)\n\nPresent three new raw content scenarios (a price list, a conference schedule, a comparison chart). Ask students to decide, before typing: table or display document, and why?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nDecision framework: use a table when data has consistent rows/columns to compare; use a display layout when the goal is persuasion or event promotion.\n\nRecap decimal alignment and visual hierarchy rules from the previous two sessions as a checklist, not new content.\n\n3. Guided Production (35 min)\n\nStudents complete two of the three scenarios independently, applying the decision framework and the exact tool steps already demonstrated.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nMonth 3 assessment: one table + one display document under timed conditions, graded on whether the format choice fit the content.\n\nMaterials Needed:\n\nThree new raw content scenarios, Month 3 rubric."
+    },
+    {
+      "title": "Reports & Manuscripts — Margins That Serve a Physical Purpose",
+      "text": "Month 4 — Week 1   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand the 1.5-inch left-bound margin as a physical necessity, reusing the Page Setup skill from Month 1 with a new value.\n\n1. Diagnose & Question (10 min)\n\nShow a mock-up of a report bound on the left with 1-inch margins — text visibly disappearing into the binding. Ask: what happened, and what would fix it?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nLeft-bound margin allowance: 1.5 inch left vs. 1 inch on other sides — the extra 0.5 inch is the 'gutter' the binding consumes.\n\nHeading hierarchy (Main Title > Primary Heading > Paragraph Heading) mirrors an outline — bigger/bolder means broader scope.\n\nDouble spacing in manuscripts exists so an editor has room to write corrections by hand between lines.\n\n3. Guided Production (35 min)\n\nStudents format a left-bound report with correct margins (via Layout > Margins > Custom Margins, as learned in Month 1) and a full heading hierarchy using font sizes from Month 3.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nMargin audit: verify exact 1.5-inch left margin; check heading sizes decrease logically down the hierarchy.\n\nMaterials Needed:\n\nBGCSE report style guide, raw report text, ruler for margin verification."
+    },
+    {
+      "title": "Footnotes, Citations & Title Pages",
+      "text": "Month 4 — Week 2   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand footnotes as a way to give evidence without breaking the flow of the main argument, and know how to insert one automatically rather than typing it manually.\n\n1. Diagnose & Question (10 min)\n\nShow a paragraph with a claim and no source, next to the same paragraph with a footnote. Ask: which is more trustworthy?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nFootnote numbers appear as superscript at the exact point of the claim; footnote text sits below a divider line at the bottom of that same page.\n\nTitle pages front-load identifying information so a reader knows what they're holding before reading a word of content.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nInserting a footnote: place the cursor after the word needing a citation > References tab > Insert Footnote button. Word automatically adds the superscript number and drops the cursor to the bottom of the page for you to type the note.\n\nWord handles the divider line and page-bottom placement automatically — you only need to type the citation text.\n\n4. Guided Production (25 min)\n\nStudents add a title page and two footnoted citations to the report started in the previous session, using Insert Footnote rather than manual formatting.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nCitation audit: correct footnote numbering sequence and divider line placement, zero missing title page elements.\n\nMaterials Needed:\n\nSample footnoted reports, title page templates."
+    },
+    {
+      "title": "Meeting Documentation — Agendas & Minutes as Organizational Memory",
+      "text": "Month 4 — Week 3   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand minutes as a legal/organizational record where every structural element exists so an absent person can reconstruct what happened, using table and heading tools already taught.\n\n1. Diagnose & Question (10 min)\n\nShow a set of messy handwritten meeting notes with no structure. Ask: could someone prove what was decided and who's responsible for it, from these notes alone?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nStandard minutes sections (Call to Order, Confirmation of Previous Minutes, New Business, Adjournment) create a reconstructable timeline.\n\n'ACTION BY' column/tag exists specifically to answer 'who is responsible.'\n\nAgenda numbering (1.0, 2.0, 3.0) previews the meeting's structure before it happens.\n\n3. Guided Production (35 min)\n\nStudents format a complete Minutes document from handwritten notes, including an action-item column built as a simple table (Insert > Table, from Month 3).\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nStructural integrity check: verify every standard section is present and every decision has a named action owner.\n\nMaterials Needed:\n\nHandwritten meeting note samples, Agenda/Minutes templates."
+    },
+    {
+      "title": "Travel Itineraries & Admin Forms",
+      "text": "Month 4 — Week 4   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand itinerary and form layouts as designed for someone scanning under time pressure, reusing table and shading tools already taught.\n\n1. Diagnose & Question (10 min)\n\nShow a disorganized paragraph describing a 3-day trip versus a structured day-by-day itinerary table. Ask: which one could you actually use while running through an airport?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nItinerary structure groups by day, then time/flight on the left, activity/hotel on the right.\n\nAdmin forms (invoices, expense claims) use boxed fields and shaded labels so a person filling it in never has to guess where information goes.\n\n3. Teacher-Led Tool Walkthrough — Exact Click-Path (10 min)\n\nTeacher demonstrates each step live on the projector; students follow along on their own screens before being released to work independently. No student begins production until every step below has been demonstrated and repeated once by the class together.\n\nShading a table cell/label: click inside the cell > Table Design tab > Shading dropdown > choose a light fill color to distinguish label cells from fillable blank cells.\n\n4. Guided Production (25 min)\n\nStudents format a 3-day itinerary and a simple expense claim form using table-based boxed structures with shaded label cells.\n\n5. Error Review & Reflection Checkpoint (10 min)\n\nMonth 4 comprehensive check: one report excerpt + one itinerary within 40 minutes.\n\nMaterials Needed:\n\nSample flight/hotel data, invoice and expense claim templates."
+    },
+    {
+      "title": "Decoding Complex Handwritten Manuscripts",
+      "text": "Month 5 — Week 1   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand manuscript correction as prioritized problem-solving: structural changes must be resolved before micro-edits, or later fixes get undone.\n\n1. Diagnose & Question (10 min)\n\nGive students a manuscript with both a paragraph-move instruction and several small spelling corrections. Ask: if you fix the spelling first and then move the paragraph, what could go wrong?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nPre-scan strategy: read the whole marked page once (15-30 seconds) before typing anything.\n\nPriority order: structural moves and inserts first, then micro-edits.\n\nStet vs. strike-through: distinguishing 'leave it' from 'permanently delete.'\n\n3. Guided Production (35 min)\n\nStudents transcribe a complex 300-400 word handwritten draft with layered corrections, applying the pre-scan-then-prioritize method and all Word tools taught to date.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nManuscript exam: 15-minute transcription, no more than 2 uncorrected errors, 100% compliance with structural instructions.\n\nMaterials Needed:\n\nBGCSE past-paper handwritten drafts."
+    },
+    {
+      "title": "Error Diagnostics — Understanding Your Own Mistakes",
+      "text": "Month 5 — Week 2   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand that errors have categories (weak finger, transposition, shift-timing, reading-ahead lag) — diagnosing the category is what actually fixes the error.\n\n1. Diagnose & Question (10 min)\n\nGive students their own error log from earlier sessions. Ask: do you see a pattern — same letters, same finger, same position in a word?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nCommon error categories: weak-finger substitution, transposition, shift-timing, and visual lag.\n\nTargeted remediation drills exist for each category.\n\n3. Guided Production (35 min)\n\nStudents review their personal error logs, identify their top error category, and complete a targeted drill matched to that category.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nSelf-diagnosis accuracy check: can the student correctly name their own dominant error pattern and explain why the targeted drill addresses it?\n\nMaterials Needed:\n\nIndividual error logs from prior sessions, category-specific drill sets."
+    },
+    {
+      "title": "Speed Building Without Sacrificing Accuracy",
+      "text": "Month 5 — Week 3   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand the speed/accuracy trade-off as a real curve, and learn the NWPM formula as a way to measure it instead of guessing.\n\n1. Diagnose & Question (10 min)\n\nHave two students race the same passage — one sprints and makes errors, one goes steady and clean. Calculate NWPM for both live. Ask: who actually 'won'?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nNet Words Per Minute (NWPM) = (Gross Words - (Errors x 5)) / Time in Minutes.\n\nBurst drills (1-minute) build peak speed; longer drills (5-minute) rebuild control.\n\nPacing: avoiding an initial sprint preserves accuracy stamina.\n\n3. Guided Production (35 min)\n\nStudents complete a 1-minute burst drill followed by a 5-minute paced drill, calculating their own NWPM after each.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nMilestone check: minimum 40 NWPM with no more than 3 errors on a 5-minute test.\n\nMaterials Needed:\n\nTimed software with live WPM/accuracy tracking, NWPM calculation worksheet."
+    },
+    {
+      "title": "Month 5 Mixed Document Marathon",
+      "text": "Month 5 — Week 4   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand that real exam conditions mix document types unpredictably — the goal is applying the right mental model and toolset quickly.\n\n1. Diagnose & Question (10 min)\n\nPresent three short raw prompts back-to-back (a letter excerpt, a small table, a memo) with no labels. Ask: how do you quickly recognize which document type this is?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nRecognition cues: header fields signal memo; inside address + salutation signals letter; row/column structure signals table.\n\nRecap of Month 2-4 core rules and tool steps as a rapid-fire checklist.\n\n3. Guided Production (35 min)\n\nStudents complete all three mixed prompts under light time pressure, self-identifying document type before applying formatting.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nMarathon check: three documents completed correctly within 45 minutes total, each correctly identified before formatting began.\n\nMaterials Needed:\n\nMixed unlabeled raw prompts, Month 2-4 rule checklists."
+    },
+    {
+      "title": "Paper 1 Speed & Accuracy Simulation",
+      "text": "Month 6 — Week 1   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand exam-day pacing strategy — knowing your own NWPM baseline lets you set a realistic target.\n\n1. Diagnose & Question (10 min)\n\nReview each student's best NWPM from Month 5. Ask: what target should you set for the real exam?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nA timed-copy classroom rehearsal, not a complete official Paper 1: the supplied syllabus describes five tasks across the content.\n\nReview of NWPM scoring and error-penalty awareness under real pressure.\n\n3. Guided Production (35 min)\n\nFull timed copy test under strict exam conditions, no assistance.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nCompare the classroom timed-copy result with the personal Month 5 baseline. Score any complete official paper with its own mark scheme.\n\nMaterials Needed:\n\nOfficial BGCSE past Paper 1 copy texts, timer."
+    },
+    {
+      "title": "Paper 2 Simulation — Correspondence & Envelopes",
+      "text": "Month 6 — Week 2   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand exam time-budgeting across multiple documents using tools already mastered.\n\n1. Diagnose & Question (10 min)\n\nShow last year's Paper 2 correspondence section. Ask: how many minutes can you realistically spend on the letter versus the envelope?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nTime-budgeting strategy: allocate minutes per document based on complexity, not evenly.\n\nRecap letter styles, punctuation, and envelope tool steps as an exam-speed checklist.\n\n3. Guided Production (35 min)\n\nFull past-paper correspondence section completed under timed exam conditions.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nScore against official mark scheme; debrief on time allocation accuracy.\n\nMaterials Needed:\n\nBGCSE past Paper 2 correspondence sections, official mark scheme."
+    },
+    {
+      "title": "Paper 2 Simulation — Tables & Display Documents",
+      "text": "Month 6 — Week 3   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand which formatting decisions are worth double-checking under time pressure versus which can be done quickly.\n\n1. Diagnose & Question (10 min)\n\nAsk students: which single formatting error costs the most exam marks if missed? Where should your final 2-minute check focus?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nPrioritized checking strategy: decimal alignment and total-row formatting flagged as highest-value checks.\n\nRecap table typologies and display hierarchy tool steps.\n\n3. Guided Production (35 min)\n\nFull past-paper table and display document section under timed conditions.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nScore against mark scheme; debrief on where marks were lost.\n\nMaterials Needed:\n\nBGCSE past Paper 2 table/display sections, mark scheme."
+    },
+    {
+      "title": "Full Mock Exam — Paper 1 & 2 Combined",
+      "text": "Month 6 — Week 4   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand the complete exam experience end-to-end, applying pacing and prioritization strategies learned across the previous three sessions.\n\n1. Diagnose & Question (10 min)\n\nNo diagnose step — this session is the diagnostic. Students take the full mock and generate their own data for the review session.\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nN/A — full simulation session.\n\n3. Guided Production (35 min)\n\nSchedule a separate extended sitting for the selected paper(s), using the actual paper instructions for timing and breaks. This cannot fit into the regular 35-minute production block.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nFull scoring against official mark schemes for both papers.\n\nMaterials Needed:\n\nComplete past-paper set (Paper 1 + Paper 2), exam-hall conditions (silence, strict timing)."
+    },
+    {
+      "title": "Review & Targeted Remediation",
+      "text": "Month 6 — Week 5   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nUnderstand personal weak points from the mock exam as fixable through targeted practice, not as fixed limitations.\n\n1. Diagnose & Question (10 min)\n\nReturn scored mock exams. Ask each student: what pattern do you see in your lost marks?\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nIndividualized remediation plans built from actual mock-exam error patterns.\n\nRecap of any document type or tool step where the class collectively struggled.\n\n3. Guided Production (35 min)\n\nStudents complete targeted practice matched to their own error pattern from the mock.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nImprovement check: repeat the weakest section of the mock exam and compare scores.\n\nMaterials Needed:\n\nScored mock exams, category-specific remediation drills."
+    },
+    {
+      "title": "Final Exam Simulation",
+      "text": "Month 6 — Week 6   |   Duration: 75 minutes (post-Dojo)\n\nUnderstanding Objective (not just a skill target):\n\nConfirm readiness by replicating full exam conditions one final time, with strategy and tools fully internalized.\n\n1. Diagnose & Question (10 min)\n\nAsk students to state their own pacing plan out loud before starting.\n\n2. Direct Instruction — The Rule That Solves It (10 min)\n\nFinal recap of pacing, prioritized checking, and error-penalty awareness — no new content, only reinforcement.\n\n3. Guided Production (35 min)\n\nSchedule a separate extended sitting for the final paper set under its stated exam conditions; do not compress it into the regular lesson production block.\n\n4. Error Review & Reflection Checkpoint (10 min)\n\nFinal scoring against official mark scheme; compare full trajectory from Month 1 baseline to final result.\n\nMaterials Needed:\n\nFinal BGCSE past-paper set, exam-hall conditions."
+    }
+  ]
+}
