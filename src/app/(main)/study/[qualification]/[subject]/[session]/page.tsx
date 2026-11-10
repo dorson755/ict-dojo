@@ -47,6 +47,32 @@ export default async function StudySessionPage({ params }: Props) {
               />
             </section>
           ))}
+          {session.images && session.images.length > 0 && (
+            <section className={styles.lessonSection} aria-labelledby="session-gallery">
+              <h2 id="session-gallery">{session.imagesTitle ?? 'See it in real life'}</h2>
+              <div className={styles.gallery}>
+                {session.images.map((image) => (
+                  <figure key={image.src} className={styles.figure}>
+                    {/* Local course images in /public; plain img keeps these static and unoptimized on purpose. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={image.src} alt={image.alt} loading="lazy" />
+                    <figcaption>
+                      {image.caption}{' '}
+                      <small>
+                        {image.creditUrl ? (
+                          <a href={image.creditUrl} target="_blank" rel="noopener noreferrer">
+                            {image.credit}
+                          </a>
+                        ) : (
+                          image.credit
+                        )}
+                      </small>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </section>
+          )}
           <section className={styles.lessonSection} aria-labelledby="practice-next">
             <h2 id="practice-next">Put it into practice</h2>
             <p>

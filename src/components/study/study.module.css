@@ -446,9 +446,44 @@
 
 .footerNote a,
 .notice a,
-.syllabus a {
+.syllabus a,
+.figure a {
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.gallery {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+
+.figure {
+  margin: 0;
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.figure figcaption {
+  color: var(--ink-2);
+  font-size: var(--text-sm);
+  line-height: 1.65;
+  margin-top: var(--space-3);
+  max-width: 74ch;
+}
+
+.figure figcaption small {
+  display: block;
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+  margin-top: var(--space-1);
 }
 
 .teacherLessons {

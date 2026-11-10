@@ -43,6 +43,22 @@ Videos were sourced by topic and their YouTube oEmbed availability checked durin
 preparation. Availability and regional embedding permissions can change.
 They are supplementary software demonstrations, not official exam instruction.
 
+## Images
+
+Session pages can include a gallery (`imagesTitle` and `images` on a session in
+`keyboarding.json`). Current images, all in `public/study/images/`:
+
+- `proofreaders-marks-chart.jpeg`: the reference chart supplied by the site owner
+  with the course materials (Session 3).
+- `proofreading-marks-iso-5776.svg`: ISO 5776 marks applied to a passage, by
+  Isochrone, CC BY-SA 4.0, via Wikimedia Commons (Session 3).
+- `copyedited-manuscript.jpg`: photograph of a professional copyedited page, by
+  Phoebe, CC BY-SA 3.0, via Wikimedia Commons (Sessions 3 and 16).
+
+Attribution and license appear in each figure caption with a link to the source
+file page. Prefer freely licensed sources (Wikimedia Commons); record the license
+and author in the `credit` field.
+
 ## Extending the library
 
 Add a course's reviewed content under `src/domains/study`, then register it in

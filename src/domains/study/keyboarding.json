@@ -67,6 +67,29 @@
           "title": "Check yourself",
           "text": "Can I name all six core marks without the chart?\n\nDid I apply every correction on my last transcription?"
         }
+      ],
+      "imagesTitle": "See the marks in real life",
+      "images": [
+        {
+          "src": "/study/images/proofreaders-marks-chart.jpeg",
+          "alt": "Reference chart of proofreaders' marks in three groups: operational signs, typographical signs and punctuation marks, each drawn by hand with its meaning",
+          "caption": "The reference chart from your course materials. Learn the operational signs first: they are the marks you will meet most often in transcription work.",
+          "credit": "Supplied with the course materials"
+        },
+        {
+          "src": "/study/images/proofreading-marks-iso-5776.svg",
+          "alt": "A marked-up paragraph showing ISO 5776 proofreading marks in use: carets with marginal insertions, deletions, transposition, alignment and capitalisation corrections written between the lines",
+          "caption": "How the marks sit in a real passage (ISO 5776 standard). Notice the pattern: a caret inside the line, and the correction written in the margin. Your class chart uses the same logic.",
+          "credit": "Isochrone, CC BY-SA 4.0, via Wikimedia Commons",
+          "creditUrl": "https://commons.wikimedia.org/wiki/File:English_proofreading_marks_example_(ISO_5776).svg"
+        },
+        {
+          "src": "/study/images/copyedited-manuscript.jpg",
+          "alt": "Photograph of a professional copyeditor's manuscript page covered in handwritten insertions, deletions, margin notes and circled instructions",
+          "caption": "A professional copyeditor's working page. Real marked drafts are layered like this, which is why you scan the whole page before typing anything.",
+          "credit": "Phoebe, CC BY-SA 3.0, via Wikimedia Commons",
+          "creditUrl": "https://commons.wikimedia.org/wiki/File:Example_of_copyedited_manuscript.jpg"
+        }
       ]
     },
     {
@@ -393,6 +416,16 @@
         {
           "title": "Check yourself",
           "text": "Did I scan the page before typing?\n\nDid I resolve every structural instruction?"
+        }
+      ],
+      "imagesTitle": "What a real marked page looks like",
+      "images": [
+        {
+          "src": "/study/images/copyedited-manuscript.jpg",
+          "alt": "Photograph of a professional copyeditor's manuscript page covered in handwritten insertions, deletions, margin notes and circled instructions",
+          "caption": "Practise the pre-scan on this page: find the structural moves and insertions first, then the small edits. Corrections are layered between lines and in the margins.",
+          "credit": "Phoebe, CC BY-SA 3.0, via Wikimedia Commons",
+          "creditUrl": "https://commons.wikimedia.org/wiki/File:Example_of_copyedited_manuscript.jpg"
         }
       ]
     },

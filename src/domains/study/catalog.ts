@@ -1,11 +1,38 @@
 import { isExamQualification, subjectsFor, type ExamQualification } from '@/domains/exams/catalog';
-import keyboarding from './keyboarding.json';
+import keyboardingJson from './keyboarding.json';
 
 export interface StudyVideo {
   id: string;
   title: string;
   note: string;
 }
+
+export interface StudyImage {
+  src: string;
+  alt: string;
+  caption: string;
+  credit: string;
+  creditUrl?: string;
+}
+
+export interface StudySessionSection {
+  title: string;
+  text: string;
+}
+
+export interface StudySession {
+  number: number;
+  slug: string;
+  title: string;
+  sections: StudySessionSection[];
+  imagesTitle?: string;
+  images?: StudyImage[];
+}
+
+const keyboarding = keyboardingJson as {
+  sessions: StudySession[];
+  teacherLessons: { title: string; text: string }[];
+};
 
 export const KEYBOARDING_VIDEOS: Record<number, StudyVideo[]> = {
   1: [

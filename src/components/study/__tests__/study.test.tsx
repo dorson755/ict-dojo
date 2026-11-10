@@ -101,6 +101,33 @@ it('renders lesson notes, video resources and sequential navigation', async () =
   expect(host.querySelector('iframe')).toBeNull();
 });
 
+it('renders real-life marks images with captions and license credits', async () => {
+  const page = await StudySessionPage({
+    params: Promise.resolve({
+      qualification: 'bgcse',
+      subject: 'keyboarding',
+      session: 'session-3',
+    }),
+  });
+  act(() => root.render(page));
+  expect(host.textContent).toContain('See the marks in real life');
+  const images = [...host.querySelectorAll('figure img')];
+  expect(images).toHaveLength(3);
+  for (const img of images) {
+    expect(img.getAttribute('src')).toMatch(/^\/study\/images\//);
+    expect(img.getAttribute('alt')!.length).toBeGreaterThan(40);
+  }
+  const creditLinks = [...host.querySelectorAll<HTMLAnchorElement>('figcaption a')];
+  expect(creditLinks).toHaveLength(2);
+  for (const link of creditLinks) {
+    expect(link.target).toBe('_blank');
+    expect(link.rel).toBe('noopener noreferrer');
+    expect(link.href).toContain('commons.wikimedia.org');
+    expect(link.textContent).toMatch(/CC BY-SA/);
+  }
+  expect(host.textContent).toContain('Supplied with the course materials');
+});
+
 it('renders all teaching plans and explains the distinct sequence', async () => {
   const page = await TeacherGuide({
     params: Promise.resolve({ qualification: 'bgcse', subject: 'keyboarding' }),

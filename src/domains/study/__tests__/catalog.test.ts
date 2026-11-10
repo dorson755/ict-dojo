@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import { subjectsFor } from '@/domains/exams/catalog';
 import {
   getStudySubject,
@@ -61,6 +63,25 @@ describe('study library catalog', () => {
     ['__proto__', 'keyboarding', 'session-1'],
   ])('rejects unavailable or malformed routes: %s/%s/%s', (qualification, subject, session) => {
     expect(getStudySession(qualification, subject, session)).toBeUndefined();
+  });
+
+  it('ships complete, licensed, locally hosted images for every gallery', () => {
+    const withImages = keyboardingLibrary.sessions.filter((session) => session.images?.length);
+    expect(withImages.map((session) => session.number)).toEqual([3, 16]);
+    for (const session of withImages) {
+      expect(session.imagesTitle).toBeTruthy();
+      for (const image of session.images!) {
+        expect(image.src).toMatch(/^\/study\/images\/[\w.-]+$/);
+        const fileExists = existsSync(join(process.cwd(), 'public', image.src));
+        if (!fileExists) throw new Error(`${image.src} must exist in public/`);
+        expect(fileExists).toBe(true);
+        expect(image.alt.length).toBeGreaterThan(40);
+        expect(image.caption.length).toBeGreaterThan(40);
+        expect(image.credit.length).toBeGreaterThan(5);
+        if (image.creditUrl)
+          expect(image.creditUrl).toMatch(/^https:\/\/commons\.wikimedia\.org\//);
+      }
+    }
   });
 
   it('clarifies classroom scoring and full-paper simulation limits', () => {
