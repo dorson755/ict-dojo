@@ -20,6 +20,13 @@ multiplayer, trading, type effectiveness, and equipment are not implemented.
   advance the cursor. Clean turns earn extra damage and three consecutive clean
   turns power a focus move. Two one-word guards per encounter recover health
   and reduce incoming damage. The tutorial opponent deals no damage.
+- New encounters use `rulesVersion: 2`: mistakes queue one counterattack at the
+  end of the typing turn, never mid-word. Each mistake adds 6 HP of response
+  (9 for guardians), capped at three mistakes: 18/27 HP. Clean turns avoid the
+  response. Guard recovers up to 10 HP before taking a quarter of the queued
+  damage, rounded up. Defeated opponents and capture prompts cannot counterattack.
+  Encounters without a rules version retain the original 12/18 HP response,
+  preserving client/server replay compatibility for already-active encounters.
 - No countdown or speed-based damage. The input pauses its practice clock on
   blur; hidden pages blur the input. WPM measures focused typing time.
 - A wild win leads to a three-word capture packet requiring 90% accuracy, with
@@ -73,8 +80,24 @@ game music, or fonts. Meadow SVG is original.
 
 Native `picture` selects static sprites for reduced-motion preferences. Visible
 typing labels, native buttons, focus outlines, text HP values, status messages,
-and a responsive stacked layout support keyboard and small-screen use. The game
-is silent in this release.
+and a responsive stacked layout support keyboard and small-screen use.
+
+Battle feedback includes attack lunges, four reusable elemental projectiles
+(leaf, ember, bubble, spark), recoil, delayed counterattacks, guard shields, smooth
+HP bars, and a capture throw/shake/reveal. Effects never delay typing, move its
+prompt, or determine damage. Rapid turns replace the previous visual effect
+instead of queuing animations. Reduced-motion mode disables movement and HP
+transitions, hides projectiles, and keeps text feedback available.
+
+Sound is muted by default, with an effects-volume control and browser-local
+preferences (`ict-dojo:trail-sound`). Web Audio starts only from a user gesture,
+even when an enabled preference is restored. Original synthesized word, warning,
+elemental attack, guard, counterattack, and capture sounds use no external audio
+files or copyrighted music/cries. Repeated typo sounds are throttled and synthesis
+is capped at 12 simultaneous/scheduled voices. Muting, focus loss, hidden tabs,
+leaving, and unmounting cancel pending sounds; completion can finish its short
+celebration. Unsupported audio or blocked local storage does not block play.
+Background music and extended evolution sequences remain out of scope.
 
 ## Validation
 

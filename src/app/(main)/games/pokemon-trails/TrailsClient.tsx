@@ -13,6 +13,7 @@ import {
   STARTERS,
   trainingToEvolve,
   trailFinished,
+  trailCounterDamage,
 } from '@/domains/typing/pokemon';
 import type {
   PokemonCollection,
@@ -31,6 +32,10 @@ import {
   prepareTrailEncounter,
 } from './actions';
 import styles from './trails.module.css';
+import { trailElement, trailFeedback } from './trail-feedback';
+import type { TrailFeedback } from './trail-feedback';
+import { DEFAULT_TRAIL_SOUND, readTrailSound, writeTrailSound, TrailAudio } from './trail-audio';
+import type { TrailSoundPreferences } from './trail-audio';
 
 function Sprite({
   species,
@@ -77,7 +82,11 @@ export default function TrailsClient({
   const [error, setError] = useState('');
   const [paused, setPaused] = useState(true);
   const [leaving, setLeaving] = useState(false);
-  const [flash, setFlash] = useState(false);
+  const [feedback, setFeedback] = useState<(TrailFeedback & { id: number }) | null>(null);
+  const feedbackId = useRef(0);
+  const audio = useRef<TrailAudio | null>(null);
+  const [sound, setSound] = useState<TrailSoundPreferences>(DEFAULT_TRAIL_SOUND);
+  const [soundUnavailable, setSoundUnavailable] = useState(false);
   const [guideSearch, setGuideSearch] = useState('');
   const [guideOwned, setGuideOwned] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -88,6 +97,7 @@ export default function TrailsClient({
   const partner = collection?.partner ?? 'bulbasaur';
   const training = collection?.caught[partner] ?? 0;
   const form = pokemonForm(partner, training);
+  const element = trailElement(POKEMON_INFO[partner].type);
   const guideFamilies = (Object.keys(POKEMON_LINES) as PokemonFamily[]).filter(
     (family) =>
       (!guideOwned || collection?.caught[family] !== undefined) &&
@@ -102,14 +112,43 @@ export default function TrailsClient({
       clock.current.start = null;
     }
     setPaused(true);
+    if (!current.current || !trailFinished(current.current)) audio.current?.pause();
   }
   function resumeClock() {
     if (clock.current.start === null) clock.current.start = performance.now();
     setPaused(false);
+    void audio.current?.unlock();
+  }
+  useEffect(() => {
+    const player = new TrailAudio();
+    audio.current = player;
+    const preferences = readTrailSound();
+    player.configure(preferences);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Restore browser preferences only after hydration.
+    setSound(preferences);
+    return () => {
+      player.destroy();
+      audio.current = null;
+    };
+  }, []);
+  async function toggleSound() {
+    const preferences = { ...sound, enabled: !sound.enabled };
+    setSound(preferences);
+    writeTrailSound(preferences);
+    audio.current?.configure(preferences);
+    setSoundUnavailable(false);
+    if (preferences.enabled) {
+      const ready = await audio.current?.unlock();
+      if (ready) audio.current?.play({ cue: 'word', damage: 0, counter: 0 }, element);
+      else setSoundUnavailable(true);
+    }
   }
   useEffect(() => {
     const hidden = () => {
-      if (document.hidden) input.current?.blur();
+      if (document.hidden) {
+        input.current?.blur();
+        audio.current?.pause();
+      }
     };
     document.addEventListener('visibilitychange', hidden);
     return () => document.removeEventListener('visibilitychange', hidden);
@@ -143,6 +182,9 @@ export default function TrailsClient({
     }
   }
   async function explore(guardian = false) {
+    void audio.current?.unlock();
+    audio.current?.stop();
+    setFeedback(null);
     setBusy(true);
     setError('');
     setReceipt(null);
@@ -197,16 +239,24 @@ export default function TrailsClient({
     );
     const event: TrailInput = kind === 'guard' ? { kind, at } : { kind, key, at };
     try {
-      const next = applyTrailInput(current.current, encounter, event);
+      const previous = current.current;
+      const next = applyTrailInput(previous, encounter, event);
       inputs.current = [...inputs.current, event];
-      if (next.turns !== current.current.turns) {
-        setFlash(true);
-        window.setTimeout(() => setFlash(false), 350);
+      const reaction = trailFeedback(previous, next, encounter);
+      if (reaction) {
+        audio.current?.play(reaction, element);
+        if (reaction.cue !== 'word' && reaction.cue !== 'mistake')
+          setFeedback({ ...reaction, id: ++feedbackId.current });
       }
       current.current = next;
       setBattle(next);
       if (trailFinished(next)) {
-        pauseClock();
+        // Stop the practice clock without cutting off the final attack or capture jingle.
+        if (clock.current.start !== null) {
+          clock.current.elapsed += performance.now() - clock.current.start;
+          clock.current.start = null;
+        }
+        setPaused(true);
         void save(inputs.current);
       }
     } catch {
@@ -225,6 +275,8 @@ export default function TrailsClient({
       inputs.current = [];
       setLeaving(false);
       setReceipt(null);
+      setFeedback(null);
+      audio.current?.stop();
     } catch {
       setError(
         'The encounter changed in another tab or could not be left. Reload the trail to continue.',
@@ -247,6 +299,35 @@ export default function TrailsClient({
 
   return (
     <div>
+      <div className={styles.soundControls} role="group" aria-label="Battle sound">
+        <button
+          type="button"
+          className={styles.secondary}
+          aria-pressed={sound.enabled}
+          onClick={() => void toggleSound()}
+        >
+          Sound {sound.enabled ? 'on' : 'off'}
+        </button>
+        <label>
+          Effects volume
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={Math.round(sound.volume * 100)}
+            disabled={!sound.enabled}
+            onChange={(event) => {
+              const preferences = { ...sound, volume: Number(event.target.value) / 100 };
+              setSound(preferences);
+              audio.current?.configure(preferences);
+              writeTrailSound(preferences);
+            }}
+          />
+        </label>
+        {soundUnavailable && (
+          <span role="status">Sound is unavailable here. You can still play silently.</span>
+        )}
+      </div>
       {error && (
         <div className={styles.error} role="alert">
           {error}
@@ -305,33 +386,91 @@ export default function TrailsClient({
                 <strong>
                   {encounter.guardian ? 'Pidgeotto' : POKEMON_INFO[encounter.opponent].name}
                 </strong>
-                <label>
+                <div className={styles.hpLabel}>
                   HP{' '}
                   <span>
                     {battle.opponentHp} / {battle.maxOpponentHp}
                   </span>
-                  <progress max={battle.maxOpponentHp} value={battle.opponentHp} />
-                </label>
+                  <div
+                    className={styles.hpTrack}
+                    role="progressbar"
+                    aria-label="Opponent HP"
+                    aria-valuemin={0}
+                    aria-valuemax={battle.maxOpponentHp}
+                    aria-valuenow={battle.opponentHp}
+                  >
+                    <span
+                      style={{ width: `${(100 * battle.opponentHp) / battle.maxOpponentHp}%` }}
+                    />
+                  </div>
+                </div>
               </div>
-              <Sprite
-                species={encounter.guardian ? 'pidgeotto' : pokemonForm(encounter.opponent, 0)}
-                animated={!trailFinished(battle)}
-                className={`${styles.opponent} ${flash ? styles.hit : ''}`}
-              />
-              <Sprite
-                species={form}
-                back
-                animated={!trailFinished(battle)}
-                className={styles.partner}
-              />
+              <div
+                key={`opponent-${feedback?.id ?? 0}`}
+                className={`${styles.opponent} ${feedback?.cue === 'attack' ? styles.opponentHit : ''} ${feedback?.counter ? styles.counterLunge : ''} ${battle.phase === 'caught' ? styles.captured : ''}`}
+              >
+                <Sprite
+                  species={encounter.guardian ? 'pidgeotto' : pokemonForm(encounter.opponent, 0)}
+                  animated={!trailFinished(battle)}
+                />
+              </div>
+              <div
+                key={`partner-${feedback?.id ?? 0}`}
+                className={`${styles.partner} ${feedback?.cue === 'attack' ? styles.attackLunge : ''} ${feedback?.counter ? styles.partnerHit : ''}`}
+              >
+                <Sprite species={form} back animated={!trailFinished(battle)} />
+              </div>
+              {feedback && (
+                <div
+                  key={feedback.id}
+                  className={styles.feedbackLayer}
+                  aria-hidden="true"
+                  data-feedback={feedback.cue}
+                >
+                  {feedback.cue === 'attack' && (
+                    <>
+                      <span className={`${styles.projectile} ${styles[element]}`} />
+                      <span className={styles.outgoingDamage}>−{feedback.damage}</span>
+                    </>
+                  )}
+                  {(battle.guarding || feedback.cue === 'guard') && (
+                    <span
+                      className={`${styles.shield} ${!battle.guarding ? styles.guardResolved : ''}`}
+                    >
+                      Guard
+                    </span>
+                  )}
+                  {!!feedback.counter && (
+                    <>
+                      <span className={styles.counterProjectile} />
+                      <span className={styles.incomingDamage}>−{feedback.counter}</span>
+                    </>
+                  )}
+                  {feedback.cue === 'capture' && <span className={styles.captureBall} />}
+                </div>
+              )}
+              {battle.guarding && !feedback && (
+                <span className={styles.shield} aria-hidden="true">
+                  Guard
+                </span>
+              )}
               <div className={styles.partnerStatus}>
                 <strong>
                   {pokemonName(form)} <span>Lv. {Math.min(10, training + 1)}</span>
                 </strong>
-                <label>
+                <div className={styles.hpLabel}>
                   HP <span>{battle.playerHp} / 100</span>
-                  <progress max={100} value={battle.playerHp} />
-                </label>
+                  <div
+                    className={styles.hpTrack}
+                    role="progressbar"
+                    aria-label="Partner HP"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={battle.playerHp}
+                  >
+                    <span style={{ width: `${battle.playerHp}%` }} />
+                  </div>
+                </div>
               </div>
               {battle.phase === 'caught' && (
                 <div className={styles.captureSeal} aria-hidden="true">
@@ -345,6 +484,32 @@ export default function TrailsClient({
               </p>
               {!trailFinished(battle) ? (
                 <>
+                  {battle.phase === 'battle' && (
+                    <div className={styles.counterMeter}>
+                      <label>
+                        Counterattack
+                        <meter
+                          min={0}
+                          max={3}
+                          value={
+                            encounter.tutorial
+                              ? 0
+                              : Math.min(3, battle.promptAttempts - battle.cursor)
+                          }
+                          aria-label="Counterattack strength"
+                        />
+                      </label>
+                      <span>
+                        {encounter.tutorial
+                          ? 'Practice only: no damage'
+                          : encounter.rulesVersion !== 2
+                            ? 'Original encounter: opponent responds each turn'
+                            : battle.promptAttempts > battle.cursor
+                              ? `${trailCounterDamage(encounter, battle.promptAttempts - battle.cursor, battle.guarding)} HP response when this turn ends`
+                              : 'Clean turn: no counterattack'}
+                      </span>
+                    </div>
+                  )}
                   <div className={styles.move}>
                     <strong>
                       {battle.phase === 'capture'
@@ -494,6 +659,8 @@ export default function TrailsClient({
                         className={styles.primary}
                         type="button"
                         onClick={() => {
+                          audio.current?.stop();
+                          setFeedback(null);
                           setEncounter(null);
                           setBattle(null);
                           setReceipt(null);
@@ -573,6 +740,11 @@ export default function TrailsClient({
             <p className={styles.quiet}>
               Guard before typing a turn to recover health and soften the next hit. Your Pokémon
               never disappears if you lose.
+            </p>
+            <p className={styles.quiet}>
+              {encounter.rulesVersion === 2
+                ? 'Mistakes build one counterattack when your turn ends, capped after three mistakes. Clean turns avoid it. A defeated opponent cannot hit back.'
+                : 'This encounter keeps its original battle rules. Your next encounter will use mistake-driven counterattacks.'}
             </p>
           </aside>
         </div>

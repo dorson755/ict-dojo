@@ -724,6 +724,7 @@ export interface PokemonEncounter {
   words: string[];
   createdAt: string;
   belt: number;
+  rulesVersion?: 2;
 }
 export type TrailInput = { kind: 'key'; key: string; at: number } | { kind: 'guard'; at: number };
 export type TrailPhase = 'battle' | 'capture' | 'caught' | 'escaped' | 'lost';
@@ -748,6 +749,21 @@ export interface TrailBattle {
 }
 export function trailFinished(state: TrailBattle): boolean {
   return ['caught', 'escaped', 'lost'].includes(state.phase);
+}
+/** Old encounters retain their original response rules, including across a deployment. */
+export function trailCounterDamage(
+  encounter: PokemonEncounter,
+  mistakes: number,
+  guarding = false,
+): number {
+  if (encounter.tutorial) return 0;
+  const response =
+    encounter.rulesVersion === 2
+      ? (encounter.guardian ? 9 : 6) * Math.min(3, Math.max(0, mistakes))
+      : encounter.guardian
+        ? 18
+        : 12;
+  return guarding ? Math.ceil(response / 4) : response;
 }
 function nextPrompt(state: TrailBattle, encounter: PokemonEncounter, count: number): TrailBattle {
   const prompt = Array.from(
@@ -891,12 +907,12 @@ export function applyTrailInput(
       3,
     );
   }
-  const response = encounter.tutorial ? 0 : encounter.guardian ? 18 : 12;
-  const playerHp = Math.max(
-    0,
-    Math.min(100, turn.playerHp + (typed.guarding ? 10 : 0)) -
-      (typed.guarding ? Math.ceil(response / 4) : response),
+  const response = trailCounterDamage(
+    encounter,
+    typed.promptAttempts - typed.cursor,
+    typed.guarding,
   );
+  const playerHp = Math.max(0, Math.min(100, turn.playerHp + (typed.guarding ? 10 : 0)) - response);
   const resolved = {
     ...turn,
     playerHp,
@@ -909,6 +925,11 @@ export function applyTrailInput(
           ? 'Clean hit! Accuracy powered up your move.'
           : 'Your move landed. A clean turn will make it stronger.',
   };
+  if (encounter.rulesVersion === 2 && !encounter.tutorial && !typed.guarding) {
+    resolved.message += response
+      ? ` The opponent counterattacked for ${response} HP.`
+      : ' No mistakes, no counterattack.';
+  }
   return playerHp
     ? nextPrompt(resolved, encounter, 2)
     : {

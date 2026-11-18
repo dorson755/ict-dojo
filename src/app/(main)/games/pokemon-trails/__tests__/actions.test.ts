@@ -91,6 +91,7 @@ it('creates a server-owned encounter with belt-matched, words-only content', asy
     guardian: false,
     belt: 0,
     words: words.words,
+    rulesVersion: 2,
   });
   expect(encounterPool(0)).toContain(result.active?.opponent);
 });
@@ -115,7 +116,9 @@ it('selects newly unlocked families from the authenticated learner’s belt', as
 it('resumes an active encounter without burning more model tokens', async () => {
   const active = { id: 'existing', createdAt: new Date().toISOString() } as PokemonEncounter;
   repo.get.mockResolvedValue({ ...collection, active });
-  expect((await prepareTrailEncounter()).active?.id).toBe('existing');
+  const result = await prepareTrailEncounter();
+  expect(result.active?.id).toBe('existing');
+  expect(result.active?.rulesVersion).toBeUndefined();
   expect(generateQuestContent).not.toHaveBeenCalled();
 });
 it('blocks premature guardians and expired encounters', async () => {

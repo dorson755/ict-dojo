@@ -374,6 +374,32 @@
   gap: 24px;
   align-items: start;
 }
+.soundControls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  margin-bottom: 20px;
+  font-size: 0.8rem;
+}
+.soundControls button {
+  font-size: 0.8rem;
+  padding: 8px 14px;
+}
+.soundControls label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.soundControls input {
+  width: 110px;
+  accent-color: #1f5f66;
+}
+.soundControls input:focus-visible {
+  outline: 3px solid #1f5f66;
+  outline-offset: 4px;
+}
 .battleCard {
   border: 1px solid #b9cdbe;
   border-radius: 14px;
@@ -412,6 +438,11 @@
   width: 235px;
   height: 235px;
 }
+.partner > .sprite,
+.opponent > .sprite {
+  width: 100%;
+  height: 100%;
+}
 .opponentStatus,
 .partnerStatus {
   position: absolute;
@@ -437,21 +468,29 @@
 .partnerStatus strong > span {
   font: 400 0.75rem var(--font-body);
 }
-.scene label {
+.hpLabel {
   display: block;
   font-size: 0.65rem;
   margin-top: 7px;
 }
-.scene label > span {
+.hpLabel > span {
   float: right;
 }
-.scene progress {
+.hpTrack {
   display: block;
   width: 100%;
   height: 8px;
   margin-top: 5px;
   border: 0;
-  accent-color: #1f5f66;
+  background: #d4dfd5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.hpTrack > span {
+  display: block;
+  height: 100%;
+  background: #1f5f66;
+  transition: width 0.32s ease-out;
 }
 .captureSeal {
   position: absolute;
@@ -464,12 +503,13 @@
   border-radius: 7px;
   font: 600 1.8rem var(--font-display);
   z-index: 3;
+  animation: captureReveal 0.2s 0.85s both;
 }
 .console {
   padding: 22px 26px;
 }
 .message {
-  min-height: 44px;
+  min-height: 7.5em;
   font-size: 0.88rem;
   line-height: 1.5;
   border-bottom: 1px solid #d2ded5;
@@ -481,6 +521,27 @@
   justify-content: space-between;
   gap: 12px;
   margin: 20px 0;
+}
+.counterMeter {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  margin-top: 16px;
+  font-size: 0.75rem;
+  color: #703d2d;
+}
+.counterMeter > span {
+  line-height: 1.4;
+  min-height: 2.8em;
+}
+.counterMeter label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.counterMeter meter {
+  width: 90px;
+  height: 13px;
 }
 .move strong {
   font: 600 1.1rem var(--font-display);
@@ -625,13 +686,223 @@
 .credits a {
   text-decoration: underline;
 }
-.hit {
-  animation: hit 0.3s ease-out;
+.feedbackLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
 }
-@keyframes hit {
-  50% {
-    transform: translateX(10px);
-    filter: brightness(1.5);
+.attackLunge {
+  animation: attackLunge 0.3s ease-out;
+}
+.opponentHit > .sprite {
+  animation: recoil 0.22s 0.2s ease-out;
+}
+.counterLunge {
+  animation: counterLunge 0.3s 0.42s ease-out;
+}
+.partnerHit > .sprite {
+  animation: recoil 0.22s 0.6s ease-out;
+}
+.projectile,
+.counterProjectile {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  animation: projectile 0.28s ease-in both;
+}
+.leaf {
+  background: #317756;
+  border: 2px solid #b5d59c;
+  border-radius: 80% 0 80% 0;
+  rotate: -25deg;
+}
+.ember {
+  background: #be5c2a;
+  border: 3px solid #f5c06d;
+  border-radius: 80% 15% 60% 50%;
+  rotate: -35deg;
+}
+.bubble {
+  border: 4px solid #368da2;
+  background: #c1e9ec;
+  border-radius: 50%;
+}
+.spark,
+.counterProjectile {
+  background: #f5cc55;
+  clip-path: polygon(55% 0, 15% 55%, 44% 55%, 35% 100%, 90% 35%, 60% 35%);
+}
+.counterProjectile {
+  background: #9b6638;
+  animation: counterProjectile 0.25s 0.45s ease-in both;
+}
+.outgoingDamage,
+.incomingDamage {
+  position: absolute;
+  left: 73%;
+  top: 28%;
+  padding: 4px 8px;
+  background: #f6faf8;
+  border: 1px solid #6f9479;
+  border-radius: 5px;
+  font: 600 1rem var(--font-body);
+  color: #173c38;
+  animation: damageRise 0.55s 0.2s both;
+}
+.incomingDamage {
+  left: 24%;
+  top: 65%;
+  color: #703d2d;
+  animation-delay: 0.6s;
+}
+.shield {
+  position: absolute;
+  left: 16%;
+  top: 61%;
+  padding: 16px 18px;
+  border: 3px solid #1f5f66;
+  border-radius: 45% 45% 60% 60%;
+  background: #e0f2ed;
+  color: #173c38;
+  font-size: 0.8rem;
+  z-index: 2;
+  animation: shield 0.6s ease-out;
+}
+.captureBall {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #173c38;
+  border-radius: 50%;
+  background: linear-gradient(#b85138 45%, #173c38 45% 55%, #f6faf8 55%);
+  animation: captureThrow 1s ease-out both;
+}
+.captured > .sprite {
+  animation: captureShrink 0.2s 0.4s both;
+}
+.guardResolved {
+  animation: guardResolve 0.85s both;
+}
+@keyframes guardResolve {
+  75% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes attackLunge {
+  40% {
+    transform: translate(22px, -10px);
+  }
+}
+@keyframes counterLunge {
+  40% {
+    transform: translate(-20px, 12px);
+  }
+}
+@keyframes recoil {
+  45% {
+    transform: translateX(9px) rotate(3deg);
+  }
+}
+@keyframes projectile {
+  from {
+    left: 27%;
+    top: 69%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    left: 76%;
+    top: 42%;
+    opacity: 0;
+  }
+}
+@keyframes counterProjectile {
+  from {
+    left: 76%;
+    top: 42%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  to {
+    left: 27%;
+    top: 69%;
+    opacity: 0;
+  }
+}
+@keyframes damageRise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+}
+@keyframes shield {
+  from {
+    transform: scale(0.85);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes captureThrow {
+  from {
+    left: 25%;
+    top: 70%;
+    transform: rotate(-45deg);
+  }
+  35% {
+    left: 73%;
+    top: 30%;
+    transform: rotate(180deg);
+  }
+  50%,
+  70%,
+  90%,
+  to {
+    left: 73%;
+    top: 45%;
+    transform: rotate(0);
+  }
+  60% {
+    left: 73%;
+    top: 45%;
+    transform: rotate(-18deg);
+  }
+  80% {
+    left: 73%;
+    top: 45%;
+    transform: rotate(18deg);
+  }
+}
+@keyframes captureShrink {
+  to {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+@keyframes captureReveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 @media (max-width: 1000px) {
@@ -837,7 +1108,21 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hit {
+  .battleCard .scene *,
+  .battleCard .scene *::before,
+  .battleCard .scene *::after {
     animation: none;
+    transition: none;
+  }
+  .projectile,
+  .counterProjectile,
+  .captureBall {
+    display: none;
+  }
+  .captured > .sprite {
+    opacity: 0.3;
+  }
+  .guardResolved {
+    display: none;
   }
 }

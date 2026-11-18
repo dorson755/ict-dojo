@@ -57,6 +57,7 @@ export async function prepareTrailEncounter(guardian = false) {
     words: content.words,
     createdAt: new Date().toISOString(),
     belt: access.belt,
+    rulesVersion: 2 as const,
   };
   return PokemonRepository.replace(user.id, collection, { ...collection, active });
 }
