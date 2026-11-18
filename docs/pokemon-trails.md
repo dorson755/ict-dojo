@@ -1,9 +1,14 @@
 # Pokémon Typing Trails
 
-First playable slice: `/games/pokemon-trails`. Single-player Meadow Trail,
-three starters, two initial wild families, a Pidgeotto guardian after three wins,
-and all five families' three-stage evolution lines (15 forms). Defeating the
-guardian makes the other starters available as meadow encounters. More habitats,
+`/games/pokemon-trails` is a single-player Meadow Trail with three starters,
+a Pidgeotto guardian after three wins, and all 151 Kanto species across 82
+collection lines. Defeating the guardian makes the other starters available as
+meadow encounters. Wild families unlock cumulatively with typing belts:
+White starts with Caterpie, Weedle, Pidgey, Rattata, and Spearow; Black makes the
+five legendary/mythical species available. Every species is reachable by catching
+and training. Eevee, Vaporeon, Jolteon, and Flareon are separate catches rather
+than an artificial linear evolution chain. The field guide supports name search
+(including evolved forms) and an owned-only filter. More habitats,
 multiplayer, trading, type effectiveness, and equipment are not implemented.
 
 ## Learning and gameplay
@@ -20,7 +25,9 @@ multiplayer, trading, type effectiveness, and equipment are not implemented.
 - A wild win leads to a three-word capture packet requiring 90% accuracy, with
   one retry. Failed captures and guardian losses still count as valid practice.
 - Each valid completed encounter trains the active partner once. Evolution is
-  at four and nine training encounters (displayed levels 5 and 10). Training
+  at four and nine training encounters for three-stage lines (displayed levels
+  5 and 10), and six for two-stage lines (level 7). Single-form partners do not
+  evolve. Existing three-stage collection progress is unchanged. Training
   does not consume platform XP. Duplicate catches do not reset training.
 - Partial encounters earn nothing. Reload resumes an unfinished encounter from
   its beginning. Abandon requires confirmation and preserves saved progress.
@@ -60,7 +67,7 @@ are available to the existing recommendation flow.
 ## Assets and accessibility
 
 See `public/pokemon-trails/ASSET-CREDITS.md` for source URLs and the owner's reported
-clearance. Downloaded assets are limited to 75 sprites/icons (about 1.2 MB total),
+clearance. Downloaded assets comprise 755 sprites/icons (about 9.2 MB total),
 with source URLs and hashes in the manifest. No hotlinking, external game scripts,
 game music, or fonts. Meadow SVG is original.
 

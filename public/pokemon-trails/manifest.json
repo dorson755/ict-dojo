@@ -72,6 +72,24 @@
     "sha256": "6276f841fc85bd62479ad3f06c39383131c1ee1dd434fea11899916edeced018"
   },
   {
+    "file": "front/weedle.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/weedle.png",
+    "bytes": 425,
+    "sha256": "eec3a16c274cb514a53153c918c4569b0c7d4d33fcae4ab89705b1bc8c667591"
+  },
+  {
+    "file": "front/kakuna.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/kakuna.png",
+    "bytes": 410,
+    "sha256": "ee2500325fff06cca5f1aea50a4cf30492324470cc0b572163cb2d8402bdbc3f"
+  },
+  {
+    "file": "front/beedrill.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/beedrill.png",
+    "bytes": 907,
+    "sha256": "6d7a3dacb6bda83e2c28ce7aef6b6ee56505a9cdff1d83b37c92a60823416044"
+  },
+  {
     "file": "front/pidgey.png",
     "source": "https://play.pokemonshowdown.com/sprites/gen5/pidgey.png",
     "bytes": 496,
@@ -88,6 +106,804 @@
     "source": "https://play.pokemonshowdown.com/sprites/gen5/pidgeot.png",
     "bytes": 806,
     "sha256": "c8e8bab585192d2d87abf880fce3e4393ae4ce6b32c1a787defa3301ea65b069"
+  },
+  {
+    "file": "front/rattata.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/rattata.png",
+    "bytes": 504,
+    "sha256": "eed275a1d73e4db119b032fc1be4b0e1b7f588597911a44f4a8ccef9245c4252"
+  },
+  {
+    "file": "front/raticate.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/raticate.png",
+    "bytes": 788,
+    "sha256": "1df143e8a2bf0bd0bbd93096d5c6f6dda5c01e4e1686c6dd0f0a91dda469ccbf"
+  },
+  {
+    "file": "front/spearow.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/spearow.png",
+    "bytes": 535,
+    "sha256": "5f49d8edb12d88cd59deb385c5240cb77cc0149490604ede62ee3b0211a4e5da"
+  },
+  {
+    "file": "front/fearow.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/fearow.png",
+    "bytes": 1140,
+    "sha256": "e020f6a66dea542d9190e1e59dfd4c7604ee8d4cd14f3b8ee792b11f24ad026e"
+  },
+  {
+    "file": "front/ekans.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/ekans.png",
+    "bytes": 586,
+    "sha256": "0ef3a72bb9c760370fe1044b157c4abe27125e5f56dccf9f66729dd670088df2"
+  },
+  {
+    "file": "front/arbok.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/arbok.png",
+    "bytes": 832,
+    "sha256": "95deb64e37c4f94e968a8c31f6e458ac8667649e4ff0c88578c3d4de478fcd19"
+  },
+  {
+    "file": "front/pikachu.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/pikachu.png",
+    "bytes": 535,
+    "sha256": "dd519d3bab2b8fd5710ea618c616ec5011dd0907586f9bd8c23bebe94333df56"
+  },
+  {
+    "file": "front/raichu.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/raichu.png",
+    "bytes": 814,
+    "sha256": "3a5ab73e2d0b6e3e4ffecf39024d94505eb567ef27989a45f852fdeef04d8ec2"
+  },
+  {
+    "file": "front/sandshrew.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/sandshrew.png",
+    "bytes": 548,
+    "sha256": "5c2a869be77d670042ce0c664db767007ed6ddaf27b103976012218e6d25ba7c"
+  },
+  {
+    "file": "front/sandslash.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/sandslash.png",
+    "bytes": 752,
+    "sha256": "0629e7fabe9e80dc0e344939084a36c45863dd69f7663bdafdb40d073362966c"
+  },
+  {
+    "file": "front/nidoranf.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/nidoranf.png",
+    "bytes": 464,
+    "sha256": "e9f9065629cc79803675ae25846d523019bc6f1b854b1033e1b1be774bad298f"
+  },
+  {
+    "file": "front/nidorina.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/nidorina.png",
+    "bytes": 653,
+    "sha256": "517cf494df0fece4db0580473148efd4f1833748005e83c3105009d68aba6970"
+  },
+  {
+    "file": "front/nidoqueen.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/nidoqueen.png",
+    "bytes": 951,
+    "sha256": "25b16e79a595543688b813b95f365bdc7ed106d2aa769185fbefa4d0e32cc55c"
+  },
+  {
+    "file": "front/nidoranm.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/nidoranm.png",
+    "bytes": 492,
+    "sha256": "3c0cc5dfdd062b77dd5f9e5b1a3f62bef7dbf21fd760a2db2cd0de7c737d11ca"
+  },
+  {
+    "file": "front/nidorino.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/nidorino.png",
+    "bytes": 696,
+    "sha256": "1084eb8bca94cb64251e23e4203009f76b54ffbbe8f1cdb4d47ae57144a5d173"
+  },
+  {
+    "file": "front/nidoking.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/nidoking.png",
+    "bytes": 1109,
+    "sha256": "fa3c786194d18eba83985541c1d7aea07531b4c01b063b2bb1573971623e02e9"
+  },
+  {
+    "file": "front/clefairy.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/clefairy.png",
+    "bytes": 515,
+    "sha256": "716941a3bf948058c890466cf5ae993fae03d731390d0abae920d389b600f9de"
+  },
+  {
+    "file": "front/clefable.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/clefable.png",
+    "bytes": 628,
+    "sha256": "987d89ea8837d537b0b42be096c273c4da6eacc8353d9d2f31b2afb2ac4b286c"
+  },
+  {
+    "file": "front/vulpix.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/vulpix.png",
+    "bytes": 685,
+    "sha256": "f69a695b41a4dd1a3306bcb2bdd144d92b781ee33c2a5757226f8801af4aed8c"
+  },
+  {
+    "file": "front/ninetales.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/ninetales.png",
+    "bytes": 921,
+    "sha256": "f5c0f170ea279b86cdaaaca0ec451f92eda8ef184ff2f9f899e764f6b7ada428"
+  },
+  {
+    "file": "front/jigglypuff.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/jigglypuff.png",
+    "bytes": 449,
+    "sha256": "358f61373ffec783ac334087c3ca399fec6ce6ae09735e1b4fa68ab9367cad92"
+  },
+  {
+    "file": "front/wigglytuff.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/wigglytuff.png",
+    "bytes": 643,
+    "sha256": "c0337947ae7782b424afd15bfae9690e51284a7f8e0d09c6a9fa14465cb7643a"
+  },
+  {
+    "file": "front/zubat.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/zubat.png",
+    "bytes": 520,
+    "sha256": "acd868d2979d87f0fc01f436258f2984845cb24c1ab9f23daac01c9c29eb2bb9"
+  },
+  {
+    "file": "front/golbat.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/golbat.png",
+    "bytes": 831,
+    "sha256": "da9c3f5add5763d2a7c390000cd00b73dc5f4c389cf73d09e58ba8e7954c798b"
+  },
+  {
+    "file": "front/oddish.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/oddish.png",
+    "bytes": 427,
+    "sha256": "df37f6b24420274d641805296dbd29fa0eb0ed4ac431cbd7bae77c4773239007"
+  },
+  {
+    "file": "front/gloom.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/gloom.png",
+    "bytes": 698,
+    "sha256": "269bcea93fbb6faea6d4a37c95ff413d0dc31359515d1d54437733a1d1ba475d"
+  },
+  {
+    "file": "front/vileplume.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/vileplume.png",
+    "bytes": 750,
+    "sha256": "a4da246602799aa5d2a4569b2f0b06ce106956f30710ba534046772a0ab94642"
+  },
+  {
+    "file": "front/paras.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/paras.png",
+    "bytes": 576,
+    "sha256": "2b1cc07de7f949fd16f1217783c2208cf0a6927b611d8862e15f9493222d5e04"
+  },
+  {
+    "file": "front/parasect.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/parasect.png",
+    "bytes": 697,
+    "sha256": "7c36ad69272d0c7e13acadb97f9d484cfdeb615daea2e8ca8505c2d393a32f70"
+  },
+  {
+    "file": "front/venonat.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/venonat.png",
+    "bytes": 669,
+    "sha256": "dc64b5f94993a73ffa72ee7d9b1d5667a0bc6d6ba51a61628f7786e2eabae93e"
+  },
+  {
+    "file": "front/venomoth.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/venomoth.png",
+    "bytes": 848,
+    "sha256": "c39f50603c76c885143b65bc3a57bed8edec4335892e0868694760899fa7ba41"
+  },
+  {
+    "file": "front/diglett.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/diglett.png",
+    "bytes": 404,
+    "sha256": "fa6bbe5a941176a8ff22922fc965b0e2dcd1cc215090bff6522ebc026adc9664"
+  },
+  {
+    "file": "front/dugtrio.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/dugtrio.png",
+    "bytes": 596,
+    "sha256": "18a8f8c60e64800ac4952b355d2f5efb58f1f6bdb629285542e4b5282b10c1df"
+  },
+  {
+    "file": "front/meowth.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/meowth.png",
+    "bytes": 654,
+    "sha256": "a475a894e6ed5b43b93a57ffa459475f14e2c1773f78ab8e29c7474751aabf13"
+  },
+  {
+    "file": "front/persian.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/persian.png",
+    "bytes": 662,
+    "sha256": "9865b9512b462c6fe2d13ee5407b013409cb3a682ec681617500ae4763e188c8"
+  },
+  {
+    "file": "front/psyduck.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/psyduck.png",
+    "bytes": 460,
+    "sha256": "bcacd8841fbb3099dafdc73c747e3cfa3e24bfb91c66662ee100370c8f77cd32"
+  },
+  {
+    "file": "front/golduck.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/golduck.png",
+    "bytes": 722,
+    "sha256": "e6226b398e38f2402059ba39f7910318d5a395ee45befbc10d8f56c7ea63ce1e"
+  },
+  {
+    "file": "front/mankey.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/mankey.png",
+    "bytes": 699,
+    "sha256": "1d4880173bd6a208973001fb38d3723e8733435577c8fd32153b4c0608ebc866"
+  },
+  {
+    "file": "front/primeape.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/primeape.png",
+    "bytes": 844,
+    "sha256": "7b94864b111401afae18d40dd1687b7d73b25d073f3905dab61f97090e9e816a"
+  },
+  {
+    "file": "front/growlithe.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/growlithe.png",
+    "bytes": 618,
+    "sha256": "e341f5f798a85df7f7dad3a3f67b0342e1fd636106c2f28c549eced38d903273"
+  },
+  {
+    "file": "front/arcanine.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/arcanine.png",
+    "bytes": 1088,
+    "sha256": "cc68bb91296326489be2ab83642c22b2f89e43f60f3ea96d48b3fd69562f0211"
+  },
+  {
+    "file": "front/poliwag.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/poliwag.png",
+    "bytes": 513,
+    "sha256": "ebb2844247b8962f52f6d6fdd660009318b05423d075e96333ac347fe859398f"
+  },
+  {
+    "file": "front/poliwhirl.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/poliwhirl.png",
+    "bytes": 703,
+    "sha256": "14f254e3d1abdb088fb19fc4f92821945f2786eb277ad5bab1b321c3a1f5299d"
+  },
+  {
+    "file": "front/poliwrath.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/poliwrath.png",
+    "bytes": 824,
+    "sha256": "ff1ff4edfe45c507d75e6e46b4c5ec5160e8feb4ef0dfddc4a8e5acd589f231c"
+  },
+  {
+    "file": "front/abra.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/abra.png",
+    "bytes": 611,
+    "sha256": "ed1b057696011786a4d1bc601154216b78f41ddd1295ffb622520110a5615f3f"
+  },
+  {
+    "file": "front/kadabra.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/kadabra.png",
+    "bytes": 995,
+    "sha256": "6928698d5b77f417e3d95228c98886ae929a308bea9854e50052e72b214a9b5e"
+  },
+  {
+    "file": "front/alakazam.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/alakazam.png",
+    "bytes": 987,
+    "sha256": "4733821af7974ebb45f418659ad67f95cabc3853c86cc0aae07bc88eb6f11580"
+  },
+  {
+    "file": "front/machop.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/machop.png",
+    "bytes": 595,
+    "sha256": "46cb49db49913791dc520346d9252937a5dd7d0fba991da7add90c6f6b3631c6"
+  },
+  {
+    "file": "front/machoke.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/machoke.png",
+    "bytes": 923,
+    "sha256": "7c266c63f9a6ab05474c292edf473c7f17097a05a549a427926eaf9d4db660d2"
+  },
+  {
+    "file": "front/machamp.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/machamp.png",
+    "bytes": 1098,
+    "sha256": "132efceee2c7754fb714b7b72a03199ca3f38dc2e14fed4246f893b72a3614a3"
+  },
+  {
+    "file": "front/bellsprout.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/bellsprout.png",
+    "bytes": 499,
+    "sha256": "b8715871c1a003483447f1b5492deb727a0c1cbdce0115c358845f6848d3255e"
+  },
+  {
+    "file": "front/weepinbell.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/weepinbell.png",
+    "bytes": 592,
+    "sha256": "c42eb53e0ab4bb9d750ceb103ed120623f61e50490f0b15896a4142066fbef39"
+  },
+  {
+    "file": "front/victreebel.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/victreebel.png",
+    "bytes": 798,
+    "sha256": "79b36ae0cabfe0e303e03a3f3a04b5b964cc758fb37ebd724a0ff39dbfa87beb"
+  },
+  {
+    "file": "front/tentacool.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/tentacool.png",
+    "bytes": 626,
+    "sha256": "403073f106ed1781746f328cd29e6873af549f0a66f0ad4c0c58af0784a222c0"
+  },
+  {
+    "file": "front/tentacruel.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/tentacruel.png",
+    "bytes": 880,
+    "sha256": "b255224d3e2bdb2af7b6eb44c52aa5703ed2971228366f528466ec1edfd8c070"
+  },
+  {
+    "file": "front/geodude.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/geodude.png",
+    "bytes": 498,
+    "sha256": "56e8448ff84ade7f8ff981631a95449b1520ed70f49ad93fe280607c368cf127"
+  },
+  {
+    "file": "front/graveler.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/graveler.png",
+    "bytes": 798,
+    "sha256": "0aec4632231bdd1b25bdeca52e32a9ddd467b6cd556af90c96c31e923f8e19d7"
+  },
+  {
+    "file": "front/golem.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/golem.png",
+    "bytes": 944,
+    "sha256": "92fb695f1d7c858c974fbf738a6c9143acfd721e9c00e9ac7654ae45b9404a0b"
+  },
+  {
+    "file": "front/ponyta.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/ponyta.png",
+    "bytes": 673,
+    "sha256": "ded31931e6fe069497fde7575a8b1dd4cf1a0a92c8d571758065c74a063d2764"
+  },
+  {
+    "file": "front/rapidash.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/rapidash.png",
+    "bytes": 1119,
+    "sha256": "e66110608455cfc0d66deaf3c662c3265c46de306c526f5dc689aa9cd49428ea"
+  },
+  {
+    "file": "front/slowpoke.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/slowpoke.png",
+    "bytes": 597,
+    "sha256": "8cc0abe060f845d9e85c9b384763f74ee1049f8dd50ae77488f0a817f8e23533"
+  },
+  {
+    "file": "front/slowbro.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/slowbro.png",
+    "bytes": 896,
+    "sha256": "a86b2774b63b3dc111d1b7f89066cc81035c52ee9ea264a9fe814923d66e46ed"
+  },
+  {
+    "file": "front/magnemite.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/magnemite.png",
+    "bytes": 386,
+    "sha256": "8e80dad4cdd9498b26fc4156bbe7319d7a5953f9da56d06b63b91cd6ccb3c805"
+  },
+  {
+    "file": "front/magneton.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/magneton.png",
+    "bytes": 882,
+    "sha256": "99af281506579d0a7713e488b20d7600c359519c3647b49ed5a734671ebc23b9"
+  },
+  {
+    "file": "front/farfetchd.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/farfetchd.png",
+    "bytes": 707,
+    "sha256": "6a9deb30bdfed80eb5a172afb04764e434ae719ed99ad1f9bbc794286a658d73"
+  },
+  {
+    "file": "front/doduo.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/doduo.png",
+    "bytes": 624,
+    "sha256": "bf5fceb3add03fd4b9f0861ffd6a90d6d0e78cb58bc5e7871bbd942e7a8bb548"
+  },
+  {
+    "file": "front/dodrio.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/dodrio.png",
+    "bytes": 1006,
+    "sha256": "42624c75dcf57ba7ed77ec99aa97df19b6697137908df906e4be8238acfce343"
+  },
+  {
+    "file": "front/seel.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/seel.png",
+    "bytes": 616,
+    "sha256": "b80a606f9f32e08781f9cf1ab9b2af6fa48845f2c88ae97c335fc16909a4315a"
+  },
+  {
+    "file": "front/dewgong.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/dewgong.png",
+    "bytes": 774,
+    "sha256": "50cfa03c0d9bf8f9f9bde321d259bf91ab970ad57d24368ffda53b404d2170b8"
+  },
+  {
+    "file": "front/grimer.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/grimer.png",
+    "bytes": 588,
+    "sha256": "232f4be768264436f8258849dfd1e3a7e1991e953941bba0a5c5558279a803af"
+  },
+  {
+    "file": "front/muk.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/muk.png",
+    "bytes": 824,
+    "sha256": "a953f0eedc5f36e88ba5afce82b8fc9f0dc6ae8315d8592e8e952ca0a9d2da37"
+  },
+  {
+    "file": "front/shellder.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/shellder.png",
+    "bytes": 493,
+    "sha256": "3a849eb81390dbbdb01ebe4c1b541e7637a2c2950dca3702eed687079d44ccb2"
+  },
+  {
+    "file": "front/cloyster.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/cloyster.png",
+    "bytes": 975,
+    "sha256": "56c6c5d8ff344777bb750decdb36855f531dbd128feb006c5210e2b19ddac88b"
+  },
+  {
+    "file": "front/gastly.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/gastly.png",
+    "bytes": 725,
+    "sha256": "45c1927245c8d4a721714ce3f03e31fab019db329b7b4cfa69d37fa07bbf562d"
+  },
+  {
+    "file": "front/haunter.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/haunter.png",
+    "bytes": 732,
+    "sha256": "a1f468b1318cf939b654c64094e153caa980b95c484d5d92a78d63b8febe2566"
+  },
+  {
+    "file": "front/gengar.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/gengar.png",
+    "bytes": 712,
+    "sha256": "3145d4f8b51202a3c4353efb5b8d75693b9a248b2c419425259b105cad91d195"
+  },
+  {
+    "file": "front/onix.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/onix.png",
+    "bytes": 985,
+    "sha256": "576e2accd4e2d9d7226ec670c586102f88a939cb35f688abbdb6034d95572608"
+  },
+  {
+    "file": "front/drowzee.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/drowzee.png",
+    "bytes": 657,
+    "sha256": "cadbcd07c7f8613b68ea5592fc2827a3ff3dbf7fe48f407f37f8bca604c223c5"
+  },
+  {
+    "file": "front/hypno.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/hypno.png",
+    "bytes": 891,
+    "sha256": "fa84be60fa32b635b1b42c9bfea3faaac63124e8ca174fdc7ffa248461f3819e"
+  },
+  {
+    "file": "front/krabby.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/krabby.png",
+    "bytes": 603,
+    "sha256": "79635a1547f4aca0f3a81d707c75100d02f24fa454ab2f1e82a1924d2f6195fc"
+  },
+  {
+    "file": "front/kingler.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/kingler.png",
+    "bytes": 981,
+    "sha256": "e51614d69231c752754832d4fb31cf5280a59df4e278be951dc8675044146c87"
+  },
+  {
+    "file": "front/voltorb.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/voltorb.png",
+    "bytes": 357,
+    "sha256": "3c84bf1eeb09786fff4abb6a3502f09ec6d2dca3dc56cb0a47cdf4d09f194286"
+  },
+  {
+    "file": "front/electrode.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/electrode.png",
+    "bytes": 490,
+    "sha256": "3731cdf68d4ec3e4f5f0cf841df459726731be9313a13bc377434f49130c47e5"
+  },
+  {
+    "file": "front/exeggcute.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/exeggcute.png",
+    "bytes": 645,
+    "sha256": "f56194aebe372d4acd32fdbf26c181028569a3206861fd3b0df0bb89ec537f87"
+  },
+  {
+    "file": "front/exeggutor.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/exeggutor.png",
+    "bytes": 847,
+    "sha256": "5ba12f6ee08d34c38cf1a89737496dcedcd5ce9c645199463ecd44d14b977e66"
+  },
+  {
+    "file": "front/cubone.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/cubone.png",
+    "bytes": 529,
+    "sha256": "d5bb5de7dbbe4c7173a2a4780b717162e64375a760598b2df9902e96c54f9c54"
+  },
+  {
+    "file": "front/marowak.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/marowak.png",
+    "bytes": 659,
+    "sha256": "3bfc0101406508bf726cef3f0b498193eb3e7021b3cbb57ae5062adc5aa9c1d5"
+  },
+  {
+    "file": "front/hitmonlee.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/hitmonlee.png",
+    "bytes": 748,
+    "sha256": "ce4773e0e79edeb1741c1ef81d4243e79a00bfdef91183162d7962e8c92ce883"
+  },
+  {
+    "file": "front/hitmonchan.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/hitmonchan.png",
+    "bytes": 614,
+    "sha256": "648e290f3e0af9e77d4455f72253070f7813d1668bffec1e7a5f0f2e91f3c729"
+  },
+  {
+    "file": "front/lickitung.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/lickitung.png",
+    "bytes": 784,
+    "sha256": "c95cd01f1dd1a3f348a5914db415d53f9b3f2532b20643b1afe641b9419fcf50"
+  },
+  {
+    "file": "front/koffing.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/koffing.png",
+    "bytes": 743,
+    "sha256": "b1c43df1c3194324bcd63dc05a3337fdb50798303127a02910ce9d16282da8df"
+  },
+  {
+    "file": "front/weezing.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/weezing.png",
+    "bytes": 1109,
+    "sha256": "754473d4d60ddea9b447651a8da938b4be1405986576aa5c8e2ae265e6f44dc3"
+  },
+  {
+    "file": "front/rhyhorn.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/rhyhorn.png",
+    "bytes": 778,
+    "sha256": "174ed9ceff01b107b81e30f6ab3726a96da291dbc70c9c8e19c452a1bd61ef98"
+  },
+  {
+    "file": "front/rhydon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/rhydon.png",
+    "bytes": 982,
+    "sha256": "47d252a8bd73f30371524859723b9c73286cf3caaf9ab7435c0000f3e8b48139"
+  },
+  {
+    "file": "front/chansey.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/chansey.png",
+    "bytes": 576,
+    "sha256": "7e06c7471c998917bd813dcf6acfc01f5b636d84bf7d6c2081d812dec2393383"
+  },
+  {
+    "file": "front/tangela.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/tangela.png",
+    "bytes": 614,
+    "sha256": "6257ee32242a65c4a74735343d9ebd9158eb24963e92ca78f0eda3551da9237a"
+  },
+  {
+    "file": "front/kangaskhan.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/kangaskhan.png",
+    "bytes": 1027,
+    "sha256": "850342173aa92e3535de4ead2c4bbdd046dd110829beca5b3d16301c9ccca002"
+  },
+  {
+    "file": "front/horsea.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/horsea.png",
+    "bytes": 430,
+    "sha256": "6d252fd73bfbef66dddf7602dbf70d04de965f59ca45808e30ff036775337e95"
+  },
+  {
+    "file": "front/seadra.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/seadra.png",
+    "bytes": 653,
+    "sha256": "ca2e1636b2872f36804fc6441904fb2eb7606260ccccdd26eeee779b36018d7c"
+  },
+  {
+    "file": "front/goldeen.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/goldeen.png",
+    "bytes": 663,
+    "sha256": "ff5120b100650f6b0409ae6436ad05e86bd307a70d5edfca4467d9171e3cbcf6"
+  },
+  {
+    "file": "front/seaking.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/seaking.png",
+    "bytes": 801,
+    "sha256": "4406c061b9dbfb04ffe54d79bdce77d72d8a86517a5e27574563363755ce83c1"
+  },
+  {
+    "file": "front/staryu.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/staryu.png",
+    "bytes": 584,
+    "sha256": "63aa17abe1b3cfbf2cf188d42f34d16b1fc118a6093db4157f3466a08d43dbd4"
+  },
+  {
+    "file": "front/starmie.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/starmie.png",
+    "bytes": 834,
+    "sha256": "6a3423f05f00081aef172b65125fa5919265148b4321b24ba8eefcc0022c5c78"
+  },
+  {
+    "file": "front/mrmime.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/mrmime.png",
+    "bytes": 795,
+    "sha256": "cc7d472aa5e8aaf52b4cb8a9ab9edb9f66267a6188d344693301012f19ff276a"
+  },
+  {
+    "file": "front/scyther.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/scyther.png",
+    "bytes": 715,
+    "sha256": "0a62933b5e24fd7a422b263dfb21ef51f175f30a4f8f590e9121ee7584c5525b"
+  },
+  {
+    "file": "front/jynx.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/jynx.png",
+    "bytes": 873,
+    "sha256": "a16781e1c2a30dd39b6e5f4691e0a06eab57759151d1f581e14213a544bae631"
+  },
+  {
+    "file": "front/electabuzz.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/electabuzz.png",
+    "bytes": 952,
+    "sha256": "5e8ea004a2119dfbefebf5917f08b0df74d81e032e8fff9b6949eaa2146aeae4"
+  },
+  {
+    "file": "front/magmar.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/magmar.png",
+    "bytes": 1004,
+    "sha256": "e44d06dbd5047e7d155be3a4b81595825ce353755c35c4199107c14d2602fb65"
+  },
+  {
+    "file": "front/pinsir.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/pinsir.png",
+    "bytes": 919,
+    "sha256": "6cd86eb8284ca6d31a708ac37ad7907cfe9c494148be4ad475877e0e6ac56fe1"
+  },
+  {
+    "file": "front/tauros.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/tauros.png",
+    "bytes": 739,
+    "sha256": "eacd0989938d36169b00ff941c836eff48a49fccfb015a3f1f15e59f3cf37d19"
+  },
+  {
+    "file": "front/magikarp.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/magikarp.png",
+    "bytes": 732,
+    "sha256": "69fceda25b9fa934c86af6cb57ba76579bcbf917ad374c5ddfb8e336c08e3ef3"
+  },
+  {
+    "file": "front/gyarados.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/gyarados.png",
+    "bytes": 1454,
+    "sha256": "10582ca1f3c38ef6c9c5d9fecb25efbe5761503db173127f381219e8de428ea3"
+  },
+  {
+    "file": "front/lapras.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/lapras.png",
+    "bytes": 775,
+    "sha256": "a2dfd6be355fb64016b081796b0ef49acfc6ab011991e4e95c2c9a283362ba58"
+  },
+  {
+    "file": "front/ditto.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/ditto.png",
+    "bytes": 318,
+    "sha256": "c7a05c4aefb9d638b6b59c3cef91b9f2a19f1600b7bce9a051d5942daa3999cc"
+  },
+  {
+    "file": "front/eevee.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/eevee.png",
+    "bytes": 531,
+    "sha256": "578c4f6d2608cb1c6e025bf848ca68fd8ee3d61226dd35b741ee616486c85afe"
+  },
+  {
+    "file": "front/vaporeon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/vaporeon.png",
+    "bytes": 725,
+    "sha256": "75bce3c17ee617fbee47f9a8756e6b121ee50cd95f464d99d0e4686bc8ede504"
+  },
+  {
+    "file": "front/jolteon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/jolteon.png",
+    "bytes": 654,
+    "sha256": "b7f63afe0b38febcff1dda72cbe6020fb4774cf0d02741bbfae1a45a49a6cb6a"
+  },
+  {
+    "file": "front/flareon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/flareon.png",
+    "bytes": 708,
+    "sha256": "8cc21974e3720c7ff09022e3c0490041080acdecf73d5d09fd672bc866fa3a6a"
+  },
+  {
+    "file": "front/porygon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/porygon.png",
+    "bytes": 478,
+    "sha256": "4f7a0687154e0d031108b276a03e2b52a2904b4dc07c314462105a039b5d0f51"
+  },
+  {
+    "file": "front/omanyte.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/omanyte.png",
+    "bytes": 504,
+    "sha256": "9784ee029646bf1a8eba28044e43e972ea354191186cb8ee63a177f22f617da3"
+  },
+  {
+    "file": "front/omastar.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/omastar.png",
+    "bytes": 728,
+    "sha256": "e6cd52cc75cbf118f6618f2b62db94d4c38ff7c2ce2ad9bc6e5a549a1468376f"
+  },
+  {
+    "file": "front/kabuto.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/kabuto.png",
+    "bytes": 357,
+    "sha256": "5676a4f861bc4f5f4322629d26c7072df0289caa7b74df32159e89089f1377de"
+  },
+  {
+    "file": "front/kabutops.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/kabutops.png",
+    "bytes": 817,
+    "sha256": "f1be15bba3e028fedfcac0168ed67e2795ee16f658b99b5e21460e42a5324c1b"
+  },
+  {
+    "file": "front/aerodactyl.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/aerodactyl.png",
+    "bytes": 921,
+    "sha256": "071a8decea77167477545c35ec05633485a64008f3dcc490b90639819f85b9ec"
+  },
+  {
+    "file": "front/snorlax.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/snorlax.png",
+    "bytes": 803,
+    "sha256": "0225610dc45ff23d91a9403596ca2b4cf1c4216ffff90d11d510f887f6ebef37"
+  },
+  {
+    "file": "front/articuno.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/articuno.png",
+    "bytes": 1250,
+    "sha256": "96760ad3c8cee17fae013dec1e5bf0cd8c7b102b400e28913818b5698fbe89bd"
+  },
+  {
+    "file": "front/zapdos.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/zapdos.png",
+    "bytes": 919,
+    "sha256": "c23964b8cfcb44cfaf57e1bbc4ddb452d626158ddb067b677c25fbd7bd4daadd"
+  },
+  {
+    "file": "front/moltres.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/moltres.png",
+    "bytes": 1082,
+    "sha256": "88a075e1c383c43045a5ae9fb2ff57a2bd282dbc266adee071b2ca8b18d1e0cc"
+  },
+  {
+    "file": "front/dratini.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/dratini.png",
+    "bytes": 487,
+    "sha256": "c8c6327319a793745eb70c11e9636a9a1ead4ce28711d8d6fd2d600ed03e7b2f"
+  },
+  {
+    "file": "front/dragonair.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/dragonair.png",
+    "bytes": 664,
+    "sha256": "c898f7cd8d4f167a95aa74fd6f523fa4fc0f1206a54b042a38172959b58d0ea0"
+  },
+  {
+    "file": "front/dragonite.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/dragonite.png",
+    "bytes": 977,
+    "sha256": "c97ebd19b812b5a2eca5319870fb74598805f698dd8249fa88b2d73f324a59be"
+  },
+  {
+    "file": "front/mewtwo.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/mewtwo.png",
+    "bytes": 840,
+    "sha256": "c2256a90c93116d04fab63db3c4e1158be41bfcfba57bec1206fe6c42d9970b3"
+  },
+  {
+    "file": "front/mew.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5/mew.png",
+    "bytes": 508,
+    "sha256": "35c92269fb59d3a380eeada2d487475e64a3cd664677c842aab7a3aff3b9cfd7"
   },
   {
     "file": "back/bulbasaur.png",
@@ -162,6 +978,24 @@
     "sha256": "5c650d1b6f504dc064ea076eb0deaad81ea8c590ac975adb194c1aba0184d433"
   },
   {
+    "file": "back/weedle.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/weedle.png",
+    "bytes": 410,
+    "sha256": "3248b796924ad15875f1a760ff24ad8b000c914d6718d10d6b6ba3ead1facbfd"
+  },
+  {
+    "file": "back/kakuna.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/kakuna.png",
+    "bytes": 372,
+    "sha256": "cae59d7486f5cc903655c3a63f64dfdedb1fcc59cd64348246a4cf55cde7132b"
+  },
+  {
+    "file": "back/beedrill.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/beedrill.png",
+    "bytes": 765,
+    "sha256": "3b42e8095cbd102b903bc0c8b249fbcfbda5f11e82bfe2d60ce48185b9b39b07"
+  },
+  {
     "file": "back/pidgey.png",
     "source": "https://play.pokemonshowdown.com/sprites/gen5-back/pidgey.png",
     "bytes": 500,
@@ -178,6 +1012,804 @@
     "source": "https://play.pokemonshowdown.com/sprites/gen5-back/pidgeot.png",
     "bytes": 719,
     "sha256": "a6b725ff402ce43ecfe51d8334bdd2b9718807f0d5b9e10199afee9821a59e11"
+  },
+  {
+    "file": "back/rattata.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/rattata.png",
+    "bytes": 492,
+    "sha256": "5bf8405b5ef67b86c3cc6d8f8c427311e3702f60e0626e6eb00aa05afd90299d"
+  },
+  {
+    "file": "back/raticate.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/raticate.png",
+    "bytes": 773,
+    "sha256": "2280e18f8cc9926677a36098d817ab5a79087b57689012ed2c936a5ea9e74e60"
+  },
+  {
+    "file": "back/spearow.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/spearow.png",
+    "bytes": 521,
+    "sha256": "e404b5acb38938650cc8e40736c52fc725c7df48b9daa533c73bfa1848f3c382"
+  },
+  {
+    "file": "back/fearow.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/fearow.png",
+    "bytes": 1037,
+    "sha256": "675684e8634b858deecaefe8d3b173a12ed2c289702e03774f92f19eea36eba4"
+  },
+  {
+    "file": "back/ekans.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/ekans.png",
+    "bytes": 564,
+    "sha256": "e888ff7aea3d20d8134f2a6be9a12cb6fea7695cb938ba0b30c3c427546179cb"
+  },
+  {
+    "file": "back/arbok.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/arbok.png",
+    "bytes": 652,
+    "sha256": "68cde613b33b4cbe163edd93d5624f615846aee398e4bd7d23edd81282aff00b"
+  },
+  {
+    "file": "back/pikachu.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/pikachu.png",
+    "bytes": 467,
+    "sha256": "8db404425606ccbe819a24ffdcf55cd3de3e6a65615fa1521d922936018c3355"
+  },
+  {
+    "file": "back/raichu.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/raichu.png",
+    "bytes": 768,
+    "sha256": "fde0278a29fdf2de553e7df02445da3d2ab3a3d57f5dea31d8a50b52bc78a606"
+  },
+  {
+    "file": "back/sandshrew.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/sandshrew.png",
+    "bytes": 523,
+    "sha256": "bb0f35e6dd751525a3124ccff8e8adb5ed42412ac69df2e237870ac8d8e1d1d3"
+  },
+  {
+    "file": "back/sandslash.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/sandslash.png",
+    "bytes": 696,
+    "sha256": "be974da0e2651bb45038ecb7c4b8a519055415a0bd97bc2951179ff13019beab"
+  },
+  {
+    "file": "back/nidoranf.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/nidoranf.png",
+    "bytes": 461,
+    "sha256": "57ee13a2389832ee507a0f19b33aa2d9dd7baf72c59d353e18fb026ed402cafb"
+  },
+  {
+    "file": "back/nidorina.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/nidorina.png",
+    "bytes": 604,
+    "sha256": "c74b90edd8c9ce23b5d6a7d45b84bf4220a19d322e55e8f649f1221047c62894"
+  },
+  {
+    "file": "back/nidoqueen.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/nidoqueen.png",
+    "bytes": 763,
+    "sha256": "54bc56433e2ceb0201f3faa765cebdaeabc841bfe55acf2a86f80d78e47e3139"
+  },
+  {
+    "file": "back/nidoranm.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/nidoranm.png",
+    "bytes": 506,
+    "sha256": "6f6008932bca01e76d9f004ddc91a1ad48f5189c98c01f52364554d5c4439b45"
+  },
+  {
+    "file": "back/nidorino.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/nidorino.png",
+    "bytes": 665,
+    "sha256": "4b0c19244a9ddd1b7d31dda6e5a13d0c48f010ab1d6aa2fbfe0c718996db20d8"
+  },
+  {
+    "file": "back/nidoking.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/nidoking.png",
+    "bytes": 918,
+    "sha256": "50616c26c2c0b7b64aec1b12b09f6d7690b2a1169267c97b4ae8985039c00198"
+  },
+  {
+    "file": "back/clefairy.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/clefairy.png",
+    "bytes": 474,
+    "sha256": "fcb37e5ea77c674abf5e56d75e3146f6091bcdf87ea0f659bfccee3a432b4ffe"
+  },
+  {
+    "file": "back/clefable.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/clefable.png",
+    "bytes": 590,
+    "sha256": "40dc0c9df716beea80303b7f4cc10609eacfd7c0c65c37e1f799d711e3d0b5be"
+  },
+  {
+    "file": "back/vulpix.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/vulpix.png",
+    "bytes": 633,
+    "sha256": "9ccd1945cad6cddd322ba3e8d7d8ecfbf7a8bc38c6e61d3c45a2ae599c500ac3"
+  },
+  {
+    "file": "back/ninetales.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/ninetales.png",
+    "bytes": 848,
+    "sha256": "b36df1b56444a52f79e91d3b0de13929475a164409bcd556b60f20eeb9fe03d8"
+  },
+  {
+    "file": "back/jigglypuff.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/jigglypuff.png",
+    "bytes": 309,
+    "sha256": "79df0b12de8bc2c9d0eeb048b6e616e0cbef5d0a5b0135e3af429d89ce0f4d33"
+  },
+  {
+    "file": "back/wigglytuff.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/wigglytuff.png",
+    "bytes": 433,
+    "sha256": "073fa8237437e4c53c67a895ca59f88d392e98241b98cacb9b0a76d2047158d5"
+  },
+  {
+    "file": "back/zubat.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/zubat.png",
+    "bytes": 496,
+    "sha256": "b97028fefc1dfb0ee61bb59151c9b80c872c26ea8ea0b7945d25d6fdf4dbb1b0"
+  },
+  {
+    "file": "back/golbat.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/golbat.png",
+    "bytes": 730,
+    "sha256": "5de619cc2b30ea538b73418f524749a7360770e8b7e701432150130839b189ec"
+  },
+  {
+    "file": "back/oddish.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/oddish.png",
+    "bytes": 410,
+    "sha256": "64ca484ec48e620df06701b272f26917141612c10e2b668c809a1285c0bb9193"
+  },
+  {
+    "file": "back/gloom.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/gloom.png",
+    "bytes": 629,
+    "sha256": "45e3ece263eb8afd3327e9cdffdb4c1100f2f1a8da6b69ee3459ed4e11b596ef"
+  },
+  {
+    "file": "back/vileplume.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/vileplume.png",
+    "bytes": 732,
+    "sha256": "6fc0d414fd0f4606e3dff8560e8110aa4b542a1aecae136e5c218e68181bae64"
+  },
+  {
+    "file": "back/paras.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/paras.png",
+    "bytes": 505,
+    "sha256": "6027a757ff904311c788475e27c4632dc621a6be95e47355b4620910bb51008e"
+  },
+  {
+    "file": "back/parasect.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/parasect.png",
+    "bytes": 609,
+    "sha256": "1cf28588c01551978e2ae4ee3954c36362600296da5472e434e083af024dc1c1"
+  },
+  {
+    "file": "back/venonat.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/venonat.png",
+    "bytes": 542,
+    "sha256": "c46c818a01aeca762cf05ab55d8b5e7225c2a1305f77f9d46523279173941a8b"
+  },
+  {
+    "file": "back/venomoth.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/venomoth.png",
+    "bytes": 834,
+    "sha256": "0f0b835ab57d71af496f96a08500584d2e87bcd46617cb0f9186d09ead1fea10"
+  },
+  {
+    "file": "back/diglett.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/diglett.png",
+    "bytes": 350,
+    "sha256": "87e6a54723776d389d4b74c3a2b8443bb959cd900172fb576b19f7652f812e78"
+  },
+  {
+    "file": "back/dugtrio.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/dugtrio.png",
+    "bytes": 498,
+    "sha256": "24e5aa298597e07f969d6e9de0a673d8a3e74e6b5212f07961751beaa3c3a61f"
+  },
+  {
+    "file": "back/meowth.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/meowth.png",
+    "bytes": 549,
+    "sha256": "0f66e283e4731a8ffc134c2e5968e6379aef1ff848c7d6be159c3d836c3fb025"
+  },
+  {
+    "file": "back/persian.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/persian.png",
+    "bytes": 586,
+    "sha256": "294fa2cd00f2a567b9d202ce9f92b600bdc05e59e53f47bf60f194e161a3c923"
+  },
+  {
+    "file": "back/psyduck.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/psyduck.png",
+    "bytes": 392,
+    "sha256": "c913bd56736887aabbf8c2a529dc0da56c6a66d7673ea85833ede0336eceb958"
+  },
+  {
+    "file": "back/golduck.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/golduck.png",
+    "bytes": 605,
+    "sha256": "7e8b0276df6222014d590fb83ba19fe75ffb46266a957255411fc9f3d9007a6e"
+  },
+  {
+    "file": "back/mankey.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/mankey.png",
+    "bytes": 582,
+    "sha256": "40b6f0c5c61b0cdc0038fd10468e1f7f0a84cc27a24471a3044b993745cd749a"
+  },
+  {
+    "file": "back/primeape.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/primeape.png",
+    "bytes": 735,
+    "sha256": "0607be49b1ac6021780c2218e9187d112bd5e5b96c2c6b399d55ce2d7942e00d"
+  },
+  {
+    "file": "back/growlithe.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/growlithe.png",
+    "bytes": 608,
+    "sha256": "f94ea063233e4ceedff3b328b182f43cacb3483859aa053fa52503a5c8192915"
+  },
+  {
+    "file": "back/arcanine.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/arcanine.png",
+    "bytes": 970,
+    "sha256": "a193256d6f6743fb41e63d2a2ce64eb2f1411754af70f8bf5e15eedb92d42216"
+  },
+  {
+    "file": "back/poliwag.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/poliwag.png",
+    "bytes": 420,
+    "sha256": "98405f68f27cdf0a66c1f991e760ec8aeb87f038acf32007bdf648fdc593d0f9"
+  },
+  {
+    "file": "back/poliwhirl.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/poliwhirl.png",
+    "bytes": 523,
+    "sha256": "92e90389190a5bc33d333d340eb2dc90fe311ba066a4435ab9b3780086256fa5"
+  },
+  {
+    "file": "back/poliwrath.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/poliwrath.png",
+    "bytes": 531,
+    "sha256": "4061f8cf5cdbaf7cef9546b90240b3c88a45bdfd4a64f45ba77f191df3cf44c1"
+  },
+  {
+    "file": "back/abra.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/abra.png",
+    "bytes": 555,
+    "sha256": "e62a223d3587760916370299efd8d79285731aa1b5385fde899d9d2f8179bbca"
+  },
+  {
+    "file": "back/kadabra.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/kadabra.png",
+    "bytes": 845,
+    "sha256": "912d9d469117eabe15520d72c64b88aba817f7e991c31dcb998bf9eaa92a0f0b"
+  },
+  {
+    "file": "back/alakazam.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/alakazam.png",
+    "bytes": 978,
+    "sha256": "e5bfcacfc461e551514c97154ce73ba8f147dc96bd99c6857d845674118d5188"
+  },
+  {
+    "file": "back/machop.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/machop.png",
+    "bytes": 557,
+    "sha256": "887cb69940d0d10e4e50474f5b6ae4690c9a5c71f4dfa10adb757c7b34c3038d"
+  },
+  {
+    "file": "back/machoke.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/machoke.png",
+    "bytes": 853,
+    "sha256": "992b999c61b825bebe55573cd99d49254e80f820452943aae55b1c7920c77005"
+  },
+  {
+    "file": "back/machamp.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/machamp.png",
+    "bytes": 898,
+    "sha256": "5a1e7e7c55841a406e375f51bedeb3a6f529c81162d404d1d14e74b5ebe262b7"
+  },
+  {
+    "file": "back/bellsprout.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/bellsprout.png",
+    "bytes": 499,
+    "sha256": "c46009e0074b360d9582699b687782f2f4d6f528fed37fbf3e3d446c7c335215"
+  },
+  {
+    "file": "back/weepinbell.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/weepinbell.png",
+    "bytes": 463,
+    "sha256": "b96b5a3ff410ff750dad76f9d8cf01d6134d091516ace0530c95ab090d6153af"
+  },
+  {
+    "file": "back/victreebel.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/victreebel.png",
+    "bytes": 741,
+    "sha256": "c3937f5b226e1fcb58cff836b50982ad6579856d44a2adee45ac654f31fa3c43"
+  },
+  {
+    "file": "back/tentacool.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/tentacool.png",
+    "bytes": 558,
+    "sha256": "29a86c2f58514bb1ca1152078e8a2500939990650f8eff1afc9af0cadf7dd051"
+  },
+  {
+    "file": "back/tentacruel.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/tentacruel.png",
+    "bytes": 902,
+    "sha256": "f1d3698936421c74cbff8e152ffbf155405aa6f093925311f6e23177de115cad"
+  },
+  {
+    "file": "back/geodude.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/geodude.png",
+    "bytes": 495,
+    "sha256": "945e29e4fc7e23f78bc7ab2c464608fa5c588bb79d2c6387a1ee2bc13d628576"
+  },
+  {
+    "file": "back/graveler.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/graveler.png",
+    "bytes": 645,
+    "sha256": "83827f70708dff0a1ed0eedf0f4c019bc7f7af5d32b206f1d14dbb343f161e81"
+  },
+  {
+    "file": "back/golem.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/golem.png",
+    "bytes": 833,
+    "sha256": "3f96ad06b1173f793818ffc09e3c338578671c4f70cc2caa399c5c28e3ff013f"
+  },
+  {
+    "file": "back/ponyta.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/ponyta.png",
+    "bytes": 710,
+    "sha256": "b4177b8d2b3930915a32ae62eda5527ae66f417f661c28fbb6bd533fe4d505a1"
+  },
+  {
+    "file": "back/rapidash.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/rapidash.png",
+    "bytes": 990,
+    "sha256": "44b60665dd575e88a4e035600df34693782c43874cf4ff3fe0f316f7b66f887e"
+  },
+  {
+    "file": "back/slowpoke.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/slowpoke.png",
+    "bytes": 478,
+    "sha256": "b6ea8778a1ad21782b944c553348070122dfafb9a7ff548be966305b277c37f1"
+  },
+  {
+    "file": "back/slowbro.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/slowbro.png",
+    "bytes": 791,
+    "sha256": "fdf3caa3d1ec7c0e0a6bb634ce1d97a8bd0d0f1310b13619fea761d409943551"
+  },
+  {
+    "file": "back/magnemite.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/magnemite.png",
+    "bytes": 346,
+    "sha256": "c9a5d814ca2ebca712e0983d6f121a93785204ff618f7a1e42e2ac6023d074a7"
+  },
+  {
+    "file": "back/magneton.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/magneton.png",
+    "bytes": 742,
+    "sha256": "29cc870856338938c6f48c8f35debf9131597661eef536ddf1a69fddd9c3ad6e"
+  },
+  {
+    "file": "back/farfetchd.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/farfetchd.png",
+    "bytes": 592,
+    "sha256": "4bacaba6fb6bce58dd686c487c0497a10e9d4dbf9b00977d24699c5eef51ca30"
+  },
+  {
+    "file": "back/doduo.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/doduo.png",
+    "bytes": 552,
+    "sha256": "11289ab45a49aa0fe78efce9693b50dc446ad1b5838cb0c41f220dd4bd9fa086"
+  },
+  {
+    "file": "back/dodrio.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/dodrio.png",
+    "bytes": 955,
+    "sha256": "3efbef3f31812f8e267ef2c4398fffa111e4769d39ba872f18996986659f4789"
+  },
+  {
+    "file": "back/seel.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/seel.png",
+    "bytes": 501,
+    "sha256": "6c6f11ef738c85f51ce103a6995cf2c8937ce9c7d2780b0ce17bd143565fce45"
+  },
+  {
+    "file": "back/dewgong.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/dewgong.png",
+    "bytes": 618,
+    "sha256": "16665a63796d2687f92340dfbe75a756f97f5758212c74a4e27356719d334fd2"
+  },
+  {
+    "file": "back/grimer.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/grimer.png",
+    "bytes": 559,
+    "sha256": "8924a814b15f624a6e930dd997f8c6d02ce00288c8783bd899285a8909f328bd"
+  },
+  {
+    "file": "back/muk.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/muk.png",
+    "bytes": 798,
+    "sha256": "69665178e0ec87087db23324887de4f7925801f939c781a40f32d5285b93ab73"
+  },
+  {
+    "file": "back/shellder.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/shellder.png",
+    "bytes": 378,
+    "sha256": "23eca964647ba3c693bf2d5d28b278b68bae2f846ff38cf7ea550a67736b9623"
+  },
+  {
+    "file": "back/cloyster.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/cloyster.png",
+    "bytes": 705,
+    "sha256": "ffac0e139afd6676d48bbf035471ac4980e86315fea4366cb0fa2710f19a61a5"
+  },
+  {
+    "file": "back/gastly.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/gastly.png",
+    "bytes": 653,
+    "sha256": "0d3e7eadbdf4b326e970a00bd5a99e9333f2f1226a3c62f5a33f481302d91372"
+  },
+  {
+    "file": "back/haunter.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/haunter.png",
+    "bytes": 574,
+    "sha256": "73b31bf35eec9d194c23e8897e0b4c1cbf71b2c7b3b74dca302278161fdaf282"
+  },
+  {
+    "file": "back/gengar.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/gengar.png",
+    "bytes": 564,
+    "sha256": "17b9fdec37137dec6b9a19288e0985b758be4159be72ce230227774ddfa7d35a"
+  },
+  {
+    "file": "back/onix.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/onix.png",
+    "bytes": 1061,
+    "sha256": "0e5db4bab8ca0663a34ddbc70069f43e0f7d685540b8d973f5ca8b622cdf6b90"
+  },
+  {
+    "file": "back/drowzee.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/drowzee.png",
+    "bytes": 505,
+    "sha256": "44dac7c49106b03af3cf4d612552d8e6f330456cb68100ee67fd156bbafc2f72"
+  },
+  {
+    "file": "back/hypno.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/hypno.png",
+    "bytes": 734,
+    "sha256": "a9c59116da7280f9fee1bdbbe888b9b0093628ff71492dd234351ba84f8650de"
+  },
+  {
+    "file": "back/krabby.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/krabby.png",
+    "bytes": 622,
+    "sha256": "8c24ee9a32788686f4bdc6953008447a415e15d9d39036429138b5902982377c"
+  },
+  {
+    "file": "back/kingler.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/kingler.png",
+    "bytes": 886,
+    "sha256": "238365b885949d64df4b7d5dcec316a06fbf02fe6598afba86aaad8e5a1ea885"
+  },
+  {
+    "file": "back/voltorb.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/voltorb.png",
+    "bytes": 309,
+    "sha256": "b4a6d6d3f5d0545db26c9d7146000cc8fb5e935e9327e4f39ef0a6e1360c4474"
+  },
+  {
+    "file": "back/electrode.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/electrode.png",
+    "bytes": 397,
+    "sha256": "f818d4fc6341d177db3c2d1dbdd9b89d79526fadece4723cd00ca10caeab1369"
+  },
+  {
+    "file": "back/exeggcute.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/exeggcute.png",
+    "bytes": 478,
+    "sha256": "116046b0c5e6cdf450e943cd8d3e96866f1c6b9e23c47947618c0d20b06b7898"
+  },
+  {
+    "file": "back/exeggutor.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/exeggutor.png",
+    "bytes": 814,
+    "sha256": "ab28d4fd0e8d79b699c182e568029b4141cf3890c096d3f677851e148bcda032"
+  },
+  {
+    "file": "back/cubone.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/cubone.png",
+    "bytes": 469,
+    "sha256": "e29067184dc8145a4da478e354a9cd39045a38b49db3e67ed5b930b5abee6c84"
+  },
+  {
+    "file": "back/marowak.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/marowak.png",
+    "bytes": 601,
+    "sha256": "e7b99e044ffb9bd4b664805a7eb832f9dfc18df8c761cfefc4231d673c9e5eeb"
+  },
+  {
+    "file": "back/hitmonlee.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/hitmonlee.png",
+    "bytes": 612,
+    "sha256": "e3bae28bd60ff11b31678cb986ddf6cb952a28909017282ea5a4ba490498b90e"
+  },
+  {
+    "file": "back/hitmonchan.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/hitmonchan.png",
+    "bytes": 587,
+    "sha256": "96e3f96a91c0d0d1a1f89bfbb3a5a001684753a4b96ca4cbf0813901b6a45c54"
+  },
+  {
+    "file": "back/lickitung.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/lickitung.png",
+    "bytes": 626,
+    "sha256": "28af267f4da0cea2bd8eb29d2414b97411c04c3884590218615d323c853fe763"
+  },
+  {
+    "file": "back/koffing.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/koffing.png",
+    "bytes": 652,
+    "sha256": "cf2d4c1901b836ec4161c883505f02034b0087072c74fb2de14914acc15cf44d"
+  },
+  {
+    "file": "back/weezing.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/weezing.png",
+    "bytes": 941,
+    "sha256": "bf7ddfd1b0f11ff12678c69dfa45228f93d1389dc13246ff71866c16e087a3ba"
+  },
+  {
+    "file": "back/rhyhorn.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/rhyhorn.png",
+    "bytes": 752,
+    "sha256": "6bf5c0d2d7c0ae49f509da00e14f4611d3328df13ba6a6a5e7e48a66e7a4b028"
+  },
+  {
+    "file": "back/rhydon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/rhydon.png",
+    "bytes": 808,
+    "sha256": "238426a69dd128849fd3f20913ad8134bc5e43695a91064279fd5a509e574fa0"
+  },
+  {
+    "file": "back/chansey.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/chansey.png",
+    "bytes": 418,
+    "sha256": "14657ba7aec5a1d799734eae64128de0f1546ec8aa83ffbd2739bae8b6f8fcc4"
+  },
+  {
+    "file": "back/tangela.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/tangela.png",
+    "bytes": 601,
+    "sha256": "1de2068f5c29ba15904c25a54757182ca91fe0ca1cfa47f1ada5582e1fa02307"
+  },
+  {
+    "file": "back/kangaskhan.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/kangaskhan.png",
+    "bytes": 780,
+    "sha256": "6ee43223592ad4ff4b5314e2977219d27bee49c39b4f272b4d76c8745d7dc246"
+  },
+  {
+    "file": "back/horsea.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/horsea.png",
+    "bytes": 411,
+    "sha256": "cb4904a43fdacdaca177cb2971a2fc1b52e45ea67e3c877feb56d9c06be4fd33"
+  },
+  {
+    "file": "back/seadra.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/seadra.png",
+    "bytes": 631,
+    "sha256": "a35b9fcd02831a520c1393878d74f13fc97ba3cadcf8d71a993333e4ce475a30"
+  },
+  {
+    "file": "back/goldeen.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/goldeen.png",
+    "bytes": 666,
+    "sha256": "b3799afb5c35d9d69c09d518ecb98dc4c1f097bd975f48e2fa497d987ff4ec85"
+  },
+  {
+    "file": "back/seaking.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/seaking.png",
+    "bytes": 847,
+    "sha256": "6bcc46539216f47962fa47601559c69d644837b817c4dd68a9b300d8d96cd953"
+  },
+  {
+    "file": "back/staryu.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/staryu.png",
+    "bytes": 422,
+    "sha256": "5b49392473f303b7033d8db04045842568682c2e224d360574fc7ef8a1922998"
+  },
+  {
+    "file": "back/starmie.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/starmie.png",
+    "bytes": 585,
+    "sha256": "825f9d56a1ce96c9bbbee0b30060b730bb4db25d3f765b4e39568d74013b2918"
+  },
+  {
+    "file": "back/mrmime.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/mrmime.png",
+    "bytes": 694,
+    "sha256": "ca7f7c73c17c3ffbe80867077cc111c53e3afc3097de89e1604d573785b7f718"
+  },
+  {
+    "file": "back/scyther.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/scyther.png",
+    "bytes": 797,
+    "sha256": "77cc81a84ecb32463d744cc862e3d09b0ab260c69cd97dfdcaa0ee88edf969c3"
+  },
+  {
+    "file": "back/jynx.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/jynx.png",
+    "bytes": 677,
+    "sha256": "d7c11598a62e7b858006f5fbd85cdcd28d7029563f40225555c99c7af0aff3c2"
+  },
+  {
+    "file": "back/electabuzz.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/electabuzz.png",
+    "bytes": 853,
+    "sha256": "b6674be9f33f31296a6b7c0033afd4dfd2bc14fa655ea139063fe80cdf25644c"
+  },
+  {
+    "file": "back/magmar.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/magmar.png",
+    "bytes": 882,
+    "sha256": "4e44c467f957a54de449217c258963a9394f6fe9f8c5184afdb22b017ab7b288"
+  },
+  {
+    "file": "back/pinsir.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/pinsir.png",
+    "bytes": 773,
+    "sha256": "31db2c7b89d5e03ae2a2967d1e03ea177ebed2d2768eae918a494e0cd14d5bf2"
+  },
+  {
+    "file": "back/tauros.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/tauros.png",
+    "bytes": 725,
+    "sha256": "8009f6708fbba7182c3030ef6c4e22f89caec92caf05a5bc46d534e3f60e6894"
+  },
+  {
+    "file": "back/magikarp.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/magikarp.png",
+    "bytes": 681,
+    "sha256": "c34b905c36568a8b505bcb973ed401774346c33ba929d2da70d76b8c10ff1075"
+  },
+  {
+    "file": "back/gyarados.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/gyarados.png",
+    "bytes": 1338,
+    "sha256": "be3ba33c80e250266e63d1745859eb82b6a20e8f329bc0a797e18f38076d136b"
+  },
+  {
+    "file": "back/lapras.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/lapras.png",
+    "bytes": 835,
+    "sha256": "0258bda2dbb8741d3fb47ef2e707a3e9db24917c49899f751f61d187a7d3150a"
+  },
+  {
+    "file": "back/ditto.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/ditto.png",
+    "bytes": 298,
+    "sha256": "420c251a1bb8e4b8fd5ab6feba617d61f8cc9f94054e724603a21857abc610cc"
+  },
+  {
+    "file": "back/eevee.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/eevee.png",
+    "bytes": 453,
+    "sha256": "c6dce4a23256c4c35ba142691a63074da0ea52d8957411e8f06b328b4940187c"
+  },
+  {
+    "file": "back/vaporeon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/vaporeon.png",
+    "bytes": 589,
+    "sha256": "05b61b785c883b125422aeea132e49f6d51d86aa54e5b5f6f16c63168bcfb893"
+  },
+  {
+    "file": "back/jolteon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/jolteon.png",
+    "bytes": 621,
+    "sha256": "9c7fc7fbbf05001861599d709d9d2d6d76cd722c001fa56fadd649b48e163459"
+  },
+  {
+    "file": "back/flareon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/flareon.png",
+    "bytes": 612,
+    "sha256": "7e141cf40dcbad1c7ee2be7326ede8b9022de2da5c4b4d48bce069a4ae69d08c"
+  },
+  {
+    "file": "back/porygon.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/porygon.png",
+    "bytes": 484,
+    "sha256": "99cfe02632cbef7b8036c98f0000edba6e0d2e654df819625ef4447e4445827a"
+  },
+  {
+    "file": "back/omanyte.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/omanyte.png",
+    "bytes": 462,
+    "sha256": "12e996fd7e46d69c70dbf000d716a5d2f58a986a11fed7383ed83c90d972e406"
+  },
+  {
+    "file": "back/omastar.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/omastar.png",
+    "bytes": 658,
+    "sha256": "9f99a6412509f4aa69ad0400c9516d7e6cd4502dab65f6b5656727d3145be2f4"
+  },
+  {
+    "file": "back/kabuto.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/kabuto.png",
+    "bytes": 366,
+    "sha256": "509a0c3659d4e601e6feb10a6f712cb732aa3703c028c539f95d94ea45cac5a8"
+  },
+  {
+    "file": "back/kabutops.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/kabutops.png",
+    "bytes": 785,
+    "sha256": "b2a61c2880e777431075c8f701fb9af0a8d6e1a48997e0d307d96ed265575ab5"
+  },
+  {
+    "file": "back/aerodactyl.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/aerodactyl.png",
+    "bytes": 802,
+    "sha256": "335051f58cd0f3d7fa42753bfaa000e0524bd0b9ec7c2a3dabee08aeaf40c66d"
+  },
+  {
+    "file": "back/snorlax.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/snorlax.png",
+    "bytes": 565,
+    "sha256": "c5e40e5b477ec636327f55c5b895ba11348434f674deeb544a57838bfb83269d"
+  },
+  {
+    "file": "back/articuno.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/articuno.png",
+    "bytes": 1050,
+    "sha256": "20d52e15420ea497261a8f97671635b8392ab71d0e895ee4650f79e12afbe5d7"
+  },
+  {
+    "file": "back/zapdos.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/zapdos.png",
+    "bytes": 869,
+    "sha256": "7e1573a55581da59b7755244a7a5e39619270a1770fd5b5baba227f77cf24c86"
+  },
+  {
+    "file": "back/moltres.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/moltres.png",
+    "bytes": 968,
+    "sha256": "7ee8feeeae8c100818644e345936e11b415a95b6785c777562d08311c4aac284"
+  },
+  {
+    "file": "back/dratini.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/dratini.png",
+    "bytes": 429,
+    "sha256": "205e334a1aa150f37d0bff3b9341a27db36fc71fba986a5044eccbe28fdbcb28"
+  },
+  {
+    "file": "back/dragonair.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/dragonair.png",
+    "bytes": 626,
+    "sha256": "0cc857e94c7f2ee45fe12058eec6a2fd295041b9bd4d4ab696a21bcc71d4c4db"
+  },
+  {
+    "file": "back/dragonite.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/dragonite.png",
+    "bytes": 920,
+    "sha256": "ebb1506371a412df844f638df2977271a639b83ac7a4cbdacc3fbea226935c6d"
+  },
+  {
+    "file": "back/mewtwo.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/mewtwo.png",
+    "bytes": 754,
+    "sha256": "e8418664f3d510e4e9755e37e3f126a9072b2333ba1c6080384b1b2caf6272e0"
+  },
+  {
+    "file": "back/mew.png",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5-back/mew.png",
+    "bytes": 450,
+    "sha256": "94cca685dd76ee199a7a6e52d6350c846fc204f20404cec98db27c71444d3918"
   },
   {
     "file": "animated/bulbasaur.gif",
@@ -252,6 +1884,24 @@
     "sha256": "46c977409223ca79acc99fcfb1498b6b12bd34551f87555066298b3a968e06d7"
   },
   {
+    "file": "animated/weedle.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/weedle.gif",
+    "bytes": 19622,
+    "sha256": "13fb4215f083b771b6aa46d2751302f347e6ca262b570e2487a66a3d69e916d0"
+  },
+  {
+    "file": "animated/kakuna.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/kakuna.gif",
+    "bytes": 11812,
+    "sha256": "1e22925e3010955c2dd61315756281da7dfc58100495c4e0a4ff2efcb613f389"
+  },
+  {
+    "file": "animated/beedrill.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/beedrill.gif",
+    "bytes": 134805,
+    "sha256": "f4b122e7f493ced1f73da4aea8bc1358be05a051923d6e39b001fd3d6fce0720"
+  },
+  {
     "file": "animated/pidgey.gif",
     "source": "https://play.pokemonshowdown.com/sprites/gen5ani/pidgey.gif",
     "bytes": 8395,
@@ -268,6 +1918,804 @@
     "source": "https://play.pokemonshowdown.com/sprites/gen5ani/pidgeot.gif",
     "bytes": 31825,
     "sha256": "003ca892ac72399c26f9333983a6873de50869fc2626995366caf470fa737343"
+  },
+  {
+    "file": "animated/rattata.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/rattata.gif",
+    "bytes": 20591,
+    "sha256": "75fb59f79cfb97fdeff737a672bdd3ed157bb667bf69ab02b3d1450b2bfc70df"
+  },
+  {
+    "file": "animated/raticate.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/raticate.gif",
+    "bytes": 9118,
+    "sha256": "0c938e3019eece5f45a6518761b1d4f905a94b352e50cd8044a1c5f1ca5c83ab"
+  },
+  {
+    "file": "animated/spearow.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/spearow.gif",
+    "bytes": 12721,
+    "sha256": "5ea4dba69e64a4f6266839d15001c9795c3dcabdec3aed4c01eb298b25e7af66"
+  },
+  {
+    "file": "animated/fearow.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/fearow.gif",
+    "bytes": 12889,
+    "sha256": "365d64f8842468dd6b3bfb829d3458f5cbc6e8dd24192e675a62b2ad822e0784"
+  },
+  {
+    "file": "animated/ekans.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/ekans.gif",
+    "bytes": 9627,
+    "sha256": "f8eaeabe9e4cdc65bd1b5eeec6d107a5e8c73e56a1f7c5964d092b7e76816f1f"
+  },
+  {
+    "file": "animated/arbok.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/arbok.gif",
+    "bytes": 17189,
+    "sha256": "85eb9e9727eed707dd8869365e9fba4b874306b8f1d4a4f7ec561ccaeb2d20f6"
+  },
+  {
+    "file": "animated/pikachu.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/pikachu.gif",
+    "bytes": 27223,
+    "sha256": "326dc427fccebad97ad4ab6fe42a1ec5734556b2200b306ef520c76672a5e58b"
+  },
+  {
+    "file": "animated/raichu.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/raichu.gif",
+    "bytes": 68839,
+    "sha256": "abf9970168fdfb7e0ab84c631e7f1ba7e153fa7342069d3a330e1b3093d508a5"
+  },
+  {
+    "file": "animated/sandshrew.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/sandshrew.gif",
+    "bytes": 34221,
+    "sha256": "c748749dd2e8f5b47d448289519080d324e293cb3bd345d84662c21c8b910678"
+  },
+  {
+    "file": "animated/sandslash.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/sandslash.gif",
+    "bytes": 38310,
+    "sha256": "c62ed83ca05c018f7d815c61f9fa821720475150b98eca861a0460392df81b9a"
+  },
+  {
+    "file": "animated/nidoranf.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/nidoranf.gif",
+    "bytes": 16834,
+    "sha256": "5e5e4e598569184a172159209d85c7ad49b5e3d155b8309ac1847c70311b64e9"
+  },
+  {
+    "file": "animated/nidorina.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/nidorina.gif",
+    "bytes": 23737,
+    "sha256": "108973032cd8f12e5386064379d3a7dcb8b552dc93873e738acd81147a631510"
+  },
+  {
+    "file": "animated/nidoqueen.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/nidoqueen.gif",
+    "bytes": 60328,
+    "sha256": "fc37df4443dbd6a62ca6e99db823c1cb5c17db97712803ab4f9bf16c3c9cf472"
+  },
+  {
+    "file": "animated/nidoranm.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/nidoranm.gif",
+    "bytes": 7696,
+    "sha256": "8e9130f77b2f0a17403ce5ea4be6bc919f50591c7a584ddeb8a0427fd64e32cc"
+  },
+  {
+    "file": "animated/nidorino.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/nidorino.gif",
+    "bytes": 30541,
+    "sha256": "ea319706b266b0c9c5f5dd726b32a280f93b1a83bc7434c1fde6e10d7632d207"
+  },
+  {
+    "file": "animated/nidoking.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/nidoking.gif",
+    "bytes": 55145,
+    "sha256": "1e7dcd57f0fd435e6b1fa8f0e6bf684a24e32b2f4c5153ab875693256cdddfbb"
+  },
+  {
+    "file": "animated/clefairy.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/clefairy.gif",
+    "bytes": 40913,
+    "sha256": "43598c1a542f920d65263bf4c753d772b6d42939ef0e0619476fa4464bbef4a3"
+  },
+  {
+    "file": "animated/clefable.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/clefable.gif",
+    "bytes": 29887,
+    "sha256": "46e907f4dd1867011fd1f0a84cd7ed70abe4cb91433da968edf3bc5364301b25"
+  },
+  {
+    "file": "animated/vulpix.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/vulpix.gif",
+    "bytes": 22358,
+    "sha256": "c2af363a404b2b060bbeb81adda1778753e42f74c4b0c23d7e516707feb18fd6"
+  },
+  {
+    "file": "animated/ninetales.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/ninetales.gif",
+    "bytes": 9028,
+    "sha256": "832af4a02403036449cedce05c683583ef74b6e13a43553597e21017a302f948"
+  },
+  {
+    "file": "animated/jigglypuff.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/jigglypuff.gif",
+    "bytes": 19707,
+    "sha256": "95a0e9cee17315933e685fd0bc2be52cfe7ad90cfafa6ac6c7c77d49c28187cf"
+  },
+  {
+    "file": "animated/wigglytuff.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/wigglytuff.gif",
+    "bytes": 34592,
+    "sha256": "31ecad7bfae70357a8d4e53cb26c2c55c4166a31a286e6dd2b1ff1fac8440cc8"
+  },
+  {
+    "file": "animated/zubat.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/zubat.gif",
+    "bytes": 10500,
+    "sha256": "af807eca9843ef5fadc5705d7b3dfd064746c35384052dcfcafed5d8b4306620"
+  },
+  {
+    "file": "animated/golbat.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/golbat.gif",
+    "bytes": 11707,
+    "sha256": "fafa341e4f7269426006e94e31f2cdbb89664a229b330a137d6d3aaf6c9726af"
+  },
+  {
+    "file": "animated/oddish.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/oddish.gif",
+    "bytes": 18121,
+    "sha256": "0efa0614541b3e0af0f9c7928867e559945b6ff5c5cec63a86652dc7cacae3ad"
+  },
+  {
+    "file": "animated/gloom.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/gloom.gif",
+    "bytes": 30116,
+    "sha256": "d46cb7b4ded42a1aea5e4b94048e7f42f301ef9f91f873cbbfabe06235f07ce9"
+  },
+  {
+    "file": "animated/vileplume.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/vileplume.gif",
+    "bytes": 6271,
+    "sha256": "718c55263dfbf2fb64696646248b417e9d0949d82af137e49e5e79bc4400fb0d"
+  },
+  {
+    "file": "animated/paras.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/paras.gif",
+    "bytes": 18267,
+    "sha256": "8c973f9a57ef3bf5bda9ac9c4df43a9228f52abd6f80ac29c6c6d01df74424a5"
+  },
+  {
+    "file": "animated/parasect.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/parasect.gif",
+    "bytes": 11789,
+    "sha256": "5f89636e600d548187fa949c9788fb73bb1ef59449a7efede931dd69d27ed8ed"
+  },
+  {
+    "file": "animated/venonat.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/venonat.gif",
+    "bytes": 14912,
+    "sha256": "5a47271a91e6eb4d10170ea5bed12a6822b1b834d21d206d0ba25a253ff3680b"
+  },
+  {
+    "file": "animated/venomoth.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/venomoth.gif",
+    "bytes": 45013,
+    "sha256": "46cff287d6db2b2eec927fcfcc814c2f38a3e74e4f7ce2004e86628421244bdf"
+  },
+  {
+    "file": "animated/diglett.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/diglett.gif",
+    "bytes": 8849,
+    "sha256": "332caa5b6f3ffdac791e4d7211a00baabaab6a610420a481024e40652e5392e5"
+  },
+  {
+    "file": "animated/dugtrio.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/dugtrio.gif",
+    "bytes": 34732,
+    "sha256": "5e724ce1d5afcabc9c533c3f77d30f0c1fcc5838718ce1c3c1951c5ec4447b33"
+  },
+  {
+    "file": "animated/meowth.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/meowth.gif",
+    "bytes": 40545,
+    "sha256": "00bc917ce684f9d13ce887fcbff66646dc63d10495ee45201a0ffbd385083da1"
+  },
+  {
+    "file": "animated/persian.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/persian.gif",
+    "bytes": 17832,
+    "sha256": "2226c68bf5e713226cfb5880e5002dc4a51a0d74d4e9ea0ec61d4be04fad225f"
+  },
+  {
+    "file": "animated/psyduck.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/psyduck.gif",
+    "bytes": 9704,
+    "sha256": "670eb6887dd84b8cb5a7cfd8a1a93b467baedf989a6a485a49d69d7f4ee60989"
+  },
+  {
+    "file": "animated/golduck.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/golduck.gif",
+    "bytes": 24227,
+    "sha256": "213e3cae1f1fd009f483ab0ccc043c6cc5ddc4725b82dcebeb361452215abc55"
+  },
+  {
+    "file": "animated/mankey.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/mankey.gif",
+    "bytes": 57596,
+    "sha256": "33c6b8f73bec0cef945d1af8dd96d44a159a32445226def778cea71f797f3e17"
+  },
+  {
+    "file": "animated/primeape.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/primeape.gif",
+    "bytes": 17863,
+    "sha256": "c99ab1dde635ab38ea65b4bb422cb13a11e4be6bcaff158f18a9239de6697ded"
+  },
+  {
+    "file": "animated/growlithe.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/growlithe.gif",
+    "bytes": 41024,
+    "sha256": "83c132fd7437c637e598199e1a900380cc8bb3b00fe8a63ddaff1db4dbdfac8e"
+  },
+  {
+    "file": "animated/arcanine.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/arcanine.gif",
+    "bytes": 9789,
+    "sha256": "9b1629a6bff84554f502fb8b6c54beb6e091f7a43517770cd725d5c7022b3790"
+  },
+  {
+    "file": "animated/poliwag.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/poliwag.gif",
+    "bytes": 25696,
+    "sha256": "13408eaf4edd00bd83d962b46a9037a9c46d0792cfc79a6d9d0802e89db7504c"
+  },
+  {
+    "file": "animated/poliwhirl.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/poliwhirl.gif",
+    "bytes": 39560,
+    "sha256": "1635ab05b441abd392630bc935abb5ef7836883242c47a736a72ff4d036746be"
+  },
+  {
+    "file": "animated/poliwrath.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/poliwrath.gif",
+    "bytes": 8135,
+    "sha256": "5c169cf1e2def77fd51a0fdea045338142c9324eba7d7afa0aba1eba38344325"
+  },
+  {
+    "file": "animated/abra.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/abra.gif",
+    "bytes": 29532,
+    "sha256": "035b1db2b9e7be1852fe6b3abd4aa8b7b82888def4bf009e80e59d6e25b3550f"
+  },
+  {
+    "file": "animated/kadabra.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/kadabra.gif",
+    "bytes": 59202,
+    "sha256": "ddfc43cabb5e1d7fa6e4c3784978d4f58eee278572d32b033fc38fa8ccc37df9"
+  },
+  {
+    "file": "animated/alakazam.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/alakazam.gif",
+    "bytes": 70469,
+    "sha256": "8ed59a978621527b23831b59d098000e3c87aa875a326c8d5f2d4384163d4ffb"
+  },
+  {
+    "file": "animated/machop.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/machop.gif",
+    "bytes": 52942,
+    "sha256": "e0a8a93065ee6d9c64bf50a2492c0f6a732381885b6c92556e74c258c58ee714"
+  },
+  {
+    "file": "animated/machoke.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/machoke.gif",
+    "bytes": 13714,
+    "sha256": "9c61b1cb9c52ccfa0cb419822ff2d6980a5799eb738fc0573a75dc55f45ab1b3"
+  },
+  {
+    "file": "animated/machamp.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/machamp.gif",
+    "bytes": 24675,
+    "sha256": "f129fb3f5d1cca47acc8c61b6405844533d60243962fa8351edba86d9a965817"
+  },
+  {
+    "file": "animated/bellsprout.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/bellsprout.gif",
+    "bytes": 22701,
+    "sha256": "9d254ddc809e674987f84e43e9f2c6d06c03cdb1ae091a01b934c2db231e3771"
+  },
+  {
+    "file": "animated/weepinbell.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/weepinbell.gif",
+    "bytes": 26978,
+    "sha256": "7d2edcea5fe6d9b946f59e27e53b2b68f63585ad23e491e4d7110d315449357a"
+  },
+  {
+    "file": "animated/victreebel.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/victreebel.gif",
+    "bytes": 15014,
+    "sha256": "da6b8f87297772bfe5910601ce6cb6c539857806d49d98008cc82202b692131f"
+  },
+  {
+    "file": "animated/tentacool.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/tentacool.gif",
+    "bytes": 28686,
+    "sha256": "e895f8a8b7d999f111b4ec49891f51ac520693ee4b17d3ab57324f1d97507c17"
+  },
+  {
+    "file": "animated/tentacruel.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/tentacruel.gif",
+    "bytes": 106167,
+    "sha256": "b1766337cbf1d65ad5a458155393f9dad5f4f70ef6072b5718d1945abc8af8ea"
+  },
+  {
+    "file": "animated/geodude.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/geodude.gif",
+    "bytes": 17026,
+    "sha256": "983075713e1cc5ca25f9ab88a6098601f497d7821613fe30598cd8bd6dfd9cd4"
+  },
+  {
+    "file": "animated/graveler.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/graveler.gif",
+    "bytes": 5824,
+    "sha256": "217f378f1d881f2725b8fa0894e94793e82edabf50108938d874c1d25a5c27bf"
+  },
+  {
+    "file": "animated/golem.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/golem.gif",
+    "bytes": 41015,
+    "sha256": "59d37cec5ad8066ae9433866462b18d8f667c4ead6d6175e67bf120ddbb2cdc2"
+  },
+  {
+    "file": "animated/ponyta.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/ponyta.gif",
+    "bytes": 10537,
+    "sha256": "f1ce91e2c12e33057e19351d14845d2547a9482a1efdd9c9c70f14d39827cff9"
+  },
+  {
+    "file": "animated/rapidash.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/rapidash.gif",
+    "bytes": 41563,
+    "sha256": "8d63f996791ee74a219be53a561555014302c05f26204374d0dc3098c99af334"
+  },
+  {
+    "file": "animated/slowpoke.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/slowpoke.gif",
+    "bytes": 8555,
+    "sha256": "f71a54ca0c5893d40786fb8918999ed75d6cb2c34e962d31ad4bbc4bf7e66f39"
+  },
+  {
+    "file": "animated/slowbro.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/slowbro.gif",
+    "bytes": 54810,
+    "sha256": "89419d24e953144cc186ee3fd612bd6353aa22fac59386f4019f423efed04e9d"
+  },
+  {
+    "file": "animated/magnemite.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/magnemite.gif",
+    "bytes": 13466,
+    "sha256": "f0f664958bb589c82530a06fe4bcf9abbb7959ed91743489a14de9c9f7e5c347"
+  },
+  {
+    "file": "animated/magneton.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/magneton.gif",
+    "bytes": 67357,
+    "sha256": "b572001ad6cd36fd67d763f06473e27ca3dc6e2b8d29e702377f218efa25497e"
+  },
+  {
+    "file": "animated/farfetchd.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/farfetchd.gif",
+    "bytes": 9756,
+    "sha256": "8a7a9ec11eff83b219752b39330712bb081ef71c0333a2cf26f57b4e0c5af252"
+  },
+  {
+    "file": "animated/doduo.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/doduo.gif",
+    "bytes": 68605,
+    "sha256": "a35c4dd45596356a59fabf110e3d65cd8c00c548787b3cfefaf4d2aff565e641"
+  },
+  {
+    "file": "animated/dodrio.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/dodrio.gif",
+    "bytes": 86683,
+    "sha256": "6521b95642867ee4381eba4deebdf1e7bc5dfc22791fa7e6b95785277865418b"
+  },
+  {
+    "file": "animated/seel.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/seel.gif",
+    "bytes": 4445,
+    "sha256": "ee25f478e0e85dda38e15a2e696e25390bec802de58eef1a72a6af641939f278"
+  },
+  {
+    "file": "animated/dewgong.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/dewgong.gif",
+    "bytes": 45195,
+    "sha256": "664cea91e768a1c232355529ae43c0e590a39c3b939feda955bf4c5ac3e5a550"
+  },
+  {
+    "file": "animated/grimer.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/grimer.gif",
+    "bytes": 31672,
+    "sha256": "199db823c954d45c52ad99b791f7ea9fec58ebe56b34586cbf425d74690515c1"
+  },
+  {
+    "file": "animated/muk.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/muk.gif",
+    "bytes": 47162,
+    "sha256": "c0c6140d30c7cf2c046de10128e8ca370bb6603eb04e837b1842857154ff0152"
+  },
+  {
+    "file": "animated/shellder.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/shellder.gif",
+    "bytes": 15875,
+    "sha256": "e3f308bf59c1549b46424c602e281fb3570f44f7fce3a8c508efed25ef381fad"
+  },
+  {
+    "file": "animated/cloyster.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/cloyster.gif",
+    "bytes": 16335,
+    "sha256": "608cf1c78cad3a68792acc5a8dddfc1aab3e609d80cfe1a2dbba2985da55aa7e"
+  },
+  {
+    "file": "animated/gastly.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/gastly.gif",
+    "bytes": 72356,
+    "sha256": "a1b70cd7e870d1385c67d7d3c0fe9dabc3fc2189eb6933085dbdde076a4a52e5"
+  },
+  {
+    "file": "animated/haunter.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/haunter.gif",
+    "bytes": 17929,
+    "sha256": "dc55c5d5b3eee25df157c6ebbaf96fe78ce77e1fa3a62c5be7cf2b6b760d13ba"
+  },
+  {
+    "file": "animated/gengar.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/gengar.gif",
+    "bytes": 40877,
+    "sha256": "2359600e5579a3bb9f341d7cb3979af1deeb44026a7632da0606fbaa75b6f27b"
+  },
+  {
+    "file": "animated/onix.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/onix.gif",
+    "bytes": 47325,
+    "sha256": "b946c49b157c39f2e8dc1ec6f0d38091982b50541f51d1332eaa9aad999382bb"
+  },
+  {
+    "file": "animated/drowzee.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/drowzee.gif",
+    "bytes": 46971,
+    "sha256": "f32195f8c4587d0b013f240507ae4f1ef3e101c32bae354c4b7db9dc172789de"
+  },
+  {
+    "file": "animated/hypno.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/hypno.gif",
+    "bytes": 54716,
+    "sha256": "52cfc37fa07ecf212f2d168b33aee091406fd96a70aa964226f3b95a141cd401"
+  },
+  {
+    "file": "animated/krabby.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/krabby.gif",
+    "bytes": 10080,
+    "sha256": "92c47ced6a29fe7a88d2f8ae2311c0874c1133bfe4a0bb95aef93622dc667477"
+  },
+  {
+    "file": "animated/kingler.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/kingler.gif",
+    "bytes": 11563,
+    "sha256": "99a9f5f4c9c768b19fe79b9b9af44007fcba4e5909833417562fe4df0f5dfced"
+  },
+  {
+    "file": "animated/voltorb.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/voltorb.gif",
+    "bytes": 11141,
+    "sha256": "de2986a1115dbdd5d2b01b71df988b2c738d9cb15362057422ef17b691181235"
+  },
+  {
+    "file": "animated/electrode.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/electrode.gif",
+    "bytes": 10474,
+    "sha256": "29af6fd93e221e83f6104779e2c2797eefd8e4ee5c65d98bf80f809109eb6bd3"
+  },
+  {
+    "file": "animated/exeggcute.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/exeggcute.gif",
+    "bytes": 5156,
+    "sha256": "0758b9367c6f92d1093802f3ac30126736a22bb01d11c53bb3e6e3ce76463a3c"
+  },
+  {
+    "file": "animated/exeggutor.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/exeggutor.gif",
+    "bytes": 8647,
+    "sha256": "939ee6e842b19b29b7286dea8a54b3aca6ee5a70049c3708f4daea08e6ff29fd"
+  },
+  {
+    "file": "animated/cubone.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/cubone.gif",
+    "bytes": 33807,
+    "sha256": "abae47db198810f7320fb30303befdfa3ce31e36f18b33a131730fe82b32b64c"
+  },
+  {
+    "file": "animated/marowak.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/marowak.gif",
+    "bytes": 39015,
+    "sha256": "9e222b0a6b975ed2fa771c01f4e951446d3f95d18f856a664f35c7220e392cf9"
+  },
+  {
+    "file": "animated/hitmonlee.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/hitmonlee.gif",
+    "bytes": 16976,
+    "sha256": "4b2ffd9f15bafc570e0e89b65066fefe892cacaa9664682b1f918d74082dc009"
+  },
+  {
+    "file": "animated/hitmonchan.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/hitmonchan.gif",
+    "bytes": 21062,
+    "sha256": "edc1f473bcb408f345b9d89f9b5beab873634c553ad76a801978ea9dcdc8122a"
+  },
+  {
+    "file": "animated/lickitung.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/lickitung.gif",
+    "bytes": 12942,
+    "sha256": "d2fc227aeb743d278f2d39dc9256868add0109e6fe1656ca3e2533269919168a"
+  },
+  {
+    "file": "animated/koffing.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/koffing.gif",
+    "bytes": 5709,
+    "sha256": "b39d1cad5e4e7155cd3003fd4f5bc02f6f1b2524451a80297d346962433483ea"
+  },
+  {
+    "file": "animated/weezing.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/weezing.gif",
+    "bytes": 8173,
+    "sha256": "75eeb1104302d21e66f5be5378f64e0af22aa4722c49cc78a60634d57b5785b0"
+  },
+  {
+    "file": "animated/rhyhorn.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/rhyhorn.gif",
+    "bytes": 56049,
+    "sha256": "cc9480b5da9c53bacbb6c67c4e91d2d407fc66df8d87c12b51a7a7ae4b88e4f1"
+  },
+  {
+    "file": "animated/rhydon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/rhydon.gif",
+    "bytes": 91196,
+    "sha256": "77cf38472cb665c77e6a875fa388a195468d119da4256c638bb313f1b639faee"
+  },
+  {
+    "file": "animated/chansey.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/chansey.gif",
+    "bytes": 34508,
+    "sha256": "928bef83e777d4199d09439b512d27c5b94aa69ad5e350378e4af51ac55afa18"
+  },
+  {
+    "file": "animated/tangela.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/tangela.gif",
+    "bytes": 8632,
+    "sha256": "0ef92d7399ca3f63070a2889221155fd55bea55375c0cce0e9ceb70b05c6588b"
+  },
+  {
+    "file": "animated/kangaskhan.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/kangaskhan.gif",
+    "bytes": 42847,
+    "sha256": "028bc612ea57383169603654d0a0ec1bb6dd21fbeb91dd67aa6c68f2d22c24dd"
+  },
+  {
+    "file": "animated/horsea.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/horsea.gif",
+    "bytes": 16931,
+    "sha256": "2126f5f59d62c98379eb246ce06caa06122a5e2f81cd0eb9a6d9c8cabe5fdb22"
+  },
+  {
+    "file": "animated/seadra.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/seadra.gif",
+    "bytes": 23464,
+    "sha256": "dfd7c1c0e6e3a16f9b06cbce82689e27f7bfc083610de6078a8c301a75e85edd"
+  },
+  {
+    "file": "animated/goldeen.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/goldeen.gif",
+    "bytes": 40656,
+    "sha256": "17a135b22d3e0ffdb2540379e4448215cc68097dbe5306667b7597696a6e2797"
+  },
+  {
+    "file": "animated/seaking.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/seaking.gif",
+    "bytes": 54376,
+    "sha256": "6d4e15072ae116e1d1b55972d7a502fa9811a8d22ae91deec76bff8dbc22f2b6"
+  },
+  {
+    "file": "animated/staryu.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/staryu.gif",
+    "bytes": 10721,
+    "sha256": "c9c508710d811b482f0d137da9180100d3748d0ce920bfbee60c6e9ea373fd50"
+  },
+  {
+    "file": "animated/starmie.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/starmie.gif",
+    "bytes": 36500,
+    "sha256": "520a2c4eb8e27fe6198cbda7ae370304d289f7baca15b662236974295f2d2c0d"
+  },
+  {
+    "file": "animated/mrmime.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/mrmime.gif",
+    "bytes": 11931,
+    "sha256": "e957818b26938ec7fe2aa2dd2b6f854b80d2f9841d5197c8cb7f057ab243ae29"
+  },
+  {
+    "file": "animated/scyther.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/scyther.gif",
+    "bytes": 46210,
+    "sha256": "d1993f110b8d9755b3d80d3e40f9d098997792fba868adf45878278e6f360875"
+  },
+  {
+    "file": "animated/jynx.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/jynx.gif",
+    "bytes": 49492,
+    "sha256": "b1a63e4ed39c30d02bfda271719cb7daaeb139d5c7f1e830b9e9a611ef339854"
+  },
+  {
+    "file": "animated/electabuzz.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/electabuzz.gif",
+    "bytes": 42480,
+    "sha256": "627d284046a39ea9f892014408c4597c5fba7ac37ee1e44b14c5ec4bd5c30358"
+  },
+  {
+    "file": "animated/magmar.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/magmar.gif",
+    "bytes": 30073,
+    "sha256": "b9bc0ac5cec46efd710f2f50ba11aa21cc46022b7d6ef4307e21ab4d7374a220"
+  },
+  {
+    "file": "animated/pinsir.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/pinsir.gif",
+    "bytes": 21110,
+    "sha256": "2d27686dcb5c366875bdacf856ea9c77087e97b1e01f39bffbc36a207aeb11e9"
+  },
+  {
+    "file": "animated/tauros.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/tauros.gif",
+    "bytes": 20734,
+    "sha256": "53aba5b5164ccb222340106652b90e1e518dd5c913e0a86ff6662f08d13d2289"
+  },
+  {
+    "file": "animated/magikarp.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/magikarp.gif",
+    "bytes": 59386,
+    "sha256": "c525be2da4a5198d91488fa790b0536014434caa5db9d7cf5a2b32eb2fc0b86f"
+  },
+  {
+    "file": "animated/gyarados.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/gyarados.gif",
+    "bytes": 17774,
+    "sha256": "f947439db16c6592c9734a101a0d3b285a6f5418c9142279674625aaa275fd5a"
+  },
+  {
+    "file": "animated/lapras.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/lapras.gif",
+    "bytes": 25814,
+    "sha256": "dfdd2b2a8886e66e0c61293b1ff7139409014a3f67c1bf610f6d799e2aa232c0"
+  },
+  {
+    "file": "animated/ditto.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/ditto.gif",
+    "bytes": 4733,
+    "sha256": "6a5ab9e0745f092e0732c9ef1bebc0e217ea570e4e28aa9dbda9ff79fe0916d0"
+  },
+  {
+    "file": "animated/eevee.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/eevee.gif",
+    "bytes": 34723,
+    "sha256": "c86b9ea6fff23b73b2c955d05eb3bd3334d8c607b9f461c953a8b02ce6cb56d8"
+  },
+  {
+    "file": "animated/vaporeon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/vaporeon.gif",
+    "bytes": 34227,
+    "sha256": "da1da43e3e69076e9a3f3bf7362ff3bfff38bc669bed6b49ca587bce868cb3cd"
+  },
+  {
+    "file": "animated/jolteon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/jolteon.gif",
+    "bytes": 28227,
+    "sha256": "16b7ef4c84c7319a3e43bdc8ff41b0a513e2020aaa80af8c5f7e28eba4743f8f"
+  },
+  {
+    "file": "animated/flareon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/flareon.gif",
+    "bytes": 72306,
+    "sha256": "7986903ade97b8428e3b5c81b638ef1a0af9c702344fc21b18626825d4da80f1"
+  },
+  {
+    "file": "animated/porygon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/porygon.gif",
+    "bytes": 35841,
+    "sha256": "d9ae4cffe7b1eb47da517ed178cf3e96ea602bab33ae6211dee751b99857a3fc"
+  },
+  {
+    "file": "animated/omanyte.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/omanyte.gif",
+    "bytes": 11752,
+    "sha256": "f61df1044ba181ae01fc2a63371a0e2dee6dfc1ff5438399490229b24a61274a"
+  },
+  {
+    "file": "animated/omastar.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/omastar.gif",
+    "bytes": 18919,
+    "sha256": "962ff12f1542819ea416503791ca8520330d5ca885065b92cdf180f337f7d544"
+  },
+  {
+    "file": "animated/kabuto.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/kabuto.gif",
+    "bytes": 15959,
+    "sha256": "8a137db736807e83fbb42701d771bdc6082f7fe0dfc7234eaefaf70cdb6cb72f"
+  },
+  {
+    "file": "animated/kabutops.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/kabutops.gif",
+    "bytes": 13075,
+    "sha256": "fa5d7385a9bf020cb8e35447bbe8102348dff2c5e9bb5357f90a66785bf7f46e"
+  },
+  {
+    "file": "animated/aerodactyl.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/aerodactyl.gif",
+    "bytes": 15414,
+    "sha256": "f76bf043deaac3a2104d276132918eee7965a92cf384f4f8bff6e53d263d0d2c"
+  },
+  {
+    "file": "animated/snorlax.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/snorlax.gif",
+    "bytes": 74596,
+    "sha256": "55aad0c3ae0d7c3f9c2c210a42cb57ad0d490927fb5fadd704d862e7048d6143"
+  },
+  {
+    "file": "animated/articuno.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/articuno.gif",
+    "bytes": 34641,
+    "sha256": "0635d3e0f2e9327fc9b1b469002db65c165825bdb7f39d780c319b37ae20f1ec"
+  },
+  {
+    "file": "animated/zapdos.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/zapdos.gif",
+    "bytes": 8351,
+    "sha256": "a496c108082a0f722b67abfcf21b22214766ba95518a511c161947066706feef"
+  },
+  {
+    "file": "animated/moltres.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/moltres.gif",
+    "bytes": 30981,
+    "sha256": "66ea7b6b34548d5c0f6cdce15d4f245742fc40f4817f7a1789a152e148b321ca"
+  },
+  {
+    "file": "animated/dratini.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/dratini.gif",
+    "bytes": 10103,
+    "sha256": "a84352accbb6fe12f47f8fb93fa7ba0b13cdb91625b8b145fda0bfa8576d2134"
+  },
+  {
+    "file": "animated/dragonair.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/dragonair.gif",
+    "bytes": 44570,
+    "sha256": "e1eb4977825a8da202ec7bc402ba76a4be5ad7cc632de5fa5c2b91ec55deae00"
+  },
+  {
+    "file": "animated/dragonite.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/dragonite.gif",
+    "bytes": 71042,
+    "sha256": "527321433e3b4fe08203a8cbbcb7ba50aa659113adfc5cf442ad54b2c9226ecb"
+  },
+  {
+    "file": "animated/mewtwo.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/mewtwo.gif",
+    "bytes": 53033,
+    "sha256": "5df5ce7b01af650c948fae25e3400d5a09ef0e8f372ae52e0d26eb539bf1c0a0"
+  },
+  {
+    "file": "animated/mew.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani/mew.gif",
+    "bytes": 8760,
+    "sha256": "42d89a9365d7a265b8c06c23d1702470f49c1b1442b4afc384782430942416ca"
   },
   {
     "file": "animated-back/bulbasaur.gif",
@@ -342,6 +2790,24 @@
     "sha256": "ebe8aa1c8e4f9eb12ed0110104c5ed20f39faacf8d6c2c9569f549c3e529e94d"
   },
   {
+    "file": "animated-back/weedle.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/weedle.gif",
+    "bytes": 20165,
+    "sha256": "7ce953d296dcf9ff81aff49aa939c69417abd921535146b96d05713d1d553ec4"
+  },
+  {
+    "file": "animated-back/kakuna.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/kakuna.gif",
+    "bytes": 10187,
+    "sha256": "d6f9b49c9814d5a6d956a829003c729a8ce2cdc7249606688baf8c3bf8b34dec"
+  },
+  {
+    "file": "animated-back/beedrill.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/beedrill.gif",
+    "bytes": 41808,
+    "sha256": "4efdc3bb93c257c9daaa4e07b4de682b42c5c60d146e6331a2c820f958430d61"
+  },
+  {
     "file": "animated-back/pidgey.gif",
     "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/pidgey.gif",
     "bytes": 8163,
@@ -358,6 +2824,804 @@
     "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/pidgeot.gif",
     "bytes": 25493,
     "sha256": "f5075487cf09d2e9e997d3764c59ddccf6d95fb828fbcb34e0a742f5c1866b2d"
+  },
+  {
+    "file": "animated-back/rattata.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/rattata.gif",
+    "bytes": 19622,
+    "sha256": "b201625a93e3041726bc318636d2abcbdb0b3d45881e2e5c3a3df365c1ce4268"
+  },
+  {
+    "file": "animated-back/raticate.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/raticate.gif",
+    "bytes": 8492,
+    "sha256": "65ba073ba311f02ba9d7d66dc16fcc0441c6988d135c9913178c45f7b79760f6"
+  },
+  {
+    "file": "animated-back/spearow.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/spearow.gif",
+    "bytes": 12285,
+    "sha256": "1d64ebf285ad6b69f5ce4131540afe67d95aec84684eec3c56ec31bd4ba47809"
+  },
+  {
+    "file": "animated-back/fearow.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/fearow.gif",
+    "bytes": 11136,
+    "sha256": "d136d59c14cc6e93b95713af612ff8c622be8137f2857bd805d4cdaea8ba50a2"
+  },
+  {
+    "file": "animated-back/ekans.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/ekans.gif",
+    "bytes": 9813,
+    "sha256": "b31c2fdbb02831f35703e75b165b96d5d95e1467558c63ad2d684f26b9e8b62e"
+  },
+  {
+    "file": "animated-back/arbok.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/arbok.gif",
+    "bytes": 12221,
+    "sha256": "2c426756d7bfbfb1cba2952c1c6f8f38e336751988e3284d6d46abda80b4a147"
+  },
+  {
+    "file": "animated-back/pikachu.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/pikachu.gif",
+    "bytes": 22641,
+    "sha256": "f13c51252d3f6890b6bf5c4038eeda409c772274b4c89e90a1e0675f5ce25fdd"
+  },
+  {
+    "file": "animated-back/raichu.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/raichu.gif",
+    "bytes": 68300,
+    "sha256": "5c8688e68b3ac4696521a5c01ef12e9b90313be56d3273834fad99ad09e5e228"
+  },
+  {
+    "file": "animated-back/sandshrew.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/sandshrew.gif",
+    "bytes": 32105,
+    "sha256": "2f0cc7a4fbed1b0bb374d8505494fa683c6570d2266d161b7158b06addf624e0"
+  },
+  {
+    "file": "animated-back/sandslash.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/sandslash.gif",
+    "bytes": 35577,
+    "sha256": "db40349120c86e8de754b06a105a74b6bc2ddc3d0fbd6dc3e26d41fcda999428"
+  },
+  {
+    "file": "animated-back/nidoranf.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/nidoranf.gif",
+    "bytes": 13991,
+    "sha256": "c71ddef296dac5f1f1386169af4321cbb1145da010b2c78690f885b982959c7f"
+  },
+  {
+    "file": "animated-back/nidorina.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/nidorina.gif",
+    "bytes": 6109,
+    "sha256": "336ee65c6330094234121148c89dfda688aedd3a0bd12ed82228df2860c27db2"
+  },
+  {
+    "file": "animated-back/nidoqueen.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/nidoqueen.gif",
+    "bytes": 44758,
+    "sha256": "fbe752e176e2a98079d79d2b64522459e7a17a97196c6ed41374c3d09b408009"
+  },
+  {
+    "file": "animated-back/nidoranm.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/nidoranm.gif",
+    "bytes": 7906,
+    "sha256": "5fb2fbf10bb41475b5359baefeec5b9a6bbf29d86188c7e80f5c075847a04e1f"
+  },
+  {
+    "file": "animated-back/nidorino.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/nidorino.gif",
+    "bytes": 29423,
+    "sha256": "dedf3daf10637d975dbf155ac622e534017643b477cb8bd063537e44e80154c5"
+  },
+  {
+    "file": "animated-back/nidoking.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/nidoking.gif",
+    "bytes": 48043,
+    "sha256": "bdb1b1fc5edd53a66daaf1a4f3ee878a258b73f3455b11923145cfd6d4c3555b"
+  },
+  {
+    "file": "animated-back/clefairy.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/clefairy.gif",
+    "bytes": 29883,
+    "sha256": "e78bf5e0a6a41d3669e7fffc502ac19ad99905b681888ae180fe125cd182d98c"
+  },
+  {
+    "file": "animated-back/clefable.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/clefable.gif",
+    "bytes": 28387,
+    "sha256": "7590c33a555a6fec54ac4308e26505a13af4c4bbbcbe7b71bd91c90522453e41"
+  },
+  {
+    "file": "animated-back/vulpix.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/vulpix.gif",
+    "bytes": 21803,
+    "sha256": "d805decf83f2e8359b79595a07c9f3501d89bd398d079a6d977504eafe41aead"
+  },
+  {
+    "file": "animated-back/ninetales.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/ninetales.gif",
+    "bytes": 8381,
+    "sha256": "6f2ea5c280222816324a2766117654252da500f686e8e0b396a5b114c5ce0070"
+  },
+  {
+    "file": "animated-back/jigglypuff.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/jigglypuff.gif",
+    "bytes": 13879,
+    "sha256": "0fb2a0c8e6925affd41dcd015e77fba66be6ff69002ff867b337343b230a4085"
+  },
+  {
+    "file": "animated-back/wigglytuff.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/wigglytuff.gif",
+    "bytes": 23054,
+    "sha256": "31098672de0e86fe084b92bbca3bc3ebba3ca569ef817d90f604ea112e27c9d0"
+  },
+  {
+    "file": "animated-back/zubat.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/zubat.gif",
+    "bytes": 3331,
+    "sha256": "2053f8e01037deb66536fd687684ff9b70cd31908545c3a7d9cd5bf863dc06ac"
+  },
+  {
+    "file": "animated-back/golbat.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/golbat.gif",
+    "bytes": 10462,
+    "sha256": "7252e80cb1bd90b12ac1d518dd0cf7faca9b1899611bf54afef544d1c6271ddc"
+  },
+  {
+    "file": "animated-back/oddish.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/oddish.gif",
+    "bytes": 17917,
+    "sha256": "0bb46e9b7750ebe6d4e05e463d2e2f1b40143a7a2bc2eaa9cd1080fbcc3da08e"
+  },
+  {
+    "file": "animated-back/gloom.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/gloom.gif",
+    "bytes": 27279,
+    "sha256": "068592c34f9f598050c7fd5526143f9a7b1bbfe5c86b99441f287debad1c4e9d"
+  },
+  {
+    "file": "animated-back/vileplume.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/vileplume.gif",
+    "bytes": 6141,
+    "sha256": "3f90afa01da0d29ea530065cb7e6435055c1ff07586b33198bc7484aa9e00edd"
+  },
+  {
+    "file": "animated-back/paras.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/paras.gif",
+    "bytes": 15879,
+    "sha256": "a43336a2b31eea585cea0bea38a5c1291e61b7c9a415dba47d694aa0b27d4d7b"
+  },
+  {
+    "file": "animated-back/parasect.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/parasect.gif",
+    "bytes": 8615,
+    "sha256": "223c1e21242d36da7229f23241a98533cce09c94450674df6ceb34bf3645acf5"
+  },
+  {
+    "file": "animated-back/venonat.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/venonat.gif",
+    "bytes": 11091,
+    "sha256": "776c9bb448d1ce4a202806c2d5613074bd6503ae853742ef865f1dfe7fbb6375"
+  },
+  {
+    "file": "animated-back/venomoth.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/venomoth.gif",
+    "bytes": 46045,
+    "sha256": "813df17fbeee93bf01abbbf4b11206a5143054bed58e954e398ad80c7bf0bc1f"
+  },
+  {
+    "file": "animated-back/diglett.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/diglett.gif",
+    "bytes": 7169,
+    "sha256": "4b61ed5212eaf0cf2aa17788a0e643f4018e17f59b9a47ae49a5926657e8f902"
+  },
+  {
+    "file": "animated-back/dugtrio.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/dugtrio.gif",
+    "bytes": 28097,
+    "sha256": "b93f5ee6d7c00853cb18fff54d0186136e430e0c88006f85dc1f09c3a0751116"
+  },
+  {
+    "file": "animated-back/meowth.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/meowth.gif",
+    "bytes": 31606,
+    "sha256": "2d5d6504fffddcafe54f6ec8bd5f48a698baa2250b45cb4bfd091f9c176ce84e"
+  },
+  {
+    "file": "animated-back/persian.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/persian.gif",
+    "bytes": 15028,
+    "sha256": "cc737fcd9f250498db7941f7a1e09ebcae3a995cfa3658ec64ed9b86b494acc1"
+  },
+  {
+    "file": "animated-back/psyduck.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/psyduck.gif",
+    "bytes": 5827,
+    "sha256": "77d76d4b37f2565d93fa7798b1dde4ed56c59590d1690503418b5d02bbb502bf"
+  },
+  {
+    "file": "animated-back/golduck.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/golduck.gif",
+    "bytes": 20950,
+    "sha256": "68375771517ad971accc140cc20f1e3376af9e7e42db9620b8017e4143ce9c18"
+  },
+  {
+    "file": "animated-back/mankey.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/mankey.gif",
+    "bytes": 45211,
+    "sha256": "71760ca69143d9e331815f83a54bfc99516b418570079f5d174f9be92bd7414e"
+  },
+  {
+    "file": "animated-back/primeape.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/primeape.gif",
+    "bytes": 15256,
+    "sha256": "fb095e4791cf2ed6027aedae6221292bb9ab218168ab981ee611a50173bfc20c"
+  },
+  {
+    "file": "animated-back/growlithe.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/growlithe.gif",
+    "bytes": 38108,
+    "sha256": "6b88e1e31cc9afc560b81e0262f2d6128a15af2681aa95e464f71398537fade8"
+  },
+  {
+    "file": "animated-back/arcanine.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/arcanine.gif",
+    "bytes": 8992,
+    "sha256": "7621864a567041b8dd720328fc152dfd49ec3dbaf11bced06cdd5b4163191665"
+  },
+  {
+    "file": "animated-back/poliwag.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/poliwag.gif",
+    "bytes": 20212,
+    "sha256": "59d1c88b8997c1cb9149c9a7b1230f53ab09a926c4d0a0f957e26482ea6066e8"
+  },
+  {
+    "file": "animated-back/poliwhirl.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/poliwhirl.gif",
+    "bytes": 27553,
+    "sha256": "ef3fffb1a3c0e6aa97e5ff5f7b9eeb4ec6461a37fe8020dda962ca49496a14c8"
+  },
+  {
+    "file": "animated-back/poliwrath.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/poliwrath.gif",
+    "bytes": 4239,
+    "sha256": "3f66197f8cb982f873bd036d588877779a43b47cb68b32b6ec2c7a1f6678c427"
+  },
+  {
+    "file": "animated-back/abra.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/abra.gif",
+    "bytes": 29465,
+    "sha256": "ef87546789f4595cfaf36214aece3322e1eeaa1cc5057477d14135d4afea774c"
+  },
+  {
+    "file": "animated-back/kadabra.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/kadabra.gif",
+    "bytes": 52874,
+    "sha256": "19d7fa4fe2e59fe12449fda2b2183d411a48fa4bbf960ba7546f5d3c422be972"
+  },
+  {
+    "file": "animated-back/alakazam.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/alakazam.gif",
+    "bytes": 69954,
+    "sha256": "110bf47d52f946ddbd55e9f593a1b448d33cf473ba3fd10340373c724138e0ec"
+  },
+  {
+    "file": "animated-back/machop.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/machop.gif",
+    "bytes": 49455,
+    "sha256": "d5c54d70de4c58c368d498be1f9e1051c90ba51e63f3110d1e310dc8d448f96a"
+  },
+  {
+    "file": "animated-back/machoke.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/machoke.gif",
+    "bytes": 13091,
+    "sha256": "e511dd3a90d6bf4e2c6d23c22373144f8edf97a2bec444f73cf47963f941a492"
+  },
+  {
+    "file": "animated-back/machamp.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/machamp.gif",
+    "bytes": 24845,
+    "sha256": "a2bd90ebfeaaa1ec26cea47d7e278edec79aa0d2f64f0eaa8028053a5bb5fe2c"
+  },
+  {
+    "file": "animated-back/bellsprout.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/bellsprout.gif",
+    "bytes": 23581,
+    "sha256": "fd9306be411e1b40c880dcb1e4d6cd99447f8d87af496bbf985f635d57021021"
+  },
+  {
+    "file": "animated-back/weepinbell.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/weepinbell.gif",
+    "bytes": 21267,
+    "sha256": "8acfe27c5b01bf97f3aba63897eee4d10539414b0610daf193e798f8eca2dd78"
+  },
+  {
+    "file": "animated-back/victreebel.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/victreebel.gif",
+    "bytes": 14162,
+    "sha256": "2b119e33da201862f15188e2af34bc5d279675df9740841d54e7c0cdc99f0fda"
+  },
+  {
+    "file": "animated-back/tentacool.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/tentacool.gif",
+    "bytes": 25369,
+    "sha256": "23dd9635d1a1515f1cac5a7ee0d7ef90d12bf4502f742b321568fb001159516c"
+  },
+  {
+    "file": "animated-back/tentacruel.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/tentacruel.gif",
+    "bytes": 110029,
+    "sha256": "a1d09900fefe677fd664f98bdba5496f2e0928fff553e7d6d85894abe3a058bb"
+  },
+  {
+    "file": "animated-back/geodude.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/geodude.gif",
+    "bytes": 12323,
+    "sha256": "e227be90e7ce6f3e0ea0f4f11bdae9bd4654eb677167eb76af519b4c3ebdf899"
+  },
+  {
+    "file": "animated-back/graveler.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/graveler.gif",
+    "bytes": 4611,
+    "sha256": "01d5f42c20fe31517fbeda056b89e138fabbe914c2f9de6f150f392dd8ff0e6f"
+  },
+  {
+    "file": "animated-back/golem.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/golem.gif",
+    "bytes": 36447,
+    "sha256": "8fc019b937d2c6d46db657d58bf918fc20b130dd5f1dacb47a0cd240e570922c"
+  },
+  {
+    "file": "animated-back/ponyta.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/ponyta.gif",
+    "bytes": 11106,
+    "sha256": "39158e543a692667db8767a6a79018aa41f5a65ef774f9452607f84a15e4e1ae"
+  },
+  {
+    "file": "animated-back/rapidash.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/rapidash.gif",
+    "bytes": 49909,
+    "sha256": "35659f0ff92980098bc6684053028966a3927de6ac693358fea92a7f08d10a36"
+  },
+  {
+    "file": "animated-back/slowpoke.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/slowpoke.gif",
+    "bytes": 6795,
+    "sha256": "b8535f042bd04a09195c76cddb54f3f778e516e27cfb1521b432fbe8bcf0069a"
+  },
+  {
+    "file": "animated-back/slowbro.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/slowbro.gif",
+    "bytes": 47812,
+    "sha256": "8e98fe3399caa7dd3fb47767d77b0d13919980b75e852733a36d3c0934444729"
+  },
+  {
+    "file": "animated-back/magnemite.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/magnemite.gif",
+    "bytes": 11330,
+    "sha256": "e5e9ea290078a24bdc893e88b77917592ab31c44e228d4d3050361ead4dc4cec"
+  },
+  {
+    "file": "animated-back/magneton.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/magneton.gif",
+    "bytes": 47748,
+    "sha256": "7c0de4808e552f52e441b1f1ed5305c3435cd4a04f71382693a49938fd57eb38"
+  },
+  {
+    "file": "animated-back/farfetchd.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/farfetchd.gif",
+    "bytes": 7744,
+    "sha256": "bbe18c552af0285a176f615d1f5cd1644b50a9963728f5bf64e81f2de694aa3d"
+  },
+  {
+    "file": "animated-back/doduo.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/doduo.gif",
+    "bytes": 60825,
+    "sha256": "1aad8677d0b987786565b23687640f038e79872f0c9828fe53a9daf3fc25221d"
+  },
+  {
+    "file": "animated-back/dodrio.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/dodrio.gif",
+    "bytes": 74108,
+    "sha256": "200bdfd8fdf79e8ae6e67cdf430299765919bafe8da47174123b338664b1cf56"
+  },
+  {
+    "file": "animated-back/seel.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/seel.gif",
+    "bytes": 3537,
+    "sha256": "a218749a0568f47d45783ab17d29afb35ec4bbee49f7852ac7d87b1b9f344269"
+  },
+  {
+    "file": "animated-back/dewgong.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/dewgong.gif",
+    "bytes": 38783,
+    "sha256": "947e72c70873966afa0541cb99be4d55daa2a1f3b4b5178e681f3ffba2b2b028"
+  },
+  {
+    "file": "animated-back/grimer.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/grimer.gif",
+    "bytes": 27377,
+    "sha256": "e81b54b35e28c08d6dea6a7baf6699eb92d6c45edc40209e5a60d6da18818a03"
+  },
+  {
+    "file": "animated-back/muk.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/muk.gif",
+    "bytes": 43538,
+    "sha256": "c5c3e249b0d662186800ca88f1e53a3ecdf2fb565c30ff40a9aa2fc4a0a3b680"
+  },
+  {
+    "file": "animated-back/shellder.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/shellder.gif",
+    "bytes": 13012,
+    "sha256": "c31c28bbe5fe69363a088c418a5f28c3fecf7ca084ea8d9372b501351d6012b2"
+  },
+  {
+    "file": "animated-back/cloyster.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/cloyster.gif",
+    "bytes": 11910,
+    "sha256": "48676baf2dc3e997d05b350523154393adf0b37ebaff0751e155cd161a023023"
+  },
+  {
+    "file": "animated-back/gastly.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/gastly.gif",
+    "bytes": 63426,
+    "sha256": "9dd133e0d1de3e614c94f61dc031aa858f45b31ac23c40dd4ed57c782caeb8c4"
+  },
+  {
+    "file": "animated-back/haunter.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/haunter.gif",
+    "bytes": 15128,
+    "sha256": "3885f20c0f42d5bdd61ba039fdda30f2a93516d6aa77eefec9359c9cb1c71230"
+  },
+  {
+    "file": "animated-back/gengar.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/gengar.gif",
+    "bytes": 30634,
+    "sha256": "9d707d05d6f8894b352ace51e5bf2064afd58f16367b56ec272a553eb11b2b25"
+  },
+  {
+    "file": "animated-back/onix.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/onix.gif",
+    "bytes": 76419,
+    "sha256": "75815374ca5dc46e14bf65a77e151bd9382903ab420b48b9746bb1d12eee7f41"
+  },
+  {
+    "file": "animated-back/drowzee.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/drowzee.gif",
+    "bytes": 36979,
+    "sha256": "fd08c8dc538e707342c370928f2d999ee0631a11a3a210feb88a5d089adf704d"
+  },
+  {
+    "file": "animated-back/hypno.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/hypno.gif",
+    "bytes": 43884,
+    "sha256": "aa005a7cb781ad58444eb03591cf694fd43c80fe3f7169855e2371b6dcdb5655"
+  },
+  {
+    "file": "animated-back/krabby.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/krabby.gif",
+    "bytes": 10188,
+    "sha256": "b65e208ef30125d5f21930847aaa6a1a6355f8e3e817d16353e0c7215524085c"
+  },
+  {
+    "file": "animated-back/kingler.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/kingler.gif",
+    "bytes": 10587,
+    "sha256": "944f70c9bae4b1d4c587d262635da1ef083e9ed3a33f49f43d2d533c026309fb"
+  },
+  {
+    "file": "animated-back/voltorb.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/voltorb.gif",
+    "bytes": 9285,
+    "sha256": "1757f950b7fb516da5ac961bd427630ac14952546798b0a5dc5238a7ac015679"
+  },
+  {
+    "file": "animated-back/electrode.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/electrode.gif",
+    "bytes": 7325,
+    "sha256": "c7d7245deb19f5142131c1b187cb34bf6a3bfd515e84bec9ee59ec918a3627df"
+  },
+  {
+    "file": "animated-back/exeggcute.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/exeggcute.gif",
+    "bytes": 3571,
+    "sha256": "a35aa509426c6191042e2ab967f2113c4e69154df231e1a01faaccd92b18568e"
+  },
+  {
+    "file": "animated-back/exeggutor.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/exeggutor.gif",
+    "bytes": 7274,
+    "sha256": "3bfd3d7e2508c991b79b770ea9aa6bebfde42fce2883253f4decc91a570442db"
+  },
+  {
+    "file": "animated-back/cubone.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/cubone.gif",
+    "bytes": 29965,
+    "sha256": "69a7045e660e5f74cad2d7daba0a05196dacf18ba1ec93b29f97e709534ffc87"
+  },
+  {
+    "file": "animated-back/marowak.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/marowak.gif",
+    "bytes": 32926,
+    "sha256": "bf169473a528a54755a12aa6d1552bf33344526be3d87e958bf01e521e1f4f37"
+  },
+  {
+    "file": "animated-back/hitmonlee.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/hitmonlee.gif",
+    "bytes": 12924,
+    "sha256": "2a3c59b3e14c9769488a402d2c10e1dd7a0af0f1f2c781fb763d94ee597b9918"
+  },
+  {
+    "file": "animated-back/hitmonchan.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/hitmonchan.gif",
+    "bytes": 20489,
+    "sha256": "036de177280df4a86ccbba970a7cdae77bdd165ce8074dc9d0fc7d4234b193a6"
+  },
+  {
+    "file": "animated-back/lickitung.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/lickitung.gif",
+    "bytes": 11958,
+    "sha256": "70b360632a9597182eb993cc463670969b9d854719ec893a5e57cc3603a84952"
+  },
+  {
+    "file": "animated-back/koffing.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/koffing.gif",
+    "bytes": 4664,
+    "sha256": "0fc4057bafb0d61bedfe29f11debea08d67f40656e4d7c55f2343979b6add54c"
+  },
+  {
+    "file": "animated-back/weezing.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/weezing.gif",
+    "bytes": 6486,
+    "sha256": "0cc0e4c8aca04e6e5f0cbe1d94bbf59bb2adc766188378390371a7efc29a8d01"
+  },
+  {
+    "file": "animated-back/rhyhorn.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/rhyhorn.gif",
+    "bytes": 61050,
+    "sha256": "bab1e8541b3b6ce265d91544b0a3d7a03043259f5ca7a13282870a4654782fae"
+  },
+  {
+    "file": "animated-back/rhydon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/rhydon.gif",
+    "bytes": 76011,
+    "sha256": "b99413ba945709c778accd79412f6d83a1746537e9cca0f007addb5c199a66f0"
+  },
+  {
+    "file": "animated-back/chansey.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/chansey.gif",
+    "bytes": 24399,
+    "sha256": "59ee2ff4453d03fd18be18588f461cbae2f6928da3caf122a5e9791de5a52dc3"
+  },
+  {
+    "file": "animated-back/tangela.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/tangela.gif",
+    "bytes": 8056,
+    "sha256": "d9084f1be3288951dcc9fccd266421101b5416e353e5729d894a73a511552867"
+  },
+  {
+    "file": "animated-back/kangaskhan.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/kangaskhan.gif",
+    "bytes": 32619,
+    "sha256": "fa93fb9481f3458726585df0e31c1c54f860587a020567c7a27347e47b654564"
+  },
+  {
+    "file": "animated-back/horsea.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/horsea.gif",
+    "bytes": 15510,
+    "sha256": "cb2014d9124656eec64d93ed08a483dd772f2d66f594fe0a9792314782933173"
+  },
+  {
+    "file": "animated-back/seadra.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/seadra.gif",
+    "bytes": 22491,
+    "sha256": "68fc2848705d09e528a643f1b3fb92d127333da47ffbbf96a2bd569db469ed9a"
+  },
+  {
+    "file": "animated-back/goldeen.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/goldeen.gif",
+    "bytes": 44196,
+    "sha256": "e36ec83804c90d07b88e396ecdd393d590648353c92d9dd11d29c937fa0509e4"
+  },
+  {
+    "file": "animated-back/seaking.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/seaking.gif",
+    "bytes": 59950,
+    "sha256": "45c3d5830fe93438b1f9d4a9c667bdda17f064be32799b249b001b34c15eb8ae"
+  },
+  {
+    "file": "animated-back/staryu.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/staryu.gif",
+    "bytes": 8084,
+    "sha256": "75f393795ae84af1ba5301740eb088ba7fa1edfee0739ece7b8e9f1d22d0952e"
+  },
+  {
+    "file": "animated-back/starmie.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/starmie.gif",
+    "bytes": 27340,
+    "sha256": "80156a9307287e6a381cf8ea2bb9335306ecc92be355c0a8d5ddb86d48fadccd"
+  },
+  {
+    "file": "animated-back/mrmime.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/mrmime.gif",
+    "bytes": 10013,
+    "sha256": "0730632537b6b25c0542bca2d15936deb5ab5a24ecfbe8d2bb79b6a1074e9c24"
+  },
+  {
+    "file": "animated-back/scyther.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/scyther.gif",
+    "bytes": 53934,
+    "sha256": "d5654fd164a2d2e50c207ce0d570ab87238e3b693cbe91e1444aefd80c90eb16"
+  },
+  {
+    "file": "animated-back/jynx.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/jynx.gif",
+    "bytes": 38846,
+    "sha256": "96acee78b94d6b7d5b8146c4cd3173c830e68ee13585eb81412ff01a34a2b42a"
+  },
+  {
+    "file": "animated-back/electabuzz.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/electabuzz.gif",
+    "bytes": 38351,
+    "sha256": "9fa4095183edaf3698498a523f3fe1956b8684e6e9a684b4a1a60552b32c359b"
+  },
+  {
+    "file": "animated-back/magmar.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/magmar.gif",
+    "bytes": 26529,
+    "sha256": "708c7cbd4bddb1654da3e2dc29f8d377d942ecd7771c0de24fb7018f38f5d166"
+  },
+  {
+    "file": "animated-back/pinsir.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/pinsir.gif",
+    "bytes": 17304,
+    "sha256": "b04d8ef0f705179a86eb64881c4ae9d5390349b0b09903c0e289550f45a31feb"
+  },
+  {
+    "file": "animated-back/tauros.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/tauros.gif",
+    "bytes": 21919,
+    "sha256": "905e27d24c2e6d8ffe5eb9b59ab46d7f3099722e00defd5618133165d7c19866"
+  },
+  {
+    "file": "animated-back/magikarp.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/magikarp.gif",
+    "bytes": 55665,
+    "sha256": "081e76c862bfb6cafb65bfc1514ff4722f4d2a8256b37e4be41c1395b85d731d"
+  },
+  {
+    "file": "animated-back/gyarados.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/gyarados.gif",
+    "bytes": 16355,
+    "sha256": "c09fa02315d0df9f052ac9dffaf7748c29c3c5c7bafc64959fe5468c161aed3a"
+  },
+  {
+    "file": "animated-back/lapras.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/lapras.gif",
+    "bytes": 27855,
+    "sha256": "684d3ca9c6a2fa42acbb92da8f5f02ca2b9c8819a3f30241ca704fe4d13ca4f9"
+  },
+  {
+    "file": "animated-back/ditto.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/ditto.gif",
+    "bytes": 4748,
+    "sha256": "5f1d17c989d40d9bf6e742470eb86f077353414a80e5ae1d714011eccf772755"
+  },
+  {
+    "file": "animated-back/eevee.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/eevee.gif",
+    "bytes": 32317,
+    "sha256": "ce09cf464eaa86f399caf376e30610bba04d0d52f1452679a63eaff0874c2fcd"
+  },
+  {
+    "file": "animated-back/vaporeon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/vaporeon.gif",
+    "bytes": 27770,
+    "sha256": "d94005a66c41d437d13b3b78ad2feb141aaf6178101afc38ec3aca38c15a738b"
+  },
+  {
+    "file": "animated-back/jolteon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/jolteon.gif",
+    "bytes": 27783,
+    "sha256": "eebeb0fb33f9125ca55e7c65e60c7d164d0f4782b27ac5fdcfb98198ba06e32d"
+  },
+  {
+    "file": "animated-back/flareon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/flareon.gif",
+    "bytes": 62508,
+    "sha256": "305daa94d0db70f0f097db92eef74a8466e22255de1ffd4ab79a278aafe6e866"
+  },
+  {
+    "file": "animated-back/porygon.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/porygon.gif",
+    "bytes": 20542,
+    "sha256": "d1e562136e5c31b59c1dc4beb6f5a2f912eebcb66176831026cf9e5caa28fe87"
+  },
+  {
+    "file": "animated-back/omanyte.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/omanyte.gif",
+    "bytes": 10914,
+    "sha256": "82137b926b21a92e0eb034920328a278e012ea6a766292c1d69cf7e6d6f88e1f"
+  },
+  {
+    "file": "animated-back/omastar.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/omastar.gif",
+    "bytes": 16927,
+    "sha256": "ea9cb7cab23a45d2fce10281ce932525e6f63a8865dabb513693f52cac1de822"
+  },
+  {
+    "file": "animated-back/kabuto.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/kabuto.gif",
+    "bytes": 18237,
+    "sha256": "6e330b0bba36a6141bf3650329ad6a343b1d5b6f446d6f5f08ba9a90804076ba"
+  },
+  {
+    "file": "animated-back/kabutops.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/kabutops.gif",
+    "bytes": 12845,
+    "sha256": "4995e66fe5e6cb4314e52b286e078ae3ef31aa587f14a5fb494cdbd7d918bcb6"
+  },
+  {
+    "file": "animated-back/aerodactyl.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/aerodactyl.gif",
+    "bytes": 14564,
+    "sha256": "3377fd2dad0d6583d49a7bf2702b87a2da97af284d82de58b99ce26f1eb670d9"
+  },
+  {
+    "file": "animated-back/snorlax.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/snorlax.gif",
+    "bytes": 51371,
+    "sha256": "ca8b2f58dedcc7b2b67732e292b777c91a585e7461bf42b7e4066e4523ba7fb2"
+  },
+  {
+    "file": "animated-back/articuno.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/articuno.gif",
+    "bytes": 30731,
+    "sha256": "2ae53f162a1d083ad710a079663efbf308ca25ce6a1249596ad989f1a97cf070"
+  },
+  {
+    "file": "animated-back/zapdos.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/zapdos.gif",
+    "bytes": 7420,
+    "sha256": "6a3a8870e470ece1b88db749094755cd49d2d2bb55d836f60d2d64803bf9b69d"
+  },
+  {
+    "file": "animated-back/moltres.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/moltres.gif",
+    "bytes": 26170,
+    "sha256": "ed06a6c9e33d8100b753a414629ada6748182d20d517716a501cbea8074dbe6a"
+  },
+  {
+    "file": "animated-back/dratini.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/dratini.gif",
+    "bytes": 9457,
+    "sha256": "412ff5ca80621f706283d5105abc06f914b932d4f4132032ec2ad9eed2203987"
+  },
+  {
+    "file": "animated-back/dragonair.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/dragonair.gif",
+    "bytes": 40043,
+    "sha256": "d2700c314e56a3820a479946d3d3fdb974da9b2c08159c0af483a472984cbfed"
+  },
+  {
+    "file": "animated-back/dragonite.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/dragonite.gif",
+    "bytes": 67427,
+    "sha256": "ba64e3b7260480813b3223fa3ae0a6dc7b276ea6e42a5da1c352722ce9343188"
+  },
+  {
+    "file": "animated-back/mewtwo.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/mewtwo.gif",
+    "bytes": 47476,
+    "sha256": "32167f3f322b77ee89950ba67d0dc85e557902c4d05522b633fd12444d0f44a7"
+  },
+  {
+    "file": "animated-back/mew.gif",
+    "source": "https://play.pokemonshowdown.com/sprites/gen5ani-back/mew.gif",
+    "bytes": 8080,
+    "sha256": "4459f0e256dd1b46e09bbdb5dd66f2ec44a8d7c80e142b5af3dbafaffa6f5954"
   },
   {
     "file": "icons/bulbasaur.png",
@@ -432,6 +3696,24 @@
     "sha256": "918ee6a34ebec562e45a6daff0573835f1bf4f1c00dc1c6f94002d818c6bd848"
   },
   {
+    "file": "icons/weedle.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/weedle.png",
+    "bytes": 270,
+    "sha256": "691015ceaa297928d22ef8a6d56ad275f5ac3b73c27e00009c5b1f4c9c304ee2"
+  },
+  {
+    "file": "icons/kakuna.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/kakuna.png",
+    "bytes": 241,
+    "sha256": "53b371d624b0d767f0a7cdbc267477adfb4a6c87f5ce58cccf550c277e350c0f"
+  },
+  {
+    "file": "icons/beedrill.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/beedrill.png",
+    "bytes": 377,
+    "sha256": "d7309a18360f0519c71d058bcc1bd9581b2df18a09da92dd9220466b95dbf749"
+  },
+  {
     "file": "icons/pidgey.png",
     "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/pidgey.png",
     "bytes": 324,
@@ -448,5 +3730,803 @@
     "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/pidgeot.png",
     "bytes": 594,
     "sha256": "a5706b4f6342db3ca65c9b8ee2163eb58582ff6952a599c3444702859f0138ab"
+  },
+  {
+    "file": "icons/rattata.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/rattata.png",
+    "bytes": 330,
+    "sha256": "1995899e00f7a94429397e9af4287d3a18365a9e066d91688c97f47a11b3da3e"
+  },
+  {
+    "file": "icons/raticate.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/raticate.png",
+    "bytes": 421,
+    "sha256": "6e20926e711ab9f686248fb3363e8547bfa7b5e06c8a6ce78f8eb8c8b2bc6e5e"
+  },
+  {
+    "file": "icons/spearow.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/spearow.png",
+    "bytes": 316,
+    "sha256": "28a11057411cebe7bf8da43c8579875fbccf09e808764eeb5e425560a519251f"
+  },
+  {
+    "file": "icons/fearow.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/fearow.png",
+    "bytes": 442,
+    "sha256": "70ccb089cfa7a49d57964d0a7863a454f19808c8db23e9d297d7d62658c1d7a8"
+  },
+  {
+    "file": "icons/ekans.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/ekans.png",
+    "bytes": 346,
+    "sha256": "8fbe1ca6d640941135498c651bdad9b79a851b904d675c7ccdd8ea06a4f5daca"
+  },
+  {
+    "file": "icons/arbok.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/arbok.png",
+    "bytes": 460,
+    "sha256": "e1e6013ecbc9f958b49207e41f317a91d6015e1b5f914a0484505b6225d87644"
+  },
+  {
+    "file": "icons/pikachu.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/pikachu.png",
+    "bytes": 372,
+    "sha256": "9d715313833c46690f9932dd45b59da7e21630d35bcf4818992378362a3b898a"
+  },
+  {
+    "file": "icons/raichu.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/raichu.png",
+    "bytes": 1046,
+    "sha256": "bdc7c0925b86da42bcb3b054307452cebb9d92628b58de6ccf0ecd5019be3fcb"
+  },
+  {
+    "file": "icons/sandshrew.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/sandshrew.png",
+    "bytes": 338,
+    "sha256": "de313204aa8baa1e93a81b415fabc3106f13bfe1d82c27dd655eabc1e023f9f9"
+  },
+  {
+    "file": "icons/sandslash.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/sandslash.png",
+    "bytes": 913,
+    "sha256": "6e1d17c8f953981274ebe1d29e2d353d3c9f0eb420b3a1d8e4e284dcd4bd3cd0"
+  },
+  {
+    "file": "icons/nidoranf.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/nidoran-f.png",
+    "bytes": 313,
+    "sha256": "a9a56737a7f072d022d3956c53d6b3da5925dde753baa5a7b9da2f030bf0e7f2"
+  },
+  {
+    "file": "icons/nidorina.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/nidorina.png",
+    "bytes": 375,
+    "sha256": "9c14033ef1cd057151550926372c67830cea95c404c0bf4f571ec02da9b8024f"
+  },
+  {
+    "file": "icons/nidoqueen.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/nidoqueen.png",
+    "bytes": 754,
+    "sha256": "6cd558202f07752f1bad177a34691f1328ca53663fd54a235c6cc93bab4374d5"
+  },
+  {
+    "file": "icons/nidoranm.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/nidoran-m.png",
+    "bytes": 331,
+    "sha256": "ff8d7c95501de556ba110cd7a8598372207be9f684755e2b2c9e79b05898cf32"
+  },
+  {
+    "file": "icons/nidorino.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/nidorino.png",
+    "bytes": 362,
+    "sha256": "16e5e98349beddc801b6db96944768d34f80ada205982273511c8e3405d5404b"
+  },
+  {
+    "file": "icons/nidoking.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/nidoking.png",
+    "bytes": 1210,
+    "sha256": "f1d3eab40f6006685284a353d228dce98a247be8d2232d6965bb3a7131ad7054"
+  },
+  {
+    "file": "icons/clefairy.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/clefairy.png",
+    "bytes": 305,
+    "sha256": "4cb74da38f8ee28096326bc80b434328bc8b13922d0a2e2304c4fe2a1cd9ddb7"
+  },
+  {
+    "file": "icons/clefable.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/clefable.png",
+    "bytes": 620,
+    "sha256": "f3ee698930afc626fe053567e5db76401695415c4cd021cfffa1f366971ee7ee"
+  },
+  {
+    "file": "icons/vulpix.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/vulpix.png",
+    "bytes": 346,
+    "sha256": "55f27f6315cd0ac2ff28f8a78d69f64c7851f5581bb1875455a6f38c0b181dfb"
+  },
+  {
+    "file": "icons/ninetales.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/ninetales.png",
+    "bytes": 1101,
+    "sha256": "cfe49ede596e05abff16ef9ecfece5b711a5094fd7287e3d94d674233cf9b0af"
+  },
+  {
+    "file": "icons/jigglypuff.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/jigglypuff.png",
+    "bytes": 311,
+    "sha256": "8fd42ea797ca4e17b15f454e26f81bcc1d7deb9601f0a563459117b7465ff57f"
+  },
+  {
+    "file": "icons/wigglytuff.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/wigglytuff.png",
+    "bytes": 826,
+    "sha256": "3dadb98b81c0fd6b4e09743d321e26b92629fbd206b34fc97c971de458b1f179"
+  },
+  {
+    "file": "icons/zubat.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/zubat.png",
+    "bytes": 302,
+    "sha256": "8907dbdc250a86cdf9e3fe81f7ee3f125520840999f6e0bb4478fafedde0b41a"
+  },
+  {
+    "file": "icons/golbat.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/golbat.png",
+    "bytes": 556,
+    "sha256": "8b30a71303d92c88984639487e29140cd2cf98a3e07eeecd23f02be2dfc1e9a4"
+  },
+  {
+    "file": "icons/oddish.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/oddish.png",
+    "bytes": 310,
+    "sha256": "9cff69d44118048e2a463c7f9894a1607c9629b8e30736f9d4489d5f5c09b70e"
+  },
+  {
+    "file": "icons/gloom.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/gloom.png",
+    "bytes": 381,
+    "sha256": "6af321e68344232a5274dba33e215e36f373c3cae3d5f328765ddc61bac1dc1f"
+  },
+  {
+    "file": "icons/vileplume.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/vileplume.png",
+    "bytes": 633,
+    "sha256": "539acc443d993e5e51d6ae985e7f92efc8a5c05feda8fe04f87be01e13b18e71"
+  },
+  {
+    "file": "icons/paras.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/paras.png",
+    "bytes": 374,
+    "sha256": "551906c68bd2b43a176842722cc0e52502121101199156712f37500bd2514d4d"
+  },
+  {
+    "file": "icons/parasect.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/parasect.png",
+    "bytes": 382,
+    "sha256": "5dde3a52b3dde0fcc7e37b8e22fef102aec67fee0ee3b76301ee558390432126"
+  },
+  {
+    "file": "icons/venonat.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/venonat.png",
+    "bytes": 358,
+    "sha256": "b409a1165d6b1199497e970892e6751ce39348ab5f788eb4f4f1c5cf0a69590a"
+  },
+  {
+    "file": "icons/venomoth.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/venomoth.png",
+    "bytes": 604,
+    "sha256": "fbb2683c43e4610e812115d6d05aef2d19ed60402c32c814b728ea7c5940ea58"
+  },
+  {
+    "file": "icons/diglett.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/diglett.png",
+    "bytes": 266,
+    "sha256": "b21904ecee585cca4eed678b67bfb888bf6a3d3ae812c450d3465fdd77964bd2"
+  },
+  {
+    "file": "icons/dugtrio.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/dugtrio.png",
+    "bytes": 914,
+    "sha256": "e4beb0d158f12410067b744d97495ccbc07e22d5705c21f10f24da59cc474c64"
+  },
+  {
+    "file": "icons/meowth.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/meowth.png",
+    "bytes": 366,
+    "sha256": "1801a7fa36c2927a0384dc72dbf895afedf413ddc41aca06cd9abda5b5baecfc"
+  },
+  {
+    "file": "icons/persian.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/persian.png",
+    "bytes": 838,
+    "sha256": "db2f5ac5243d891b871c1be8d12eb62669ed5cee55bd04fb2c47bbd334176858"
+  },
+  {
+    "file": "icons/psyduck.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/psyduck.png",
+    "bytes": 330,
+    "sha256": "28864d0fa0d8b9c66d270cd1a0c21c38b7119559ceb324cb4a42c263b9df500a"
+  },
+  {
+    "file": "icons/golduck.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/golduck.png",
+    "bytes": 988,
+    "sha256": "46dd34746aac388631151d2574d7e6114d2ee86f2aa156746aefb7411e9894de"
+  },
+  {
+    "file": "icons/mankey.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/mankey.png",
+    "bytes": 395,
+    "sha256": "2a406fc310a2f8e54d9ce6d96856b2390f754103e2ddb37f506b09aaa8c5240c"
+  },
+  {
+    "file": "icons/primeape.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/primeape.png",
+    "bytes": 440,
+    "sha256": "d5b0b24456dda76e8ed12f699e33613717053ff9aa87e452a9d132d3eab1dfbf"
+  },
+  {
+    "file": "icons/growlithe.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/growlithe.png",
+    "bytes": 366,
+    "sha256": "1d14fe0eba1eee042088055adab744fc8f5eeaca5610d6b7d2141de08799e5c1"
+  },
+  {
+    "file": "icons/arcanine.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/arcanine.png",
+    "bytes": 652,
+    "sha256": "8b09323f34d452a587fa086ef252720790e09669551ae109e01ae58b44fd47a1"
+  },
+  {
+    "file": "icons/poliwag.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/poliwag.png",
+    "bytes": 309,
+    "sha256": "a2c8d2565a56965d99fe80cf9a0c2528d513a836729ba2e0120bc63dfb73e33b"
+  },
+  {
+    "file": "icons/poliwhirl.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/poliwhirl.png",
+    "bytes": 330,
+    "sha256": "5373412955fc0635bd077116d2a8f23c903de41bebc15c899e1512e62d4c1ba6"
+  },
+  {
+    "file": "icons/poliwrath.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/poliwrath.png",
+    "bytes": 1010,
+    "sha256": "d992494263487dfd8325a13ad55435354c1a761248101cb37d704c09cfaaf8ea"
+  },
+  {
+    "file": "icons/abra.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/abra.png",
+    "bytes": 342,
+    "sha256": "d3ec00cb1952b93d08ca3a6250e77187e86ed4fbb598e3a0c71746cdd6775ebb"
+  },
+  {
+    "file": "icons/kadabra.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/kadabra.png",
+    "bytes": 732,
+    "sha256": "dffcea7e5613f3580789d1372bfdd661efd31321604746b266b63457ae0cc359"
+  },
+  {
+    "file": "icons/alakazam.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/alakazam.png",
+    "bytes": 1141,
+    "sha256": "c2e4765e82e58075779982ee1f12e4f6e6dbd05f3b63c45af14adda043888b41"
+  },
+  {
+    "file": "icons/machop.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/machop.png",
+    "bytes": 306,
+    "sha256": "3dc29ca60092dcbe6a8ab9577ecd177b8ae189d9ac2fb6d45ee953a56c024a6d"
+  },
+  {
+    "file": "icons/machoke.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/machoke.png",
+    "bytes": 396,
+    "sha256": "bc44c2ceea4d6448d0c1bd9db39acae50725b2e56fb2bf6575162fcd53772b07"
+  },
+  {
+    "file": "icons/machamp.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/machamp.png",
+    "bytes": 793,
+    "sha256": "7dfafbc23a0c9528d39d007259aad6fd4e280f4270631fc9716bb2dbb5ee95f0"
+  },
+  {
+    "file": "icons/bellsprout.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/bellsprout.png",
+    "bytes": 253,
+    "sha256": "098a090e3ede1a7961d4185a41a7ffe51620dabacfbc1d150321436261988aa4"
+  },
+  {
+    "file": "icons/weepinbell.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/weepinbell.png",
+    "bytes": 344,
+    "sha256": "9b23bc8be80b09d10bb1ef2424e5f4731a8c91abc8e14f79eff5cab9939cf6f0"
+  },
+  {
+    "file": "icons/victreebel.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/victreebel.png",
+    "bytes": 591,
+    "sha256": "09b3a34558944eaa62c4f2cf27ffe42598e00033e920d945eb4b7b6575a4fa6c"
+  },
+  {
+    "file": "icons/tentacool.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/tentacool.png",
+    "bytes": 358,
+    "sha256": "f49c24fc14b461592b3a0db1bb62138f4acaee3aec3ea7547b32e612a1afa1f4"
+  },
+  {
+    "file": "icons/tentacruel.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/tentacruel.png",
+    "bytes": 1181,
+    "sha256": "00c58085214f8e6aa9de989e4c2aef4be98695761d9eb56d4f80915b65a8fdd8"
+  },
+  {
+    "file": "icons/geodude.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/geodude.png",
+    "bytes": 305,
+    "sha256": "3b375b7140c9d9d202cf75edd38c383238d45d3e8419964ff81c09ec5ecc96e2"
+  },
+  {
+    "file": "icons/graveler.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/graveler.png",
+    "bytes": 408,
+    "sha256": "9eba453309df936ed5d23a0f76a7f5b634005d06439ce4e009ab27ade64d15a9"
+  },
+  {
+    "file": "icons/golem.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/golem.png",
+    "bytes": 626,
+    "sha256": "f3bde683085dd15acb618ca095d4642ac22311ce13b62ebb0d2ff8433d7b054c"
+  },
+  {
+    "file": "icons/ponyta.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/ponyta.png",
+    "bytes": 426,
+    "sha256": "b442df3cc68d0f23a8713e0db602fc9601f11ebf3bad81ec66a32d281cb3fe4c"
+  },
+  {
+    "file": "icons/rapidash.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/rapidash.png",
+    "bytes": 721,
+    "sha256": "8c56dafddcaeec97480aa5a44fd070533b1d447d6f973f90d3fbca7b11b43bca"
+  },
+  {
+    "file": "icons/slowpoke.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/slowpoke.png",
+    "bytes": 317,
+    "sha256": "75b8b1611a12bde63375d7fa1147f20cbf5e239412ca661f116bb4cce728cf3d"
+  },
+  {
+    "file": "icons/slowbro.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/slowbro.png",
+    "bytes": 1207,
+    "sha256": "502b62a1c6020840ac480f53e264b3c0ddcb5a5a01d13433f78f1119f3a9f0cf"
+  },
+  {
+    "file": "icons/magnemite.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/magnemite.png",
+    "bytes": 297,
+    "sha256": "75c62a536ee6737de484d3ffc8ab7e8ac65d04fec268a0279e93e619a919ace8"
+  },
+  {
+    "file": "icons/magneton.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/magneton.png",
+    "bytes": 1184,
+    "sha256": "53a06eb0bb353c6a2471bf32ecdaf9af05db17a0492ad4d0029cda681f098d4a"
+  },
+  {
+    "file": "icons/farfetchd.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/farfetchd.png",
+    "bytes": 391,
+    "sha256": "df6340a493c083877cafe4b108d8186d721b2266d2f911af4d1487db6b0d2320"
+  },
+  {
+    "file": "icons/doduo.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/doduo.png",
+    "bytes": 311,
+    "sha256": "d152c547ffa33c61d3e70646d92582b9bdde161337bccd1a1a21be85fb9430e4"
+  },
+  {
+    "file": "icons/dodrio.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/dodrio.png",
+    "bytes": 599,
+    "sha256": "a4897f5ef89af1d0689363deab575361c3666f97f39f80558e1c19f7bf21da8e"
+  },
+  {
+    "file": "icons/seel.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/seel.png",
+    "bytes": 371,
+    "sha256": "5455e45e4dedaf88fd01631a3ffeaae9e158c9db3c7060e475960c553faef1ad"
+  },
+  {
+    "file": "icons/dewgong.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/dewgong.png",
+    "bytes": 540,
+    "sha256": "ae624646d12fbb3f40a9437881a09720828298776b6b60511ff94a758d9e9768"
+  },
+  {
+    "file": "icons/grimer.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/grimer.png",
+    "bytes": 329,
+    "sha256": "3dd9da35c632ff5075fbfed6fc3271f464529c78dbcbd579614eec45162c1c9b"
+  },
+  {
+    "file": "icons/muk.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/muk.png",
+    "bytes": 420,
+    "sha256": "7ac1da72f7fb509caeaa8691b0e7058e247b4cd18f16f0530dd8b73c7ffcfb82"
+  },
+  {
+    "file": "icons/shellder.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/shellder.png",
+    "bytes": 335,
+    "sha256": "b0af8f9edc3069c18a8f98ad3d2ad576ac5e1d5191dbf6460c63f0764e92879d"
+  },
+  {
+    "file": "icons/cloyster.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/cloyster.png",
+    "bytes": 645,
+    "sha256": "057cd367f8a0aac2c3f9bf66faa956bf737a52bea9f58106cb7c73ef292bbf12"
+  },
+  {
+    "file": "icons/gastly.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/gastly.png",
+    "bytes": 348,
+    "sha256": "52e03260b043d713b8497d3ded52d5b6c38964ba9873cc39c2e7ebbc7c3e4f93"
+  },
+  {
+    "file": "icons/haunter.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/haunter.png",
+    "bytes": 407,
+    "sha256": "ec8b0345a7d23deee79013e1c28b0354a68aee1edc961af53474b4d0f122650d"
+  },
+  {
+    "file": "icons/gengar.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/gengar.png",
+    "bytes": 602,
+    "sha256": "6a35c89b381b06fa109326adf5497c1b7154381e22e7a74641036d85f4000c97"
+  },
+  {
+    "file": "icons/onix.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/onix.png",
+    "bytes": 604,
+    "sha256": "6f269f868afb16be581ccda6bdb722679a0c5aa053e1b1a6a0631b5cb0fce9ff"
+  },
+  {
+    "file": "icons/drowzee.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/drowzee.png",
+    "bytes": 356,
+    "sha256": "8824521d933ea2d1309fcb7071c161c798d73e342040aee798deab9f27cb9f9d"
+  },
+  {
+    "file": "icons/hypno.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/hypno.png",
+    "bytes": 555,
+    "sha256": "77e3ec8a533d01c150ddb0dfc15024522d44bc72ce92638e3ed4cdf9513ed023"
+  },
+  {
+    "file": "icons/krabby.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/krabby.png",
+    "bytes": 396,
+    "sha256": "2d5f71c61d311786d32edc9522ecda87c3316a7e59dec439f30cd5f593a84fd5"
+  },
+  {
+    "file": "icons/kingler.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/kingler.png",
+    "bytes": 746,
+    "sha256": "b5f8b4bf0740663d013022b7ec2c17090c15eedb53d3d9a8318df38321235c8c"
+  },
+  {
+    "file": "icons/voltorb.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/voltorb.png",
+    "bytes": 226,
+    "sha256": "2f37f014fd76692459fb5cd4238b1c73d0371bb5aef848980f599a4384296dbb"
+  },
+  {
+    "file": "icons/electrode.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/electrode.png",
+    "bytes": 245,
+    "sha256": "29ff1039075bbfd6009e2e96974ca94bbd95407905e36d9adcf6aa18c78add44"
+  },
+  {
+    "file": "icons/exeggcute.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/exeggcute.png",
+    "bytes": 354,
+    "sha256": "5f0ad1c11bf320d852d8a2f8e6b927e21840aa177b61c1eb10e4101081deb51d"
+  },
+  {
+    "file": "icons/exeggutor.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/exeggutor.png",
+    "bytes": 1115,
+    "sha256": "c2884f86b72c7d50fd25b0b007c0afc859e5ddceb4104687d5409492170ff6e8"
+  },
+  {
+    "file": "icons/cubone.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/cubone.png",
+    "bytes": 321,
+    "sha256": "69ae54111ad0677324ff801eccbbf276ac64bc6c33cbdd6b6fed66a037741767"
+  },
+  {
+    "file": "icons/marowak.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/marowak.png",
+    "bytes": 814,
+    "sha256": "c31393ca7e1f4cc19dc9f6c2bf3e159a0bccbbef382b10b0147ec16b6b62fb7c"
+  },
+  {
+    "file": "icons/hitmonlee.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/hitmonlee.png",
+    "bytes": 894,
+    "sha256": "426230a8d305b3778b308acd09790a955e12678cf8bff1eb01365dd3e7a5d3a0"
+  },
+  {
+    "file": "icons/hitmonchan.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/hitmonchan.png",
+    "bytes": 605,
+    "sha256": "777fc822e4f4ca4513dd5f4332af66bfc8cf1b0f51def2f7414b61676771c790"
+  },
+  {
+    "file": "icons/lickitung.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/lickitung.png",
+    "bytes": 348,
+    "sha256": "d35a064dd878f90f8dbd43a439c4c584f4b83fc0df959b395d7b3133e6514e00"
+  },
+  {
+    "file": "icons/koffing.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/koffing.png",
+    "bytes": 438,
+    "sha256": "9a7657fb31ad984d0e7a2d51c99387ceb41c3a8dee64d4f343a90d7809bec009"
+  },
+  {
+    "file": "icons/weezing.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/weezing.png",
+    "bytes": 1268,
+    "sha256": "ba3add3895fbb4661a9a387e42aea0d279c40bc55b8fd7486f5357c105691ac8"
+  },
+  {
+    "file": "icons/rhyhorn.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/rhyhorn.png",
+    "bytes": 326,
+    "sha256": "dddebe1a460c023ef1a4d5b57f86c1c27f8e2860fe5a77fecfb04d9b01995963"
+  },
+  {
+    "file": "icons/rhydon.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/rhydon.png",
+    "bytes": 691,
+    "sha256": "4b346c343373211c83e27780d993b863527da70d4fa497628cf6a233ca0b8db7"
+  },
+  {
+    "file": "icons/chansey.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/chansey.png",
+    "bytes": 324,
+    "sha256": "7020b35f99a3ee14d03e41f2b6ca697a589b747d9fd6c8f2c0abf5ac0a76b6c5"
+  },
+  {
+    "file": "icons/tangela.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/tangela.png",
+    "bytes": 316,
+    "sha256": "dfd2cf2c063f998b3cddb249678af363d1cdf3f87855199ad7a78756f364e784"
+  },
+  {
+    "file": "icons/kangaskhan.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/kangaskhan.png",
+    "bytes": 1019,
+    "sha256": "7c49ed534a3fe35b390bf66989b703cac33c7f2775d230ef0f4d5651e10b1bf4"
+  },
+  {
+    "file": "icons/horsea.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/horsea.png",
+    "bytes": 301,
+    "sha256": "1bd99b9aa8af82cb433664caccd87531480eacf0ba58e71f25c6d210e237d77f"
+  },
+  {
+    "file": "icons/seadra.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/seadra.png",
+    "bytes": 357,
+    "sha256": "fd59dedc23b9b77306e68606a9843e843c9687d063cc1d580a4ea0ea4c8d5c38"
+  },
+  {
+    "file": "icons/goldeen.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/goldeen.png",
+    "bytes": 367,
+    "sha256": "630c9a51e0f524e73470a561403279a7cfaeeb0757226c26bb652ba1ab4c3ab4"
+  },
+  {
+    "file": "icons/seaking.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/seaking.png",
+    "bytes": 645,
+    "sha256": "648b1638f4ae2df1c91c55ec19ae50dcbf2a0362ad0bf61c7f55e8168e9bf3b0"
+  },
+  {
+    "file": "icons/staryu.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/staryu.png",
+    "bytes": 297,
+    "sha256": "cc316a8aa26750aa5ea92bc4c61f9ce976eed451fbb565c8014d822bfdb0b670"
+  },
+  {
+    "file": "icons/starmie.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/starmie.png",
+    "bytes": 963,
+    "sha256": "be6766bed2ffefe0da26fd13125c4527f4146203afd8f22b34dac2f4be2de771"
+  },
+  {
+    "file": "icons/mrmime.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/mr-mime.png",
+    "bytes": 1156,
+    "sha256": "9edc0fe4e275e99b82ef098681ca5614ef9f6bdd84cc871e53310e8fba1ba9af"
+  },
+  {
+    "file": "icons/scyther.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/scyther.png",
+    "bytes": 1069,
+    "sha256": "1a22434a5beb711ee1f2c6f02414c086e582ec60e78999e4612d4bcc0c3e4ef2"
+  },
+  {
+    "file": "icons/jynx.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/jynx.png",
+    "bytes": 1325,
+    "sha256": "1eaf21e369e02b1504e96fa2cccd828d3cecbe7c6a1962bf7316d001bfe4539e"
+  },
+  {
+    "file": "icons/electabuzz.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/electabuzz.png",
+    "bytes": 1047,
+    "sha256": "16ef431a73ce4439eb4775989253625bd7a5ea502edecae674df8a8cf18684e7"
+  },
+  {
+    "file": "icons/magmar.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/magmar.png",
+    "bytes": 1059,
+    "sha256": "35bc0012f8ae5c5187e154542f6f3154290e518c99c24734e6d831986de4d5f4"
+  },
+  {
+    "file": "icons/pinsir.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/pinsir.png",
+    "bytes": 1082,
+    "sha256": "70b1a1e8fe3f55dbc3f61cf3f3d24ae9cc15c35044558290fa13750baf0135e8"
+  },
+  {
+    "file": "icons/tauros.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/tauros.png",
+    "bytes": 1096,
+    "sha256": "7e1604fa1477f83159533383fc4affc3d1c9ccad58bd17cd0cea48c656ada28b"
+  },
+  {
+    "file": "icons/magikarp.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/magikarp.png",
+    "bytes": 410,
+    "sha256": "9be6948be00d3d7ae06a59282b99cc9c9bf1e3b281f12025026b1b151e2a59e0"
+  },
+  {
+    "file": "icons/gyarados.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/gyarados.png",
+    "bytes": 798,
+    "sha256": "858d452abb6a31662a53a2007e0c5fd5f445dadb2a0b1f7d7c3033eb65c22228"
+  },
+  {
+    "file": "icons/lapras.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/lapras.png",
+    "bytes": 630,
+    "sha256": "8d5452a6e1b4dbff73c975600232bc9b0f743e589086b54133a2ff77db3bfa86"
+  },
+  {
+    "file": "icons/ditto.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/ditto.png",
+    "bytes": 227,
+    "sha256": "fb387c3529be4f392c17dacecbbc85b13b981b7dc905b696dc7267d1b2f98ac7"
+  },
+  {
+    "file": "icons/eevee.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/eevee.png",
+    "bytes": 327,
+    "sha256": "c9f60c40232d326c47306dec3c403ae3024ac6a0b93a06c417c47becf7278d23"
+  },
+  {
+    "file": "icons/vaporeon.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/vaporeon.png",
+    "bytes": 874,
+    "sha256": "b8b372d4fbd7ec9eb565a164a62fe3934772ab654cd873c96134afe648647300"
+  },
+  {
+    "file": "icons/jolteon.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/jolteon.png",
+    "bytes": 823,
+    "sha256": "021ab8306d60694bda44895d51c9fcc26eb100e691156cc70ed240a7622bbb9e"
+  },
+  {
+    "file": "icons/flareon.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/flareon.png",
+    "bytes": 825,
+    "sha256": "9fd48f8c45cff500beca3aa300e0e53a691c420a71a605bfcefcf914d01f7ad8"
+  },
+  {
+    "file": "icons/porygon.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/porygon.png",
+    "bytes": 333,
+    "sha256": "542d9e3df64c162b4859eaed044d10354d8a87ff5000abe6d884cb4667212a11"
+  },
+  {
+    "file": "icons/omanyte.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/omanyte.png",
+    "bytes": 294,
+    "sha256": "3b5a86873b49c5d8a83fa2a3f8893b4e42fa30a65ab650c374f9997d8f8c5b31"
+  },
+  {
+    "file": "icons/omastar.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/omastar.png",
+    "bytes": 1020,
+    "sha256": "9631869623543b9ad22fc5d6a0d58fab4619b68eaf5f1eaf6b13fe33685a645d"
+  },
+  {
+    "file": "icons/kabuto.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/kabuto.png",
+    "bytes": 252,
+    "sha256": "71171026f1a70c8e16d3169c4c9a8fe7720a759e10f59f7e4165f59fd0935b87"
+  },
+  {
+    "file": "icons/kabutops.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/kabutops.png",
+    "bytes": 873,
+    "sha256": "37a783eeecfb326dcd745afc1476e9d56c4313141217abe3b6feb10f2a06461d"
+  },
+  {
+    "file": "icons/aerodactyl.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/aerodactyl.png",
+    "bytes": 921,
+    "sha256": "4dd980cad6f90a3a893578f2a08a8a6a518156b2594dd9cdea2bdad6d43ab174"
+  },
+  {
+    "file": "icons/snorlax.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/snorlax.png",
+    "bytes": 682,
+    "sha256": "a3a69c0b5f11dfbe401cdb3a9c1ecc9f2544b7d43db89642525db8113c83765b"
+  },
+  {
+    "file": "icons/articuno.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/articuno.png",
+    "bytes": 1180,
+    "sha256": "6d1f2eb48b38ba6bea374118f90c21d22207ea9d263d37c56d3096e251c7284a"
+  },
+  {
+    "file": "icons/zapdos.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/zapdos.png",
+    "bytes": 1054,
+    "sha256": "1770827b4b274a4b3ad1611faa2ed900b1c32a9cdf8baddee81fa9067c8e5088"
+  },
+  {
+    "file": "icons/moltres.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/moltres.png",
+    "bytes": 1231,
+    "sha256": "10788de43636b3cb4674c7674b596c4b9136542ef44dfff3bbbd870c2252109b"
+  },
+  {
+    "file": "icons/dratini.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/dratini.png",
+    "bytes": 296,
+    "sha256": "84a2ba8e3fe9b11314e64ec3e61e3e2cd25e0897201c2fb2851efa6fe175e6c2"
+  },
+  {
+    "file": "icons/dragonair.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/dragonair.png",
+    "bytes": 374,
+    "sha256": "1803e854e20db19fab7338d641bcfd9f8dab3fc797dd138813e53b90b3ac8122"
+  },
+  {
+    "file": "icons/dragonite.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/dragonite.png",
+    "bytes": 691,
+    "sha256": "8fce19e24f223570f4a5d01e990b9c361a2e4cd358ee1bed046072739c2d6b2d"
+  },
+  {
+    "file": "icons/mewtwo.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/mewtwo.png",
+    "bytes": 737,
+    "sha256": "def15565bbba25d4d9062405244770bbe7596325d779689b85a8c4f2a8b81694"
+  },
+  {
+    "file": "icons/mew.png",
+    "source": "https://raw.githubusercontent.com/msikma/pokesprite/c5aaa610ff2acdf7fd8e2dccd181bca8be9fcb3e/pokemon-gen8/regular/mew.png",
+    "bytes": 333,
+    "sha256": "167f615afd36a63f4be4df127184d7262125b03c6a7c4971809afd5a30c5c00d"
   }
 ]

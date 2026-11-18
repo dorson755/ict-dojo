@@ -2,9 +2,15 @@ import {
   applyTrailInput,
   applyTrailReward,
   createTrailBattle,
+  encounterPool,
   isPokemonFamily,
+  POKEMON_INFO,
+  POKEMON_LINES,
   pokemonForm,
+  pokemonName,
   replayTrail,
+  STARTERS,
+  trainingToEvolve,
   trailFinished,
 } from '../pokemon';
 import type { PokemonCollection, PokemonEncounter, TrailInput } from '../pokemon';
@@ -132,6 +138,68 @@ it('safely checks family names and evolves only at training milestones', () => {
   expect(pokemonForm('bulbasaur', 3)).toBe('bulbasaur');
   expect(pokemonForm('bulbasaur', 4)).toBe('ivysaur');
   expect(pokemonForm('bulbasaur', 9)).toBe('venusaur');
+});
+it('covers exactly 151 unique Kanto species, with complete family descriptions', () => {
+  const species = Object.values(POKEMON_LINES).flat();
+  expect(species).toHaveLength(151);
+  expect(new Set(species).size).toBe(151);
+  expect(Object.keys(POKEMON_LINES)).toHaveLength(82);
+  for (const family of Object.keys(POKEMON_LINES)) {
+    expect(isPokemonFamily(family)).toBe(true);
+    if (!isPokemonFamily(family)) throw new Error('Invalid family');
+    expect(POKEMON_INFO[family]).toEqual({
+      name: pokemonName(family),
+      type: expect.any(String),
+      move: expect.any(String),
+      description: expect.any(String),
+    });
+  }
+});
+it('handles two-stage and single-form partners without phantom evolutions', () => {
+  expect(pokemonForm('pikachu', 5)).toBe('pikachu');
+  expect(trainingToEvolve('pikachu', 5)).toBe(1);
+  expect(pokemonForm('pikachu', 6)).toBe('raichu');
+  expect(pokemonForm('pikachu', 99)).toBe('raichu');
+  expect(trainingToEvolve('pikachu', 6)).toBeNull();
+  expect(pokemonForm('mew', 99)).toBe('mew');
+  expect(trainingToEvolve('mew', 0)).toBeNull();
+  expect(trainingToEvolve('bulbasaur', 3)).toBe(1);
+  expect(trainingToEvolve('bulbasaur', 4)).toBe(5);
+  expect(trainingToEvolve('bulbasaur', 9)).toBeNull();
+});
+it('keeps every form reachable through catching and training', () => {
+  const allFamilies = Object.keys(POKEMON_LINES);
+  expect(new Set(encounterPool(7, true))).toEqual(new Set(allFamilies));
+  expect(encounterPool(7, true)).toHaveLength(allFamilies.length);
+  for (const family of allFamilies) {
+    if (!isPokemonFamily(family)) throw new Error('Invalid family');
+    expect(new Set([0, 4, 6, 9].map((count) => pokemonForm(family, count)))).toEqual(
+      new Set(POKEMON_LINES[family]),
+    );
+  }
+});
+it('unlocks wider pools by belt and reserves starters for the badge', () => {
+  expect(encounterPool(0)).toEqual(['caterpie', 'weedle', 'pidgey', 'rattata', 'spearow']);
+  for (let belt = 0; belt < 8; belt++) {
+    const pool = encounterPool(belt);
+    for (const starter of STARTERS) {
+      expect(pool).not.toContain(starter);
+      expect(encounterPool(belt, true)).toContain(starter);
+    }
+    if (belt > 0) expect(pool).toEqual(expect.arrayContaining(encounterPool(belt - 1)));
+  }
+  for (const legendary of ['articuno', 'zapdos', 'moltres', 'mewtwo', 'mew']) {
+    expect(encounterPool(6, true)).not.toContain(legendary);
+    expect(encounterPool(7)).toContain(legendary);
+  }
+  expect(encounterPool(-1)).toEqual(encounterPool(0));
+  expect(encounterPool(100)).toEqual(encounterPool(7));
+});
+it('displays punctuation and gender symbols rather than sprite IDs', () => {
+  expect(pokemonName('nidoranf')).toBe('Nidoran♀');
+  expect(pokemonName('nidoranm')).toBe('Nidoran♂');
+  expect(pokemonName('mrmime')).toBe('Mr. Mime');
+  expect(pokemonName('farfetchd')).toBe("Farfetch'd");
 });
 it('adds a catch without resetting an existing Pokémon’s training', () => {
   const collection: PokemonCollection = {

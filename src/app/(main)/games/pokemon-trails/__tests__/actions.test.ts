@@ -13,14 +13,24 @@ jest.mock('@/lib/aws/repositories/user.repository', () => ({
   UserRepository: { getTypingDNA: jest.fn() },
 }));
 jest.mock('@/lib/groq/quest-generator', () => ({ generateQuestContent: jest.fn() }));
+jest.mock('node:crypto', () => ({
+  ...jest.requireActual('node:crypto'),
+  randomInt: jest.fn(),
+}));
 
+import { randomInt } from 'node:crypto';
 import { getUserSession } from '@/lib/aws/auth-utils';
 import { getQuestAccess } from '@/lib/quest-access';
 import { PokemonRepository } from '@/lib/aws/repositories/pokemon.repository';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { generateQuestContent } from '@/lib/groq/quest-generator';
 import { fallbackQuestContent, QUEST_STAGES } from '@/domains/typing/quest';
-import { applyTrailInput, createTrailBattle, trailFinished } from '@/domains/typing/pokemon';
+import {
+  applyTrailInput,
+  createTrailBattle,
+  encounterPool,
+  trailFinished,
+} from '@/domains/typing/pokemon';
 import type { PokemonCollection, PokemonEncounter, TrailInput } from '@/domains/typing/pokemon';
 import {
   changeTrailPartner,
@@ -43,6 +53,7 @@ const collection: PokemonCollection = {
 const words = fallbackQuestContent(QUEST_STAGES[0], {});
 beforeEach(() => {
   jest.resetAllMocks();
+  (randomInt as jest.Mock).mockImplementation((max: number) => max - 1);
   (getUserSession as jest.Mock).mockResolvedValue({ id: 'student', role: 'student' });
   (getQuestAccess as jest.Mock).mockResolvedValue({ profile: { grade_level: 5 }, belt: 0 });
   (generateQuestContent as jest.Mock).mockResolvedValue(words);
@@ -81,7 +92,25 @@ it('creates a server-owned encounter with belt-matched, words-only content', asy
     belt: 0,
     words: words.words,
   });
-  expect(['pidgey', 'caterpie']).toContain(result.active?.opponent);
+  expect(encounterPool(0)).toContain(result.active?.opponent);
+});
+it('uses the expanded belt pool and preserves the existing guardian encounter', async () => {
+  (getQuestAccess as jest.Mock).mockResolvedValue({ profile: { grade_level: 5 }, belt: 7 });
+  repo.get.mockResolvedValue({ ...collection, guardian: true, wins: 5 });
+  const result = await prepareTrailEncounter();
+  expect(encounterPool(7, true)).toContain(result.active?.opponent);
+  expect(result.active?.opponent).toBe('squirtle');
+  expect(result.active?.belt).toBe(7);
+  expect((await prepareTrailEncounter(true)).active).toMatchObject({
+    opponent: 'pidgey',
+    guardian: true,
+  });
+});
+it('selects newly unlocked families from the authenticated learner’s belt', async () => {
+  (getQuestAccess as jest.Mock).mockResolvedValue({ profile: { grade_level: 5 }, belt: 7 });
+  expect((await prepareTrailEncounter()).active?.opponent).toBe('mew');
+  (getQuestAccess as jest.Mock).mockResolvedValue({ profile: { grade_level: 5 }, belt: 6 });
+  expect((await prepareTrailEncounter()).active?.opponent).toBe('dratini');
 });
 it('resumes an active encounter without burning more model tokens', async () => {
   const active = { id: 'existing', createdAt: new Date().toISOString() } as PokemonEncounter;

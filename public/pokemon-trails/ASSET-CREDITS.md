@@ -19,4 +19,7 @@ No Showdown client code, Pokémon game music, game fonts, or audio are bundled.
 The meadow illustration is original ICT Dojo SVG artwork.
 
 `manifest.json` records the original URL, byte size, and SHA-256 of each downloaded
-image. Regenerate the curated set with `node scripts/prepare-pokemon-assets.mjs`.
+image. The Kanto expansion includes all 151 species, with five sprite variants per
+species. The owner's requested expansion does not itself extend any third-party
+rights; confirm the retained clearance covers this expanded roster.
+Regenerate the set with `node scripts/prepare-pokemon-assets.mjs`.

@@ -11,6 +11,7 @@ import {
   pokemonForm,
   pokemonName,
   STARTERS,
+  trainingToEvolve,
   trailFinished,
 } from '@/domains/typing/pokemon';
 import type {
@@ -77,6 +78,8 @@ export default function TrailsClient({
   const [paused, setPaused] = useState(true);
   const [leaving, setLeaving] = useState(false);
   const [flash, setFlash] = useState(false);
+  const [guideSearch, setGuideSearch] = useState('');
+  const [guideOwned, setGuideOwned] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const inputs = useRef<TrailInput[]>([]);
   const clock = useRef({ elapsed: 0, start: null as number | null });
@@ -85,6 +88,13 @@ export default function TrailsClient({
   const partner = collection?.partner ?? 'bulbasaur';
   const training = collection?.caught[partner] ?? 0;
   const form = pokemonForm(partner, training);
+  const guideFamilies = (Object.keys(POKEMON_LINES) as PokemonFamily[]).filter(
+    (family) =>
+      (!guideOwned || collection?.caught[family] !== undefined) &&
+      POKEMON_LINES[family].some((species) =>
+        pokemonName(species).toLowerCase().includes(guideSearch.trim().toLowerCase()),
+      ),
+  );
 
   function pauseClock() {
     if (clock.current.start !== null) {
@@ -638,28 +648,59 @@ export default function TrailsClient({
               <div className={styles.sectionHeading}>
                 <div>
                   <h2>Your field guide</h2>
-                  <p>Five friendships. Fifteen forms to discover.</p>
+                  <p>All 151 Kanto Pokémon. Train partners to discover their evolved forms.</p>
                 </div>
                 <span>
                   {Object.entries(collection.caught).reduce(
                     (sum, [family, count]) =>
                       sum +
-                      ((count ?? 0) >= 9
-                        ? 3
-                        : (count ?? 0) >= 4
-                          ? 2
-                          : isPokemonFamily(family)
-                            ? 1
-                            : 0),
+                      (isPokemonFamily(family) && count !== undefined
+                        ? POKEMON_LINES[family].findIndex(
+                            (species) => species === pokemonForm(family, count),
+                          ) + 1
+                        : 0),
                     0,
                   )}{' '}
-                  / 15
+                  / 151
                 </span>
               </div>
-              {(Object.keys(POKEMON_LINES) as PokemonFamily[]).map((family) => {
+              <div className={styles.guideFilters}>
+                <label>
+                  Find a Pokémon
+                  <input
+                    type="search"
+                    value={guideSearch}
+                    onChange={(event) => setGuideSearch(event.target.value)}
+                    placeholder="Name or evolved form"
+                  />
+                </label>
+                <label className={styles.ownedFilter}>
+                  <input
+                    type="checkbox"
+                    checked={guideOwned}
+                    onChange={(event) => setGuideOwned(event.target.checked)}
+                  />
+                  My collection only
+                </label>
+              </div>
+              <p className={styles.quiet}>
+                New families appear as your typing belt grows. Legendary Pokémon unlock at Black
+                belt. Eevee and its three Kanto evolutions are separate wild catches.
+              </p>
+              {guideFamilies.length === 0 && (
+                <p className={styles.guideNote} role="status">
+                  No matching Pokémon. Try another name or turn off the collection filter.
+                </p>
+              )}
+              {guideFamilies.map((family) => {
                 const count = collection.caught[family];
                 const owned = count !== undefined;
-                const stage = !owned ? -1 : count >= 9 ? 2 : count >= 4 ? 1 : 0;
+                const stage = !owned
+                  ? -1
+                  : POKEMON_LINES[family].findIndex(
+                      (species) => species === pokemonForm(family, count),
+                    );
+                const remaining = trainingToEvolve(family, count ?? 0);
                 return (
                   <div
                     className={`${styles.collectionRow} ${family === collection.partner ? styles.activePartner : ''}`}
@@ -683,11 +724,11 @@ export default function TrailsClient({
                       {owned ? (
                         <>
                           <span>
-                            {count < 4
-                              ? `${4 - count} more encounters to evolve`
-                              : count < 9
-                                ? `${9 - count} more encounters to evolve`
-                                : 'Fully evolved'}
+                            {remaining === null
+                              ? POKEMON_LINES[family].length === 1
+                                ? 'Single form'
+                                : 'Fully evolved'
+                              : `${remaining} more encounters to evolve`}
                           </span>
                           <button
                             type="button"
@@ -700,7 +741,7 @@ export default function TrailsClient({
                         </>
                       ) : (
                         <span>
-                          {STARTERS.includes(family)
+                          {STARTERS.includes(family) && !collection.guardian
                             ? 'Available after the guardian'
                             : 'Discover in the meadow'}
                         </span>
@@ -742,8 +783,8 @@ export default function TrailsClient({
                     : 'Meet the guardian'}
               </button>
               <p className={styles.quiet}>
-                More habitats are planned. This first trail is open to every belt; words always
-                match yours.
+                The meadow is open to every belt; words always match yours. Earn the badge to
+                encounter all three starter families.
               </p>
             </aside>
           </div>

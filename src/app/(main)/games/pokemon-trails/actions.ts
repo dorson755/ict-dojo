@@ -7,8 +7,7 @@ import { PokemonRepository } from '@/lib/aws/repositories/pokemon.repository';
 import { UserRepository } from '@/lib/aws/repositories/user.repository';
 import { generateQuestContent } from '@/lib/groq/quest-generator';
 import { QUEST_STAGES } from '@/domains/typing/quest';
-import { isPokemonFamily, replayTrail, STARTERS } from '@/domains/typing/pokemon';
-import type { PokemonFamily } from '@/domains/typing/pokemon';
+import { encounterPool, isPokemonFamily, replayTrail, STARTERS } from '@/domains/typing/pokemon';
 import { TypingEvaluator } from '@/domains/typing/evaluator';
 
 async function learner() {
@@ -49,9 +48,7 @@ export async function prepareTrailEncounter(guardian = false) {
   const content = await generateQuestContent(QUEST_STAGES[access.belt], dna?.weak_keys ?? {}, {
     scroll: false,
   });
-  const pool: PokemonFamily[] = collection.guardian
-    ? ['pidgey', 'caterpie', ...STARTERS]
-    : ['pidgey', 'caterpie'];
+  const pool = encounterPool(access.belt, collection.guardian);
   const active = {
     id: randomUUID(),
     opponent: guardian ? ('pidgey' as const) : pool[randomInt(pool.length)],

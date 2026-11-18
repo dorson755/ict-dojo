@@ -29,8 +29,8 @@ export default async function GamesPage() {
         <Link href="/games/pokemon-trails" className={styles.card}>
           <h2>Pokémon Typing Trails</h2>
           <p>
-            Choose a partner, explore the meadow, and type to battle and befriend wild Pokémon.
-            Train your collection through evolution.
+            Choose a partner and type to battle, befriend, and discover all 151 Kanto Pokémon. Train
+            your collection through evolution.
           </p>
           <span className={styles.meta}>Saved collection · Accuracy-powered battles</span>
         </Link>
