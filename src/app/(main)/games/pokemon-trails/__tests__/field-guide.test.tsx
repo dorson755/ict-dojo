@@ -37,7 +37,7 @@ afterEach(() => {
 });
 function guide() {
   return [...host.querySelectorAll('section')].find((section) =>
-    section.textContent?.includes('Your field guide'),
+    section.textContent?.includes('Pokédex'),
   )!;
 }
 function search(value: string) {
@@ -47,26 +47,47 @@ function search(value: string) {
     input.dispatchEvent(new Event('input', { bubbles: true }));
   });
 }
-it('counts only genuinely discovered forms across variable-length lines', () => {
+it('shows a numbered 20-entry page and keeps undiscovered forms hidden', () => {
   expect(guide().textContent).toMatch(/5\s*\/ 151/);
-  expect(guide().querySelectorAll('img')).toHaveLength(151);
-  expect(host.querySelector('img[alt="Raichu"]')).not.toBeNull();
-  expect(host.querySelector('img[alt="Venusaur"]')).toBeNull();
-  expect(guide().textContent).toContain('5 more encounters to evolve');
-  expect(guide().textContent).toContain('Single form');
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(20);
+  expect(guide().querySelector('button[aria-label*="#001, Bulbasaur"]')).not.toBeNull();
+  expect(guide().querySelector('button[aria-label*="#003, undiscovered Pokémon"]')).not.toBeNull();
+  expect(guide().querySelector('h3')?.textContent).toBe('Bulbasaur');
+  expect(guide().querySelector('ol[aria-label="Evolution line"]')?.textContent).toContain('???');
+  act(() => {
+    [...guide().querySelectorAll<HTMLButtonElement>('button')]
+      .find((button) => button.textContent?.includes('Next'))
+      ?.click();
+  });
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(20);
+  expect(guide().querySelector('button[aria-label*="#026, Raichu"]')).not.toBeNull();
+  for (let page = 0; page < 6; page++) {
+    act(() => {
+      [...guide().querySelectorAll<HTMLButtonElement>('button')]
+        .find((button) => button.textContent?.includes('Next'))
+        ?.click();
+    });
+  }
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(11);
+  expect(guide().querySelector('button[aria-label*="#151, Mew"]')).not.toBeNull();
+  expect(guide().textContent).toContain('Page 8 of 8');
 });
 it('finds families by evolved names and shows an actionable empty state', () => {
   search('RAICHU');
-  expect(guide().querySelectorAll('img')).toHaveLength(2);
-  expect(guide().querySelector('img[alt="Raichu"]')).not.toBeNull();
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(1);
+  expect(guide().querySelector('button[aria-label*="#026, Raichu"]')).not.toBeNull();
+  expect(guide().querySelector('h3')?.textContent).toBe('Raichu');
   search('not a pokemon');
-  expect(guide().querySelectorAll('img')).toHaveLength(0);
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(0);
   expect(guide().querySelector('[role="status"]')?.textContent).toContain('No matching Pokémon');
 });
-it('filters to owned families and combines that filter with name search', () => {
+it('filters to discovered species and combines that filter with name search', () => {
   act(() => host.querySelector<HTMLInputElement>('input[type="checkbox"]')!.click());
-  expect(guide().querySelectorAll('img')).toHaveLength(6);
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(5);
   search('mew');
-  expect(guide().querySelectorAll('img')).toHaveLength(1);
-  expect(guide().querySelector('img')?.alt).toBe('Mew');
+  expect(guide().querySelectorAll('ol[aria-label="Pokédex entries"] li')).toHaveLength(1);
+  expect(guide().querySelector('button[aria-label*="#151, Mew"]')).not.toBeNull();
+  expect(
+    [...guide().querySelectorAll('button')].some((button) => button.textContent === 'Make partner'),
+  ).toBe(true);
 });

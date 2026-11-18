@@ -69,6 +69,15 @@ function Sprite({
   );
 }
 
+const POKEDEX_ENTRIES = (
+  Object.entries(POKEMON_LINES) as [PokemonFamily, readonly PokemonSpecies[]][]
+)
+  .flatMap(([family, line]) =>
+    line.map((species, evolutionIndex) => ({ family, species, evolutionIndex })),
+  )
+  .map((entry, index) => ({ ...entry, dexNumber: index + 1 }));
+const POKEDEX_PAGE_SIZE = 20;
+
 export default function TrailsClient({
   initialCollection,
 }: {
@@ -89,6 +98,8 @@ export default function TrailsClient({
   const [soundUnavailable, setSoundUnavailable] = useState(false);
   const [guideSearch, setGuideSearch] = useState('');
   const [guideOwned, setGuideOwned] = useState(false);
+  const [guidePage, setGuidePage] = useState(0);
+  const [selectedGuideSpecies, setSelectedGuideSpecies] = useState<PokemonSpecies | null>(null);
   const input = useRef<HTMLInputElement>(null);
   const inputs = useRef<TrailInput[]>([]);
   const clock = useRef({ elapsed: 0, start: null as number | null });
@@ -98,13 +109,49 @@ export default function TrailsClient({
   const training = collection?.caught[partner] ?? 0;
   const form = pokemonForm(partner, training);
   const element = trailElement(POKEMON_INFO[partner].type);
-  const guideFamilies = (Object.keys(POKEMON_LINES) as PokemonFamily[]).filter(
-    (family) =>
-      (!guideOwned || collection?.caught[family] !== undefined) &&
-      POKEMON_LINES[family].some((species) =>
-        pokemonName(species).toLowerCase().includes(guideSearch.trim().toLowerCase()),
-      ),
+  const guideEntries = POKEDEX_ENTRIES.filter(({ family, species, evolutionIndex }) => {
+    const count = collection?.caught[family];
+    const stage =
+      count === undefined
+        ? -1
+        : POKEMON_LINES[family].findIndex((form) => form === pokemonForm(family, count));
+    const discovered = evolutionIndex <= stage;
+    return (
+      (!guideOwned || discovered) &&
+      pokemonName(species).toLowerCase().includes(guideSearch.trim().toLowerCase())
+    );
+  });
+  const guidePageCount = Math.ceil(guideEntries.length / POKEDEX_PAGE_SIZE);
+  const currentGuidePage = Math.min(guidePage, Math.max(0, guidePageCount - 1));
+  const visibleGuideEntries = guideEntries.slice(
+    currentGuidePage * POKEDEX_PAGE_SIZE,
+    (currentGuidePage + 1) * POKEDEX_PAGE_SIZE,
   );
+  const selectedGuideEntry =
+    visibleGuideEntries.find((entry) => entry.species === selectedGuideSpecies) ??
+    visibleGuideEntries[0];
+  const guideEntryCount = Object.entries(collection?.caught ?? {}).reduce(
+    (sum, [family, count]) =>
+      sum +
+      (isPokemonFamily(family) && count !== undefined
+        ? POKEMON_LINES[family].findIndex((species) => species === pokemonForm(family, count)) + 1
+        : 0),
+    0,
+  );
+  const selectedGuideCount = selectedGuideEntry
+    ? collection?.caught[selectedGuideEntry.family]
+    : undefined;
+  const selectedGuideStage =
+    selectedGuideEntry && selectedGuideCount !== undefined
+      ? POKEMON_LINES[selectedGuideEntry.family].findIndex(
+          (species) => species === pokemonForm(selectedGuideEntry.family, selectedGuideCount),
+        )
+      : -1;
+  const selectedGuideDiscovered =
+    selectedGuideEntry !== undefined && selectedGuideEntry.evolutionIndex <= selectedGuideStage;
+  const selectedGuideRemaining = selectedGuideEntry
+    ? trainingToEvolve(selectedGuideEntry.family, selectedGuideCount ?? 0)
+    : null;
 
   function pauseClock() {
     if (clock.current.start !== null) {
@@ -819,109 +866,211 @@ export default function TrailsClient({
             <section className={styles.fieldGuide}>
               <div className={styles.sectionHeading}>
                 <div>
-                  <h2>Your field guide</h2>
-                  <p>All 151 Kanto Pokémon. Train partners to discover their evolved forms.</p>
+                  <h2>Pokédex</h2>
+                  <p>Browse all 151 Kanto entries. Unknown forms stay hidden until discovered.</p>
                 </div>
-                <span>
-                  {Object.entries(collection.caught).reduce(
-                    (sum, [family, count]) =>
-                      sum +
-                      (isPokemonFamily(family) && count !== undefined
-                        ? POKEMON_LINES[family].findIndex(
-                            (species) => species === pokemonForm(family, count),
-                          ) + 1
-                        : 0),
-                    0,
-                  )}{' '}
-                  / 151
+                <span aria-label={`${guideEntryCount} of 151 entries discovered`}>
+                  {guideEntryCount} / 151
                 </span>
               </div>
               <div className={styles.guideFilters}>
                 <label>
-                  Find a Pokémon
+                  Search the Pokédex
                   <input
                     type="search"
                     value={guideSearch}
-                    onChange={(event) => setGuideSearch(event.target.value)}
-                    placeholder="Name or evolved form"
+                    onChange={(event) => {
+                      setGuideSearch(event.target.value);
+                      setGuidePage(0);
+                      setSelectedGuideSpecies(null);
+                    }}
+                    placeholder="Pokémon name"
                   />
                 </label>
                 <label className={styles.ownedFilter}>
                   <input
                     type="checkbox"
                     checked={guideOwned}
-                    onChange={(event) => setGuideOwned(event.target.checked)}
+                    onChange={(event) => {
+                      setGuideOwned(event.target.checked);
+                      setGuidePage(0);
+                      setSelectedGuideSpecies(null);
+                    }}
                   />
-                  My collection only
+                  Discovered only
                 </label>
               </div>
               <p className={styles.quiet}>
                 New families appear as your typing belt grows. Legendary Pokémon unlock at Black
                 belt. Eevee and its three Kanto evolutions are separate wild catches.
               </p>
-              {guideFamilies.length === 0 && (
-                <p className={styles.guideNote} role="status">
-                  No matching Pokémon. Try another name or turn off the collection filter.
-                </p>
-              )}
-              {guideFamilies.map((family) => {
-                const count = collection.caught[family];
-                const owned = count !== undefined;
-                const stage = !owned
-                  ? -1
-                  : POKEMON_LINES[family].findIndex(
-                      (species) => species === pokemonForm(family, count),
-                    );
-                const remaining = trainingToEvolve(family, count ?? 0);
-                return (
-                  <div
-                    className={`${styles.collectionRow} ${family === collection.partner ? styles.activePartner : ''}`}
-                    key={family}
-                  >
-                    <div className={styles.evolutionLine}>
-                      {POKEMON_LINES[family].map((species, index) => (
-                        <div key={species} className={index > stage ? styles.undiscovered : ''}>
-                          <img
-                            src={`/pokemon-trails/icons/${species}.png`}
-                            alt={index <= stage ? pokemonName(species) : 'Undiscovered form'}
-                            width={68}
-                            height={56}
-                            loading="lazy"
-                          />
-                          <span>{index <= stage ? pokemonName(species) : '???'}</span>
-                        </div>
-                      ))}
+              <div className={styles.pokedex}>
+                {guideEntries.length === 0 ? (
+                  <p className={styles.guideNote} role="status">
+                    No matching Pokémon. Try another name or turn off the discovered-only filter.
+                  </p>
+                ) : (
+                  <>
+                    <div className={styles.pokedexPageMeta} aria-live="polite">
+                      <span>
+                        Entries {String(currentGuidePage * POKEDEX_PAGE_SIZE + 1).padStart(3, '0')}–
+                        {String(
+                          Math.min((currentGuidePage + 1) * POKEDEX_PAGE_SIZE, guideEntries.length),
+                        ).padStart(3, '0')}
+                      </span>
+                      <span>{guideEntries.length} results</span>
                     </div>
-                    <div className={styles.collectionAction}>
-                      {owned ? (
-                        <>
-                          <span>
-                            {remaining === null
-                              ? POKEMON_LINES[family].length === 1
-                                ? 'Single form'
-                                : 'Fully evolved'
-                              : `${remaining} more encounters to evolve`}
-                          </span>
-                          <button
-                            type="button"
-                            className={styles.textButton}
-                            disabled={busy || !!collection.active || family === partner}
-                            onClick={() => void selectPartner(family)}
-                          >
-                            {family === partner ? 'Your partner' : 'Make partner'}
-                          </button>
-                        </>
-                      ) : (
-                        <span>
-                          {STARTERS.includes(family) && !collection.guardian
-                            ? 'Available after the guardian'
-                            : 'Discover in the meadow'}
-                        </span>
+                    <div className={styles.pokedexContent}>
+                      <ol className={styles.pokedexGrid} aria-label="Pokédex entries">
+                        {visibleGuideEntries.map((entry) => {
+                          const count = collection.caught[entry.family];
+                          const stage =
+                            count === undefined
+                              ? -1
+                              : POKEMON_LINES[entry.family].findIndex(
+                                  (species) => species === pokemonForm(entry.family, count),
+                                );
+                          const discovered = entry.evolutionIndex <= stage;
+                          const isCurrentPartner =
+                            discovered && entry.family === partner && entry.species === form;
+                          const selected = entry.species === selectedGuideEntry?.species;
+                          return (
+                            <li key={entry.species}>
+                              <button
+                                type="button"
+                                className={`${styles.pokedexCard} ${isCurrentPartner ? styles.currentPokedexPartner : ''}`}
+                                aria-label={`Pokédex entry #${String(entry.dexNumber).padStart(3, '0')}, ${discovered ? pokemonName(entry.species) : 'undiscovered Pokémon'}${isCurrentPartner ? ', current partner' : ''}`}
+                                aria-pressed={selected}
+                                onClick={() => setSelectedGuideSpecies(entry.species)}
+                              >
+                                <span className={styles.pokedexCardTop}>
+                                  <span>#{String(entry.dexNumber).padStart(3, '0')}</span>
+                                  <span>{discovered ? 'Seen' : '???'}</span>
+                                </span>
+                                <img
+                                  className={`${styles.pokedexSprite} ${!discovered ? styles.unknownPokedexSprite : ''}`}
+                                  src={`/pokemon-trails/icons/${entry.species}.png`}
+                                  alt=""
+                                  width={76}
+                                  height={64}
+                                  loading="lazy"
+                                  aria-hidden="true"
+                                />
+                                <span className={styles.pokedexName}>
+                                  {discovered ? pokemonName(entry.species) : '???'}
+                                </span>
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ol>
+                      {selectedGuideEntry && (
+                        <section className={styles.pokedexDetail} aria-live="polite">
+                          <img
+                            className={`${styles.pokedexDetailSprite} ${!selectedGuideDiscovered ? styles.unknownPokedexSprite : ''}`}
+                            src={`/pokemon-trails/icons/${selectedGuideEntry.species}.png`}
+                            alt=""
+                            width={112}
+                            height={96}
+                            aria-hidden="true"
+                          />
+                          <div className={styles.pokedexDetailCopy}>
+                            <span className={styles.pokedexDetailNumber}>
+                              No. {String(selectedGuideEntry.dexNumber).padStart(3, '0')}
+                            </span>
+                            <h3>
+                              {selectedGuideDiscovered
+                                ? pokemonName(selectedGuideEntry.species)
+                                : 'Undiscovered Pokémon'}
+                            </h3>
+                            {selectedGuideDiscovered ? (
+                              <>
+                                <p>
+                                  {POKEMON_INFO[selectedGuideEntry.family].type} type ·{' '}
+                                  {selectedGuideRemaining === null
+                                    ? 'Fully evolved'
+                                    : `${selectedGuideRemaining} more encounters to evolve`}
+                                </p>
+                                <ol className={styles.pokedexEvolution} aria-label="Evolution line">
+                                  {POKEMON_LINES[selectedGuideEntry.family].map(
+                                    (species, index) => (
+                                      <li
+                                        className={
+                                          index <= selectedGuideStage ? styles.discoveredForm : ''
+                                        }
+                                        key={species}
+                                      >
+                                        {index <= selectedGuideStage ? pokemonName(species) : '???'}
+                                      </li>
+                                    ),
+                                  )}
+                                </ol>
+                              </>
+                            ) : (
+                              <p>
+                                {selectedGuideCount === undefined
+                                  ? 'Find this Pokémon in the meadow to add it to your collection.'
+                                  : `Keep training ${POKEMON_INFO[selectedGuideEntry.family].name} to reveal its next form.`}
+                              </p>
+                            )}
+                            {selectedGuideDiscovered && (
+                              <button
+                                type="button"
+                                className={styles.textButton}
+                                disabled={
+                                  busy ||
+                                  !!collection.active ||
+                                  selectedGuideEntry.family === partner
+                                }
+                                onClick={() => void selectPartner(selectedGuideEntry.family)}
+                              >
+                                {selectedGuideEntry.family === partner
+                                  ? 'Your partner'
+                                  : 'Make partner'}
+                              </button>
+                            )}
+                            {!selectedGuideDiscovered &&
+                              selectedGuideCount === undefined &&
+                              STARTERS.includes(selectedGuideEntry.family) &&
+                              !collection.guardian && (
+                                <span className={styles.pokedexDetailNote}>
+                                  Available after the guardian
+                                </span>
+                              )}
+                          </div>
+                        </section>
                       )}
                     </div>
-                  </div>
-                );
-              })}
+                    <nav className={styles.pokedexPagination} aria-label="Pokédex pages">
+                      <button
+                        type="button"
+                        className={styles.secondary}
+                        disabled={currentGuidePage === 0}
+                        onClick={() => {
+                          setGuidePage(currentGuidePage - 1);
+                          setSelectedGuideSpecies(null);
+                        }}
+                      >
+                        Previous
+                      </button>
+                      <span>
+                        Page {currentGuidePage + 1} of {guidePageCount}
+                      </span>
+                      <button
+                        type="button"
+                        className={styles.secondary}
+                        disabled={currentGuidePage + 1 >= guidePageCount}
+                        onClick={() => {
+                          setGuidePage(currentGuidePage + 1);
+                          setSelectedGuideSpecies(null);
+                        }}
+                      >
+                        Next
+                      </button>
+                    </nav>
+                  </>
+                )}
+              </div>
             </section>
             <aside className={styles.guardian}>
               <span className={styles.badgeShape} aria-hidden="true">

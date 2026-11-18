@@ -7,8 +7,10 @@ meadow encounters. Wild families unlock cumulatively with typing belts:
 White starts with Caterpie, Weedle, Pidgey, Rattata, and Spearow; Black makes the
 five legendary/mythical species available. Every species is reachable by catching
 and training. Eevee, Vaporeon, Jolteon, and Flareon are separate catches rather
-than an artificial linear evolution chain. The field guide supports name search
-(including evolved forms) and an owned-only filter. More habitats,
+than an artificial linear evolution chain. The field guide is a numbered,
+paginated Pokédex with name search, discovered-only filtering, and selected-entry
+details. Undiscovered names and evolution stages stay masked until discovered.
+More habitats,
 multiplayer, trading, type effectiveness, and equipment are not implemented.
 
 ## Learning and gameplay
