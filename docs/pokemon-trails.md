@@ -91,15 +91,18 @@ prompt, or determine damage. Rapid turns replace the previous visual effect
 instead of queuing animations. Reduced-motion mode disables movement and HP
 transitions, hides projectiles, and keeps text feedback available.
 
-Sound is muted by default, with an effects-volume control and browser-local
-preferences (`ict-dojo:trail-sound`). Web Audio starts only from a user gesture,
-even when an enabled preference is restored. Original synthesized word, warning,
-elemental attack, guard, counterattack, and capture sounds use no external audio
-files or copyrighted music/cries. Repeated typo sounds are throttled and synthesis
-is capped at 12 simultaneous/scheduled voices. Muting, focus loss, hidden tabs,
-leaving, and unmounting cancel pending sounds; completion can finish its short
-celebration. Unsupported audio or blocked local storage does not block play.
-Background music and extended evolution sequences remain out of scope.
+Sound effects and battle music are both off by default, with independent volume
+controls and browser-local preferences (`ict-dojo:trail-sound`,
+`ict-dojo:trail-music`). Web Audio starts only from a user gesture, even when an
+enabled preference is restored. The original, four-second chiptune-style battle
+loop is synthesized in the browser and runs only during a focused encounter.
+Word, warning, elemental attack, guard, counterattack, and capture effects also
+use original synthesis, with no external audio files, game soundtrack, or cries.
+Repeated typo sounds are throttled and effects are capped at 12
+simultaneous/scheduled voices. Muting effects, losing focus, hiding the tab,
+leaving, or unmounting stops pending sound and music; completion can finish its
+short celebration. Unsupported audio or blocked local storage does not block
+play. Extended evolution sequences remain out of scope.
 
 ## Validation
 

@@ -34,8 +34,16 @@ import {
 import styles from './trails.module.css';
 import { trailElement, trailFeedback } from './trail-feedback';
 import type { TrailFeedback } from './trail-feedback';
-import { DEFAULT_TRAIL_SOUND, readTrailSound, writeTrailSound, TrailAudio } from './trail-audio';
-import type { TrailSoundPreferences } from './trail-audio';
+import {
+  DEFAULT_TRAIL_MUSIC,
+  DEFAULT_TRAIL_SOUND,
+  readTrailMusic,
+  readTrailSound,
+  TrailAudio,
+  writeTrailMusic,
+  writeTrailSound,
+} from './trail-audio';
+import type { TrailMusicPreferences, TrailSoundPreferences } from './trail-audio';
 
 function Sprite({
   species,
@@ -95,7 +103,9 @@ export default function TrailsClient({
   const feedbackId = useRef(0);
   const audio = useRef<TrailAudio | null>(null);
   const [sound, setSound] = useState<TrailSoundPreferences>(DEFAULT_TRAIL_SOUND);
+  const [music, setMusic] = useState<TrailMusicPreferences>(DEFAULT_TRAIL_MUSIC);
   const [soundUnavailable, setSoundUnavailable] = useState(false);
+  const [musicUnavailable, setMusicUnavailable] = useState(false);
   const [guideSearch, setGuideSearch] = useState('');
   const [guideOwned, setGuideOwned] = useState(false);
   const [guidePage, setGuidePage] = useState(0);
@@ -173,11 +183,17 @@ export default function TrailsClient({
     player.configure(preferences);
     // eslint-disable-next-line react-hooks/set-state-in-effect -- Restore browser preferences only after hydration.
     setSound(preferences);
+    const musicPreferences = readTrailMusic();
+    player.configureMusic(musicPreferences);
+    setMusic(musicPreferences);
     return () => {
       player.destroy();
       audio.current = null;
     };
   }, []);
+  useEffect(() => {
+    audio.current?.setMusicActive(!!encounter && !receipt && !paused);
+  }, [encounter, paused, receipt]);
   async function toggleSound() {
     const preferences = { ...sound, enabled: !sound.enabled };
     setSound(preferences);
@@ -188,6 +204,17 @@ export default function TrailsClient({
       const ready = await audio.current?.unlock();
       if (ready) audio.current?.play({ cue: 'word', damage: 0, counter: 0 }, element);
       else setSoundUnavailable(true);
+    }
+  }
+  async function toggleMusic() {
+    const preferences = { ...music, enabled: !music.enabled };
+    setMusic(preferences);
+    writeTrailMusic(preferences);
+    audio.current?.configureMusic(preferences);
+    setMusicUnavailable(false);
+    if (preferences.enabled) {
+      const ready = await audio.current?.unlock();
+      if (!ready) setMusicUnavailable(true);
     }
   }
   useEffect(() => {
@@ -231,6 +258,7 @@ export default function TrailsClient({
   async function explore(guardian = false) {
     void audio.current?.unlock();
     audio.current?.stop();
+    audio.current?.setMusicActive(false);
     setFeedback(null);
     setBusy(true);
     setError('');
@@ -304,6 +332,7 @@ export default function TrailsClient({
           clock.current.start = null;
         }
         setPaused(true);
+        audio.current?.setMusicActive(false);
         void save(inputs.current);
       }
     } catch {
@@ -312,6 +341,7 @@ export default function TrailsClient({
   }
   async function leave(id = encounter?.id ?? collection?.active?.id) {
     if (!id) return;
+    audio.current?.setMusicActive(false);
     setBusy(true);
     setError('');
     try {
@@ -371,8 +401,35 @@ export default function TrailsClient({
             }}
           />
         </label>
+        <button
+          type="button"
+          className={styles.secondary}
+          aria-pressed={music.enabled}
+          onClick={() => void toggleMusic()}
+        >
+          Music {music.enabled ? 'on' : 'off'}
+        </button>
+        <label>
+          Music volume
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={Math.round(music.volume * 100)}
+            disabled={!music.enabled}
+            onChange={(event) => {
+              const preferences = { ...music, volume: Number(event.target.value) / 100 };
+              setMusic(preferences);
+              audio.current?.configureMusic(preferences);
+              writeTrailMusic(preferences);
+            }}
+          />
+        </label>
         {soundUnavailable && (
           <span role="status">Sound is unavailable here. You can still play silently.</span>
+        )}
+        {musicUnavailable && (
+          <span role="status">Music is unavailable here. You can still play silently.</span>
         )}
       </div>
       {error && (
@@ -707,6 +764,7 @@ export default function TrailsClient({
                         type="button"
                         onClick={() => {
                           audio.current?.stop();
+                          audio.current?.setMusicActive(false);
                           setFeedback(null);
                           setEncounter(null);
                           setBattle(null);

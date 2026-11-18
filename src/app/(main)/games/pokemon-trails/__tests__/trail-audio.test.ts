@@ -1,9 +1,13 @@
 /** @jest-environment jsdom */
 import {
+  DEFAULT_TRAIL_MUSIC,
   DEFAULT_TRAIL_SOUND,
+  readTrailMusic,
   readTrailSound,
+  TRAIL_MUSIC_KEY,
   TRAIL_SOUND_KEY,
   TrailAudio,
+  writeTrailMusic,
   writeTrailSound,
 } from '../trail-audio';
 import type { TrailCue, TrailElement } from '../trail-feedback';
@@ -64,14 +68,23 @@ afterEach(() => {
 });
 it('defaults to muted, safely restores preferences, and tolerates blocked storage', () => {
   expect(readTrailSound()).toEqual(DEFAULT_TRAIL_SOUND);
+  expect(readTrailMusic()).toEqual(DEFAULT_TRAIL_MUSIC);
   writeTrailSound({ enabled: true, volume: 0.4 });
+  writeTrailMusic({ enabled: true, volume: 0.4 });
   expect(readTrailSound()).toEqual({ enabled: true, volume: 0.4 });
+  expect(readTrailMusic()).toEqual({ enabled: true, volume: 0.4 });
   localStorage.setItem(TRAIL_SOUND_KEY, '{"enabled":true,"volume":9}');
+  localStorage.setItem(TRAIL_MUSIC_KEY, '{"enabled":true,"volume":9}');
   expect(readTrailSound().volume).toBe(1);
+  expect(readTrailMusic().volume).toBe(1);
   localStorage.setItem(TRAIL_SOUND_KEY, '{"enabled":"true","volume":0.5}');
+  localStorage.setItem(TRAIL_MUSIC_KEY, '{"enabled":"true","volume":0.5}');
   expect(readTrailSound()).toEqual(DEFAULT_TRAIL_SOUND);
+  expect(readTrailMusic()).toEqual(DEFAULT_TRAIL_MUSIC);
   localStorage.setItem(TRAIL_SOUND_KEY, 'broken json');
+  localStorage.setItem(TRAIL_MUSIC_KEY, 'broken json');
   expect(readTrailSound()).toEqual(DEFAULT_TRAIL_SOUND);
+  expect(readTrailMusic()).toEqual(DEFAULT_TRAIL_MUSIC);
   jest.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
     throw new Error('Blocked');
   });
@@ -79,7 +92,9 @@ it('defaults to muted, safely restores preferences, and tolerates blocked storag
     throw new Error('Blocked');
   });
   expect(readTrailSound()).toEqual(DEFAULT_TRAIL_SOUND);
+  expect(readTrailMusic()).toEqual(DEFAULT_TRAIL_MUSIC);
   expect(() => writeTrailSound(DEFAULT_TRAIL_SOUND)).not.toThrow();
+  expect(() => writeTrailMusic(DEFAULT_TRAIL_MUSIC)).not.toThrow();
 });
 it('never creates or resumes audio just because preferences were restored', async () => {
   const audio = new TrailAudio();
@@ -92,6 +107,40 @@ it('never creates or resumes audio just because preferences were restored', asyn
   expect(await audio.unlock()).toBe(true);
   expect(Audio).toHaveBeenCalledTimes(1);
   audio.destroy();
+});
+it('loops the original theme only while music is enabled and the battle is active', async () => {
+  const audio = new TrailAudio();
+  audio.configureMusic({ enabled: true, volume: 0.3 });
+  expect(await audio.unlock()).toBe(true);
+  expect(voices).toHaveLength(0);
+
+  jest.useFakeTimers();
+  try {
+    audio.setMusicActive(true);
+    expect(voices).toHaveLength(2);
+    expect(voices[0].type).toBe('square');
+    expect(voices[0].frequency.setValueAtTime).toHaveBeenCalledWith(659.25, 1.025);
+    expect(voices[1].type).toBe('triangle');
+
+    jest.advanceTimersByTime(4000);
+    expect(voices.length).toBeGreaterThan(10);
+
+    audio.setMusicActive(false);
+    const stoppedCount = voices.length;
+    expect(voices.every((voice) => voice.stop.mock.calls.length > 0)).toBe(true);
+    jest.advanceTimersByTime(1000);
+    expect(voices).toHaveLength(stoppedCount);
+
+    audio.setMusicActive(true);
+    expect(voices).toHaveLength(stoppedCount + 2);
+    audio.configureMusic({ enabled: false, volume: 0.3 });
+    const mutedCount = voices.length;
+    jest.advanceTimersByTime(1000);
+    expect(voices).toHaveLength(mutedCount);
+  } finally {
+    audio.destroy();
+    jest.useRealTimers();
+  }
 });
 it('plays distinct elemental attacks and a delayed counterattack with bounded voices', async () => {
   const audio = new TrailAudio();

@@ -3,7 +3,7 @@ import { act } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import TrailsClient from '../TrailsClient';
 import { prepareTrailEncounter, finishTrailEncounter } from '../actions';
-import { TrailAudio, TRAIL_SOUND_KEY } from '../trail-audio';
+import { TrailAudio, TRAIL_MUSIC_KEY, TRAIL_SOUND_KEY } from '../trail-audio';
 import type { PokemonCollection, PokemonEncounter } from '@/domains/typing/pokemon';
 import { fallbackQuestContent, QUEST_STAGES } from '@/domains/typing/quest';
 
@@ -21,6 +21,8 @@ jest.mock('../trail-audio', () => ({
 }));
 const player = {
   configure: jest.fn(),
+  configureMusic: jest.fn(),
+  setMusicActive: jest.fn(),
   unlock: jest.fn(),
   play: jest.fn(),
   stop: jest.fn(),
@@ -106,6 +108,45 @@ it('keeps sound opt-in, remembers volume, and restores preferences without autop
   act(() => root.render(<TrailsClient key="restored" initialCollection={collection} />));
   expect(button('Sound on').getAttribute('aria-pressed')).toBe('true');
   expect(host.querySelector<HTMLInputElement>('input[type="range"]')!.value).toBe('20');
+  expect(player.unlock).not.toHaveBeenCalled();
+});
+it('keeps battle music opt-in and pauses it when typing loses focus', async () => {
+  expect(button('Music off').getAttribute('aria-pressed')).toBe('false');
+  expect(host.querySelectorAll<HTMLInputElement>('input[type="range"]')[1].disabled).toBe(true);
+  expect(player.unlock).not.toHaveBeenCalled();
+  await act(async () => button('Music off').click());
+  expect(button('Music on').getAttribute('aria-pressed')).toBe('true');
+  expect(JSON.parse(localStorage.getItem(TRAIL_MUSIC_KEY)!).enabled).toBe(true);
+  expect(player.configureMusic).toHaveBeenLastCalledWith({ enabled: true, volume: 0.3 });
+  expect(player.unlock).toHaveBeenCalled();
+  const musicSlider = host.querySelectorAll<HTMLInputElement>('input[type="range"]')[1];
+  act(() => {
+    Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(
+      musicSlider,
+      '60',
+    );
+    musicSlider.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  expect(JSON.parse(localStorage.getItem(TRAIL_MUSIC_KEY)!).volume).toBe(0.6);
+
+  const input = await start();
+  expect(player.setMusicActive).toHaveBeenLastCalledWith(true);
+  act(() => input.blur());
+  expect(player.setMusicActive).toHaveBeenLastCalledWith(false);
+  act(() => input.focus());
+  expect(player.setMusicActive).toHaveBeenLastCalledWith(true);
+
+  await act(async () => button('Music on').click());
+  expect(button('Music off').getAttribute('aria-pressed')).toBe('false');
+  expect(player.configureMusic).toHaveBeenLastCalledWith({ enabled: false, volume: 0.6 });
+  expect(button('Sound off').getAttribute('aria-pressed')).toBe('false');
+});
+it('restores music settings without starting audio automatically', () => {
+  localStorage.setItem(TRAIL_MUSIC_KEY, JSON.stringify({ enabled: true, volume: 0.45 }));
+  player.unlock.mockClear();
+  act(() => root.render(<TrailsClient key="music-restored" initialCollection={collection} />));
+  expect(button('Music on').getAttribute('aria-pressed')).toBe('true');
+  expect(host.querySelectorAll<HTMLInputElement>('input[type="range"]')[1].value).toBe('45');
   expect(player.unlock).not.toHaveBeenCalled();
 });
 it('shows queued damage without attacking mid-word, then responds once without losing typing focus', async () => {
